@@ -9,42 +9,42 @@
 #include <set>
 #include "./types.h"
 
-class _Object;
-class _Context;
+class _Obj;
+class _Cntxt;
 
-class _Attribute {
+class _Attr {
   public:
-    _Attribute( std::string name, PLI_AttributeType type ) :
+    _Attr( std::string name, PLI_AttrType type ) :
         m_name( name ), 
         m_type( type )
     {}
-    virtual ~_Attribute() {}
+    virtual ~_Attr() {}
     std::string& name() { return m_name; }  
-    PLI_AttributeType type() { return m_type; }
+    PLI_AttrType type() { return m_type; }
 
   private:
     std::string         m_name;
-    PLI_AttributeType       m_type;
+    PLI_AttrType       m_type;
 };
 
-class _AttributeNum : public _Attribute {
+class _AttrNum : public _Attr {
   public:
-    _AttributeNum( std::string name, PLI_AttributeType type, 
-                        PLI_AttributeScale unit ) :
-        _Attribute( name, type ),
+    _AttrNum( std::string name, PLI_AttrType type, 
+                        PLI_AttrScale unit ) :
+        _Attr( name, type ),
         m_unit( unit )
     {}
-    PLI_AttributeScale unit() { return m_unit; }
+    PLI_AttrScale unit() { return m_unit; }
   private:
-    PLI_AttributeScale   m_unit;
+    PLI_AttrScale   m_unit;
 };
 
 template <class T>
-class _AttributeNumTemplate : public _AttributeNum {
+class _AttrNumTemplate : public _AttrNum {
   public:
-    _AttributeNumTemplate( std::string name, PLI_AttributeType type, 
-            PLI_AttributeScale unit, T min, T max, T value ) : 
-        _AttributeNum( name, type, unit ),
+    _AttrNumTemplate( std::string name, PLI_AttrType type, 
+            PLI_AttrScale unit, T min, T max, T value ) : 
+        _AttrNum( name, type, unit ),
         m_min( min ),
         m_max( max ),
         m_value( value)  {}
@@ -67,11 +67,11 @@ class _AttributeNumTemplate : public _AttributeNum {
 };
     
 template <class T>
-class _AttributeStringTemplate : public _Attribute {
+class _AttrStringTemplate : public _Attr {
   public:
-    _AttributeStringTemplate( std::string name, PLI_AttributeType type, 
+    _AttrStringTemplate( std::string name, PLI_AttrType type, 
                                         T possible, T value ) : 
-        _Attribute( name, type ),
+        _Attr( name, type ),
         m_possible( possible ),
         m_value( value )  {}
 
@@ -86,34 +86,34 @@ class _AttributeStringTemplate : public _Attribute {
 };
     
 
-class _Group {
+class _Grp {
   public:
-    _Group( _Context* ctx ) : m_ctx(ctx) { reset(); }
+    _Grp( _Cntxt* ctx ) : m_ctx(ctx) { reset(); }
 
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
 
-    _Object* getObject( int i ) { return m_list[i]; }
+    _Obj* getObj( int i ) { return m_list[i]; }
 
     void reset() { pos = m_list.begin(); }
 
-    _Object* next() {
+    _Obj* next() {
         if ( pos == m_list.end() ) {
             return PLI_NULL;
         } else {
-            _Object* tmp = *pos;
+            _Obj* tmp = *pos;
             ++pos;
             return tmp;
         }
     }
 
-    int add( _Object* obj ) {
+    int add( _Obj* obj ) {
         m_list.push_back( obj );
         return PLI_SUCCESS; 
     }
 
-    int remove( _Object* obj ) {
-        std::vector<_Object*>::iterator iter = m_list.begin();
+    int remove( _Obj* obj ) {
+        std::vector<_Obj*>::iterator iter = m_list.begin();
         for ( ; iter != m_list.end(); ++iter ) {
             if ( *iter == obj ) {
                 m_list.erase( iter );
@@ -122,22 +122,22 @@ class _Group {
         }
         return PLI_SUCCESS;
     }
-    _Context* getCtx() { return m_ctx; }
+    _Cntxt* getCtx() { return m_ctx; }
 
   private:
-    std::vector<_Object*> m_list;
-    std::vector<_Object*>::iterator pos;
-    _Context*   m_ctx;
+    std::vector<_Obj*> m_list;
+    std::vector<_Obj*>::iterator pos;
+    _Cntxt*   m_ctx;
 };
 
-class _Object {
+class _Obj {
     struct Attr {
-        PLI_AttributeType   type; 
+        PLI_AttrType   type; 
         std::string     name; 
     };
 
   public:
-    _Object(_Context* ctx, std::string name, std::string type) :
+    _Obj(_Cntxt* ctx, std::string name, std::string type) :
         m_ctx(ctx),
         m_name(name),
         m_type(type),
@@ -147,73 +147,73 @@ class _Object {
     std::string& name() { return m_name; }
     std::string& type() { return m_type; }
 
-    _Group& children() { return m_children; }
-    _Object* parent() { return m_parent; }
-    void setParent( _Object* obj ) { m_parent = obj; }
+    _Grp& children() { return m_children; }
+    _Obj* parent() { return m_parent; }
+    void setParent( _Obj* obj ) { m_parent = obj; }
 
     int attrGetNumber() { return m_attrList.size(); }
 
-    _Attribute* attributeGet( int index ) { 
+    _Attr* attributeGet( int index ) { 
         return m_attrList[index]; 
     }
-    int attributeAdd( _Attribute* attr ) {
+    int attributeAdd( _Attr* attr ) {
         m_attrList.push_back( attr );
         return PLI_SUCCESS;
     }
 
   private:
-    _Context*   m_ctx;
+    _Cntxt*   m_ctx;
     std::string m_name;
     std::string m_type;
-    _Group m_children; 
-    _Object* m_parent; 
+    _Grp m_children; 
+    _Obj* m_parent; 
     
-    std::vector< _Attribute* > m_attrList;
+    std::vector< _Attr* > m_attrList;
 };
 
-class _Context {
+class _Cntxt {
 
   public:
 
-    _Context( ) {}
-    void init( _Object* top ) {
+    _Cntxt( ) {}
+    void init( _Obj* top ) {
         m_top = top;
         const char* type;
         
         type = PLI_OBJ_CABINET;
-        m_defaultGroupMap[ type ] = new _Group( this );
-        createTypeGroup( top, type, m_defaultGroupMap[ type]  );
+        m_defaultGrpMap[ type ] = new _Grp( this );
+        createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
         type =  PLI_OBJ_BOARD;
-        m_defaultGroupMap[ type ] = new _Group( this );
-        createTypeGroup( top, type, m_defaultGroupMap[ type]  );
+        m_defaultGrpMap[ type ] = new _Grp( this );
+        createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
         type =  PLI_OBJ_NODE;
-        m_defaultGroupMap[ type ] = new _Group( this );
-        createTypeGroup( top, type, m_defaultGroupMap[ type]  );
+        m_defaultGrpMap[ type ] = new _Grp( this );
+        createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
         type =  PLI_OBJ_SOCKET;
-        m_defaultGroupMap[ type ] = new _Group( this );
-        createTypeGroup( top, type, m_defaultGroupMap[ type]  );
+        m_defaultGrpMap[ type ] = new _Grp( this );
+        createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
         type =  PLI_OBJ_CORE;
-        m_defaultGroupMap[ type ] = new _Group( this );
-        createTypeGroup( top, type, m_defaultGroupMap[ type]  );
+        m_defaultGrpMap[ type ] = new _Grp( this );
+        createTypeGrp( top, type, m_defaultGrpMap[ type]  );
     }
-    ~_Context( ) { }
+    ~_Cntxt( ) { }
 
-    _Object* getSelf() { return m_top; }
+    _Obj* getSelf() { return m_top; }
 
-    _Group* getGroup( PLI_ObjectType type )  { 
+    _Grp* getGrp( PLI_ObjType type )  { 
 
-        if ( m_defaultGroupMap.find( type ) == m_defaultGroupMap.end() ) {
+        if ( m_defaultGrpMap.find( type ) == m_defaultGrpMap.end() ) {
             return PLI_NULL;
         } else {
-            return m_defaultGroupMap[type]; 
+            return m_defaultGrpMap[type]; 
         }
     }  
 
-    _Group* getGroupByName( std::string name )  { 
+    _Grp* getGrpByName( std::string name )  { 
 
         if ( m_groups.find( name ) == m_groups.end() ) {
             return PLI_NULL;
@@ -222,18 +222,18 @@ class _Context {
         }
     }
 
-    _Group* groupCreate( std::string name ) {
+    _Grp* groupCreate( std::string name ) {
         if ( m_groups.find( name ) != m_groups.end() ) {
             return NULL;
         }
 
-        m_groups[name] = new _Group( this );
+        m_groups[name] = new _Grp( this );
         return m_groups[name];
     }
 
-    int groupDestroy( _Group* grp ) {
+    int groupDestroy( _Grp* grp ) {
 
-        std::map< std::string, _Group* >::iterator iter = m_groups.begin();
+        std::map< std::string, _Grp* >::iterator iter = m_groups.begin();
         for ( ; iter != m_groups.end(); ++ iter ) {
             if ( iter->second == grp ) {
                 delete grp;
@@ -245,15 +245,15 @@ class _Context {
     }
 
   private:
-    void createTypeGroup( _Object*, PLI_ObjectType, _Group* );
-    _Object* m_top;
+    void createTypeGrp( _Obj*, PLI_ObjType, _Grp* );
+    _Obj* m_top;
 
-    std::map< PLI_ObjectType, _Group* >  m_defaultGroupMap; 
-    std::map< std::string, _Group* >   m_groups;
+    std::map< PLI_ObjType, _Grp* >  m_defaultGrpMap; 
+    std::map< std::string, _Grp* >   m_groups;
 };
 
-inline void _Context::createTypeGroup( _Object* obj, PLI_ObjectType type,
-                 _Group* group )
+inline void _Cntxt::createTypeGrp( _Obj* obj, PLI_ObjType type,
+                 _Grp* group )
 {
     if ( 0 == obj->type().compare( type )  ) {
         group->add( obj );
@@ -261,9 +261,9 @@ inline void _Context::createTypeGroup( _Object* obj, PLI_ObjectType type,
 
     if ( ! obj->children().empty() ) {
         obj->children().reset();  
-        _Object* tmp = obj->children().next(); 
+        _Obj* tmp = obj->children().next(); 
         while ( tmp ) {
-            createTypeGroup( tmp, type, group );
+            createTypeGrp( tmp, type, group );
             tmp = obj->children().next(); 
         }
     }

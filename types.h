@@ -9,12 +9,12 @@
 #define PLI_SUCCESS 0
 #define PLI_FAILURE -1
 
-typedef const char* PLI_ContextType;
+typedef const char* PLI_CntxtType;
 
 #define PLI_CTX_DEFAULT    "Default"
 #define PLI_CTX_VENDOR     "Vendor"
 
-typedef const char* PLI_ObjectType;
+typedef const char* PLI_ObjType;
 
 #define PLI_OBJ_PLATFORM   "Platform"
 #define PLI_OBJ_CABINET    "Cabinet"
@@ -32,7 +32,7 @@ typedef enum {
     PLI_ATTR_FLOAT,
     PLI_ATTR_INT,
     PLI_ATTR_STRING,
-} PLI_AttributeType;
+} PLI_AttrType;
 
 typedef enum {
     PLI_ATTR_UNIT_1,
@@ -42,7 +42,7 @@ typedef enum {
     PLI_ATTR_UNIT_TERA,
     PLI_ATTR_UNIT_PETA,
     PLI_ATTR_UNIT_EXA
-} PLI_AttributeScale;
+} PLI_AttrScale;
 
 
 #endif

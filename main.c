@@ -4,144 +4,144 @@
 
 #include <pli.h> 
 
-void  printObjectInfo( PLI_Object );
-void  traverseDepth( PLI_Object );
-const char * attrUnit( PLI_AttributeScale );
-const char * attrType( PLI_AttributeType type );
+void  printObjInfo( PLI_Obj );
+void  traverseDepth( PLI_Obj );
+const char * attrUnit( PLI_AttrScale );
+const char * attrType( PLI_AttrType type );
 
-void  printAttr( PLI_Attribute );
+void  printAttr( PLI_Attr );
 
 int main( int argc, char* argv[] )
 {
     int num;
-    PLI_Group group;
+    PLI_Grp group;
 
     // Get a context
-    PLI_Context context = PLI_ContextInit( PLI_CTX_DEFAULT );; 
+    PLI_Cntxt context = PLI_CntxtInit( PLI_CTX_DEFAULT, "App" );; 
 
     // Get a group that we can add stuff to
-    PLI_Group userGroup = PLI_ContextCreateGroup( context, "userGroup" );
+    PLI_Grp userGrp = PLI_CntxtCreateGrp( context, "userGrp" );
 
 #if 0
     traverseDepth( PLI_GetSelf( context ) );
 #endif
     
     // Get all of the CORE objects
-    group = PLI_ContextGetGroupByType( context, PLI_OBJ_CORE );
+    group = PLI_CntxtGetGrpByType( context, PLI_OBJ_CORE );
     assert( PLI_NULL != group );
 
     // Iterate over all objects in this group
-    num = PLI_GroupGetNumObjects( group ); 
+    num = PLI_GrpGetNumObjs( group ); 
     int i;
     for ( i = 0; i < num; i++ ) {
         
-        PLI_Object obj = PLI_GroupGetObjectByIndex( group, i );
-        printf("Object `%s` type=`%s`\n", 
-                PLI_ObjectGetName( obj ), PLI_ObjectGetType( obj ) );
+        PLI_Obj obj = PLI_GrpGetObjByIndx( group, i );
+        printf("Obj `%s` type=`%s`\n", 
+                PLI_ObjGetName( obj ), PLI_ObjGetType( obj ) );
 
         // how many attributes does this object have
-        int numAttr = PLI_ObjectGetNumAttributes( obj );
+        int numAttr = PLI_ObjGetNumAttrs( obj );
 
         // iterate over the attribute
         int i;
         for ( i = 0; i < numAttr; i++ ) {
-            printAttr( PLI_ObjectGetAttributeByIndex( obj, i ) );
+            printAttr( PLI_ObjGetAttrByIndx( obj, i ) );
         }
 
         // Add the object to another group
-        PLI_GroupAddObject( userGroup, obj ); 
+        PLI_GrpAddObj( userGrp, obj ); 
     }
 
     // Get all of the NODE objects
-    group = PLI_ContextGetGroupByType( context, PLI_OBJ_NODE );
+    group = PLI_CntxtGetGrpByType( context, PLI_OBJ_NODE );
     assert( PLI_NULL != group );
 
     // use index based interation to loop through all objects in the group
-    num = PLI_GroupGetNumObjects( group );
+    num = PLI_GrpGetNumObjs( group );
     for ( i = 0; i < num; i++ ) {
 
         // get the object at index N
-        PLI_Object tmp = PLI_GroupGetObjectByIndex(group, i );
+        PLI_Obj tmp = PLI_GrpGetObjByIndx(group, i );
 
         // Add the object to another group
-        PLI_GroupAddObject( userGroup, tmp ); 
+        PLI_GrpAddObj( userGrp, tmp ); 
 
         // Get the object parent(s)
-        PLI_Object parent = PLI_ObjectGetParent( tmp );
+        PLI_Obj parent = PLI_ObjGetParent( tmp );
         if ( PLI_NULL != parent ) {
             printf("parent %s, child%s\n", 
-                    PLI_ObjectGetName(  parent ), 
-                    PLI_ObjectGetName( tmp ) );
+                    PLI_ObjGetName(  parent ), 
+                    PLI_ObjGetName( tmp ) );
         } else {
-            printf("%s\n", PLI_ObjectGetName( tmp ) ); 
+            printf("%s\n", PLI_ObjGetName( tmp ) ); 
         }
     } 
 
-    PLI_Group tmpGroup = PLI_ContextGetGroupByName( context, "userGroup" );
+    PLI_Grp tmpGrp = PLI_CntxtGetGrpByName( context, "userGrp" );
     // print all of the objects in the user created group
 
-    num = PLI_GroupGetNumObjects( tmpGroup );
+    num = PLI_GrpGetNumObjs( tmpGrp );
     for ( i = 0; i < num; i++ ) {  
-        printf("userGroup %s\n", PLI_ObjectGetName( 
-                PLI_GroupGetObjectByIndex( tmpGroup, i ) ) );
+        printf("userGrp %s\n", PLI_ObjGetName( 
+                PLI_GrpGetObjByIndx( tmpGrp, i ) ) );
     } 
 
     // cleanup
-    assert( PLI_SUCCESS == PLI_GroupDestroy( userGroup ) );
-    assert( PLI_SUCCESS == PLI_ContextDestroy( context ) );
+    assert( PLI_SUCCESS == PLI_GrpDestroy( userGrp ) );
+    assert( PLI_SUCCESS == PLI_CntxtDestroy( context ) );
     return 0;
 }
 
-void  traverseDepth( PLI_Object obj )
+void  traverseDepth( PLI_Obj obj )
 {
-    printObjectInfo( obj );
+    printObjInfo( obj );
 
-    PLI_Group children = PLI_ObjectGetChildren( obj );
+    PLI_Grp children = PLI_ObjGetChildren( obj );
 
     if ( children ) {
-        int num = PLI_GroupGetNumObjects( children );
+        int num = PLI_GrpGetNumObjs( children );
         int i;
         for ( i = 0; i < num; i++ ) {
-            traverseDepth( PLI_GroupGetObjectByIndex( children, i ) );
+            traverseDepth( PLI_GrpGetObjByIndx( children, i ) );
         }
     } 
 }
 
-void  printObjectInfo( PLI_Object obj ) {
-    const char* name = PLI_ObjectGetName( obj );
-    const char* type = PLI_ObjectGetType( obj );
+void  printObjInfo( PLI_Obj obj ) {
+    const char* name = PLI_ObjGetName( obj );
+    const char* type = PLI_ObjGetType( obj );
     printf( "object %s is of type %s\n", name, type );
 }
 
 
-void  printAttr( PLI_Attribute attr )
+void  printAttr( PLI_Attr attr )
 {
     int intValue[3];
-    PLI_AttributeScale scaleValue;
+    PLI_AttrScale scaleValue;
     float floatValue[3];
     #define STRLEN 100
     char stringValue[ STRLEN ], possible[ STRLEN ];
-    PLI_AttributeType type = PLI_AttributeGetType( attr ); 
+    PLI_AttrType type = PLI_AttrGetType( attr ); 
 
     printf("    Attr `%s` type=%s ",
-             PLI_AttributeGetName( attr ), attrType(type));
+             PLI_AttrGetName( attr ), attrType(type));
     switch ( type ) {
       case PLI_ATTR_FLOAT:
 
-        PLI_AttributeGetScale( attr, &scaleValue );
-        PLI_AttributeFloatGetMin( attr, &floatValue[0]);
-        PLI_AttributeFloatGetMax( attr, &floatValue[1] );
-        PLI_AttributeFloatGetValue( attr, &floatValue[2] ); 
+        PLI_AttrGetScale( attr, &scaleValue );
+        PLI_AttrFloatGetMin( attr, &floatValue[0]);
+        PLI_AttrFloatGetMax( attr, &floatValue[1] );
+        PLI_AttrFloatGetValue( attr, &floatValue[2] ); 
 
         printf("scale=%s min=%f max=%f value=%f\n", attrUnit( scaleValue ), 
                 floatValue[0], floatValue[1], floatValue[2] );
         break;
 
       case PLI_ATTR_INT:
-        PLI_AttributeGetScale( attr, &scaleValue );
-        PLI_AttributeIntGetMin( attr, &intValue[0] );
-        PLI_AttributeIntGetMax( attr, &intValue[1] );
-        PLI_AttributeIntGetValue( attr, &intValue[2] ); 
+        PLI_AttrGetScale( attr, &scaleValue );
+        PLI_AttrIntGetMin( attr, &intValue[0] );
+        PLI_AttrIntGetMax( attr, &intValue[1] );
+        PLI_AttrIntGetValue( attr, &intValue[2] ); 
 
         printf("scale=%s min=%i max=%i value=%i\n", attrUnit( scaleValue ),
             intValue[0], intValue[1], intValue[2] );
@@ -149,14 +149,14 @@ void  printAttr( PLI_Attribute attr )
 
       case PLI_ATTR_STRING:
     
-        PLI_AttributeStringGetPossible( attr, possible, STRLEN ),
-        PLI_AttributeStringGetValue( attr, stringValue, STRLEN);
+        PLI_AttrStringGetPossible( attr, possible, STRLEN ),
+        PLI_AttrStringGetValue( attr, stringValue, STRLEN);
         printf("possible=`%s` value=`%s`\n", possible, stringValue );
         break;
     }
 }
 
-const char * attrType( PLI_AttributeType type )
+const char * attrType( PLI_AttrType type )
 {
     switch( type ) {
       case PLI_ATTR_FLOAT:
@@ -169,7 +169,7 @@ const char * attrType( PLI_AttributeType type )
     return "";
 }
 
-const char * attrUnit( PLI_AttributeScale scale )
+const char * attrUnit( PLI_AttrScale scale )
 {
     switch( scale ) {
       case PLI_ATTR_UNIT_1:

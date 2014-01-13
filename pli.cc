@@ -3,174 +3,174 @@
 #include "./object.h"
 #include "./init.h"
 
-PLI_Context PLI_ContextInit( PLI_ContextType type )
+PLI_Cntxt PLI_CntxtInit( PLI_CntxtType type, const char* name )
 {
     return PLI::init( type );
 }
 
-int PLI_ContextDestroy( PLI_Context ctx )
+int PLI_CntxtDestroy( PLI_Cntxt ctx )
 {
     return PLI::destroy( ctx );
 }
 
-PLI_Object PLI_ContextGetSelf( PLI_Context ctx )
+PLI_Obj PLI_CntxtGetSelf( PLI_Cntxt ctx )
 {
     return ctx->getSelf();
 }
 
-PLI_Group PLI_ContextGetGroupByType( PLI_Context ctx, PLI_ObjectType type )
+PLI_Grp PLI_CntxtGetGrpByType( PLI_Cntxt ctx, PLI_ObjType type )
 {
-    return ctx->getGroup( type );
+    return ctx->getGrp( type );
 }
 
-PLI_Group PLI_ContextCreateGroup( PLI_Context ctx, const char* name )
+PLI_Grp PLI_CntxtCreateGrp( PLI_Cntxt ctx, const char* name )
 {
     return ctx->groupCreate( name );
 }
 
-PLI_Group PLI_ContextGetGroupByName( PLI_Context ctx, const char* name )
+PLI_Grp PLI_CntxtGetGrpByName( PLI_Cntxt ctx, const char* name )
 {
-    return ctx->getGroupByName( name );
+    return ctx->getGrpByName( name );
 }
 
-const char* PLI_ObjectGetName( PLI_Object obj )
+const char* PLI_ObjGetName( PLI_Obj obj )
 {
     return &obj->name()[0];
 }
 
-const char* PLI_ObjectGetType( PLI_Object obj )
+const char* PLI_ObjGetType( PLI_Obj obj )
 {
     return &obj->type()[0];
 }
 
-PLI_Object PLI_ObjectGetParent(PLI_Object obj )
+PLI_Obj PLI_ObjGetParent(PLI_Obj obj )
 {
     return obj->parent();
     return NULL;
 }
 
-PLI_Group PLI_ObjectGetChildren( PLI_Object obj )
+PLI_Grp PLI_ObjGetChildren( PLI_Obj obj )
 {
     return& obj->children();
 }
 
-int PLI_GroupDestroy( PLI_Group group )
+int PLI_GrpDestroy( PLI_Grp group )
 {
-    _Context* ctx = group->getCtx();
+    _Cntxt* ctx = group->getCtx();
     return ctx->groupDestroy( group );
 }
 
-int PLI_GroupAddObject( PLI_Group group, PLI_Object obj )
+int PLI_GrpAddObj( PLI_Grp group, PLI_Obj obj )
 {
     return group->add( obj );
 }
 
-int PLI_GroupObjectRemove( PLI_Group group, PLI_Object obj )
+int PLI_GrpObjRemove( PLI_Grp group, PLI_Obj obj )
 {
     return group->remove( obj );
 }
 
-int PLI_GroupGetNumObjects( PLI_Group group )
+int PLI_GrpGetNumObjs( PLI_Grp group )
 {
     return group->size();
 }
 
-PLI_Object PLI_GroupGetObjectByIndex( PLI_Group group, int i )
+PLI_Obj PLI_GrpGetObjByIndx( PLI_Grp group, int i )
 {
-    return group->getObject( i );
+    return group->getObj( i );
 }
 
-PLI_Object PLI_GroupGetObjectByName( PLI_Group group, int i )
+PLI_Obj PLI_GrpGetObjByName( PLI_Grp group, int i )
 {
     return NULL;
 }
 
-int PLI_ObjectGetNumAttributes( PLI_Object obj )
+int PLI_ObjGetNumAttrs( PLI_Obj obj )
 {
     return obj->attrGetNumber();
 }
 
 
-PLI_Attribute PLI_ObjectGetAttributeByIndex( PLI_Object obj, int index )
+PLI_Attr PLI_ObjGetAttrByIndx( PLI_Obj obj, int index )
 {
     return obj->attributeGet( index );
 }
 
-const char*   PLI_AttributeGetName( PLI_Attribute attr )
+const char*   PLI_AttrGetName( PLI_Attr attr )
 {
     return &attr->name()[0];
 }
 
-PLI_AttributeType PLI_AttributeGetType( PLI_Attribute attr )
+PLI_AttrType PLI_AttrGetType( PLI_Attr attr )
 {
     return attr->type();
 }
 
-int PLI_AttributeGetScale( PLI_Attribute a, PLI_AttributeScale* value )
+int PLI_AttrGetScale( PLI_Attr a, PLI_AttrScale* value )
 {
-    _AttributeNum* attr = dynamic_cast< _AttributeNum*>(a);
+    _AttrNum* attr = dynamic_cast< _AttrNum*>(a);
     if ( attr ) {
         return attr->unit();
     } 
     return PLI_FAILURE;
 }
 
-int PLI_AttributeFloatGetMin( PLI_Attribute attr, float* value )
+int PLI_AttrFloatGetMin( PLI_Attr attr, float* value )
 {
-    *value = static_cast< _AttributeNumTemplate<float>* >(attr)->min();
+    *value = static_cast< _AttrNumTemplate<float>* >(attr)->min();
     return PLI_SUCCESS;
 }
 
-int PLI_AttributeFloatGetMax( PLI_Attribute attr, float* value )
+int PLI_AttrFloatGetMax( PLI_Attr attr, float* value )
 {
-    *value = static_cast< _AttributeNumTemplate<float>* >(attr)->max();
+    *value = static_cast< _AttrNumTemplate<float>* >(attr)->max();
     return PLI_SUCCESS; 
 }
 
-int PLI_AttributeFloatGetValue( PLI_Attribute attr, float* value )
+int PLI_AttrFloatGetValue( PLI_Attr attr, float* value )
 {
-    *value = static_cast< _AttributeNumTemplate<float>* >(attr)->value();
+    *value = static_cast< _AttrNumTemplate<float>* >(attr)->value();
     return PLI_SUCCESS;
 }
 
-int PLI_AttributeFloatSetValue( PLI_Attribute attr, float value )
+int PLI_AttrFloatSetValue( PLI_Attr attr, float value )
 {
-    return static_cast< _AttributeNumTemplate<float>* >(attr)->value( value );
+    return static_cast< _AttrNumTemplate<float>* >(attr)->value( value );
 }
 
-int PLI_AttributeIntGetMin( PLI_Attribute attr, int* value )
+int PLI_AttrIntGetMin( PLI_Attr attr, int* value )
 {
-    *value = static_cast< _AttributeNumTemplate<int>* >(attr)->min();
+    *value = static_cast< _AttrNumTemplate<int>* >(attr)->min();
     return PLI_SUCCESS;
 }
 
-int PLI_AttributeIntGetMax( PLI_Attribute attr, int* value )
+int PLI_AttrIntGetMax( PLI_Attr attr, int* value )
 {
-    *value = static_cast< _AttributeNumTemplate<int>* >(attr)->max();
+    *value = static_cast< _AttrNumTemplate<int>* >(attr)->max();
     return PLI_SUCCESS;
 }
 
-int PLI_AttributeIntGetValue( PLI_Attribute attr, int* value )
+int PLI_AttrIntGetValue( PLI_Attr attr, int* value )
 {
-    *value = static_cast< _AttributeNumTemplate<int>* >(attr)->value();
+    *value = static_cast< _AttrNumTemplate<int>* >(attr)->value();
     return PLI_SUCCESS;
 }
 
-int PLI_AttributeIntSetValue( PLI_Attribute attr, int value )
+int PLI_AttrIntSetValue( PLI_Attr attr, int value )
 {
-    static_cast< _AttributeNumTemplate<int>* >(attr)->value( value );
+    static_cast< _AttrNumTemplate<int>* >(attr)->value( value );
     return PLI_SUCCESS;
 }
 
-int PLI_AttributeStringGetValue( PLI_Attribute attr, char* value, int len )
+int PLI_AttrStringGetValue( PLI_Attr attr, char* value, int len )
 {
-    strcpy( value, &static_cast< _AttributeStringTemplate<std::string>* >(attr)->value()[0] );
+    strcpy( value, &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0] );
     return PLI_SUCCESS; 
 }
 
-int PLI_AttributeStringGetPossible( PLI_Attribute attr, char* value, int len )
+int PLI_AttrStringGetPossible( PLI_Attr attr, char* value, int len )
 {
-    strcpy( value, &static_cast< _AttributeStringTemplate<std::string>* >(attr)->possible()[0] );
+    strcpy( value, &static_cast< _AttrStringTemplate<std::string>* >(attr)->possible()[0] );
     return PLI_SUCCESS;
 }
 

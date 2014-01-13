@@ -6,8 +6,8 @@
 
 namespace PLI {
 
-_Context* init( PLI_ContextType );
-int destroy( PLI_Context );
+_Cntxt* init( PLI_CntxtType );
+int destroy( PLI_Cntxt );
 
 }
 
