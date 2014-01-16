@@ -6,6 +6,12 @@
 
 #define PLI_NULL NULL
 
+typedef struct _Cntxt* PLI_Cntxt;
+typedef struct _Grp*   PLI_Grp;
+typedef struct _Obj*   PLI_Obj;
+typedef struct _Attr*  PLI_Attr;
+typedef int PLI_CntxtState;
+
 #define PLI_SUCCESS 0
 #define PLI_FAILURE -1
 
