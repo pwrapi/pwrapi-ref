@@ -7,7 +7,7 @@
 void  printObjInfo( PWR_Obj );
 void  traverseDepth( PWR_Obj );
 const char * attrUnit( PWR_AttrUnits );
-const char * attrType( PWR_AttrType type );
+const char * attrValueType( PWR_AttrValueType type );
 
 void  printAttr( PWR_Attr );
 
@@ -122,10 +122,10 @@ void  printAttr( PWR_Attr attr )
     float floatValue[3];
     #define STRLEN 100
     char stringValue[ STRLEN ], possible[ STRLEN ];
-    PWR_AttrType type = PWR_AttrGetType( attr ); 
+    PWR_AttrValueType type = PWR_AttrGetValueType( attr ); 
 
     printf("    Attr `%s` type=%s ",
-             PWR_AttrGetNameString( PWR_AttrGetName( attr )), attrType(type));
+         PWR_AttrGetNameString( PWR_AttrGetName( attr )), attrValueType(type));
     switch ( type ) {
       case PWR_ATTR_FLOAT:
 
@@ -157,7 +157,7 @@ void  printAttr( PWR_Attr attr )
     }
 }
 
-const char * attrType( PWR_AttrType type )
+const char * attrValueType( PWR_AttrValueType type )
 {
     switch( type ) {
       case PWR_ATTR_FLOAT:

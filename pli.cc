@@ -96,12 +96,12 @@ PWR_Attr PWR_ObjGetAttrByIndx( PWR_Obj obj, int index )
     return obj->attributeGet( index );
 }
 
-PWR_AttrName   PWR_AttrGetName( PWR_Attr attr )
+PWR_AttrType   PWR_AttrGetName( PWR_Attr attr )
 {
     return attr->name();
 }
 
-PWR_AttrType PWR_AttrGetType( PWR_Attr attr )
+PWR_AttrValueType PWR_AttrGetValueType( PWR_Attr attr )
 {
     return attr->type();
 }
@@ -187,7 +187,7 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 	case PWR_OBJ_CORE:     return "Core";
 	}
 }
-const char* PWR_AttrGetNameString( PWR_AttrName name )
+const char* PWR_AttrGetNameString( PWR_AttrType name )
 {
 	switch( name ){
 	case PWR_ATTR_FREQ: return "Req";

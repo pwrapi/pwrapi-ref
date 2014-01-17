@@ -40,11 +40,11 @@ PWR_Grp     PWR_GrpAttrFloatSetValue( PWR_Attr, float );
 PWR_Grp     PWR_GrpAttrIntSetValue( PWR_Attr, int );
 PWR_Grp     PWR_GrpAttrStringSetValue( PWR_Attr, const char* );
 
-PWR_AttrName PWR_AttrGetName( PWR_Attr );
-PWR_AttrType PWR_AttrGetType( PWR_Attr );
+PWR_AttrType PWR_AttrGetName( PWR_Attr );
+PWR_AttrValueType PWR_AttrGetValueType( PWR_Attr );
 int          PWR_AttrGetUnits( PWR_Attr, PWR_AttrUnits* );
 
-const char* PWR_AttrGetNameString( PWR_AttrName );
+const char* PWR_AttrGetNameString( PWR_AttrType );
 
 int PWR_AttrFloatGetMin( PWR_Attr, float* );
 int PWR_AttrFloatGetMax( PWR_Attr, float* );

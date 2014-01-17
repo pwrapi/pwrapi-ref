@@ -36,13 +36,13 @@ typedef enum {
     PWR_ATTR_POWER,
     PWR_ATTR_STATE,
     PWR_ATTR_ID,
-} PWR_AttrName;
+} PWR_AttrType;
 
 typedef enum {
     PWR_ATTR_FLOAT,
     PWR_ATTR_INT,
     PWR_ATTR_STRING,
-} PWR_AttrType;
+} PWR_AttrValueType;
 
 typedef enum {
     PWR_ATTR_UNITS_1,

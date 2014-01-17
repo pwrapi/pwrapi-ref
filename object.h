@@ -14,22 +14,22 @@ class _Cntxt;
 
 class _Attr {
   public:
-    _Attr( PWR_AttrName name, PWR_AttrType type ) :
+    _Attr( PWR_AttrType name, PWR_AttrValueType type ) :
         m_name( name ), 
         m_type( type )
     {}
     virtual ~_Attr() {}
-    PWR_AttrName name() { return m_name; }  
-    PWR_AttrType type() { return m_type; }
+    PWR_AttrType name() { return m_name; }  
+    PWR_AttrValueType type() { return m_type; }
 
   private:
-    PWR_AttrName       m_name;
-    PWR_AttrType       m_type;
+    PWR_AttrType       m_name;
+    PWR_AttrValueType       m_type;
 };
 
 class _AttrNum : public _Attr {
   public:
-    _AttrNum( PWR_AttrName name, PWR_AttrType type, 
+    _AttrNum( PWR_AttrType name, PWR_AttrValueType type, 
                         PWR_AttrUnits unit ) :
         _Attr( name, type ),
         m_unit( unit )
@@ -42,7 +42,7 @@ class _AttrNum : public _Attr {
 template <class T>
 class _AttrNumTemplate : public _AttrNum {
   public:
-    _AttrNumTemplate( PWR_AttrName name, PWR_AttrType type, 
+    _AttrNumTemplate( PWR_AttrType name, PWR_AttrValueType type, 
             PWR_AttrUnits unit, T min, T max, T value ) : 
         _AttrNum( name, type, unit ),
         m_min( min ),
@@ -69,7 +69,7 @@ class _AttrNumTemplate : public _AttrNum {
 template <class T>
 class _AttrStringTemplate : public _Attr {
   public:
-    _AttrStringTemplate( PWR_AttrName name, PWR_AttrType type, 
+    _AttrStringTemplate( PWR_AttrType name, PWR_AttrValueType type, 
                                         T possible, T value ) : 
         _Attr( name, type ),
         m_possible( possible ),
@@ -133,7 +133,7 @@ class _Grp {
 class _Obj {
     struct Attr {
         PWR_AttrType   type; 
-        PWR_AttrName   name; 
+        PWR_AttrType   name; 
     };
 
   public:
