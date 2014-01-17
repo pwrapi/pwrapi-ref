@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include <pli.h> 
+#include <pow.h> 
 
 void  printObjInfo( PWR_Obj );
 void  traverseDepth( PWR_Obj );

@@ -54,5 +54,4 @@ typedef enum {
     PWR_ATTR_UNITS_EXA
 } PWR_AttrUnits;
 
-
 #endif
