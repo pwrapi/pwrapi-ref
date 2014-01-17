@@ -21,7 +21,7 @@ const char* PWR_ObjGetName( PWR_Obj );
 PWR_ObjType PWR_ObjGetType( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
-PWR_Attr    PWR_ObjGetAttrByName( PWR_Obj, const char* name );
+PWR_Attr    PWR_ObjGetAttrByType( PWR_Obj, PWR_AttrType );
 int         PWR_ObjGetNumAttrs( PWR_Obj );
 PWR_Attr    PWR_ObjGetAttrByIndx( PWR_Obj, int index );
 
@@ -40,9 +40,9 @@ int     PWR_GrpAttrFloatSetValue( PWR_Attr, float, PWR_Grp );
 int     PWR_GrpAttrIntSetValue( PWR_Attr, int, PWR_Grp );
 int     PWR_GrpAttrStringSetValue( PWR_Attr, const char*, PWR_Grp );
 
-PWR_AttrType PWR_AttrGetName( PWR_Attr );
+PWR_AttrType      PWR_AttrGetType( PWR_Attr );
 PWR_AttrValueType PWR_AttrGetValueType( PWR_Attr );
-int          PWR_AttrGetUnits( PWR_Attr, PWR_AttrUnits* );
+int               PWR_AttrGetUnits( PWR_Attr, PWR_AttrUnits* );
 
 const char* PWR_AttrGetTypeString( PWR_AttrType );
 

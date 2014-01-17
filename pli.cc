@@ -96,7 +96,7 @@ PWR_Attr PWR_ObjGetAttrByIndx( PWR_Obj obj, int index )
     return obj->attributeGet( index );
 }
 
-PWR_AttrType   PWR_AttrGetName( PWR_Attr attr )
+PWR_AttrType   PWR_AttrGetType( PWR_Attr attr )
 {
     return attr->name();
 }
