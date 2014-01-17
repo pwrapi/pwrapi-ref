@@ -1,6 +1,6 @@
 
-#ifndef PLI_OBJECT_H
-#define PLI_OBJECT_H
+#ifndef PWR_OBJECT_H
+#define PWR_OBJECT_H
 
 #include <assert.h>
 #include <string>
@@ -14,36 +14,36 @@ class _Cntxt;
 
 class _Attr {
   public:
-    _Attr( std::string name, PLI_AttrType type ) :
+    _Attr( PWR_AttrName name, PWR_AttrType type ) :
         m_name( name ), 
         m_type( type )
     {}
     virtual ~_Attr() {}
-    std::string& name() { return m_name; }  
-    PLI_AttrType type() { return m_type; }
+    PWR_AttrName name() { return m_name; }  
+    PWR_AttrType type() { return m_type; }
 
   private:
-    std::string         m_name;
-    PLI_AttrType       m_type;
+    PWR_AttrName       m_name;
+    PWR_AttrType       m_type;
 };
 
 class _AttrNum : public _Attr {
   public:
-    _AttrNum( std::string name, PLI_AttrType type, 
-                        PLI_AttrScale unit ) :
+    _AttrNum( PWR_AttrName name, PWR_AttrType type, 
+                        PWR_AttrUnits unit ) :
         _Attr( name, type ),
         m_unit( unit )
     {}
-    PLI_AttrScale unit() { return m_unit; }
+    PWR_AttrUnits unit() { return m_unit; }
   private:
-    PLI_AttrScale   m_unit;
+    PWR_AttrUnits   m_unit;
 };
 
 template <class T>
 class _AttrNumTemplate : public _AttrNum {
   public:
-    _AttrNumTemplate( std::string name, PLI_AttrType type, 
-            PLI_AttrScale unit, T min, T max, T value ) : 
+    _AttrNumTemplate( PWR_AttrName name, PWR_AttrType type, 
+            PWR_AttrUnits unit, T min, T max, T value ) : 
         _AttrNum( name, type, unit ),
         m_min( min ),
         m_max( max ),
@@ -55,9 +55,9 @@ class _AttrNumTemplate : public _AttrNum {
     int value(T value ) { 
         if ( value >= m_min && value <= m_max ) {
             m_value = value; 
-            return PLI_SUCCESS;
+            return PWR_SUCCESS;
         } else {
-            return PLI_FAILURE; 
+            return PWR_FAILURE; 
         }
     }
   private:
@@ -69,7 +69,7 @@ class _AttrNumTemplate : public _AttrNum {
 template <class T>
 class _AttrStringTemplate : public _Attr {
   public:
-    _AttrStringTemplate( std::string name, PLI_AttrType type, 
+    _AttrStringTemplate( PWR_AttrName name, PWR_AttrType type, 
                                         T possible, T value ) : 
         _Attr( name, type ),
         m_possible( possible ),
@@ -99,7 +99,7 @@ class _Grp {
 
     _Obj* next() {
         if ( pos == m_list.end() ) {
-            return PLI_NULL;
+            return PWR_NULL;
         } else {
             _Obj* tmp = *pos;
             ++pos;
@@ -109,7 +109,7 @@ class _Grp {
 
     int add( _Obj* obj ) {
         m_list.push_back( obj );
-        return PLI_SUCCESS; 
+        return PWR_SUCCESS; 
     }
 
     int remove( _Obj* obj ) {
@@ -120,7 +120,7 @@ class _Grp {
                 break;
             }
         }
-        return PLI_SUCCESS;
+        return PWR_SUCCESS;
     }
     _Cntxt* getCtx() { return m_ctx; }
 
@@ -132,12 +132,12 @@ class _Grp {
 
 class _Obj {
     struct Attr {
-        PLI_AttrType   type; 
-        std::string     name; 
+        PWR_AttrType   type; 
+        PWR_AttrName   name; 
     };
 
   public:
-    _Obj(_Cntxt* ctx, std::string name, std::string type) :
+    _Obj(_Cntxt* ctx, std::string name, PWR_ObjType type) :
         m_ctx(ctx),
         m_name(name),
         m_type(type),
@@ -145,7 +145,7 @@ class _Obj {
     { }
 
     std::string& name() { return m_name; }
-    std::string& type() { return m_type; }
+    PWR_ObjType type() { return m_type; }
 
     _Grp& children() { return m_children; }
     _Obj* parent() { return m_parent; }
@@ -158,13 +158,13 @@ class _Obj {
     }
     int attributeAdd( _Attr* attr ) {
         m_attrList.push_back( attr );
-        return PLI_SUCCESS;
+        return PWR_SUCCESS;
     }
 
   private:
     _Cntxt*   m_ctx;
     std::string m_name;
-    std::string m_type;
+    PWR_ObjType m_type;
     _Grp m_children; 
     _Obj* m_parent; 
     
@@ -177,26 +177,27 @@ class _Cntxt {
 
     _Cntxt( ) {}
     void init( _Obj* top ) {
+
         m_top = top;
-        const char* type;
+        PWR_ObjType type;
         
-        type = PLI_OBJ_CABINET;
+        type = PWR_OBJ_CABINET;
         m_defaultGrpMap[ type ] = new _Grp( this );
         createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
-        type =  PLI_OBJ_BOARD;
+        type =  PWR_OBJ_BOARD;
         m_defaultGrpMap[ type ] = new _Grp( this );
         createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
-        type =  PLI_OBJ_NODE;
+        type =  PWR_OBJ_NODE;
         m_defaultGrpMap[ type ] = new _Grp( this );
         createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
-        type =  PLI_OBJ_SOCKET;
+        type =  PWR_OBJ_SOCKET;
         m_defaultGrpMap[ type ] = new _Grp( this );
         createTypeGrp( top, type, m_defaultGrpMap[ type]  );
 
-        type =  PLI_OBJ_CORE;
+        type =  PWR_OBJ_CORE;
         m_defaultGrpMap[ type ] = new _Grp( this );
         createTypeGrp( top, type, m_defaultGrpMap[ type]  );
     }
@@ -204,10 +205,10 @@ class _Cntxt {
 
     _Obj* getSelf() { return m_top; }
 
-    _Grp* getGrp( PLI_ObjType type )  { 
+    _Grp* getGrp( PWR_ObjType type )  { 
 
         if ( m_defaultGrpMap.find( type ) == m_defaultGrpMap.end() ) {
-            return PLI_NULL;
+            return PWR_NULL;
         } else {
             return m_defaultGrpMap[type]; 
         }
@@ -216,7 +217,7 @@ class _Cntxt {
     _Grp* getGrpByName( std::string name )  { 
 
         if ( m_groups.find( name ) == m_groups.end() ) {
-            return PLI_NULL;
+            return PWR_NULL;
         } else {
             return m_groups[name]; 
         }
@@ -238,24 +239,24 @@ class _Cntxt {
             if ( iter->second == grp ) {
                 delete grp;
                 m_groups.erase( iter );
-                return PLI_SUCCESS;
+                return PWR_SUCCESS;
             }
         } 
-        return PLI_FAILURE;
+        return PWR_FAILURE;
     }
 
   private:
-    void createTypeGrp( _Obj*, PLI_ObjType, _Grp* );
+    void createTypeGrp( _Obj*, PWR_ObjType, _Grp* );
     _Obj* m_top;
 
-    std::map< PLI_ObjType, _Grp* >  m_defaultGrpMap; 
+    std::map< PWR_ObjType, _Grp* >  m_defaultGrpMap; 
     std::map< std::string, _Grp* >   m_groups;
 };
 
-inline void _Cntxt::createTypeGrp( _Obj* obj, PLI_ObjType type,
+inline void _Cntxt::createTypeGrp( _Obj* obj, PWR_ObjType type,
                  _Grp* group )
 {
-    if ( 0 == obj->type().compare( type )  ) {
+    if ( PWR_OBJ_INVALID != type ) {
         group->add( obj );
     }
 

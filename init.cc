@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace PLI {
+namespace PWR {
 
 static _Obj* createPlatform( _Cntxt*, string );
 static _Obj* createCabinet( _Cntxt*, string );
@@ -19,7 +19,7 @@ static _Obj* createBoard( _Cntxt*, string );
 static _Obj* createNode( _Cntxt*, string );
 static _Obj* createSocket( _Cntxt*, string );
 
-_Cntxt* init( PLI_CntxtType type )
+_Cntxt* init( PWR_CntxtType type )
 {
     _Cntxt* ctx = new _Cntxt; 
     ctx->init( createPlatform( ctx, "SystemX" ) );
@@ -29,12 +29,12 @@ _Cntxt* init( PLI_CntxtType type )
 int destroy( _Cntxt* ctx )
 {
     delete ctx; 
-    return PLI_SUCCESS;
+    return PWR_SUCCESS;
 }
 
 static _Obj* createPlatform( _Cntxt* ctx, string prefix )
 {
-    _Obj* top = new _Obj( ctx, prefix, PLI_OBJ_PLATFORM );
+    _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_PLATFORM );
 
     for ( int i = 0; i < NUM_CABINETS; i++ ) { 
         ostringstream tmp;
@@ -49,7 +49,7 @@ static _Obj* createPlatform( _Cntxt* ctx, string prefix )
 
 static _Obj* createCabinet( _Cntxt* ctx, string prefix )
 {
-    _Obj* top = new _Obj( ctx, prefix, PLI_OBJ_CABINET );
+    _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_CABINET );
 
     for ( int i = 0; i < NUM_BOARDS; i++ ) {
         ostringstream tmp;
@@ -63,7 +63,7 @@ static _Obj* createCabinet( _Cntxt* ctx, string prefix )
 
 static _Obj* createBoard( _Cntxt* ctx, string prefix )
 {
-    _Obj* top = new _Obj( ctx, prefix, PLI_OBJ_BOARD );
+    _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_BOARD );
 
     for ( int i = 0; i < NUM_NODES; i++ ) {
         ostringstream tmp;
@@ -77,7 +77,7 @@ static _Obj* createBoard( _Cntxt* ctx, string prefix )
 
 static _Obj* createNode( _Cntxt* ctx, string prefix )
 {
-    _Obj* top = new _Obj( ctx, prefix, PLI_OBJ_NODE );
+    _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_NODE );
 
     for ( int i = 0; i < NUM_SOCKETS; i++ ) {
         ostringstream tmp;
@@ -91,30 +91,30 @@ static _Obj* createNode( _Cntxt* ctx, string prefix )
 
 static _Obj* createSocket( _Cntxt* ctx, string prefix )
 {
-    _Obj* top = new _Obj( ctx, prefix, PLI_OBJ_SOCKET );
+    _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_SOCKET );
 
     float freq[4] = {1.2,1.2, 3.0, 3.0}; 
 
     for ( int i = 0; i < NUM_CORES; i++ ) {
         ostringstream tmp;
         tmp << i;
-        _Obj* obj = new _Obj( ctx, prefix + ".core" + tmp.str(), PLI_OBJ_CORE);
+        _Obj* obj = new _Obj( ctx, prefix + ".core" + tmp.str(), PWR_OBJ_CORE);
         top->children().add( obj ); 
         obj->setParent( top );
 
         _AttrNumTemplate< float >* attrFloat = 
-                new _AttrNumTemplate< float >( PLI_ATTR_FREQ, 
-                         PLI_ATTR_FLOAT, PLI_ATTR_UNIT_MEGA, 1, 10, freq[i] );
+                new _AttrNumTemplate< float >( PWR_ATTR_FREQ, 
+                         PWR_ATTR_FLOAT, PWR_ATTR_UNITS_MEGA, 1, 10, freq[i] );
         obj->attributeAdd( attrFloat );
 
         _AttrStringTemplate< string >* attrString = 
-                new _AttrStringTemplate< string >( PLI_ATTR_STATE, 
-                             PLI_ATTR_STRING, "ON|OFF", "ON" );
+                new _AttrStringTemplate< string >( PWR_ATTR_STATE, 
+                             PWR_ATTR_STRING, "ON|OFF", "ON" );
         obj->attributeAdd( attrString );
 
         _AttrNumTemplate< int >* attrInt = 
-                new _AttrNumTemplate< int >( PLI_ATTR_ID, 
-                             PLI_ATTR_INT, PLI_ATTR_UNIT_1, 0, 4, i );
+                new _AttrNumTemplate< int >( PWR_ATTR_ID, 
+                             PWR_ATTR_INT, PWR_ATTR_UNITS_1, 0, 4, i );
         obj->attributeAdd( attrInt );
     }
     return top;

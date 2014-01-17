@@ -1,13 +1,13 @@
 
-#ifndef PLI_INIT_H
-#define PLI_INIT_H
+#ifndef PWR_INIT_H
+#define PWR_INIT_H
 
 #include "./types.h"
 
-namespace PLI {
+namespace PWR {
 
-_Cntxt* init( PLI_CntxtType );
-int destroy( PLI_Cntxt );
+_Cntxt* init( PWR_CntxtType );
+int destroy( PWR_Cntxt );
 
 }
 
