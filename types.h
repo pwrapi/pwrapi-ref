@@ -17,10 +17,24 @@ typedef int PLI_CntxtState;
 
 typedef const char* PLI_CntxtType;
 
+//typedef enum {
+//    PLI_CNTXT_DEFAULT,
+//    PLI_CNTXT_VENDOR
+//} PLI_CntxtType;
+
 #define PLI_CTX_DEFAULT    "Default"
 #define PLI_CTX_VENDOR     "Vendor"
 
 typedef const char* PLI_ObjType;
+
+//typedef enum {
+//    PLI_OBJ_PLATFORM,
+//    PLI_OBJ_CABINET, 
+//    PLI_OBJ_BOARD,
+//    PLI_OBJ_NODE,
+//    PLI_OBJ_SOCKET,
+//    PLI_OBJ_CORE
+//} PLI_ObjType;
 
 #define PLI_OBJ_PLATFORM   "Platform"
 #define PLI_OBJ_CABINET    "Cabinet"
@@ -28,6 +42,13 @@ typedef const char* PLI_ObjType;
 #define PLI_OBJ_NODE       "Node"
 #define PLI_OBJ_SOCKET     "Socket"
 #define PLI_OBJ_CORE       "Core"
+
+//typedef enum {
+//    PLI_ATTR_FREQ,
+//    PLI_ATTR_POWER,
+//    PLI_ATTR_STATE,
+//    PLI_ATTR_ID,
+//} PLI_ObjAttr;;
 
 #define PLI_ATTR_FREQ  "AttrFreq"
 #define PLI_ATTR_POWER "AttrVolt"
