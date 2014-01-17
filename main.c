@@ -125,7 +125,7 @@ void  printAttr( PWR_Attr attr )
     PWR_AttrValueType type = PWR_AttrGetValueType( attr ); 
 
     printf("    Attr `%s` type=%s ",
-         PWR_AttrGetNameString( PWR_AttrGetName( attr )), attrValueType(type));
+         PWR_AttrGetTypeString( PWR_AttrGetName( attr )), attrValueType(type));
     switch ( type ) {
       case PWR_ATTR_FLOAT:
 

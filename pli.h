@@ -36,15 +36,15 @@ PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
 int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
 
-PWR_Grp     PWR_GrpAttrFloatSetValue( PWR_Attr, float );
-PWR_Grp     PWR_GrpAttrIntSetValue( PWR_Attr, int );
-PWR_Grp     PWR_GrpAttrStringSetValue( PWR_Attr, const char* );
+int     PWR_GrpAttrFloatSetValue( PWR_Attr, float, PWR_Grp );
+int     PWR_GrpAttrIntSetValue( PWR_Attr, int, PWR_Grp );
+int     PWR_GrpAttrStringSetValue( PWR_Attr, const char*, PWR_Grp );
 
 PWR_AttrType PWR_AttrGetName( PWR_Attr );
 PWR_AttrValueType PWR_AttrGetValueType( PWR_Attr );
 int          PWR_AttrGetUnits( PWR_Attr, PWR_AttrUnits* );
 
-const char* PWR_AttrGetNameString( PWR_AttrType );
+const char* PWR_AttrGetTypeString( PWR_AttrType );
 
 int PWR_AttrFloatGetMin( PWR_Attr, float* );
 int PWR_AttrFloatGetMax( PWR_Attr, float* );

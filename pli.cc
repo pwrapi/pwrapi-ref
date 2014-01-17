@@ -187,7 +187,7 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 	case PWR_OBJ_CORE:     return "Core";
 	}
 }
-const char* PWR_AttrGetNameString( PWR_AttrType name )
+const char* PWR_AttrGetTypeString( PWR_AttrType name )
 {
 	switch( name ){
 	case PWR_ATTR_FREQ: return "Req";
