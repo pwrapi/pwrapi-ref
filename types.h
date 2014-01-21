@@ -9,7 +9,6 @@
 typedef struct _Cntxt* PWR_Cntxt;
 typedef struct _Grp*   PWR_Grp;
 typedef struct _Obj*   PWR_Obj;
-typedef struct _Attr*  PWR_Attr;
 
 typedef int PWR_CntxtState;
 
@@ -17,12 +16,11 @@ typedef int PWR_CntxtState;
 #define PWR_FAILURE -1
 
 typedef enum {
-    PWR_CNTXT_DEFAULT,
-    PWR_CNTXT_VENDOR
+    PWR_CNTXT_DEFAULT,	/* Required */
+    PWR_CNTXT_VENDOR    /* Optional */
 } PWR_CntxtType;
 
 typedef enum {
-    PWR_OBJ_INVALID,
     PWR_OBJ_PLATFORM,
     PWR_OBJ_CABINET, 
     PWR_OBJ_BOARD,
@@ -32,10 +30,9 @@ typedef enum {
 } PWR_ObjType;
 
 typedef enum {
-    PWR_ATTR_FREQ,
-    PWR_ATTR_POWER,
-    PWR_ATTR_STATE,
-    PWR_ATTR_ID,
+    PWR_ATTR_NAME,	/* Required */
+    PWR_ATTR_FREQ,	/* Optional */
+    PWR_ATTR_PSTATE	/* Optional */
 } PWR_AttrType;
 
 typedef enum {

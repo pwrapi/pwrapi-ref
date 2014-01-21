@@ -33,10 +33,9 @@ PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name )
     return ctx->getGrpByName( name );
 }
 
-const char* PWR_ObjGetName( PWR_Obj obj )
-{
-    return &obj->name()[0];
-}
+/*
+* Subset of API that works on Obj
+*/
 
 PWR_ObjType PWR_ObjGetType( PWR_Obj obj )
 {
@@ -53,6 +52,127 @@ PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
 {
     return& obj->children();
 }
+
+int PWR_ObjGetNumAttrs( PWR_Obj obj )
+{
+    return obj->attrGetNumber();
+}
+
+int PWR_ObjGetAttrTypeByIndx( PWR_Obj obj, int index, PWR_AttrType *value )
+{
+    *value = obj->attributeGet( index )->name();
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrGetValueType( PWR_Obj obj, PWR_AttrType type, 
+					PWR_AttrValueType * value )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    *value = attr->type();
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrGetUnits( PWR_Obj obj, PWR_AttrType type, PWR_AttrUnits* value )
+{
+    _AttrNum* attr = static_cast<_AttrNum*>(obj->findAttrType( type )); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    *value = attr->unit();
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrFloatGetRange( PWR_Obj obj, PWR_AttrType type, float* min, float* max )
+{
+    _Attr*  attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+
+    *min = static_cast< _AttrNumTemplate<float>* >(attr)->min();
+    *max = static_cast< _AttrNumTemplate<float>* >(attr)->max();
+
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrFloatGetValue( PWR_Obj obj, PWR_AttrType type, float* value )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    *value = static_cast< _AttrNumTemplate<float>* >(attr)->value();
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrFloatSetValue( PWR_Obj obj, PWR_AttrType type, float value )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    return static_cast< _AttrNumTemplate<float>* >(attr)->value( value );
+}
+
+int PWR_ObjAttrIntGetRange( PWR_Obj obj, PWR_AttrType type, int* min, int* max )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    *min = static_cast< _AttrNumTemplate<int>* >(attr)->min();
+    *max = static_cast< _AttrNumTemplate<int>* >(attr)->max();
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrIntGetValue( PWR_Obj obj, PWR_AttrType type, int* value )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    *value = static_cast< _AttrNumTemplate<int>* >(attr)->value();
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrIntSetValue( PWR_Obj obj, PWR_AttrType type, int value )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    static_cast< _AttrNumTemplate<int>* >(attr)->value( value );
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrStringGetValue( PWR_Obj obj, PWR_AttrType type,
+						char* value, int len )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    strcpy( value, &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0] );
+    return PWR_SUCCESS; 
+}
+
+int PWR_ObjAttrStringGetPossible( PWR_Obj obj, PWR_AttrType type,
+						char* value, int len )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    strcpy( value, &static_cast< _AttrStringTemplate<std::string>* >(attr)->possible()[0] );
+    return PWR_SUCCESS;
+}
+
+/*
+* Subset of API that works on Grp
+*/
 
 int PWR_GrpDestroy( PWR_Grp group )
 {
@@ -85,100 +205,9 @@ PWR_Obj PWR_GrpGetObjByName( PWR_Grp group, int i )
     return NULL;
 }
 
-int PWR_ObjGetNumAttrs( PWR_Obj obj )
-{
-    return obj->attrGetNumber();
-}
-
-
-PWR_Attr PWR_ObjGetAttrByIndx( PWR_Obj obj, int index )
-{
-    return obj->attributeGet( index );
-}
-
-PWR_AttrType   PWR_AttrGetType( PWR_Attr attr )
-{
-    return attr->name();
-}
-
-PWR_AttrValueType PWR_AttrGetValueType( PWR_Attr attr )
-{
-    return attr->type();
-}
-
-int PWR_AttrGetUnits( PWR_Attr a, PWR_AttrUnits* value )
-{
-    _AttrNum* attr = dynamic_cast< _AttrNum*>(a);
-    if ( attr ) {
-        return attr->unit();
-    } 
-    return PWR_FAILURE;
-}
-
-int PWR_AttrFloatGetMin( PWR_Attr attr, float* value )
-{
-    *value = static_cast< _AttrNumTemplate<float>* >(attr)->min();
-    return PWR_SUCCESS;
-}
-
-int PWR_AttrFloatGetMax( PWR_Attr attr, float* value )
-{
-    *value = static_cast< _AttrNumTemplate<float>* >(attr)->max();
-    return PWR_SUCCESS; 
-}
-
-int PWR_AttrFloatGetValue( PWR_Attr attr, float* value )
-{
-    *value = static_cast< _AttrNumTemplate<float>* >(attr)->value();
-    return PWR_SUCCESS;
-}
-
-int PWR_AttrFloatSetValue( PWR_Attr attr, float value )
-{
-    return static_cast< _AttrNumTemplate<float>* >(attr)->value( value );
-}
-
-int PWR_AttrIntGetMin( PWR_Attr attr, int* value )
-{
-    *value = static_cast< _AttrNumTemplate<int>* >(attr)->min();
-    return PWR_SUCCESS;
-}
-
-int PWR_AttrIntGetMax( PWR_Attr attr, int* value )
-{
-    *value = static_cast< _AttrNumTemplate<int>* >(attr)->max();
-    return PWR_SUCCESS;
-}
-
-int PWR_AttrIntGetValue( PWR_Attr attr, int* value )
-{
-    *value = static_cast< _AttrNumTemplate<int>* >(attr)->value();
-    return PWR_SUCCESS;
-}
-
-int PWR_AttrIntSetValue( PWR_Attr attr, int value )
-{
-    static_cast< _AttrNumTemplate<int>* >(attr)->value( value );
-    return PWR_SUCCESS;
-}
-
-int PWR_AttrStringGetValue( PWR_Attr attr, char* value, int len )
-{
-    strcpy( value, &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0] );
-    return PWR_SUCCESS; 
-}
-
-int PWR_AttrStringGetPossible( PWR_Attr attr, char* value, int len )
-{
-    strcpy( value, &static_cast< _AttrStringTemplate<std::string>* >(attr)->possible()[0] );
-    return PWR_SUCCESS;
-}
-
-
 const char* PWR_ObjGetTypeString( PWR_ObjType type )
 {
 	switch( type ) {
-	case PWR_OBJ_INVALID: return "Invalid";
 	case PWR_OBJ_PLATFORM: return "Platform";
 	case PWR_OBJ_CABINET:  return "Cabinet";
 	case PWR_OBJ_BOARD:    return "Board";
@@ -190,9 +219,8 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 const char* PWR_AttrGetTypeString( PWR_AttrType name )
 {
 	switch( name ){
-	case PWR_ATTR_FREQ: return "Req";
-	case PWR_ATTR_POWER: return "Power";
-	case PWR_ATTR_STATE: return "State";
-	case PWR_ATTR_ID: return "Id";
+	case PWR_ATTR_NAME: return "Name";
+	case PWR_ATTR_FREQ: return "Freq";
+	case PWR_ATTR_PSTATE: return "Pstate";
 	}	
 }

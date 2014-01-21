@@ -5,7 +5,7 @@ LIB_OBJS = ${LIB_SRC:.cc=.o}
 
 LIB = libpow.a
 
-test: ${LIB}
+test: ${LIB} main.c
 	g++ -I. -L. main.c -lpow -o test
 
 ${LIB}: ${LIB_OBJS}

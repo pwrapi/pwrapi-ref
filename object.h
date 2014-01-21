@@ -152,10 +152,20 @@ class _Obj {
     void setParent( _Obj* obj ) { m_parent = obj; }
 
     int attrGetNumber() { return m_attrList.size(); }
+	
+    _Attr* findAttrType( PWR_AttrType type ) {
+	for ( int i = 0; i < m_attrList.size(); i++ ) {
+	    if ( m_attrList[i]->name() == type ) {
+		return m_attrList[i];
+	    }	
+	}
+	return PWR_NULL;	
+    } 
 
     _Attr* attributeGet( int index ) { 
         return m_attrList[index]; 
     }
+
     int attributeAdd( _Attr* attr ) {
         m_attrList.push_back( attr );
         return PWR_SUCCESS;
@@ -256,7 +266,7 @@ class _Cntxt {
 inline void _Cntxt::createTypeGrp( _Obj* obj, PWR_ObjType type,
                  _Grp* group )
 {
-    if ( PWR_OBJ_INVALID != type ) {
+    if ( obj->type() == type ) {
         group->add( obj );
     }
 

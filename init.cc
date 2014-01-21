@@ -36,6 +36,11 @@ static _Obj* createPlatform( _Cntxt* ctx, string prefix )
 {
     _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_PLATFORM );
 
+    _AttrStringTemplate< std::string >* attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
+                             PWR_ATTR_STRING, "", prefix );
+    top->attributeAdd( attrString );
+
     for ( int i = 0; i < NUM_CABINETS; i++ ) { 
         ostringstream tmp;
         tmp << i;
@@ -51,6 +56,11 @@ static _Obj* createCabinet( _Cntxt* ctx, string prefix )
 {
     _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_CABINET );
 
+    _AttrStringTemplate< std::string >* attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
+                             PWR_ATTR_STRING, "", prefix );
+    top->attributeAdd( attrString );
+
     for ( int i = 0; i < NUM_BOARDS; i++ ) {
         ostringstream tmp;
         tmp << i;
@@ -64,6 +74,11 @@ static _Obj* createCabinet( _Cntxt* ctx, string prefix )
 static _Obj* createBoard( _Cntxt* ctx, string prefix )
 {
     _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_BOARD );
+    _AttrStringTemplate< std::string >* attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
+                             PWR_ATTR_STRING, "", prefix );
+    top->attributeAdd( attrString );
+
 
     for ( int i = 0; i < NUM_NODES; i++ ) {
         ostringstream tmp;
@@ -78,6 +93,11 @@ static _Obj* createBoard( _Cntxt* ctx, string prefix )
 static _Obj* createNode( _Cntxt* ctx, string prefix )
 {
     _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_NODE );
+    _AttrStringTemplate< std::string >* attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
+                             PWR_ATTR_STRING, "", prefix );
+    top->attributeAdd( attrString );
+
 
     for ( int i = 0; i < NUM_SOCKETS; i++ ) {
         ostringstream tmp;
@@ -92,6 +112,11 @@ static _Obj* createNode( _Cntxt* ctx, string prefix )
 static _Obj* createSocket( _Cntxt* ctx, string prefix )
 {
     _Obj* top = new _Obj( ctx, prefix, PWR_OBJ_SOCKET );
+    _AttrStringTemplate< std::string >* attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
+                             PWR_ATTR_STRING, "", prefix );
+    top->attributeAdd( attrString );
+
 
     float freq[4] = {1.2,1.2, 3.0, 3.0}; 
 
@@ -107,15 +132,15 @@ static _Obj* createSocket( _Cntxt* ctx, string prefix )
                          PWR_ATTR_FLOAT, PWR_ATTR_UNITS_MEGA, 1, 10, freq[i] );
         obj->attributeAdd( attrFloat );
 
-        _AttrStringTemplate< string >* attrString = 
-                new _AttrStringTemplate< string >( PWR_ATTR_STATE, 
-                             PWR_ATTR_STRING, "ON|OFF", "ON" );
-        obj->attributeAdd( attrString );
-
         _AttrNumTemplate< int >* attrInt = 
-                new _AttrNumTemplate< int >( PWR_ATTR_ID, 
-                             PWR_ATTR_INT, PWR_ATTR_UNITS_1, 0, 4, i );
+                new _AttrNumTemplate< int >( PWR_ATTR_PSTATE, 
+                             PWR_ATTR_INT, PWR_ATTR_UNITS_1, 0,3, 1 );
         obj->attributeAdd( attrInt );
+
+    	_AttrStringTemplate< std::string >* attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
+                         PWR_ATTR_STRING, "", prefix + ".core" + tmp.str() );
+    	obj->attributeAdd( attrString );
     }
     return top;
 }
