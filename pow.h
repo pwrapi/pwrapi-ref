@@ -28,23 +28,17 @@ int            PWR_CntxtRestore( PWR_Cntxt, PWR_CntxtState );
 PWR_ObjType PWR_ObjGetType( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
+
 int         PWR_ObjGetNumAttrs( PWR_Obj );
 int   	    PWR_ObjGetAttrTypeByIndx( PWR_Obj, int, PWR_AttrType* value );
+
 int         PWR_ObjAttrGetValueType( PWR_Obj, PWR_AttrType,
                                         PWR_AttrValueType* value );
 int         PWR_ObjAttrGetUnits( PWR_Obj, PWR_AttrType, PWR_AttrUnits* );
 
-int PWR_ObjAttrFloatGetRange( PWR_Obj, PWR_AttrType, float* min, float* max );
-int PWR_ObjAttrFloatGetValue( PWR_Obj, PWR_AttrType, float* );
-int PWR_ObjAttrFloatSetValue( PWR_Obj, PWR_AttrType, float );
-
-int PWR_ObjAttrIntGetRange( PWR_Obj, PWR_AttrType, int* min, int* max );
-int PWR_ObjAttrIntGetValue( PWR_Obj, PWR_AttrType, int* );
-int PWR_ObjAttrIntSetValue( PWR_Obj, PWR_AttrType, int );
-
-int PWR_ObjAttrStringGetPossible( PWR_Obj, PWR_AttrType, char*, int strlen ); 
-int PWR_ObjAttrStringGetValue( PWR_Obj, PWR_AttrType, char*, int strlen );
-int PWR_ObjAttrStringSetValue( PWR_Obj, PWR_AttrType, const char* );
+int PWR_ObjAttrGetRange( PWR_Obj, PWR_AttrType, void* min, void* max );
+int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void* );
+int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void* );
 
 /*
 * Subset of API that works on Grp 
@@ -59,10 +53,7 @@ PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
 int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
 
-int PWR_GrpAttrFloatSetValue( PWR_Grp, PWR_AttrType, float, PWR_Grp errOut );
-int PWR_GrpAttrIntSetValue( PWR_Grp, PWR_AttrType, int, PWR_Grp errOut );
-int PWR_GrpAttrStringSetValue( PWR_Grp, PWR_AttrType, const char*, 
-						PWR_Grp errOut );
+int PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, float*, PWR_Grp errOut );
 
 /*
 *  Utility Functions

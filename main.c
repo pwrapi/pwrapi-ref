@@ -143,8 +143,8 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
       case PWR_ATTR_FLOAT:
 
         PWR_ObjAttrGetUnits( obj, type, &scaleValue );
-        PWR_ObjAttrFloatGetRange( obj, type, &floatValue[0], &floatValue[1]);
-        PWR_ObjAttrFloatGetValue( obj, type, &floatValue[2] ); 
+        PWR_ObjAttrGetRange( obj, type, &floatValue[0], &floatValue[1]);
+        PWR_ObjAttrGetValue( obj, type, &floatValue[2] ); 
 
         printf("scale=%s min=%f max=%f value=%f\n", attrUnit( scaleValue ), 
                 floatValue[0], floatValue[1], floatValue[2] );
@@ -152,8 +152,8 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 
       case PWR_ATTR_INT:
         PWR_ObjAttrGetUnits( obj, type, &scaleValue  );
-        PWR_ObjAttrIntGetRange( obj, type, &intValue[0], &intValue[1] );
-        PWR_ObjAttrIntGetValue( obj, type, &intValue[2] ); 
+        PWR_ObjAttrGetRange( obj, type, &intValue[0], &intValue[1] );
+        PWR_ObjAttrGetValue( obj, type, &intValue[2] ); 
 
         printf("scale=%s min=%i max=%i value=%i\n", attrUnit( scaleValue ),
             intValue[0], intValue[1], intValue[2] );
@@ -161,8 +161,8 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 
       case PWR_ATTR_STRING:
     
-        PWR_ObjAttrStringGetPossible( obj, type, possible, STRLEN ),
-        PWR_ObjAttrStringGetValue( obj, type, stringValue, STRLEN);
+        PWR_ObjAttrGetRange( obj, type, possible, NULL ),
+        PWR_ObjAttrGetValue( obj, type, stringValue);
         printf("possible=`%s` value=`%s`\n", possible, stringValue );
         break;
     }
@@ -171,7 +171,7 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 char* getObjName( PWR_Obj obj )
 {
     static char name[100];
-    int ret = PWR_ObjAttrStringGetValue( obj, PWR_ATTR_NAME, name, 100 );
+    int ret = PWR_ObjAttrGetValue( obj, PWR_ATTR_NAME, name );
     assert( PWR_SUCCESS == ret ); 
     return name;
 }
