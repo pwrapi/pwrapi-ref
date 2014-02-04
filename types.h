@@ -30,9 +30,13 @@ typedef enum {
 } PWR_ObjType;
 
 typedef enum {
-    PWR_ATTR_NAME,	/* Required */
-    PWR_ATTR_FREQ,	/* Optional */
-    PWR_ATTR_PSTATE	/* Optional */
+    PWR_ATTR_NAME,	    /* Required */
+    PWR_ATTR_FREQ,	    /* Optional */
+    PWR_ATTR_PSTATE,	    /* Optional */
+    PWR_ATTR_REGION_SERIAL,        /* Optional */
+    PWR_ATTR_REGION_PARALLEL,      /* Optional */
+    PWR_ATTR_REGION_COMPUTE,       /* Optional */
+    PWR_ATTR_REGION_COMMUNICATE     /* Optional */
 } PWR_AttrType;
 
 typedef enum {

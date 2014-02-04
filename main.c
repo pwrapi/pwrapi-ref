@@ -16,7 +16,10 @@ char* getObjName( PWR_Obj obj );
 int main( int argc, char* argv[] )
 {
     int num;
+    int ret;
     PWR_Grp group;
+    PWR_Obj object;
+    PWR_AttrValueType hint;
 
     // Get a context
     PWR_Cntxt context = PWR_CntxtInit( PWR_CNTXT_DEFAULT, "App" );; 
@@ -24,10 +27,14 @@ int main( int argc, char* argv[] )
     // Get a group that we can add stuff to
     PWR_Grp userGrp = PWR_CntxtCreateGrp( context, "userGrp" );
 
+    object = PWR_CntxtGetSelf( context );
 #if 0 
     traverseDepth( PWR_CntxtGetSelf( context ) );
 #endif
     
+    ret = PWR_AppHint( object, PWR_ATTR_REGION_SERIAL, hint ); 
+    /* would normally check return */
+
     // Get all of the CORE objects
     group = PWR_CntxtGetGrpByType( context, PWR_OBJ_CORE );
     assert( PWR_NULL != group );

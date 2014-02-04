@@ -224,5 +224,27 @@ const char* PWR_AttrGetTypeString( PWR_AttrType name )
 	case PWR_ATTR_NAME: return "Name";
 	case PWR_ATTR_FREQ: return "Freq";
 	case PWR_ATTR_PSTATE: return "Pstate";
+	case PWR_ATTR_REGION_SERIAL: return "Serial Region";
+	case PWR_ATTR_REGION_PARALLEL: return "Parallel Region";
+	case PWR_ATTR_REGION_COMPUTE: return "Compute Region";
+	case PWR_ATTR_REGION_COMMUNICATE: return "Communication Region";
 	}	
+}
+
+/* right now this just returns success or failure basically, is there
+ * a need to return a PWR_AttrValueType for additional information?
+ */
+int PWR_AppHint( PWR_Obj obj, PWR_AttrType name, 
+                              PWR_AttrValueType val) {
+
+	switch( name ){
+	case PWR_ATTR_NAME: return -1;
+	case PWR_ATTR_FREQ: return -1;
+	case PWR_ATTR_PSTATE: return 1;
+	case PWR_ATTR_REGION_SERIAL: return 1;
+	case PWR_ATTR_REGION_PARALLEL: return 1;
+	case PWR_ATTR_REGION_COMPUTE: return 1;
+	case PWR_ATTR_REGION_COMMUNICATE: return 1;
+	}	
+        
 }

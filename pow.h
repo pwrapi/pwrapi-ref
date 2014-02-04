@@ -62,6 +62,10 @@ int PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, float*, PWR_Grp errOut );
 const char* PWR_ObjGetTypeString( PWR_ObjType );
 const char* PWR_AttrGetTypeString( PWR_AttrType );
 
+/*
+ * Operating System -> Application Interface
+ */
+int PWR_AppHint( PWR_Obj, PWR_AttrType, PWR_AttrValueType );
 #ifdef __cplusplus
 }
 #endif
