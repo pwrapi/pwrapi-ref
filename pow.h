@@ -40,6 +40,18 @@ int PWR_ObjAttrGetRange( PWR_Obj, PWR_AttrType, void* min, void* max );
 int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void* );
 int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void* );
 
+int PWR_ObjAttrFloatGetRange( PWR_Obj, PWR_AttrType, float* min, float* max );
+int PWR_ObjAttrFloatGetValue( PWR_Obj, PWR_AttrType, float* );
+int PWR_ObjAttrFloatSetValue( PWR_Obj, PWR_AttrType, float* );
+
+int PWR_ObjAttrIntGetRange( PWR_Obj, PWR_AttrType, int* min, int* max );
+int PWR_ObjAttrIntGetValue( PWR_Obj, PWR_AttrType, int* );
+int PWR_ObjAttrIntSetValue( PWR_Obj, PWR_AttrType, int* );
+
+int PWR_ObjAttrStringGetPossible( PWR_Obj, PWR_AttrType, char*, int len );
+int PWR_ObjAttrStringGetValue( PWR_Obj, PWR_AttrType, char*, int len );
+int PWR_ObjAttrStringSetValue( PWR_Obj, PWR_AttrType, char*, int len );
+
 /*
 * Subset of API that works on Grp 
 */

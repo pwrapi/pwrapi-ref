@@ -5,8 +5,11 @@ LIB_OBJS = ${LIB_SRC:.cc=.o}
 
 LIB = libpow.a
 
+CFLAGS = -Wall
+CXXFLAGS = -Wall
+
 test: ${LIB} main.c
-	g++ -I. -L. main.c -lpow -o test
+	g++ -Wall -I. -L. main.c -lpow -o test
 
 ${LIB}: ${LIB_OBJS}
 	${AR} rcs $@ ${LIB_OBJS} 

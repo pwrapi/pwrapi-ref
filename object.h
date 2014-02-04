@@ -9,8 +9,8 @@
 #include <set>
 #include "./types.h"
 
-class _Obj;
-class _Cntxt;
+struct _Obj;
+struct _Cntxt;
 
 class _Attr {
   public:
@@ -86,7 +86,7 @@ class _AttrStringTemplate : public _Attr {
 };
     
 
-class _Grp {
+struct _Grp {
   public:
     _Grp( _Cntxt* ctx ) : m_ctx(ctx) { reset(); }
 
@@ -130,7 +130,7 @@ class _Grp {
     _Cntxt*   m_ctx;
 };
 
-class _Obj {
+struct _Obj {
     struct Attr {
         PWR_AttrType   type; 
         PWR_AttrType   name; 
@@ -138,7 +138,6 @@ class _Obj {
 
   public:
     _Obj(_Cntxt* ctx, std::string name, PWR_ObjType type) :
-        m_ctx(ctx),
         m_name(name),
         m_type(type),
         m_children(ctx)
@@ -172,7 +171,6 @@ class _Obj {
     }
 
   private:
-    _Cntxt*   m_ctx;
     std::string m_name;
     PWR_ObjType m_type;
     _Grp m_children; 
@@ -181,7 +179,7 @@ class _Obj {
     std::vector< _Attr* > m_attrList;
 };
 
-class _Cntxt {
+struct _Cntxt {
 
   public:
 

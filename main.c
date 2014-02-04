@@ -19,7 +19,7 @@ int main( int argc, char* argv[] )
     int ret;
     PWR_Grp group;
     PWR_Obj object;
-    PWR_AttrValueType hint;
+    PWR_AttrValueType hint = PWR_ATTR_FLOAT;
 
     // Get a context
     PWR_Cntxt context = PWR_CntxtInit( PWR_CNTXT_DEFAULT, "App" );; 
@@ -47,9 +47,6 @@ int main( int argc, char* argv[] )
         PWR_Obj obj = PWR_GrpGetObjByIndx( group, i );
         printf("Obj `%s` type=`%s`\n", getObjName(obj), 
 		        PWR_ObjGetTypeString(PWR_ObjGetType( obj ) ) );
-
-        // how many attributes does this object have
-        int numAttr = PWR_ObjGetNumAttrs( obj );
 
         printAllAttr( obj );
         printf("\n");

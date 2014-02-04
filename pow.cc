@@ -103,8 +103,7 @@ int PWR_ObjAttrGetRange( PWR_Obj obj, PWR_AttrType type, void* min, void* max )
         *(int*)max = static_cast< _AttrNumTemplate<int>* >(attr)->max();
         break;
       case PWR_ATTR_STRING:
-        strcpy( (char*)min, 
-       &static_cast< _AttrStringTemplate<std::string>* >(attr)->possible()[0] );
+        return PWR_FAILURE;
         break;
     }
 
@@ -159,7 +158,60 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value )
     return PWR_SUCCESS;
 }
 
-#if 0
+int PWR_ObjAttrIntGetRange( PWR_Obj obj, PWR_AttrType type, int* min, int* max )
+{
+    return PWR_ObjAttrGetRange(obj, type, min, max ); 
+}
+
+int PWR_ObjAttrIntGetValue( PWR_Obj obj, PWR_AttrType type, int* value )
+{
+    return PWR_ObjAttrGetValue( obj, type, value );
+}
+
+int PWR_ObjAttrIntSetValue( PWR_Obj obj, PWR_AttrType type, int* value )
+{
+    return PWR_ObjAttrSetValue( obj, type, value );
+}
+
+
+int PWR_ObjAttrFloatGetRange( PWR_Obj obj, PWR_AttrType type, float* min, float* max )
+{
+    return PWR_ObjAttrGetRange(obj, type, min, max ); 
+}
+
+int PWR_ObjAttrFloatGetValue( PWR_Obj obj, PWR_AttrType type, float* value )
+{
+    return PWR_ObjAttrGetValue( obj, type, value );
+}
+
+int PWR_ObjAttrFloatSetValue( PWR_Obj obj, PWR_AttrType type, float* value )
+{
+    return PWR_ObjAttrSetValue( obj, type, value );
+}
+
+int PWR_ObjAttrStringGetValue( PWR_Obj obj, PWR_AttrType type,
+						char* value, int len )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    strncpy( (char*)value, 
+         &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], len );
+    return PWR_SUCCESS;
+}
+
+int PWR_ObjAttrStringSetValue( PWR_Obj obj, PWR_AttrType type,
+						char* value, int len )
+{
+    _Attr* attr = obj->findAttrType( type ); 
+    if ( ! attr ) {
+        return PWR_FAILURE;
+    }	
+    strncpy( &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], 
+                    (char*) value, len );
+    return PWR_SUCCESS;
+}
 
 int PWR_ObjAttrStringGetPossible( PWR_Obj obj, PWR_AttrType type,
 						char* value, int len )
@@ -168,9 +220,10 @@ int PWR_ObjAttrStringGetPossible( PWR_Obj obj, PWR_AttrType type,
     if ( ! attr ) {
         return PWR_FAILURE;
     }	
+    strncpy( (char*)value, 
+         &static_cast< _AttrStringTemplate<std::string>* >(attr)->possible()[0], len );
     return PWR_SUCCESS;
 }
-#endif
 
 /*
 * Subset of API that works on Grp
