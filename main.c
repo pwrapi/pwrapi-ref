@@ -19,7 +19,6 @@ int main( int argc, char* argv[] )
     int ret;
     PWR_Grp group;
     PWR_Obj object;
-    PWR_AttrValueType hint = PWR_ATTR_FLOAT;
 
     // Get a context
     PWR_Cntxt context = PWR_CntxtInit( PWR_CNTXT_DEFAULT, "App" );; 
@@ -28,11 +27,12 @@ int main( int argc, char* argv[] )
     PWR_Grp userGrp = PWR_CntxtCreateGrp( context, "userGrp" );
 
     object = PWR_CntxtGetSelf( context );
+
 #if 0 
     traverseDepth( PWR_CntxtGetSelf( context ) );
 #endif
     
-    ret = PWR_AppHint( object, PWR_ATTR_REGION_SERIAL, hint ); 
+    ret = PWR_AppHint( object, PWR_REGION_SERIAL ); 
     /* would normally check return */
 
     // Get all of the CORE objects

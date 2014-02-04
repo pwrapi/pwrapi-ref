@@ -77,7 +77,7 @@ const char* PWR_AttrGetTypeString( PWR_AttrType );
 /*
  * Operating System -> Application Interface
  */
-int PWR_AppHint( PWR_Obj, PWR_AttrType, PWR_AttrValueType );
+int PWR_AppHint( PWR_Obj, PWR_Hint );
 #ifdef __cplusplus
 }
 #endif

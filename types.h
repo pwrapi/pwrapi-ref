@@ -33,10 +33,6 @@ typedef enum {
     PWR_ATTR_NAME,	    /* Required */
     PWR_ATTR_FREQ,	    /* Optional */
     PWR_ATTR_PSTATE,	    /* Optional */
-    PWR_ATTR_REGION_SERIAL,        /* Optional */
-    PWR_ATTR_REGION_PARALLEL,      /* Optional */
-    PWR_ATTR_REGION_COMPUTE,       /* Optional */
-    PWR_ATTR_REGION_COMMUNICATE     /* Optional */
 } PWR_AttrType;
 
 typedef enum {
@@ -54,5 +50,12 @@ typedef enum {
     PWR_ATTR_UNITS_PETA,
     PWR_ATTR_UNITS_EXA
 } PWR_AttrUnits;
+
+typedef enum {
+    PWR_REGION_SERIAL,
+    PWR_REGION_PARALLEL,
+    PWR_REGION_COMPUTE,
+    PWR_REGION_COMMUNICATE
+} PWR_Hint;
 
 #endif
