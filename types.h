@@ -21,9 +21,14 @@ typedef enum {
 } PWR_CntxtType;
 
 typedef enum {
-    PWR_ROLE_APP,
-    PWR_ROLE_RUNTIME,
-    PWR_ROLE_OS
+    PWR_ROLE_APP,   /* Application */
+    PWR_ROLE_MC,    /* Monitor and Control */
+    PWR_ROLE_OS,    /* Operating System */
+    PWR_ROLE_USER,  /* User */
+    PWR_ROLE_RM,    /* Resource Manager */
+    PWR_ROLE_ADMIN, /* Administrator */
+    PWR_ROLE_MGR,   /* HPCS Manager */
+    PWR_ROLE_ACC    /* Accounting */
 } PWR_Role;
 
 typedef enum {
