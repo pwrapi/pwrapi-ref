@@ -11,7 +11,7 @@ extern "C" {
 * Subset of API that works on Cntxt
 */
 
-PWR_Cntxt PWR_CntxtInit( PWR_CntxtType, const char* name );
+PWR_Cntxt PWR_CntxtInit( PWR_CntxtType, PWR_Role, const char* name );
 int       PWR_CntxtDestroy( PWR_Cntxt );
 PWR_Obj   PWR_CntxtGetSelf( PWR_Cntxt );
 PWR_Grp   PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );

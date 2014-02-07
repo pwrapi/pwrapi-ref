@@ -3,9 +3,9 @@
 #include "./object.h"
 #include "./init.h"
 
-PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, const char* name )
+PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
-    return PWR::init( type );
+    return PWR::init( type, role, name );
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )

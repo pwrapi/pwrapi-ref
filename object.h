@@ -184,8 +184,10 @@ struct _Cntxt {
   public:
 
     _Cntxt( ) {}
-    void init( _Obj* top ) {
+    void init( _Obj* top, PWR_Role role, const char* name ) {
 
+        m_role = role;
+        m_name.insert( 0, name );
         m_top = top;
         PWR_ObjType type;
         
@@ -255,7 +257,10 @@ struct _Cntxt {
 
   private:
     void createTypeGrp( _Obj*, PWR_ObjType, _Grp* );
-    _Obj* m_top;
+
+    _Obj*       m_top;
+    PWR_Role    m_role;
+    std::string m_name;
 
     std::map< PWR_ObjType, _Grp* >  m_defaultGrpMap; 
     std::map< std::string, _Grp* >   m_groups;

@@ -19,10 +19,10 @@ static _Obj* createBoard( _Cntxt*, string );
 static _Obj* createNode( _Cntxt*, string );
 static _Obj* createSocket( _Cntxt*, string );
 
-_Cntxt* init( PWR_CntxtType type )
+_Cntxt* init( PWR_CntxtType type, PWR_Role role, const char* name )
 {
     _Cntxt* ctx = new _Cntxt; 
-    ctx->init( createPlatform( ctx, "SystemX" ) );
+    ctx->init( createPlatform( ctx, "SystemX" ), role, name );
     return ctx;
 }
 

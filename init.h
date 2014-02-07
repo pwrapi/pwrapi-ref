@@ -6,7 +6,7 @@
 
 namespace PWR {
 
-_Cntxt* init( PWR_CntxtType );
+_Cntxt* init( PWR_CntxtType, PWR_Role, const char* );
 int destroy( PWR_Cntxt );
 
 }

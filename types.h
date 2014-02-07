@@ -21,6 +21,12 @@ typedef enum {
 } PWR_CntxtType;
 
 typedef enum {
+    PWR_ROLE_APP,
+    PWR_ROLE_RUNTIME,
+    PWR_ROLE_OS
+} PWR_Role;
+
+typedef enum {
     PWR_OBJ_PLATFORM,
     PWR_OBJ_CABINET, 
     PWR_OBJ_BOARD,

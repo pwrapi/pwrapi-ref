@@ -21,7 +21,7 @@ int main( int argc, char* argv[] )
     PWR_Obj object;
 
     // Get a context
-    PWR_Cntxt context = PWR_CntxtInit( PWR_CNTXT_DEFAULT, "App" );; 
+    PWR_Cntxt context = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );; 
 
     // Get a group that we can add stuff to
     PWR_Grp userGrp = PWR_CntxtCreateGrp( context, "userGrp" );
