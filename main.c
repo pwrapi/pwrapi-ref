@@ -207,7 +207,7 @@ const char * attrUnit( PWR_AttrUnits scale )
       case PWR_ATTR_UNITS_TERA:
         return "Tera";
       case PWR_ATTR_UNITS_PETA:
-        return "Petra";
+        return "Peta";
       case PWR_ATTR_UNITS_EXA:
         return "Exa";
     }
