@@ -41,9 +41,16 @@ typedef enum {
 } PWR_ObjType;
 
 typedef enum {
-    PWR_ATTR_NAME,	    /* Required */
-    PWR_ATTR_FREQ,	    /* Optional */
-    PWR_ATTR_PSTATE,	    /* Optional */
+    PWR_ATTR_NAME,	    /* Required String */
+    PWR_ATTR_FREQ,	    /* Required Float  */
+    PWR_ATTR_MAX_POWER,     /* Required Float  */
+    PWR_ATTR_MIN_POWER,     /* Required Float  */
+    PWR_ATTR_AVG_POWER,     /* Required Float  */
+    PWR_ATTR_POWER,         /* Required Float  */
+    PWR_ATTR_VOLTAGE,       /* Required Float  */
+    PWR_ATTR_CURRENT,       /* Required Float  */
+    PWR_ATTR_ENERGY,        /* Required Float  */
+    PWR_ATTR_PSTATE,	    /* Required Int    */
 } PWR_AttrType;
 
 typedef enum {
