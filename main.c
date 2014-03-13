@@ -33,6 +33,7 @@ int main( int argc, char* argv[] )
 #endif
     
     ret = PWR_AppHint( object, PWR_REGION_SERIAL ); 
+    assert( ret == PWR_SUCCESS );
     /* would normally check return */
 
     // Get all of the CORE objects

@@ -3,6 +3,7 @@
 #define PWR_TYPES_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 #define PWR_NULL NULL
 
@@ -14,6 +15,9 @@ typedef int PWR_CntxtState;
 
 #define PWR_SUCCESS 0
 #define PWR_FAILURE -1
+#define PWR_NOT_IMPLEMENTED -2
+
+typedef int64_t POW_Time; 
 
 typedef enum {
     PWR_CNTXT_DEFAULT,	/* Required */

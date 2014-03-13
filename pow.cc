@@ -1,4 +1,6 @@
 
+#include <string.h>
+
 #include "./pow.h"
 #include "./object.h"
 #include "./init.h"
@@ -270,6 +272,7 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 	case PWR_OBJ_SOCKET:   return "Socket";
 	case PWR_OBJ_CORE:     return "Core";
 	}
+    return NULL;
 }
 const char* PWR_AttrGetTypeString( PWR_AttrType name )
 {
@@ -277,16 +280,24 @@ const char* PWR_AttrGetTypeString( PWR_AttrType name )
 	case PWR_ATTR_NAME: return "Name";
 	case PWR_ATTR_FREQ: return "Freq";
 	case PWR_ATTR_PSTATE: return "Pstate";
+	case PWR_ATTR_MAX_POWER: return "Max Power";
+	case PWR_ATTR_MIN_POWER: return "Min Power";
+	case PWR_ATTR_AVG_POWER: return "Avg Power";
+	case PWR_ATTR_POWER: return "Power";
+	case PWR_ATTR_VOLTAGE: return "Voltage";
+	case PWR_ATTR_CURRENT: return "Current";
+	case PWR_ATTR_ENERGY: return "Energy";
 	}	
+    return NULL;
 }
 
 int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {
 
 	switch( hint ){
-	case PWR_REGION_SERIAL: return 1;
-	case PWR_REGION_PARALLEL: return 1;
-	case PWR_REGION_COMPUTE: return 1;
-	case PWR_REGION_COMMUNICATE: return 1;
+	case PWR_REGION_SERIAL: return PWR_SUCCESS;
+	case PWR_REGION_PARALLEL: return PWR_SUCCESS;
+	case PWR_REGION_COMPUTE: return PWR_SUCCESS;
+	case PWR_REGION_COMMUNICATE: return PWR_SUCCESS;
 	}	
-        
+    return PWR_FAILURE;
 }

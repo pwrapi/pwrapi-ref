@@ -9,10 +9,10 @@ CFLAGS = -Wall
 CXXFLAGS = -Wall
 
 test: ${LIB} main.c
-	g++ -Wall -I. -L. main.c -lpow -o test
+	$(CXX) -Wall -I. -L. main.c -lpow -o test
 
 ${LIB}: ${LIB_OBJS}
-	${AR} rcs $@ ${LIB_OBJS} 
+	$(AR) rcs $@ ${LIB_OBJS} 
 
 clean:
 	rm -f test ${LIB} ${LIB_OBJS}

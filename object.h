@@ -153,7 +153,7 @@ struct _Obj {
     int attrGetNumber() { return m_attrList.size(); }
 	
     _Attr* findAttrType( PWR_AttrType type ) {
-	for ( int i = 0; i < m_attrList.size(); i++ ) {
+	for ( unsigned int i = 0; i < m_attrList.size(); i++ ) {
 	    if ( m_attrList[i]->name() == type ) {
 		return m_attrList[i];
 	    }	
