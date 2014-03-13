@@ -134,6 +134,7 @@ void  printAllAttr( PWR_Obj obj )
 }
 static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 {
+    PWR_Time timeStamp; 
     int intValue[3];
     PWR_AttrUnits scaleValue;
     float floatValue[3];
@@ -149,25 +150,29 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 
         PWR_ObjAttrGetUnits( obj, type, &scaleValue );
         PWR_ObjAttrGetRange( obj, type, &floatValue[0], &floatValue[1]);
-        PWR_ObjAttrGetValue( obj, type, &floatValue[2] ); 
+        PWR_ObjAttrGetValue( obj, type, &floatValue[2], &timeStamp ); 
 
-        printf("scale=%s min=%f max=%f value=%f\n", attrUnit( scaleValue ), 
-                floatValue[0], floatValue[1], floatValue[2] );
+        printf("scale=%s min=%f max=%f value=%f timeStamp=%llu\n", 
+            attrUnit( scaleValue ), floatValue[0],
+            floatValue[1], floatValue[2], timeStamp );
         break;
 
       case PWR_ATTR_INT:
         PWR_ObjAttrGetUnits( obj, type, &scaleValue  );
         PWR_ObjAttrGetRange( obj, type, &intValue[0], &intValue[1] );
-        PWR_ObjAttrGetValue( obj, type, &intValue[2] ); 
+        PWR_ObjAttrGetValue( obj, type, &intValue[2], &timeStamp ); 
 
-        printf("scale=%s min=%i max=%i value=%i\n", attrUnit( scaleValue ),
-            intValue[0], intValue[1], intValue[2] );
+        time_t tmp;
+        PWR_TimeConvert( timeStamp, &tmp );
+        printf("scale=%s min=%i max=%i value=%i timeStamp=%s\n",
+            attrUnit( scaleValue ), intValue[0], intValue[1],
+            intValue[2], ctime( & tmp )  );
         break;
 
       case PWR_ATTR_STRING:
     
         PWR_ObjAttrGetRange( obj, type, possible, NULL ),
-        PWR_ObjAttrGetValue( obj, type, stringValue);
+        PWR_ObjAttrGetValue( obj, type, stringValue, NULL );
         printf("possible=`%s` value=`%s`\n", possible, stringValue );
         break;
     }
@@ -176,7 +181,7 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 char* getObjName( PWR_Obj obj )
 {
     static char name[100];
-    int ret = PWR_ObjAttrGetValue( obj, PWR_ATTR_NAME, name );
+    int ret = PWR_ObjAttrGetValue( obj, PWR_ATTR_NAME, name, NULL );
     assert( PWR_SUCCESS == ret ); 
     return name;
 }

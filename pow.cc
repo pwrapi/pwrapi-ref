@@ -1,5 +1,6 @@
 
 #include <string.h>
+#include <sys/time.h>
 
 #include "./pow.h"
 #include "./object.h"
@@ -113,7 +114,8 @@ int PWR_ObjAttrGetRange( PWR_Obj obj, PWR_AttrType type, void* min, void* max )
     return PWR_SUCCESS;
 }
 
-int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* value )
+int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* value, 
+                                                PWR_Time* ts )
 {
     _Attr* attr = obj->findAttrType( type ); 
     if ( ! attr ) {
@@ -132,6 +134,14 @@ int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* value )
         strcpy( (char*)value, 
          &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0] );
         break;
+    }
+
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+
+    if ( ts ) {
+        *ts = tv.tv_sec * 1000000000;
+        *ts += tv.tv_usec * 1000; 
     }
 
     return PWR_SUCCESS;
@@ -165,9 +175,10 @@ int PWR_ObjAttrIntGetRange( PWR_Obj obj, PWR_AttrType type, int* min, int* max )
     return PWR_ObjAttrGetRange(obj, type, min, max ); 
 }
 
-int PWR_ObjAttrIntGetValue( PWR_Obj obj, PWR_AttrType type, int* value )
+int PWR_ObjAttrIntGetValue( PWR_Obj obj, PWR_AttrType type, int* value,
+                                PWR_Time* ts )
 {
-    return PWR_ObjAttrGetValue( obj, type, value );
+    return PWR_ObjAttrGetValue( obj, type, value, ts );
 }
 
 int PWR_ObjAttrIntSetValue( PWR_Obj obj, PWR_AttrType type, int* value )
@@ -181,9 +192,10 @@ int PWR_ObjAttrFloatGetRange( PWR_Obj obj, PWR_AttrType type, float* min, float*
     return PWR_ObjAttrGetRange(obj, type, min, max ); 
 }
 
-int PWR_ObjAttrFloatGetValue( PWR_Obj obj, PWR_AttrType type, float* value )
+int PWR_ObjAttrFloatGetValue( PWR_Obj obj, PWR_AttrType type, float* value,
+                                    PWR_Time* ts )
 {
-    return PWR_ObjAttrGetValue( obj, type, value );
+    return PWR_ObjAttrGetValue( obj, type, value, ts );
 }
 
 int PWR_ObjAttrFloatSetValue( PWR_Obj obj, PWR_AttrType type, float* value )
@@ -300,4 +312,10 @@ int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {
 	case PWR_REGION_COMMUNICATE: return PWR_SUCCESS;
 	}	
     return PWR_FAILURE;
+}
+
+int PWR_TimeConvert( PWR_Time in, time_t* out )
+{
+   *out = in / 1000000000;
+    return PWR_SUCCESS;
 }

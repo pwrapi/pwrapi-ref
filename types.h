@@ -17,7 +17,7 @@ typedef int PWR_CntxtState;
 #define PWR_FAILURE -1
 #define PWR_NOT_IMPLEMENTED -2
 
-typedef int64_t POW_Time; 
+typedef int64_t PWR_Time; 
 
 typedef enum {
     PWR_CNTXT_DEFAULT,	/* Required */
