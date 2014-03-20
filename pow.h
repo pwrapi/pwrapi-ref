@@ -38,6 +38,9 @@ int         PWR_ObjAttrGetValueType( PWR_Obj, PWR_AttrType,
                                         PWR_AttrValueType* value );
 int         PWR_ObjAttrGetUnits( PWR_Obj, PWR_AttrType, PWR_AttrUnits* );
 
+int PWR_ObjGetAvgPower( PWR_Obj, PWR_Time* from, PWR_Time* to );
+int PWR_ObjGetEnergy( PWR_Obj, PWR_Time* from, PWR_Time* to );
+
 int PWR_ObjAttrGetRange( PWR_Obj, PWR_AttrType, void* min, void* max );
 int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void* , PWR_Time* );
 int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void* );
