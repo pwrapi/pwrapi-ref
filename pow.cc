@@ -204,7 +204,7 @@ int PWR_ObjAttrFloatSetValue( PWR_Obj obj, PWR_AttrType type, float* value )
 }
 
 int PWR_ObjAttrStringGetValue( PWR_Obj obj, PWR_AttrType type,
-						char* value, int len )
+						char* value, int len, PWR_Time* ts  )
 {
     _Attr* attr = obj->findAttrType( type ); 
     if ( ! attr ) {
@@ -212,8 +212,16 @@ int PWR_ObjAttrStringGetValue( PWR_Obj obj, PWR_AttrType type,
     }	
     strncpy( (char*)value, 
          &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], len );
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+
+    if ( ts ) {
+        *ts = tv.tv_sec * 1000000000;
+        *ts += tv.tv_usec * 1000; 
+    }
     return PWR_SUCCESS;
 }
+
 
 int PWR_ObjAttrStringSetValue( PWR_Obj obj, PWR_AttrType type,
 						char* value, int len )

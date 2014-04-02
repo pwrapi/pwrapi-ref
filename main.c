@@ -171,8 +171,8 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 
       case PWR_ATTR_STRING:
     
-        PWR_ObjAttrGetRange( obj, type, possible, NULL ),
-        PWR_ObjAttrGetValue( obj, type, stringValue, NULL );
+        PWR_ObjAttrStringGetPossible( obj, type, possible, 100 ),
+        PWR_ObjAttrStringGetValue( obj, type, stringValue, 100, &timeStamp );
         printf("possible=`%s` value=`%s`\n", possible, stringValue );
         break;
     }

@@ -132,14 +132,21 @@ static _Obj* createSocket( _Cntxt* ctx, string prefix )
                          PWR_ATTR_FLOAT, PWR_ATTR_UNITS_MEGA, 1, 10, freq[i] );
         obj->attributeAdd( attrFloat );
 
+#if 0
         _AttrNumTemplate< int >* attrInt = 
                 new _AttrNumTemplate< int >( PWR_ATTR_PSTATE, 
                              PWR_ATTR_INT, PWR_ATTR_UNITS_1, 0,3, 1 );
         obj->attributeAdd( attrInt );
+#endif
 
     	_AttrStringTemplate< std::string >* attrString =
                 new _AttrStringTemplate< std::string >( PWR_ATTR_NAME, 
                          PWR_ATTR_STRING, "", prefix + ".core" + tmp.str() );
+    	obj->attributeAdd( attrString );
+
+    	attrString =
+                new _AttrStringTemplate< std::string >( PWR_ATTR_PSTATE, 
+                         PWR_ATTR_STRING, "P0,P1,P2", "P2" );
     	obj->attributeAdd( attrString );
     }
     return top;
