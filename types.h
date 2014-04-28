@@ -41,8 +41,8 @@ typedef enum {
     PWR_OBJ_BOARD,
     PWR_OBJ_NODE,
     PWR_OBJ_SOCKET,
-    PWR_OBJ_CORE
-    \\
+    PWR_OBJ_CORE,
+    /* */
     PWR_OBJ_MEM,
     PWR_OBJ_NIC,
 } PWR_ObjType;
