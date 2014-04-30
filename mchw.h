@@ -7,20 +7,21 @@ extern "C" {
 
 typedef void* mchw_dev_t;
 
-typedef struct {
-        float volts;
-        float amps;
-        float watts;
-} mchw_reading_t;
+typedef enum {
+	MCHW_VOLTS,
+	MCHW_AMPS,
+	MCHW_WATTS
+} mchw_read_type_t;
 
 typedef unsigned long long mchw_time_t;
 
 typedef (*mchw_init_t)(mchw_dev_t *dev);
 typedef (*mchw_final_t)(mchw_dev_t *dev);
-typedef (*mchw_open_t)(mchw_dev_t *dev);
-typedef (*mchw_close_t)(mchw_dev_t *dev);
-typedef (*mchw_read_t)(mchw_dev_t *dev, mchw_reading_t *reading);
-typedef (*mchw_time_t)(mchw_dev_t *dev, mchw_time_t *time);
+typedef (*mchw_open_t)(mchw_dev_t dev);
+typedef (*mchw_close_t)(mchw_dev_t dev);
+typedef (*mchw_read_t)(mchw_dev_t dev, unsigned int arraysize,
+	mchw_read_type_t type[], float reading[], mchw_time_t *timestamp);
+typedef (*mchw_time_t)(mchw_dev_t dev, mchw_time_t *time);
 
 typedef struct {
 	mchw_init_t  init;

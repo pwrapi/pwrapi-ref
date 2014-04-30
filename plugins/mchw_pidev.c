@@ -445,26 +445,33 @@ static void pidev_close(void)
     }
 }
 
-void mchw_pidev_init(mchw_dev_t *dev)
+int mchw_pidev_init(mchw_dev_t *dev)
 {
-	pthread_mutex_init(&piapi_dev_lock, NULL);
+    pthread_mutex_init(&piapi_dev_lock, NULL);
+
+    return 0;
 }
 
-void mchw_pidev_final(mchw_dev_t *dev)
+int mchw_pidev_final(mchw_dev_t *dev)
 {
-	pthread_mutex_destroy(&piapi_dev_lock);
-	pidev_close();
+    pthread_mutex_destroy(&piapi_dev_lock);
+    pidev_close();
+
+    return 0;
 }
 
-void mchw_pidev_open(mchw_dev_t *dev)
+int mchw_pidev_open(mchw_dev_t dev)
 {
+    return 0;
 }
 
-void mchw_pidev_close(mchw_dev_t *dev)
+int mchw_pidev_close(mchw_dev_t dev)
 {
+    return 0;
 }
 
-void mchw_pidev_read(mchw_dev_t *dev, mchw_reading_t *reading)
+int mchw_pidev_read(mchw_dev_t dev, unsigned int arraysize,
+	mchw_read_type_t type[], float reading[], mchw_time_t *timestamp)
 {
     reading_t raw;
 
@@ -475,9 +482,12 @@ void mchw_pidev_read(mchw_dev_t *dev, mchw_reading_t *reading)
     reading->volts = raw.milivolts/KS;
     reading->amps = raw.miliamps/KS;
     reading->watts = raw.miliwatts/KS;
+
+    return 0;
 }
 
-void mchw_pidev_time(mchw_dev_t *dev, mchw_time_t *time)
+int mchw_pidev_time(mchw_dev_t dev, mchw_time_t *time)
 {
+    return 0;
 }
 
