@@ -479,7 +479,7 @@ int mchw_pidev_close(mchw_dev_t dev)
 }
 
 int mchw_pidev_read(mchw_dev_t dev, unsigned int arraysize,
-	mchw_read_type_t type[], float reading[], mchw_time_t *timestamp)
+	mchw_read_type_t type[], float reading[], unsigned long long *timestamp)
 {
     reading_t raw;
 
@@ -494,7 +494,7 @@ int mchw_pidev_read(mchw_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_pidev_time(mchw_dev_t dev, mchw_time_t *time)
+int mchw_pidev_time(mchw_dev_t dev, unsigned long long *time)
 {
     return 0;
 }

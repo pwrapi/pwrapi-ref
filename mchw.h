@@ -13,15 +13,13 @@ typedef enum {
 	MCHW_WATTS
 } mchw_read_type_t;
 
-typedef unsigned long long mchw_time_t;
-
-typedef (*mchw_init_t)(mchw_dev_t *dev);
-typedef (*mchw_final_t)(mchw_dev_t *dev);
-typedef (*mchw_open_t)(mchw_dev_t dev);
-typedef (*mchw_close_t)(mchw_dev_t dev);
-typedef (*mchw_read_t)(mchw_dev_t dev, unsigned int arraysize,
-	mchw_read_type_t type[], float reading[], mchw_time_t *timestamp);
-typedef (*mchw_time_t)(mchw_dev_t dev, mchw_time_t *time);
+typedef int (*mchw_init_t)(mchw_dev_t *dev);
+typedef int (*mchw_final_t)(mchw_dev_t *dev);
+typedef int (*mchw_open_t)(mchw_dev_t dev);
+typedef int (*mchw_close_t)(mchw_dev_t dev);
+typedef int (*mchw_read_t)(mchw_dev_t dev, unsigned int arraysize,
+	mchw_read_type_t type[], float reading[], unsigned long long *timestamp);
+typedef int (*mchw_time_t)(mchw_dev_t dev, unsigned long long *time);
 
 typedef struct {
 	mchw_init_t  init;
