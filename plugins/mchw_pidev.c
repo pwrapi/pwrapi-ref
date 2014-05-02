@@ -462,11 +462,19 @@ int mchw_pidev_final(mchw_dev_t *dev)
 
 int mchw_pidev_open(mchw_dev_t dev)
 {
+    int i;
+
+    for( i = sizeof(devList)/sizeof(*devList)-1 ; i > 0 ; --i ) {
+        (devList[i].open)( i );
+    }
+
     return 0;
 }
 
 int mchw_pidev_close(mchw_dev_t dev)
 {
+    pidev_close();
+
     return 0;
 }
 
