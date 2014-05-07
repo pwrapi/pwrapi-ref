@@ -1,7 +1,7 @@
 LIB_INC=..
-LIB_SRC=mchw_pidev.cc
+LIB_SRC=mchw_pidev.c
 
-LIB_OBJS = ${LIB_SRC:.cc=.o}
+LIB_OBJS = ${LIB_SRC:.c=.o}
 
 LIB = libplugins.a
 

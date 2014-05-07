@@ -13,7 +13,7 @@ typedef enum {
 	MCHW_WATTS
 } mchw_read_type_t;
 
-typedef int (*mchw_init_t)(mchw_dev_t *dev);
+typedef int (*mchw_init_t)(mchw_dev_t *dev, char *initstr);
 typedef int (*mchw_final_t)(mchw_dev_t *dev);
 typedef int (*mchw_open_t)(mchw_dev_t dev);
 typedef int (*mchw_close_t)(mchw_dev_t dev);
