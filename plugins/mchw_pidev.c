@@ -6,18 +6,21 @@
 #include <string.h>
 #include <sched.h>
 
-static void *cntx = 0x0;
-static piapi_port_t port;
-static piapi_sample_t counter;
+typedef struct {
+    void *cntx;
+    piapi_port_t port;
+} mchw_pidev_t;
+#define MCHW_PIDEV(X) ((mchw_pidev_t *)(X))
 
-static int pidev_reading = 0;
+static piapi_sample_t pidev_counter;
+static int pidev_reading;
 
 static void pidev_callback( piapi_sample_t *sample )
 {
     if( sample->total && sample->number == sample->total )
         pidev_reading = 0;
 
-    counter = *sample;
+    pidev_counter = *sample;
 }
 
 static int pidev_parse( char *initstr, unsigned int *saddr, unsigned int *sport, unsigned int *port )
@@ -60,20 +63,26 @@ int mchw_pidev_init( mchw_dev_t *dev, char *initstr )
         return -1;
     }
 
-    if( piapi_init( &cntx, PIAPI_MODE_PROXY, pidev_callback, saddr, sport ) < 0 ) {
+    if( piapi_init( &(MCHW_PIDEV(*dev)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport ) < 0 ) {
         printf( "Error: powerinsight hardware initialization failed\n" );
         return -1;
     }
+
+    *dev = malloc( sizeof(mchw_pidev_t) );
+    bzero( *dev, sizeof(mchw_pidev_t) );
 
     return 0;
 }
 
 int mchw_pidev_final( mchw_dev_t *dev )
 {
-    if( piapi_destroy( &cntx ) < 0 ) {
+    if( piapi_destroy( &(MCHW_PIDEV(*dev)->cntx) ) < 0 ) {
         printf( "Error: powerinsight hardware finalization failed\n" );
         return -1;
     }
+
+    free( *dev );
+    *dev = 0x0;
 
     return 0;
 }
@@ -93,8 +102,9 @@ int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
 {
     unsigned int i;
 
+    while( pidev_reading ) sched_yield();
     pidev_reading = 1;
-    if( piapi_counter( cntx, port ) < 0 ) {
+    if( piapi_counter( MCHW_PIDEV(dev)->cntx, MCHW_PIDEV(dev)->port ) < 0 ) {
         printf( "Error: powerinsight hardware read failed\n" );
         return -1;
     }
@@ -103,20 +113,21 @@ int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
     for( i = 0; i < arraysize; i++ ) {
         switch( type[i] ) {
             case MCHW_VOLTS:
-                reading[i] = counter.raw.volts;
+                reading[i] = pidev_counter.raw.volts;
                 break;
             case MCHW_AMPS:
-                reading[i] = counter.raw.amps;
+                reading[i] = pidev_counter.raw.amps;
                 break;
             case MCHW_WATTS:
-                reading[i] = counter.raw.watts;
+                reading[i] = pidev_counter.raw.watts;
                 break;
             default:
                 printf( "Error: unknown MCHW reading type requested\n" );
                 return -1;
         }
     }
-    *timestamp = counter.time_sec*1000000000ULL + counter.time_usec*1000;
+    *timestamp = pidev_counter.time_sec*1000000000ULL + 
+                 pidev_counter.time_usec*1000;
 
     return 0;
 }
