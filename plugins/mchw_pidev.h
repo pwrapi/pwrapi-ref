@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-int mchw_pidev_init(mchw_dev_t *dev);
+int mchw_pidev_init(mchw_dev_t *dev, char *initstr);
 int mchw_pidev_final(mchw_dev_t *dev);
 int mchw_pidev_open(mchw_dev_t dev);
 int mchw_pidev_close(mchw_dev_t dev);
