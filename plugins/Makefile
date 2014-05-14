@@ -1,5 +1,5 @@
 LIB_INC=..
-LIB_SRC=mchw_pidev.c
+LIB_SRC=mchw_pidev.c mchw_rapldev.c mchw_xtpmdev.c
 
 LIB_OBJS = ${LIB_SRC:.c=.o}
 
