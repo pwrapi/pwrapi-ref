@@ -115,9 +115,19 @@ typedef struct {
 
 static int rapldev_parse( char *initstr, int *core, int *layer )
 {
-    if( initstr ) {
-        *core = atoi(initstr);
+    char *token;
+
+    if( (token = strtok( NULL, ":" )) == 0x0 ) {
+        printf( "Error: missing core separator in initialization string %s\n", initstr );
+        return -1;
     }
+    *core = atoi(token);
+
+    if( (token = strtok( NULL, ":" )) == 0x0 ) {
+        printf( "Error: missing layer separator in initialization string %s\n", initstr );
+        return -1;
+    }
+    *layer = atoi(token);
  
     return 0;
 }
