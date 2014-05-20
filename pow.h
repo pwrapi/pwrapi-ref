@@ -31,32 +31,16 @@ PWR_ObjType PWR_ObjGetType( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 
-int         PWR_ObjGetNumAttrs( PWR_Obj );
-int   	    PWR_ObjGetAttrTypeByIndx( PWR_Obj, int, PWR_AttrType* value );
-
-int         PWR_ObjAttrGetValueType( PWR_Obj, PWR_AttrType,
-                                        PWR_AttrValueType* value );
-int         PWR_ObjAttrGetUnits( PWR_Obj, PWR_AttrType, PWR_AttrUnits* );
+int PWR_ObjGetNumAttrs( PWR_Obj );
+int PWR_ObjGetAttrTypeByIndx( PWR_Obj, int, PWR_AttrType* value );
+int PWR_ObjAttrGetValues( PWR_Obj, int, PWR_Value values[], PWR_Time*,
+                                                               PWR_Status );
+int PWR_ObjAttrSetValues( PWR_Obj, int, PWR_Value values[], PWR_Status );
+int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void*, size_t len, PWR_Time* );
+int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void*, size_t len );
 
 int PWR_ObjGetAvgPower( PWR_Obj, PWR_Time* from, PWR_Time* to );
 int PWR_ObjGetEnergy( PWR_Obj, PWR_Time* from, PWR_Time* to );
-
-int PWR_ObjAttrGetRange( PWR_Obj, PWR_AttrType, void* min, void* max );
-int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void* , PWR_Time* );
-int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void* );
-
-int PWR_ObjAttrFloatGetRange( PWR_Obj, PWR_AttrType, float* min, float* max );
-int PWR_ObjAttrFloatGetValue( PWR_Obj, PWR_AttrType, float*, PWR_Time* );
-int PWR_ObjAttrFloatSetValue( PWR_Obj, PWR_AttrType, float* );
-
-int PWR_ObjAttrIntGetRange( PWR_Obj, PWR_AttrType, int* min, int* max );
-int PWR_ObjAttrIntGetValue( PWR_Obj, PWR_AttrType, int*, PWR_Time* );
-int PWR_ObjAttrIntSetValue( PWR_Obj, PWR_AttrType, int* );
-
-int PWR_ObjAttrStringGetPossible( PWR_Obj, PWR_AttrType, char*, int len );
-int PWR_ObjAttrStringGetValue( PWR_Obj, PWR_AttrType, char*, int len,
-                             PWR_Time* );
-int PWR_ObjAttrStringSetValue( PWR_Obj, PWR_AttrType, char*, int len );
 
 /*
 * Subset of API that works on Grp 
@@ -64,17 +48,20 @@ int PWR_ObjAttrStringSetValue( PWR_Obj, PWR_AttrType, char*, int len );
 
 // note that PWR_GrpDestroy() pairs with PWR_CntxtCreateGrp() but it 
 // does not take a context as an argument, should it? 
+
 int         PWR_GrpDestroy( PWR_Grp );
 const char* PWR_GrpGetName( PWR_Grp );
 int         PWR_GrpGetNumObjs( PWR_Grp );
 PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
 int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
+int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, void*,
+                                            size_t len, PWR_Status );
 
-int PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, void*, PWR_Grp errOut );
-int PWR_GrpAttrIntSetValue( PWR_Grp, PWR_AttrType, int*, PWR_Grp errOut );
-int PWR_GrpAttrFloatSetValue( PWR_Grp, PWR_AttrType, float*, PWR_Grp errOut );
-int PWR_GrpAttrStringSetValue( PWR_Grp, PWR_AttrType, const char*, size_t len, PWR_Grp errOut );
+PWR_Status PWR_StatusCreate();
+int PWR_StatusDestroy( PWR_Status );
+int PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
+int PWR_StatusClear( PWR_Status );
 
 /*
 *  Utility Functions
@@ -82,6 +69,7 @@ int PWR_GrpAttrStringSetValue( PWR_Grp, PWR_AttrType, const char*, size_t len, P
 
 const char* PWR_ObjGetTypeString( PWR_ObjType );
 const char* PWR_AttrGetTypeString( PWR_AttrType );
+const char* PWR_ObjGetName( PWR_Obj );
 
 int PWR_TimeConvert( PWR_Time time, time_t* );
 

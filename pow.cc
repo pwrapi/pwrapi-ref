@@ -64,76 +64,62 @@ int PWR_ObjGetNumAttrs( PWR_Obj obj )
 int PWR_ObjGetAttrTypeByIndx( PWR_Obj obj, int index, PWR_AttrType *value )
 {
     *value = obj->attributeGet( index )->name();
-    return PWR_SUCCESS;
+    return PWR_ERR_SUCCESS;
 }
 
-int PWR_ObjAttrGetValueType( PWR_Obj obj, PWR_AttrType type, 
-					PWR_AttrValueType * value )
-{
-    _Attr* attr = obj->findAttrType( type ); 
-    if ( ! attr ) {
-        return PWR_FAILURE;
-    }	
-    *value = attr->type();
-    return PWR_SUCCESS;
-}
 
-int PWR_ObjAttrGetUnits( PWR_Obj obj, PWR_AttrType type, PWR_AttrUnits* value )
+int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
+                    size_t len, PWR_Time* ts )
 {
-    _AttrNum* attr = static_cast<_AttrNum*>(obj->findAttrType( type )); 
-    if ( ! attr ) {
-        return PWR_FAILURE;
-    }	
-    *value = attr->unit();
-    return PWR_SUCCESS;
-}
-
-int PWR_ObjAttrGetRange( PWR_Obj obj, PWR_AttrType type, void* min, void* max )
-{
-    _Attr*  attr = obj->findAttrType( type ); 
-    if ( ! attr ) {
-        return PWR_FAILURE;
-    }	
-    PWR_AttrValueType vType = attr->type();
-    
-    switch( vType ) {
-      case PWR_ATTR_FLOAT:
-        *(float*)min = static_cast< _AttrNumTemplate<float>* >(attr)->min();
-        *(float*)max = static_cast< _AttrNumTemplate<float>* >(attr)->max();
-        break;
-      case PWR_ATTR_INT:
-        *(int*)min = static_cast< _AttrNumTemplate<int>* >(attr)->min();
-        *(int*)max = static_cast< _AttrNumTemplate<int>* >(attr)->max();
-        break;
-      case PWR_ATTR_STRING:
-        return PWR_FAILURE;
-        break;
+    PWR_Value value;
+    PWR_Status status = PWR_StatusCreate();
+    value.type = type;
+    value.ptr = ptr;
+    value.len = len;
+    int ret = PWR_ObjAttrGetValues( obj, 1, &value, ts, status );
+    if ( PWR_ERR_SUCCESS == ret ) {
+        return ret;
+    } else {
+        PWR_AttrAccessError err;
+        PWR_StatusPopError( status, &err );
+        return err.error;
     }
-
-
-    return PWR_SUCCESS;
 }
 
-int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* value, 
-                                                PWR_Time* ts )
+
+static int foo( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
 {
     _Attr* attr = obj->findAttrType( type ); 
     if ( ! attr ) {
-        return PWR_FAILURE;
+        return PWR_ERR_FAILURE;
     }	
-    PWR_AttrValueType vType = attr->type();
+    PWR_AttrDataType vType = attr->type();
     
     switch( vType ) {
-      case PWR_ATTR_FLOAT:
-        *(float*)value = static_cast< _AttrNumTemplate<float>* >(attr)->value();
+      case PWR_ATTR_DATA_FLOAT:
+        *(float*)ptr = static_cast< _AttrNumTemplate<float>* >(attr)->value();
         break;
-      case PWR_ATTR_INT:
-        *(int*)value = static_cast< _AttrNumTemplate<int>* >(attr)->value();
+      case PWR_ATTR_DATA_INT:
+        *(int*)ptr = static_cast< _AttrNumTemplate<int>* >(attr)->value();
         break;
-      case PWR_ATTR_STRING:
-        strcpy( (char*)value, 
+      case PWR_ATTR_DATA_STRING:
+        strcpy( (char*)ptr, 
          &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0] );
         break;
+    }
+    return PWR_ERR_SUCCESS;
+}
+
+int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
+                                               PWR_Time* ts, PWR_Status status )
+{
+    int i;
+    int err;
+    for ( i = 0; i < num; i++ ) {
+        err = foo( obj, values[i].type, values[i].ptr, values[i].len ); 
+        if ( PWR_ERR_SUCCESS != err ) { 
+            
+        }
     }
 
     struct timeval tv;
@@ -144,107 +130,34 @@ int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* value,
         *ts += tv.tv_usec * 1000; 
     }
 
-    return PWR_SUCCESS;
+    return PWR_ERR_SUCCESS;
 }
 
-int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value )
+int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value, size_t len )
 {
     _Attr* attr = obj->findAttrType( type ); 
     if ( ! attr ) {
-        return PWR_FAILURE;
+        return PWR_ERR_FAILURE;
     }	
-    PWR_AttrValueType vType = attr->type();
+    PWR_AttrDataType vType = attr->type();
 
     switch( vType ) {
-      case PWR_ATTR_FLOAT:
+      case PWR_ATTR_DATA_FLOAT:
+        assert( len == sizeof( float ) );
         static_cast< _AttrNumTemplate<float>* >(attr)->value( *(float*)value);
         break;
-      case PWR_ATTR_INT:
+
+      case PWR_ATTR_DATA_INT:
+        assert( len == sizeof( int ) );
         static_cast< _AttrNumTemplate<int>* >(attr)->value( *(int*)value);
         break;
-      case PWR_ATTR_STRING:
+
+      case PWR_ATTR_DATA_STRING:
         strcpy( &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], (char*) value );
         break;
     }
 
-    return PWR_SUCCESS;
-}
-
-int PWR_ObjAttrIntGetRange( PWR_Obj obj, PWR_AttrType type, int* min, int* max )
-{
-    return PWR_ObjAttrGetRange(obj, type, min, max ); 
-}
-
-int PWR_ObjAttrIntGetValue( PWR_Obj obj, PWR_AttrType type, int* value,
-                                PWR_Time* ts )
-{
-    return PWR_ObjAttrGetValue( obj, type, value, ts );
-}
-
-int PWR_ObjAttrIntSetValue( PWR_Obj obj, PWR_AttrType type, int* value )
-{
-    return PWR_ObjAttrSetValue( obj, type, value );
-}
-
-
-int PWR_ObjAttrFloatGetRange( PWR_Obj obj, PWR_AttrType type, float* min, float* max )
-{
-    return PWR_ObjAttrGetRange(obj, type, min, max ); 
-}
-
-int PWR_ObjAttrFloatGetValue( PWR_Obj obj, PWR_AttrType type, float* value,
-                                    PWR_Time* ts )
-{
-    return PWR_ObjAttrGetValue( obj, type, value, ts );
-}
-
-int PWR_ObjAttrFloatSetValue( PWR_Obj obj, PWR_AttrType type, float* value )
-{
-    return PWR_ObjAttrSetValue( obj, type, value );
-}
-
-int PWR_ObjAttrStringGetValue( PWR_Obj obj, PWR_AttrType type,
-						char* value, int len, PWR_Time* ts  )
-{
-    _Attr* attr = obj->findAttrType( type ); 
-    if ( ! attr ) {
-        return PWR_FAILURE;
-    }	
-    strncpy( (char*)value, 
-         &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], len );
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
-
-    if ( ts ) {
-        *ts = tv.tv_sec * 1000000000;
-        *ts += tv.tv_usec * 1000; 
-    }
-    return PWR_SUCCESS;
-}
-
-
-int PWR_ObjAttrStringSetValue( PWR_Obj obj, PWR_AttrType type,
-						char* value, int len )
-{
-    _Attr* attr = obj->findAttrType( type ); 
-    if ( ! attr ) {
-        return PWR_FAILURE;
-    }	
-    strncpy( &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], 
-                    (char*) value, len );
-    return PWR_SUCCESS;
-}
-
-int PWR_ObjAttrStringGetPossible( PWR_Obj obj, PWR_AttrType type,
-						char* value, int len )
-{
-    _Attr* attr = obj->findAttrType( type ); 
-    if ( ! attr ) {
-        return PWR_FAILURE;
-    }	
-    strncpy( (char*)value, 
-         &static_cast< _AttrStringTemplate<std::string>* >(attr)->possible()[0], len );
-    return PWR_SUCCESS;
+    return PWR_ERR_SUCCESS;
 }
 
 /*
@@ -282,6 +195,37 @@ PWR_Obj PWR_GrpGetObjByName( PWR_Grp group, int i )
     return NULL;
 }
 
+int PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType type, void* ptr,
+                                        size_t len, PWR_Status )
+{
+    return PWR_ERR_FAILURE;
+}
+
+PWR_Status PWR_StatusCreate()
+{
+    return NULL;
+}
+int PWR_StatusDestroy(PWR_Status)
+{
+    return PWR_ERR_FAILURE;
+}
+
+
+int PWR_StatusPopError(PWR_Status, PWR_AttrAccessError* )
+{
+    return PWR_ERR_EMPTY;
+}
+
+int PWR_StatusClear( PWR_Status )
+{
+    return PWR_ERR_FAILURE;
+}
+
+const char* PWR_ObjGetName( PWR_Obj obj )
+{
+    return &obj->name()[0];
+}
+
 const char* PWR_ObjGetTypeString( PWR_ObjType type )
 {
 	switch( type ) {
@@ -291,6 +235,8 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 	case PWR_OBJ_NODE:     return "Node";
 	case PWR_OBJ_SOCKET:   return "Socket";
 	case PWR_OBJ_CORE:     return "Core";
+	case PWR_OBJ_NIC:      return "Nic";
+	case PWR_OBJ_MEM:      return "Memory";
 	}
     return NULL;
 }
@@ -314,16 +260,16 @@ const char* PWR_AttrGetTypeString( PWR_AttrType name )
 int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {
 
 	switch( hint ){
-	case PWR_REGION_SERIAL: return PWR_SUCCESS;
-	case PWR_REGION_PARALLEL: return PWR_SUCCESS;
-	case PWR_REGION_COMPUTE: return PWR_SUCCESS;
-	case PWR_REGION_COMMUNICATE: return PWR_SUCCESS;
+	case PWR_REGION_SERIAL: return PWR_ERR_SUCCESS;
+	case PWR_REGION_PARALLEL: return PWR_ERR_SUCCESS;
+	case PWR_REGION_COMPUTE: return PWR_ERR_SUCCESS;
+	case PWR_REGION_COMMUNICATE: return PWR_ERR_SUCCESS;
 	}	
-    return PWR_FAILURE;
+    return PWR_ERR_FAILURE;
 }
 
 int PWR_TimeConvert( PWR_Time in, time_t* out )
 {
    *out = in / 1000000000;
-    return PWR_SUCCESS;
+    return PWR_ERR_SUCCESS;
 }

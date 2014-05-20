@@ -10,12 +10,14 @@
 typedef struct _Cntxt* PWR_Cntxt;
 typedef struct _Grp*   PWR_Grp;
 typedef struct _Obj*   PWR_Obj;
+typedef struct _Status* PWR_Status;
 
 typedef int PWR_CntxtState;
 
-#define PWR_SUCCESS 0
-#define PWR_FAILURE -1
-#define PWR_NOT_IMPLEMENTED -2
+#define PWR_ERR_SUCCESS 0
+#define PWR_ERR_FAILURE -1
+#define PWR_ERR_NOT_IMPLEMENTED -2
+#define PWR_ERR_EMPTY -3
 
 typedef int64_t PWR_Time; 
 
@@ -61,10 +63,22 @@ typedef enum {
 } PWR_AttrType;
 
 typedef enum {
-    PWR_ATTR_FLOAT,
-    PWR_ATTR_INT,
-    PWR_ATTR_STRING,
-} PWR_AttrValueType;
+    PWR_ATTR_DATA_FLOAT,
+    PWR_ATTR_DATA_INT,
+    PWR_ATTR_DATA_STRING,
+} PWR_AttrDataType;
+
+typedef struct {
+    PWR_AttrType        type; 
+    void*               ptr;
+    size_t              len;
+} PWR_Value;
+
+typedef struct {
+    PWR_Obj      obj;
+    PWR_AttrType type;
+    int          error;
+} PWR_AttrAccessError;
 
 typedef enum {
     PWR_ATTR_UNITS_1,

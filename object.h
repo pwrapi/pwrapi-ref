@@ -14,22 +14,22 @@ struct _Cntxt;
 
 class _Attr {
   public:
-    _Attr( PWR_AttrType name, PWR_AttrValueType type ) :
+    _Attr( PWR_AttrType name, PWR_AttrDataType type ) :
         m_name( name ), 
         m_type( type )
     {}
     virtual ~_Attr() {}
     PWR_AttrType name() { return m_name; }  
-    PWR_AttrValueType type() { return m_type; }
+    PWR_AttrDataType type() { return m_type; }
 
   private:
     PWR_AttrType       m_name;
-    PWR_AttrValueType       m_type;
+    PWR_AttrDataType       m_type;
 };
 
 class _AttrNum : public _Attr {
   public:
-    _AttrNum( PWR_AttrType name, PWR_AttrValueType type, 
+    _AttrNum( PWR_AttrType name, PWR_AttrDataType type, 
                         PWR_AttrUnits unit ) :
         _Attr( name, type ),
         m_unit( unit )
@@ -42,7 +42,7 @@ class _AttrNum : public _Attr {
 template <class T>
 class _AttrNumTemplate : public _AttrNum {
   public:
-    _AttrNumTemplate( PWR_AttrType name, PWR_AttrValueType type, 
+    _AttrNumTemplate( PWR_AttrType name, PWR_AttrDataType type, 
             PWR_AttrUnits unit, T min, T max, T value ) : 
         _AttrNum( name, type, unit ),
         m_min( min ),
@@ -55,9 +55,9 @@ class _AttrNumTemplate : public _AttrNum {
     int value(T value ) { 
         if ( value >= m_min && value <= m_max ) {
             m_value = value; 
-            return PWR_SUCCESS;
+            return PWR_ERR_SUCCESS;
         } else {
-            return PWR_FAILURE; 
+            return PWR_ERR_FAILURE; 
         }
     }
   private:
@@ -69,7 +69,7 @@ class _AttrNumTemplate : public _AttrNum {
 template <class T>
 class _AttrStringTemplate : public _Attr {
   public:
-    _AttrStringTemplate( PWR_AttrType name, PWR_AttrValueType type, 
+    _AttrStringTemplate( PWR_AttrType name, PWR_AttrDataType type, 
                                         T possible, T value ) : 
         _Attr( name, type ),
         m_possible( possible ),
@@ -109,7 +109,7 @@ struct _Grp {
 
     int add( _Obj* obj ) {
         m_list.push_back( obj );
-        return PWR_SUCCESS; 
+        return PWR_ERR_SUCCESS; 
     }
 
     int remove( _Obj* obj ) {
@@ -120,7 +120,7 @@ struct _Grp {
                 break;
             }
         }
-        return PWR_SUCCESS;
+        return PWR_ERR_SUCCESS;
     }
     _Cntxt* getCtx() { return m_ctx; }
 
@@ -167,7 +167,7 @@ struct _Obj {
 
     int attributeAdd( _Attr* attr ) {
         m_attrList.push_back( attr );
-        return PWR_SUCCESS;
+        return PWR_ERR_SUCCESS;
     }
 
   private:
@@ -249,10 +249,10 @@ struct _Cntxt {
             if ( iter->second == grp ) {
                 delete grp;
                 m_groups.erase( iter );
-                return PWR_SUCCESS;
+                return PWR_ERR_SUCCESS;
             }
         } 
-        return PWR_FAILURE;
+        return PWR_ERR_FAILURE;
     }
 
   private:

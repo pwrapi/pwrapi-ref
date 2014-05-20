@@ -7,11 +7,11 @@
 void  printObjInfo( PWR_Obj );
 void  traverseDepth( PWR_Obj );
 const char * attrUnit( PWR_AttrUnits );
-const char * attrValueType( PWR_AttrValueType type );
+const char * attrValueType( PWR_AttrDataType type );
 
 void  printAllAttr( PWR_Obj );
 
-char* getObjName( PWR_Obj obj );
+const char* getObjName( PWR_Obj obj );
 
 int main( int argc, char* argv[] )
 {
@@ -33,7 +33,7 @@ int main( int argc, char* argv[] )
 #endif
     
     ret = PWR_AppHint( object, PWR_REGION_SERIAL ); 
-    assert( ret == PWR_SUCCESS );
+    assert( ret == PWR_ERR_SUCCESS );
     /* would normally check return */
 
     // Get all of the CORE objects
@@ -94,8 +94,8 @@ int main( int argc, char* argv[] )
     } 
 
     // cleanup
-    assert( PWR_SUCCESS == PWR_GrpDestroy( userGrp ) );
-    assert( PWR_SUCCESS == PWR_CntxtDestroy( context ) );
+    assert( PWR_ERR_SUCCESS == PWR_GrpDestroy( userGrp ) );
+    assert( PWR_ERR_SUCCESS == PWR_CntxtDestroy( context ) );
     return 0;
 }
 
@@ -134,19 +134,20 @@ void  printAllAttr( PWR_Obj obj )
 }
 static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
 {
+#if 0
     PWR_Time timeStamp; 
     int intValue[3];
     PWR_AttrUnits scaleValue;
     float floatValue[3];
     #define STRLEN 100
     char stringValue[ STRLEN ], possible[ STRLEN ];
-    PWR_AttrValueType vtype;
+    PWR_AttrDataType vtype;
     PWR_ObjAttrGetValueType( obj, type, &vtype ); 
 
     printf("    Attr `%s` vtype=%s ",
          PWR_AttrGetTypeString( type ), attrValueType(vtype));
     switch ( vtype ) {
-      case PWR_ATTR_FLOAT:
+      case PWR_ATTR_DATA_FLOAT:
 
         PWR_ObjAttrGetUnits( obj, type, &scaleValue );
         PWR_ObjAttrGetRange( obj, type, &floatValue[0], &floatValue[1]);
@@ -157,7 +158,7 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
             floatValue[1], floatValue[2], timeStamp );
         break;
 
-      case PWR_ATTR_INT:
+      case PWR_ATTR_DATA_INT:
         PWR_ObjAttrGetUnits( obj, type, &scaleValue  );
         PWR_ObjAttrGetRange( obj, type, &intValue[0], &intValue[1] );
         PWR_ObjAttrGetValue( obj, type, &intValue[2], &timeStamp ); 
@@ -169,31 +170,29 @@ static void  printObjAttr( PWR_Obj obj, PWR_AttrType type )
             intValue[2], ctime( & tmp )  );
         break;
 
-      case PWR_ATTR_STRING:
+      case PWR_ATTR_DATA_STRING:
     
         PWR_ObjAttrStringGetPossible( obj, type, possible, 100 ),
         PWR_ObjAttrStringGetValue( obj, type, stringValue, 100, &timeStamp );
         printf("possible=`%s` value=`%s`\n", possible, stringValue );
         break;
     }
+#endif
 }
 
-char* getObjName( PWR_Obj obj )
+const char* getObjName( PWR_Obj obj )
 {
-    static char name[100];
-    int ret = PWR_ObjAttrGetValue( obj, PWR_ATTR_NAME, name, NULL );
-    assert( PWR_SUCCESS == ret ); 
-    return name;
+    return PWR_ObjGetName( obj );
 }
 
-const char * attrValueType( PWR_AttrValueType type )
+const char * attrValueType( PWR_AttrDataType type )
 {
     switch( type ) {
-      case PWR_ATTR_FLOAT:
+      case PWR_ATTR_DATA_FLOAT:
         return "float";
-      case PWR_ATTR_INT:
+      case PWR_ATTR_DATA_INT:
         return "int";
-      case PWR_ATTR_STRING:
+      case PWR_ATTR_DATA_STRING:
         return "string";
     }
     return "";
