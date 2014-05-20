@@ -88,7 +88,7 @@ int mchw_pidev_close( mchw_dev_t *dev )
 }
 
 int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
-	mchw_read_type_t type[], float reading[], unsigned long long *timestamp )
+	PWR_AttrType type[], float reading[], unsigned long long *timestamp )
 {
     unsigned int i;
 
@@ -102,14 +102,23 @@ int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
 
     for( i = 0; i < arraysize; i++ ) {
         switch( type[i] ) {
-            case MCHW_READ_VOLTS:
+            case PWR_ATTR_VOLTAGE:
                 reading[i] = pidev_counter.raw.volts;
                 break;
-            case MCHW_READ_AMPS:
+            case PWR_ATTR_CURRENT:
                 reading[i] = pidev_counter.raw.amps;
                 break;
-            case MCHW_READ_WATTS:
+            case PWR_ATTR_POWER:
                 reading[i] = pidev_counter.raw.watts;
+                break;
+            case PWR_ATTR_MIN_POWER:
+                reading[i] = pidev_counter.min.watts;
+                break;
+            case PWR_ATTR_MAX_POWER:
+                reading[i] = pidev_counter.max.watts;
+                break;
+            case PWR_ATTR_ENERGY:
+                reading[i] = pidev_counter.energy;
                 break;
             default:
                 printf( "Error: unknown MCHW reading type requested\n" );
@@ -123,7 +132,7 @@ int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
 }
 
 int mchw_pidev_write( mchw_dev_t dev, unsigned int arraysize,
-	mchw_write_type_t type[], float reading[], unsigned long long *timestamp )
+	PWR_AttrType type[], float setting[], unsigned long long *timestamp )
 {
     return 0;
 }

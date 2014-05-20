@@ -10,9 +10,9 @@ extern "C" {
 int mchw_pidev_open(mchw_dev_t *dev, char *initstr);
 int mchw_pidev_close(mchw_dev_t *dev);
 int mchw_pidev_read(mchw_dev_t dev, unsigned int arraysize,
-	mchw_read_type_t type[], float reading[], unsigned long long *timestamp);
+    PWR_AttrType type[], float reading[], unsigned long long *timestamp);
 int mchw_pidev_write(mchw_dev_t dev, unsigned int arraysize,
-	mchw_write_type_t type[], float reading[], unsigned long long *timestamp);
+    PWR_AttrType type[], float setting[], unsigned long long *timestamp);
 int mchw_pidev_time(mchw_dev_t dev, unsigned long long *time);
 
 #ifdef __cplusplus
