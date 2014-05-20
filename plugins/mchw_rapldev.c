@@ -189,7 +189,7 @@ static int rapldev_read( int fd, int offset, long long *msr )
     return 0;
 }
 
-int mchw_rapldev_init( mchw_dev_t *dev, char *initstr )
+int mchw_rapldev_open( mchw_dev_t *dev, char *initstr )
 {
     char file[80] = "";
     int core = 0;
@@ -260,7 +260,7 @@ int mchw_rapldev_init( mchw_dev_t *dev, char *initstr )
     return 0;
 }
 
-int mchw_rapldev_final( mchw_dev_t *dev )
+int mchw_rapldev_close( mchw_dev_t *dev )
 {
     close( MCHW_RAPLDEV(*dev)->fd );
 
@@ -341,6 +341,12 @@ int mchw_rapldev_read( mchw_dev_t dev, unsigned int arraysize,
         }
     }
 
+    return 0;
+}
+
+int mchw_rapldev_write( mchw_dev_t dev, unsigned int arraysize,
+	mchw_write_type_t type[], float reading[], unsigned long long *timestamp )
+{
     return 0;
 }
 

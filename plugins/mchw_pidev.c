@@ -54,7 +54,7 @@ static int pidev_parse( char *initstr, unsigned int *saddr, unsigned int *sport,
     return 0;
 }
 
-int mchw_pidev_init( mchw_dev_t *dev, char *initstr )
+int mchw_pidev_open( mchw_dev_t *dev, char *initstr )
 {
     unsigned int saddr = 0, sport = 0, port = 0;
 
@@ -74,7 +74,7 @@ int mchw_pidev_init( mchw_dev_t *dev, char *initstr )
     return 0;
 }
 
-int mchw_pidev_final( mchw_dev_t *dev )
+int mchw_pidev_close( mchw_dev_t *dev )
 {
     if( piapi_destroy( &(MCHW_PIDEV(*dev)->cntx) ) < 0 ) {
         printf( "Error: powerinsight hardware finalization failed\n" );
@@ -102,13 +102,13 @@ int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
 
     for( i = 0; i < arraysize; i++ ) {
         switch( type[i] ) {
-            case MCHW_VOLTS:
+            case MCHW_READ_VOLTS:
                 reading[i] = pidev_counter.raw.volts;
                 break;
-            case MCHW_AMPS:
+            case MCHW_READ_AMPS:
                 reading[i] = pidev_counter.raw.amps;
                 break;
-            case MCHW_WATTS:
+            case MCHW_READ_WATTS:
                 reading[i] = pidev_counter.raw.watts;
                 break;
             default:
@@ -119,6 +119,12 @@ int mchw_pidev_read( mchw_dev_t dev, unsigned int arraysize,
     *timestamp = pidev_counter.time_sec*1000000000ULL + 
                  pidev_counter.time_usec*1000;
 
+    return 0;
+}
+
+int mchw_pidev_write( mchw_dev_t dev, unsigned int arraysize,
+	mchw_write_type_t type[], float reading[], unsigned long long *timestamp )
+{
     return 0;
 }
 
