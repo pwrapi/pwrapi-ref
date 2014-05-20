@@ -362,7 +362,9 @@ int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize,
                 return -1;
         }
     }
-    *timestamp = time;
+
+    *timestamp = (unsigned int)time*1000000000ULL + 
+                 (time-(unsigned int)time)*1000000000ULL;
 
     return 0;
 }
