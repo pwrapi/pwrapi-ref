@@ -283,6 +283,7 @@ int mchw_rapldev_close( pwr_dev_t *dev )
 int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize,
 	PWR_AttrType type[], float reading[], unsigned long long *timestamp )
 {
+    unsigned int i;
     long long msr;
     double time = 0;
     double energy = 0;
@@ -351,6 +352,18 @@ int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize,
         }
     }
 
+    for( i = 0; i < arraysize; i++ ) {
+        switch( type[i] ) {
+            case PWR_ATTR_ENERGY:
+                reading[i] = energy;
+                break;
+            default:
+                printf( "Error: unknown MCHW reading type requested\n" );
+                return -1;
+        }
+    }
+    *timestamp = time;
+
     return 0;
 }
 
@@ -362,6 +375,6 @@ int mchw_rapldev_write( pwr_dev_t dev, unsigned int arraysize,
 
 int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *time )
 {
-    return 0;
+    return mchw_rapldev_read( dev, 0, 0x0, 0x0, time );
 }
 

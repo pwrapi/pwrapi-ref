@@ -139,7 +139,6 @@ int mchw_pidev_write( pwr_dev_t dev, unsigned int arraysize,
 
 int mchw_pidev_time( pwr_dev_t dev, unsigned long long *time )
 {
-    mchw_pidev_read( dev, 0, 0x0, 0x0, time );
-    return 0;
+    return mchw_pidev_read( dev, 0, 0x0, 0x0, time );
 }
 
