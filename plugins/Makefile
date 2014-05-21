@@ -10,7 +10,7 @@ CXXFLAGS = ${CFLAGS}
 all:  test
 
 test: ${LIB} main.c
-	$(CC) -Wall -I.. -L. -lplugins -lpiapi main.c -o test
+	$(CC) -Wall -I.. main.c -L. -lplugins -lpiapi -lm -pthread -o test
 
 ${LIB}: ${LIB_OBJS}
 	$(AR) rcs $@ ${LIB_OBJS} 

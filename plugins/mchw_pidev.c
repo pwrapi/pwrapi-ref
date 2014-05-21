@@ -6,6 +6,8 @@
 #include <string.h>
 #include <sched.h>
 
+static int pidev_verbose = 1;
+
 typedef struct {
     void *cntx;
     piapi_port_t port;
@@ -28,15 +30,18 @@ static int pidev_parse( char *initstr, unsigned int *saddr, unsigned int *sport,
     int shift = 24;
     char *token;
 
+    if( pidev_verbose )
+        printf( "Info: received initialization string %s\n", initstr );
+
     *saddr = 0;
-    token = strtok( initstr, "." );
     while( shift >= 0 ) {
-        *saddr |= ( atoi(token) << shift );
-        if( (token = strtok( NULL, "." )) == 0x0) {
+        if( (token = strtok( (shift!=24) ? NULL : initstr, (shift!=0) ? "." : ":" )) == 0x0 ) {
             printf( "Error: invalid server IP address in initialization string %s\n", initstr );
             return -1;
         }
+        *saddr |= ( atoi(token) << shift );
         shift -= 8;
+        printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u)\n", *saddr, *sport );
     }
 
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
@@ -51,6 +56,9 @@ static int pidev_parse( char *initstr, unsigned int *saddr, unsigned int *sport,
     }
     *port = atoi(token);
 
+    if( pidev_verbose )
+        printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u, PORT=%u)\n", *saddr, *sport, *port );
+
     return 0;
 }
 
@@ -58,7 +66,10 @@ int mchw_pidev_open( pwr_dev_t *dev, char *initstr )
 {
     unsigned int saddr = 0, sport = 0, port = 0;
 
-    if( initstr == 0x0 && pidev_parse(initstr, &saddr, &sport, &port) < 0 ) {
+    *dev = malloc( sizeof(mchw_pidev_t) );
+    bzero( *dev, sizeof(mchw_pidev_t) );
+
+    if( initstr == 0x0 || pidev_parse(initstr, &saddr, &sport, &port) < 0 ) {
         printf( "Error: invalid monitor and control hardware initialization string\n" );
         return -1;
     }
@@ -67,9 +78,6 @@ int mchw_pidev_open( pwr_dev_t *dev, char *initstr )
         printf( "Error: powerinsight hardware initialization failed\n" );
         return -1;
     }
-
-    *dev = malloc( sizeof(mchw_pidev_t) );
-    bzero( *dev, sizeof(mchw_pidev_t) );
 
     return 0;
 }
@@ -121,8 +129,8 @@ int mchw_pidev_read( pwr_dev_t dev, unsigned int arraysize,
                 reading[i] = pidev_counter.energy;
                 break;
             default:
-                printf( "Error: unknown MCHW reading type requested\n" );
-                return -1;
+                printf( "Warning: unknown MCHW reading type (%u) requested at position %u\n", type[i], i );
+                break;
         }
     }
     *timestamp = pidev_counter.time_sec*1000000000ULL + 
