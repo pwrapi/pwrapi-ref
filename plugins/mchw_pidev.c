@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sched.h>
 
-static int pidev_verbose = 1;
+static int pidev_verbose = 0;
 
 typedef struct {
     void *cntx;

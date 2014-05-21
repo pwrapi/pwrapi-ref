@@ -76,6 +76,8 @@
 #define MSR(X,Y,Z) (X>>Y&Z)
 #define MSR_BIT(X,Y) (X&(1LL<<Y))
 
+static int rapldev_verbose = 0;
+
 typedef struct {
     int fd;
     int cpu_model;
@@ -117,7 +119,10 @@ static int rapldev_parse( char *initstr, int *core, int *layer )
 {
     char *token;
 
-    if( (token = strtok( NULL, ":" )) == 0x0 ) {
+    if( rapldev_verbose )
+        printf( "Info: received initialization string %s\n", initstr );
+
+    if( (token = strtok( initstr, ":" )) == 0x0 ) {
         printf( "Error: missing core separator in initialization string %s\n", initstr );
         return -1;
     }
@@ -129,6 +134,9 @@ static int rapldev_parse( char *initstr, int *core, int *layer )
     }
     *layer = atoi(token);
  
+    if( rapldev_verbose )
+        printf( "Info: extracted initialization string (CORE=%d, layer=%d)\n", *core, *layer );
+
     return 0;
 }
 
@@ -358,8 +366,8 @@ int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize,
                 reading[i] = energy;
                 break;
             default:
-                printf( "Error: unknown MCHW reading type requested\n" );
-                return -1;
+                printf( "Warning: unknown MCHW reading type requested\n" );
+                return 1;
         }
     }
 
