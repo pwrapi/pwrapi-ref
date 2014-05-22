@@ -8,11 +8,15 @@
 int main( int argc, char* argv[] )
 {
     plugin_dev_t pwr_dev[] = {
-        { mchw_pidev_open, mchw_pidev_close, mchw_pidev_read, mchw_pidev_write, mchw_pidev_time },
+//        { mchw_pidev_open, mchw_pidev_close, mchw_pidev_read, mchw_pidev_write, mchw_pidev_time },
         { mchw_rapldev_open, mchw_rapldev_close, mchw_rapldev_read, mchw_rapldev_write, mchw_rapldev_time },
-        { mchw_xtpmdev_open, mchw_xtpmdev_close, mchw_xtpmdev_read, mchw_xtpmdev_write, mchw_xtpmdev_time }
+//        { mchw_xtpmdev_open, mchw_xtpmdev_close, mchw_xtpmdev_read, mchw_xtpmdev_write, mchw_xtpmdev_time }
     };
-    char initstr[][80] = { "10.54.21.97:20201:1", "0:0", "" };
+    char initstr[][80] = {
+//        "10.54.21.97:20201:1", 
+        "0:0",
+//        ""
+    };
 
     pwr_dev_t dev;
     unsigned int dsize = sizeof(pwr_dev)/sizeof(plugin_dev_t);
