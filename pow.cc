@@ -2,6 +2,7 @@
 #include <string.h>
 #include <sys/time.h>
 
+#include "./status.h"
 #include "./pow.h"
 #include "./object.h"
 #include "./init.h"
@@ -53,7 +54,7 @@ PWR_Obj PWR_ObjGetParent(PWR_Obj obj )
 
 PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
 {
-    return& obj->children();
+    return obj->children();
 }
 
 int PWR_ObjGetNumAttrs( PWR_Obj obj )
@@ -63,7 +64,7 @@ int PWR_ObjGetNumAttrs( PWR_Obj obj )
 
 int PWR_ObjGetAttrTypeByIndx( PWR_Obj obj, int index, PWR_AttrType *value )
 {
-    *value = obj->attributeGet( index )->name();
+    *value = obj->attributeGet( index )->type();
     return PWR_ERR_SUCCESS;
 }
 
@@ -82,8 +83,11 @@ int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
     } else {
         PWR_AttrAccessError err;
         PWR_StatusPopError( status, &err );
-        return err.error;
+        ret = err.error;
     }
+    PWR_StatusDestroy( status );
+
+    return ret;
 }
 
 
@@ -93,21 +97,7 @@ static int foo( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
     if ( ! attr ) {
         return PWR_ERR_FAILURE;
     }	
-    PWR_AttrDataType vType = attr->type();
-    
-    switch( vType ) {
-      case PWR_ATTR_DATA_FLOAT:
-        *(float*)ptr = static_cast< _AttrNumTemplate<float>* >(attr)->value();
-        break;
-      case PWR_ATTR_DATA_INT:
-        *(int*)ptr = static_cast< _AttrNumTemplate<int>* >(attr)->value();
-        break;
-      case PWR_ATTR_DATA_STRING:
-        strcpy( (char*)ptr, 
-         &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0] );
-        break;
-    }
-    return PWR_ERR_SUCCESS;
+    return attr->getValue( ptr, len );
 }
 
 int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
@@ -118,7 +108,7 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
     for ( i = 0; i < num; i++ ) {
         err = foo( obj, values[i].type, values[i].ptr, values[i].len ); 
         if ( PWR_ERR_SUCCESS != err ) { 
-            
+            status->add( obj, values[i].type, err ); 
         }
     }
 
@@ -130,7 +120,11 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
         *ts += tv.tv_usec * 1000; 
     }
 
-    return PWR_ERR_SUCCESS;
+    if ( !status->empty() ) {
+        return PWR_ERR_FAILURE;
+    } else {
+        return PWR_ERR_SUCCESS;
+    }
 }
 
 int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value, size_t len )
@@ -139,25 +133,7 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value, size_t len
     if ( ! attr ) {
         return PWR_ERR_FAILURE;
     }	
-    PWR_AttrDataType vType = attr->type();
-
-    switch( vType ) {
-      case PWR_ATTR_DATA_FLOAT:
-        assert( len == sizeof( float ) );
-        static_cast< _AttrNumTemplate<float>* >(attr)->value( *(float*)value);
-        break;
-
-      case PWR_ATTR_DATA_INT:
-        assert( len == sizeof( int ) );
-        static_cast< _AttrNumTemplate<int>* >(attr)->value( *(int*)value);
-        break;
-
-      case PWR_ATTR_DATA_STRING:
-        strcpy( &static_cast< _AttrStringTemplate<std::string>* >(attr)->value()[0], (char*) value );
-        break;
-    }
-
-    return PWR_ERR_SUCCESS;
+    return attr->setValue( value, len );
 }
 
 /*
@@ -203,7 +179,7 @@ int PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType type, void* ptr,
 
 PWR_Status PWR_StatusCreate()
 {
-    return NULL;
+    return new _Status;
 }
 int PWR_StatusDestroy(PWR_Status)
 {
@@ -211,9 +187,9 @@ int PWR_StatusDestroy(PWR_Status)
 }
 
 
-int PWR_StatusPopError(PWR_Status, PWR_AttrAccessError* )
+int PWR_StatusPopError(PWR_Status status, PWR_AttrAccessError* err )
 {
-    return PWR_ERR_EMPTY;
+    return status->pop( err );
 }
 
 int PWR_StatusClear( PWR_Status )
@@ -237,6 +213,7 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 	case PWR_OBJ_CORE:     return "Core";
 	case PWR_OBJ_NIC:      return "Nic";
 	case PWR_OBJ_MEM:      return "Memory";
+    case PWR_OBJ_INVALID:  return "Invalid";
 	}
     return NULL;
 }
@@ -253,6 +230,7 @@ const char* PWR_AttrGetTypeString( PWR_AttrType name )
 	case PWR_ATTR_VOLTAGE: return "Voltage";
 	case PWR_ATTR_CURRENT: return "Current";
 	case PWR_ATTR_ENERGY: return "Energy";
+	case PWR_ATTR_INVALID: return "Invalid";
 	}	
     return NULL;
 }

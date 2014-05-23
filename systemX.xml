@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+<FFF>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="POWER" op="SUM">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="VOLTAGE" op="INVALID"/>
+        <attr name="CURRENT" op="INVALID"/>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="VOLTAGE" op="INVALID"/>
+        <attr name="CURRENT" op="INVALID"/>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="VOLTAGE" op="INVALID"/>
+        <attr name="CURRENT" op="INVALID"/>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="VOLTAGE" op="INVALID"/>
+        <attr name="CURRENT" op="INVALID"/>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="core0" />
+            <src type="child" name="core0" />
+        </attr>
+        <attr name="VOLTAGE" op="INVALID"/>
+        <attr name="CURRENT" op="INVALID"/>
+    </attributes>
+
+    <children>
+        <child name="core0"/>
+        <child name="core1"/>
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node0.socket0.core0" type="Core" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PI"  >
+                <initString> addr=10.0.0.1 channel=1 </initString>
+            </src>
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PI"  >
+                <initString> addr=10.0.0.1 channel=2 </initString>
+            </src>
+        </attr>
+        <attr name="FREQ" op="" >
+            <src type="plugin" name="PI"  >
+                <initString> addr=10.0.0.1 channel=3 </initString>
+            </src>
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node0.socket0.core1" type="Core" >
+
+    <attributes>
+        <attr type="VOLTAGE" op="" >
+            <src type="plugin" name="PI"  >
+                <initString> addr=10.0.0.1 channel=4 </initString>
+            </src>
+        </attr>
+        <attr type="CURRENT" op="" >
+            <src type="plugin" name="PI"  >
+                <initString> addr=10.0.0.1 channel=5 </initString>
+            </src>
+        </attr>
+        <attr type="FREQ" op="" >
+            <src type="plugin" name="PI"  >
+                <initString> addr=10.0.0.1 channel=6 </initString>
+            </src>
+        </attr>
+    </attributes>
+
+</obj >
+
+</FFF>

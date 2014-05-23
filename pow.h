@@ -28,6 +28,7 @@ int            PWR_CntxtRestore( PWR_Cntxt, PWR_CntxtState );
 */
 
 PWR_ObjType PWR_ObjGetType( PWR_Obj );
+const char* PWR_ObjGetName( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 

@@ -23,10 +23,13 @@ int main( int argc, char* argv[] )
     // Get a context
     PWR_Cntxt context = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );; 
 
+    assert( context );
+    object = PWR_CntxtGetSelf( context );
+    assert( object );
+
     // Get a group that we can add stuff to
     PWR_Grp userGrp = PWR_CntxtCreateGrp( context, "userGrp" );
 
-    object = PWR_CntxtGetSelf( context );
 
 #if 0 
     traverseDepth( PWR_CntxtGetSelf( context ) );

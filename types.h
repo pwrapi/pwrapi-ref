@@ -18,6 +18,7 @@ typedef int PWR_CntxtState;
 #define PWR_ERR_FAILURE -1
 #define PWR_ERR_NOT_IMPLEMENTED -2
 #define PWR_ERR_EMPTY -3
+#define PWR_ERR_INVALID -4
 
 typedef int64_t PWR_Time; 
 
@@ -47,6 +48,7 @@ typedef enum {
     /* */
     PWR_OBJ_MEM,
     PWR_OBJ_NIC,
+    PWR_OBJ_INVALID
 } PWR_ObjType;
 
 typedef enum {
@@ -60,12 +62,14 @@ typedef enum {
     PWR_ATTR_CURRENT,       /* Required Float  */
     PWR_ATTR_ENERGY,        /* Required Float  */
     PWR_ATTR_PSTATE,	    /* Required Int    */
+    PWR_ATTR_INVALID,	    /*  */
 } PWR_AttrType;
 
 typedef enum {
     PWR_ATTR_DATA_FLOAT,
     PWR_ATTR_DATA_INT,
     PWR_ATTR_DATA_STRING,
+    PWR_ATTR_DATA_INVALID,
 } PWR_AttrDataType;
 
 typedef struct {
