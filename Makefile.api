@@ -13,13 +13,15 @@ LIB = libpow.so
 
 XML_OBJS=tinyxml/tinyxml2.o
 
+DEPS = $(LIB_OBJS:.o=.d) 
+
 ${LIB}: ${LIB_OBJS} ${XML_OBJS}
 	$(CC) -shared $(CFLAGS) -o $@ ${LIB_OBJS} ${XML_OBJS}
 
 clean:
-	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} 
+	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} $(DEPS)
 
--include $(LIB_OBJS:.o=.d) 
+-include $(DEPS) 
 
 %.o: %.cc
 	g++ -MM $(CPPFLAGS) $(CXXFLAGS) $*.cc > $*.d

@@ -1,0 +1,24 @@
+
+CFLAGS = -Wall -fPIC -g
+LDFLAGS = -shared
+CC = gcc
+
+LIB_SRC=dummyDev.c
+
+LIB_OBJS = ${LIB_SRC:.c=.o}
+
+LIB = libdummyDev.so
+
+DEPS = $(LIB_OBJS:.o=.d) 
+
+${LIB}: ${LIB_OBJS}
+	$(CC) -shared $(CFLAGS) -o $@ ${LIB_OBJS} 
+
+clean:
+	rm -f test ${LIB} ${LIB_OBJS} $(DEPS)
+
+-include $(DEPS) 
+
+%.o: %.c
+	gcc -MM $(CPPFLAGS) $(CXXFLAGS) $*.c > $*.d
+	gcc $(CPPFLAGS) $(CXXFLAGS) -c $*.c -o $*.o

@@ -1,4 +1,3 @@
-
 #ifndef _PWR_ATTRIBUTESRC_H
 #define _PWR_ATTRIBUTESRC_H
 
