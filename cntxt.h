@@ -30,10 +30,11 @@ struct _Cntxt {
     int groupDestroy( _Grp* grp ) {
         return PWR_ERR_FAILURE;
     }
-    _Grp* findChildren( tinyxml2::XMLElement* );
+    _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
 
   private:
     tinyxml2::XMLElement* XMLFindObject( std::string );
+    void printTree(  tinyxml2::XMLNode* );
     
     std::string m_configFile;
     std::string m_topName;

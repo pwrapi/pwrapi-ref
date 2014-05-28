@@ -13,6 +13,8 @@ static inline PWR_AttrType attrTypeStrToInt( const std::string name )
         return PWR_ATTR_VOLTAGE;
     } else  if ( 0 == name.compare("CURRENT") ) {
         return PWR_ATTR_CURRENT;
+    } else  if ( 0 == name.compare("FREQ") ) {
+        return PWR_ATTR_FREQ;
     }
     return PWR_ATTR_INVALID;
 }

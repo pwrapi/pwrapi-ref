@@ -2,14 +2,15 @@
 #include "./object.h"
 #include "./util.h"
 
+#include "./debug.h"
 
 using namespace tinyxml2;
 
-_Obj::_Obj( _Cntxt* ctx, tinyxml2::XMLElement* el ) :
+_Obj::_Obj( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
     m_ctx(ctx),
-    m_xmlElement(el),
-    m_parent( NULL ),
-    m_children( NULL )
+    m_parent(parent),
+    m_children( NULL ),
+    m_xmlElement(el)
 {
     m_type = objTypeStrToInt( m_xmlElement->Attribute("type") );
 
@@ -17,13 +18,15 @@ _Obj::_Obj( _Cntxt* ctx, tinyxml2::XMLElement* el ) :
 
     m_name = el->Attribute("name");
 
+    DBGX("%s\n",m_name.c_str());
+
     XMLNode* tmp = m_xmlElement->FirstChild();
 
     // find the attributes element
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
-        //printf("%s\n",el->Name());
+        //DBGX("%s\n",el->Name());
 
         if ( 0 == strcmp( el->Name(), "attributes") ) {
             tmp = el->FirstChild();
@@ -36,13 +39,14 @@ _Obj::_Obj( _Cntxt* ctx, tinyxml2::XMLElement* el ) :
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
-        printf("obj=`%s` adding attr=`%s`\n",
+        DBGX("obj=`%s` adding attr=`%s`\n",
                             m_name.c_str(),el->Attribute("name") );
 
         attrAdd( new _Attr( this, el ) ); 
 
         tmp = tmp->NextSibling();
     }
+    DBGX("return %s\n",m_name.c_str());
 }
  
 PWR_ObjType _Obj::type()
@@ -55,15 +59,27 @@ _Obj* _Obj::parent()
     return m_parent; 
 }
 
-_Grp* _Obj::children() 
-{ 
-    if ( m_children ) return m_children; 
-
-    return m_children = m_ctx->findChildren( this->m_xmlElement );
+_Obj* _Obj::findChild( std::string name ) 
+{
+    DBGX("%s\n",name.c_str());
+    if ( ! m_children ) {
+        m_children = m_ctx->findChildren( m_xmlElement, this );
+    }
+    
+    DBGX("%s\n",name.c_str());
+    return m_children->find( name );
 }
 
-_Attr* _Obj::findAttrType( PWR_AttrType type )
+_Grp* _Obj::children() 
+{ 
+    if ( ! m_children ) return m_children; 
+
+    return m_children = m_ctx->findChildren( m_xmlElement, this );
+}
+
+_Attr* _Obj::attrFindType( PWR_AttrType type )
 {
+    //DBGX("%d\n", type );
     std::map<int,_Attr*>::iterator iter;
 
     if ( (iter = m_attrMap.find(type) ) != m_attrMap.end() ) { 

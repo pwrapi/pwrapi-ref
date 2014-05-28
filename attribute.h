@@ -5,10 +5,12 @@
 #include <deque>
 #include <string>
 #include "./types.h"
-#include "./attributeSrc.h"
 #include "tinyxml2.h"
 
+class AttrSrc;
+
 class _Attr {
+
   public:
     _Attr( _Obj* obj, tinyxml2::XMLElement* el  );
     virtual ~_Attr() {
@@ -20,8 +22,9 @@ class _Attr {
     int getValue( void*, size_t len );
     int setValue( void*, size_t len );
 
-    typedef std::deque< AttrSrc* > srcList_t;
   private:
+
+    typedef std::deque< AttrSrc* > srcList_t;
 
     srcList_t* initSrcList( tinyxml2::XMLElement* el );
 

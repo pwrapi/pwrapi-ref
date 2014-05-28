@@ -2,6 +2,8 @@
 #include "./attribute.h"
 #include "./util.h"
 #include "./object.h"
+#include "./attributeSrc.h"
+#include "./debug.h"
 
 using namespace tinyxml2;
 
@@ -14,7 +16,7 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
     m_type = attrTypeStrToInt( el->Attribute("name") );
     assert( PWR_ATTR_INVALID != m_type );
 
-    printf("%s() name=`%s` op=`%s`\n", __func__,
+    DBGX("name=`%s` op=`%s`\n",
                     m_xml->Attribute("name"),m_xml->Attribute("op"));
 
     m_name = m_xml->Attribute("name");
@@ -41,7 +43,8 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
 
 int _Attr::getValue( void* ptr, size_t len ) 
 {
-    printf("%s() %s\n",__func__,m_name.c_str());
+    DBGX("%s %s\n",m_obj->name().c_str(), m_name.c_str());
+
     if ( ! m_srcList ) {
         return PWR_ERR_INVALID;
     } 
@@ -49,6 +52,7 @@ int _Attr::getValue( void* ptr, size_t len )
     srcList_t::iterator iter = m_srcList->begin();
 
     for ( ; iter != m_srcList->end(); ++iter ) {
+        //DBGX("\n");
         (*iter)->get( ptr, len ); 
     }
 
@@ -66,7 +70,7 @@ int _Attr::setValue( void* ptr, size_t len )
 
 _Attr::srcList_t* _Attr::initSrcList( tinyxml2::XMLElement* el )
 {
-    printf("name=`%s` op=`%s`\n",
+    DBGX("%s name=`%s` op=`%s`\n", m_obj->name().c_str(),
                     m_xml->Attribute("name"),m_xml->Attribute("op"));
     XMLNode* tmp = el->FirstChild();
 
@@ -76,17 +80,25 @@ _Attr::srcList_t* _Attr::initSrcList( tinyxml2::XMLElement* el )
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
-        printf("attr src type=`%s` name=`%s`\n", el->Attribute("type"),
-                        el->Attribute("name"));
+        DBGX("attr src type=`%s` name=`%s`\n",
+                el->Attribute("type"), el->Attribute("name"));
 
         if ( 0 == strcmp( "child", el->Attribute("type" ) ) ) {
-            list->push_back( 
-                new ChildSrc( m_obj->findChild( el->Attribute("name") ) ) );
+
+            _Obj* obj = m_obj->findChild( el->Attribute("name") );
+            
+            DBGX("%s %p %s\n",m_obj->name().c_str(),obj,obj->name().c_str());
+            assert( obj );
+            list->push_back( new ChildSrc( m_type, obj ) ); 
+                                
+
         } else if ( 0 == strcmp( "plugin", el->Attribute("type" ) ) )  {
-            list->push_back( new DevSrc( NULL, "" ) );
+            DBGX("\n");
+            list->push_back( new DevSrc( m_type,  NULL, "" ) );
         }
         tmp = tmp->NextSibling();
     }
+    DBGX("return\n");
 
     return list;
 }

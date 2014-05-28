@@ -1,14 +1,14 @@
 
 #include "cntxt.h"
+#include "debug.h"
 
 using namespace tinyxml2;
 
 
-void printTree( XMLNode* node );
-
 _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
             m_top( NULL )
 {
+    DBGX("enter\n");
     // find data base
     // verify type
     // verify role
@@ -20,6 +20,7 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     m_xml->LoadFile( m_configFile.c_str() );
     assert( tinyxml2::XML_SUCCESS == m_xml->ErrorID() );
     //printTree( m_xml->RootElement() );
+    DBGX("return\n");
 }
 
 _Obj* _Cntxt::getSelf() {
@@ -27,11 +28,11 @@ _Obj* _Cntxt::getSelf() {
     XMLElement* el = XMLFindObject( m_topName );
     assert(el);
 
-    _Obj* obj = new _Obj( this, el );
+    _Obj* obj = new _Obj( this, NULL, el );
     return obj;
 }
 
-_Grp* _Cntxt::findChildren( XMLElement* el )
+_Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
 {
     _Grp* grp = NULL;
     const std::string name = el->Attribute("name"); 
@@ -42,7 +43,7 @@ _Grp* _Cntxt::findChildren( XMLElement* el )
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
-        //printf("%s\n",el->Name());
+        //DBGX("%s\n",el->Name());
 
         if ( 0 == strcmp( el->Name(), "children") ) {
             tmp = el->FirstChild();
@@ -58,15 +59,17 @@ _Grp* _Cntxt::findChildren( XMLElement* el )
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
-        //printf("%s %s\n",el->Name(), el->Attribute("name"));
+        DBGX("%s\n", el->Attribute("name"));
         XMLElement* child = XMLFindObject( name + "." + el->Attribute("name") );
         assert( child );
 
-        grp->add( new _Obj( this, child ) );
+        grp->add( new _Obj( this, parent, child ) );
+        DBGX("%s done\n", el->Attribute("name"));
 
         tmp = tmp->NextSibling();
     }
     
+    DBGX("return\n");
     return grp;
 }
 
@@ -95,22 +98,22 @@ XMLElement* _Cntxt::XMLFindObject( const std::string name )
     return NULL;
 }
 
-void printTree( XMLNode* node )
+void _Cntxt::printTree( XMLNode* node )
 {
     XMLElement* el = static_cast<XMLElement*>(node);
 
     if ( NULL == el ) return;
 
     if ( ! strcmp(el->Name(),"obj") ) {
-        printf("%s %s name=`%s`\n",el->Name(),
+        DBGX("%s %s name=`%s`\n",el->Name(),
                 el->Attribute("type"),
                 el->Attribute("name"));
     } else if ( ! strcmp(el->Name(),"child") ) {
-        printf("%s %s\n",el->Name(),el->Attribute("name"));
+        DBGX("%s %s\n",el->Name(),el->Attribute("name"));
     } else if ( ! strcmp(el->Name(),"attr") ) {
-        printf("%s %s\n",el->Name(),el->Attribute("type"));
+        DBGX("%s %s\n",el->Name(),el->Attribute("type"));
     } else {
-       printf("%s \n",el->Name());
+       DBGX("%s \n",el->Name());
     }
 
     if ( ! node->NoChildren() ) {

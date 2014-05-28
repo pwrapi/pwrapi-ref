@@ -93,7 +93,7 @@ int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
 
 static int foo( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
 {
-    _Attr* attr = obj->findAttrType( type ); 
+    _Attr* attr = obj->attrFindType( type ); 
     if ( ! attr ) {
         return PWR_ERR_FAILURE;
     }	
@@ -129,11 +129,7 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
 
 int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value, size_t len )
 {
-    _Attr* attr = obj->findAttrType( type ); 
-    if ( ! attr ) {
-        return PWR_ERR_FAILURE;
-    }	
-    return attr->setValue( value, len );
+    return obj->attrSetValue( type, value, len ); 
 }
 
 /*
