@@ -8,10 +8,13 @@
 using namespace tinyxml2;
 
 
+static void fpSum( int num, void* out, void* in );  
+
 _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
     m_obj( obj ),
     m_xml( el ),
-    m_srcList( NULL )
+    m_srcList( NULL ),
+    m_op( NULL )
 {
     m_type = attrTypeStrToInt( el->Attribute("name") );
     assert( PWR_ATTR_INVALID != m_type );
@@ -21,6 +24,10 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
 
     m_name = m_xml->Attribute("name");
     m_dataType = attrTypeToDataType( m_type );
+
+    if ( 0 == strcmp( "SUM", m_xml->Attribute("op") ) ) {
+        m_op = fpSum;
+    }
 
     switch ( m_dataType ) {
       case PWR_ATTR_DATA_FLOAT:
@@ -44,6 +51,7 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
 int _Attr::getValue( void* ptr, size_t len ) 
 {
     DBGX("%s %s\n",m_obj->name().c_str(), m_name.c_str());
+    if ( len > m_len ) return PWR_ERR_LENGTH; 
 
     if ( ! m_srcList ) {
         return PWR_ERR_INVALID;
@@ -51,16 +59,25 @@ int _Attr::getValue( void* ptr, size_t len )
 
     srcList_t::iterator iter = m_srcList->begin();
 
+    unsigned char * buf = (unsigned char* )malloc( len * m_srcList->size() );
+    int num = 0;
     for ( ; iter != m_srcList->end(); ++iter ) {
         //DBGX("\n");
-        (*iter)->get( ptr, len ); 
+        
+        (*iter)->get( buf + len*num, len ); 
+        ++num;
     }
+
+    assert( m_op );
+    m_op( num, ptr, buf );
+    
 
     return PWR_ERR_SUCCESS;
 }
 
 int _Attr::setValue( void* ptr, size_t len )
 {
+    if ( len > m_len ) return PWR_ERR_LENGTH; 
     if ( ! m_srcList ) {
         return PWR_ERR_INVALID;
     } 
@@ -101,4 +118,17 @@ _Attr::srcList_t* _Attr::initSrcList( tinyxml2::XMLElement* el )
     DBGX("return\n");
 
     return list;
+}
+
+static void fpSum( int num, void* _out, void* _in )
+{
+    float *out = (float*) _out;
+    float* in  = (float*) _in;
+    *out = in[0];
+     
+    //printf("%s() i=%d val=%f\n",__func__, 0, in[0]);
+    for ( int i = 1; i < num ;i++  ) {
+        //printf("%s() i=%d val=%f\n",__func__, i, in[i]);
+        *out += in[i];
+    }
 }

@@ -36,6 +36,7 @@ class _Attr {
     size_t                  m_len;
     
     srcList_t*              m_srcList;
+    void                  (*m_op)( int num, void* out, void* in ); 
 };
 
 #endif

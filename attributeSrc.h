@@ -5,7 +5,7 @@
 #include <string>
 #include "./types.h"
 #include "./object.h"
-#include "mchw.h"
+#include "./dev.h"
 #include "./debug.h"
 
 
@@ -16,21 +16,32 @@ class AttrSrc {
   protected:
     PWR_AttrType    m_type;
     _Obj*           m_obj;
-    mchw_t*         m_dev;
+    plugin_dev_t*   m_dev;
+    pwr_dev_t*      m_devInfo;
   private:
 };
 
 class DevSrc : public AttrSrc {
   public:
-    DevSrc( PWR_AttrType type, mchw_t* dev, std::string initStr ) : 
+    DevSrc( PWR_AttrType type, plugin_dev_t* dev, std::string initStr ) : 
         AttrSrc( type )
     {    
         m_dev = dev;
+#if 0
+        assert(0);
+        m_devInfo = dev->open( initStr.c_str());
+        assert( m_devInfo );
+#endif
+        m_devInfo = NULL;
     }
 
-    virtual int get( void*, size_t ) {
+    virtual int get( void* ptr, size_t len ) {
 //        DBGX("\n");
-        return 0;
+        PWR_AttrType type = PWR_ATTR_POWER;
+        float value; 
+        assert( m_devInfo );
+        unsigned long long ts;
+        return m_dev->read( m_devInfo, 1, &type, &value, &ts );
     }
 };
 

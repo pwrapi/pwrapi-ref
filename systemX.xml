@@ -97,7 +97,7 @@
                 <initString> addr=10.0.0.1 channel=2 </initString>
             </src>
         </attr>
-        <attr name="POWER" op="" >
+        <attr name="POWER" op="SUM" >
             <src type="plugin" name="PI"  >
                 <initString> addr=10.0.0.1 channel=3 </initString>
             </src>
@@ -119,7 +119,7 @@
                 <initString> addr=10.0.0.1 channel=5 </initString>
             </src>
         </attr>
-        <attr name="POWER" op="" >
+        <attr name="POWER" op="SUM" >
             <src type="plugin" name="PI"  >
                 <initString> addr=10.0.0.1 channel=6 </initString>
             </src>

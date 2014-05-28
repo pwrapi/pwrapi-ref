@@ -9,7 +9,7 @@ extern "C" {
 
 typedef void* pwr_dev_t;
 
-typedef int (*pwr_open_t)(pwr_dev_t *dev, char *initstr);
+typedef pwr_dev_t* (*pwr_open_t)( const char *initstr );
 typedef int (*pwr_close_t)(pwr_dev_t *dev);
 typedef int (*pwr_read_t)(pwr_dev_t dev, unsigned int arraysize,
     PWR_AttrType type[], float reading[], unsigned long long *timestamp);

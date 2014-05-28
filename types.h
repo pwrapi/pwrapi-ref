@@ -19,6 +19,7 @@ typedef int PWR_CntxtState;
 #define PWR_ERR_NOT_IMPLEMENTED -2
 #define PWR_ERR_EMPTY -3
 #define PWR_ERR_INVALID -4
+#define PWR_ERR_LENGTH -5
 
 typedef int64_t PWR_Time; 
 
