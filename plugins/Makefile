@@ -1,4 +1,4 @@
-LIB_SRC=mchw_pidev.c mchw_rapldev.c mchw_xtpmdev.c
+LIB_SRC=mchw_pidev.c mchw_rapldev.c mchw_xtpmdev.c oshw_cpudev.c
 
 LIB_OBJS = ${LIB_SRC:.c=.o}
 
