@@ -1,4 +1,5 @@
 
+CPPFLAGS = -I..
 CFLAGS = -Wall -fPIC -g
 LDFLAGS = -shared
 CC = gcc
@@ -7,12 +8,12 @@ LIB_SRC=dummyDev.c
 
 LIB_OBJS = ${LIB_SRC:.c=.o}
 
-LIB = libdummyDev.so
+LIB = libdummyDev.dylib
 
 DEPS = $(LIB_OBJS:.o=.d) 
 
 ${LIB}: ${LIB_OBJS}
-	$(CC) -shared $(CFLAGS) -o $@ ${LIB_OBJS} 
+	$(CC) -dynamiclib $(CFLAGS) -o $@ ${LIB_OBJS} 
 
 clean:
 	rm -f test ${LIB} ${LIB_OBJS} $(DEPS)

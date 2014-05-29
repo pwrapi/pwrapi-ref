@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 
-<FFF>
+<System>
+
+<Devices>
+    <dev name="Dummy" lib="libdummyDev.dylib"/>
+</Devices>
+
+<Objects>
 
 <obj name="plat" type="Platform">
 
@@ -88,17 +94,17 @@
 
     <attributes>
         <attr name="VOLTAGE" op="">
-            <src type="plugin" name="PI"  >
+            <src type="plugin" name="Dummy"  >
                 <initString> addr=10.0.0.1 channel=1 </initString>
             </src>
         </attr>
         <attr name="CURRENT" op="" >
-            <src type="plugin" name="PI"  >
+            <src type="plugin" name="Dummy"  >
                 <initString> addr=10.0.0.1 channel=2 </initString>
             </src>
         </attr>
         <attr name="POWER" op="SUM" >
-            <src type="plugin" name="PI"  >
+            <src type="plugin" name="Dummy"  >
                 <initString> addr=10.0.0.1 channel=3 </initString>
             </src>
         </attr>
@@ -110,17 +116,17 @@
 
     <attributes>
         <attr name="VOLTAGE" op="" >
-            <src type="plugin" name="PI"  >
+            <src type="plugin" name="Dummy"  >
                 <initString> addr=10.0.0.1 channel=4 </initString>
             </src>
         </attr>
         <attr name="CURRENT" op="" >
-            <src type="plugin" name="PI"  >
+            <src type="plugin" name="Dummy"  >
                 <initString> addr=10.0.0.1 channel=5 </initString>
             </src>
         </attr>
         <attr name="POWER" op="SUM" >
-            <src type="plugin" name="PI"  >
+            <src type="plugin" name="Dummy"  >
                 <initString> addr=10.0.0.1 channel=6 </initString>
             </src>
         </attr>
@@ -128,4 +134,5 @@
 
 </obj >
 
-</FFF>
+</Objects>
+</System>

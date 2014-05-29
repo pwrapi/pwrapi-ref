@@ -59,6 +59,10 @@ _Obj* _Obj::parent()
     return m_parent; 
 }
 
+plugin_dev_t* _Obj::findDev( const std::string name ) {
+    return m_ctx->findDev( name );
+}
+
 _Obj* _Obj::findChild( std::string name ) 
 {
     DBGX("%s\n",name.c_str());

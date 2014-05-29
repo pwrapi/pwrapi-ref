@@ -97,25 +97,35 @@ _Attr::srcList_t* _Attr::initSrcList( tinyxml2::XMLElement* el )
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
+#if 0
         DBGX("attr src type=`%s` name=`%s`\n",
                 el->Attribute("type"), el->Attribute("name"));
+#endif
 
         if ( 0 == strcmp( "child", el->Attribute("type" ) ) ) {
 
             _Obj* obj = m_obj->findChild( el->Attribute("name") );
             
+#if 0
             DBGX("%s %p %s\n",m_obj->name().c_str(),obj,obj->name().c_str());
+#endif
             assert( obj );
             list->push_back( new ChildSrc( m_type, obj ) ); 
                                 
 
         } else if ( 0 == strcmp( "plugin", el->Attribute("type" ) ) )  {
-            DBGX("\n");
-            list->push_back( new DevSrc( m_type,  NULL, "" ) );
+
+            DBGX("plugin name=`%s`\n",el->Attribute("name"));
+            plugin_dev_t* dev = m_obj->findDev( el->Attribute("name") );
+            assert( dev );
+
+            list->push_back( new DevSrc( m_type,  dev, "" ) );
         }
         tmp = tmp->NextSibling();
     }
+#if 0
     DBGX("return\n");
+#endif
 
     return list;
 }

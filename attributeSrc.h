@@ -16,7 +16,7 @@ class AttrSrc {
     PWR_AttrType    m_type;
     _Obj*           m_obj;
     plugin_dev_t*   m_dev;
-    pwr_dev_t*      m_devInfo;
+    pwr_dev_t      m_devInfo;
   private:
 };
 
@@ -26,21 +26,20 @@ class DevSrc : public AttrSrc {
         AttrSrc( type )
     {    
         m_dev = dev;
-#if 0
-        assert(0);
         m_devInfo = dev->open( initStr.c_str());
         assert( m_devInfo );
-#endif
         m_devInfo = NULL;
     }
 
     virtual int get( void* ptr, size_t len ) {
 //        DBGX("\n");
         PWR_AttrType type = PWR_ATTR_POWER;
-        float value; 
-        assert( m_devInfo );
-        unsigned long long ts;
-        return m_dev->read( m_devInfo, 1, &type, &value, &ts );
+        PWR_Value value;
+        //float value; 
+        //unsigned long long ts;
+        int retval = m_dev->read( m_devInfo, 1, &value );
+        //DBGX("value=%f\n",value); 
+        return retval;
     }
 };
 

@@ -3,7 +3,8 @@
 
 #include "tinyxml2.h"
 
-#include "object.h"
+#include "./object.h"
+#include "./dev.h"
 
 struct _Cntxt {
 
@@ -32,15 +33,20 @@ struct _Cntxt {
     }
     _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
 
+    plugin_dev_t* findDev( const std::string );
+
   private:
     tinyxml2::XMLElement* XMLFindObject( std::string );
     void printTree(  tinyxml2::XMLNode* );
+    void initDevices( tinyxml2::XMLElement* );
     
     std::string m_configFile;
     std::string m_topName;
     _Obj*       m_top;
 
     tinyxml2::XMLDocument* m_xml;
+
+    std::map<std::string,std::string> m_devMap;
 };
 
 #if 0

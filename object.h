@@ -14,6 +14,7 @@
 #include "./util.h"
 #include "./attribute.h"
 #include "./debug.h"
+#include "./dev.h"
 
 struct _Grp;
 struct _Cntxt;
@@ -54,7 +55,8 @@ struct _Obj {
         return attrFindType( type)->setValue( ptr, len ); 
     }
 
-    _Obj* findChild( std::string name );
+    _Obj* findChild( const std::string name );
+    plugin_dev_t* findDev( const std::string name );
 
   private:
     _Cntxt*     m_ctx;
