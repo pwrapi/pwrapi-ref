@@ -115,7 +115,7 @@ typedef struct {
 
 #define MCHW_RAPLDEV(X) ((mchw_rapldev_t *)(X))
 
-static int rapldev_parse( char *initstr, int *core, int *layer )
+static int rapldev_parse( const char *initstr, int *core, int *layer )
 {
     char *token;
 
@@ -207,119 +207,116 @@ static int rapldev_read( int fd, int offset, long long *msr )
     return 0;
 }
 
-int mchw_rapldev_open( pwr_dev_t *dev, char *initstr )
+pwr_dev_t mchw_rapldev_open( const char *initstr )
 {
     char file[80] = "";
     int core = 0;
     long long msr;
-    *dev = malloc( sizeof(mchw_rapldev_t) );
+    pwr_dev_t *dev = malloc( sizeof(mchw_rapldev_t) );
 
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device open\n" );
 
-    if( rapldev_parse( initstr, &core, (int *)(&(MCHW_RAPLDEV(*dev)->layer)) ) < 0 ) {
+    if( rapldev_parse( initstr, &core, (int *)(&(MCHW_RAPLDEV(dev)->layer)) ) < 0 ) {
         printf( "Error: MCHW RAPL device initialization string %s invalid\n", initstr );
-        return -1;
+        return 0x0;
     }
 
-    if( rapldev_identify( &(MCHW_RAPLDEV(*dev)->cpu_model) ) < 0 ) {
+    if( rapldev_identify( &(MCHW_RAPLDEV(dev)->cpu_model) ) < 0 ) {
         printf( "Error: MCHW RAPL device model identification failed\n" );
-        return -1;
+        return 0x0;
     }
 
     sprintf( file, "/dev/cpu/%d/msr", core );
-    if( (MCHW_RAPLDEV(*dev)->fd=open( file, O_RDONLY )) < 0 ) {
+    if( (MCHW_RAPLDEV(dev)->fd=open( file, O_RDONLY )) < 0 ) {
         printf( "Error: MCHW RAPL device open failed\n" );
-        return -1;
+        return 0x0;
     }
 
-    if( rapldev_read( MCHW_RAPLDEV(*dev)->fd, MSR_RAPL_POWER_UNIT, &msr ) < 0 ) {
+    if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_RAPL_POWER_UNIT, &msr ) < 0 ) {
         printf( "Error: MCHW RAPL device read failed\n" );
-        return -1;
+        return 0x0;
     }
-    MCHW_RAPLDEV(*dev)->units.power = 
+    MCHW_RAPLDEV(dev)->units.power = 
         pow( 0.5, (double)(MSR(msr, POWER_UNITS_SHIFT, POWER_UNITS_MASK)) );
-    MCHW_RAPLDEV(*dev)->units.energy = 
+    MCHW_RAPLDEV(dev)->units.energy = 
         pow( 0.5, (double)(MSR(msr, ENERGY_UNITS_SHIFT, ENERGY_UNITS_MASK)) );
-    MCHW_RAPLDEV(*dev)->units.time =
+    MCHW_RAPLDEV(dev)->units.time =
         pow( 0.5, (double)(MSR(msr, TIME_UNITS_SHIFT, TIME_UNITS_MASK)) );
 
     if( rapldev_verbose ) {
-        printf( "Info: units.power    - %g\n", MCHW_RAPLDEV(*dev)->units.power );
-        printf( "Info: units.energy   - %g\n", MCHW_RAPLDEV(*dev)->units.energy );
-        printf( "Info: units.time     - %g\n", MCHW_RAPLDEV(*dev)->units.time );
+        printf( "Info: units.power    - %g\n", MCHW_RAPLDEV(dev)->units.power );
+        printf( "Info: units.energy   - %g\n", MCHW_RAPLDEV(dev)->units.energy );
+        printf( "Info: units.time     - %g\n", MCHW_RAPLDEV(dev)->units.time );
     }
 
-    if( rapldev_read( MCHW_RAPLDEV(*dev)->fd, MSR_POWER_INFO, &msr ) < 0 ) {
+    if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_POWER_INFO, &msr ) < 0 ) {
         printf( "Error: MCHW RAPL device read failed\n" );
-        return -1;
+        return 0x0;
     }
-    MCHW_RAPLDEV(*dev)->power.thermal =
+    MCHW_RAPLDEV(dev)->power.thermal =
         (double)(MSR(msr, THERMAL_POWER_SHIFT, THERMAL_POWER_MASK));
-    MCHW_RAPLDEV(*dev)->power.minimum =
+    MCHW_RAPLDEV(dev)->power.minimum =
         (double)(MSR(msr, MINIMUM_POWER_SHIFT, MINIMUM_POWER_MASK));
-    MCHW_RAPLDEV(*dev)->power.maximum =
+    MCHW_RAPLDEV(dev)->power.maximum =
         (double)(MSR(msr, MAXIMUM_POWER_SHIFT, MAXIMUM_POWER_MASK));
-    MCHW_RAPLDEV(*dev)->power.window =
+    MCHW_RAPLDEV(dev)->power.window =
         (double)(MSR(msr, WINDOW_POWER_SHIFT, WINDOW_POWER_MASK));
 
     if( rapldev_verbose ) {
-        printf( "Info: power.thermal  - %g\n", MCHW_RAPLDEV(*dev)->power.thermal );
-        printf( "Info: power.minimum  - %g\n", MCHW_RAPLDEV(*dev)->power.minimum );
-        printf( "Info: power.maximum  - %g\n", MCHW_RAPLDEV(*dev)->power.maximum );
-        printf( "Info: power.window   - %g\n", MCHW_RAPLDEV(*dev)->power.window );
+        printf( "Info: power.thermal  - %g\n", MCHW_RAPLDEV(dev)->power.thermal );
+        printf( "Info: power.minimum  - %g\n", MCHW_RAPLDEV(dev)->power.minimum );
+        printf( "Info: power.maximum  - %g\n", MCHW_RAPLDEV(dev)->power.maximum );
+        printf( "Info: power.window   - %g\n", MCHW_RAPLDEV(dev)->power.window );
     }
 
-    if( rapldev_read( MCHW_RAPLDEV(*dev)->fd, MSR_POWER_LIMIT, &msr ) < 0 ) {
+    if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_POWER_LIMIT, &msr ) < 0 ) {
         printf( "Error: MCHW RAPL device read failed\n" );
-        return -1;
+        return 0x0;
     }
-    MCHW_RAPLDEV(*dev)->limit.power1 =
+    MCHW_RAPLDEV(dev)->limit.power1 =
         (double)(MSR(msr, POWER1_LIMIT_SHIFT, POWER1_LIMIT_MASK));
-    MCHW_RAPLDEV(*dev)->limit.window1 =
+    MCHW_RAPLDEV(dev)->limit.window1 =
         (double)(MSR(msr, WINDOW1_LIMIT_SHIFT, WINDOW1_LIMIT_MASK));
-    MCHW_RAPLDEV(*dev)->limit.enabled1 =
+    MCHW_RAPLDEV(dev)->limit.enabled1 =
         (unsigned short)(MSR_BIT(msr, ENABLED1_LIMIT_BIT));
-    MCHW_RAPLDEV(*dev)->limit.clamped1 =
+    MCHW_RAPLDEV(dev)->limit.clamped1 =
         (unsigned short)(MSR_BIT(msr, CLAMPED1_LIMIT_BIT));
-    MCHW_RAPLDEV(*dev)->limit.power2 =
+    MCHW_RAPLDEV(dev)->limit.power2 =
         (double)(MSR(msr, POWER2_LIMIT_SHIFT, POWER2_LIMIT_MASK));
-    MCHW_RAPLDEV(*dev)->limit.window2 =
+    MCHW_RAPLDEV(dev)->limit.window2 =
         (double)(MSR(msr, WINDOW2_LIMIT_SHIFT, WINDOW2_LIMIT_MASK));
-    MCHW_RAPLDEV(*dev)->limit.enabled2 =
+    MCHW_RAPLDEV(dev)->limit.enabled2 =
         (unsigned short)(MSR_BIT(msr, ENABLED2_LIMIT_BIT));
-    MCHW_RAPLDEV(*dev)->limit.clamped2 =
+    MCHW_RAPLDEV(dev)->limit.clamped2 =
         (unsigned short)(MSR_BIT(msr, CLAMPED2_LIMIT_BIT));
  
     if( rapldev_verbose ) {
-        printf( "Info: limit.power1   - %g\n", MCHW_RAPLDEV(*dev)->limit.power1 );
-        printf( "Info: limit.window1  - %g\n", MCHW_RAPLDEV(*dev)->limit.window1 );
-        printf( "Info: limit.enabled1 - %u\n", MCHW_RAPLDEV(*dev)->limit.enabled1 );
-        printf( "Info: limit.clamped1 - %u\n", MCHW_RAPLDEV(*dev)->limit.clamped1 );
-        printf( "Info: limit.power2   - %g\n", MCHW_RAPLDEV(*dev)->limit.power1 );
-        printf( "Info: limit.window2  - %g\n", MCHW_RAPLDEV(*dev)->limit.window1 );
-        printf( "Info: limit.enabled2 - %u\n", MCHW_RAPLDEV(*dev)->limit.enabled2 );
-        printf( "Info: limit.clamped2 - %u\n", MCHW_RAPLDEV(*dev)->limit.clamped2 );
+        printf( "Info: limit.power1   - %g\n", MCHW_RAPLDEV(dev)->limit.power1 );
+        printf( "Info: limit.window1  - %g\n", MCHW_RAPLDEV(dev)->limit.window1 );
+        printf( "Info: limit.enabled1 - %u\n", MCHW_RAPLDEV(dev)->limit.enabled1 );
+        printf( "Info: limit.clamped1 - %u\n", MCHW_RAPLDEV(dev)->limit.clamped1 );
+        printf( "Info: limit.power2   - %g\n", MCHW_RAPLDEV(dev)->limit.power1 );
+        printf( "Info: limit.window2  - %g\n", MCHW_RAPLDEV(dev)->limit.window1 );
+        printf( "Info: limit.enabled2 - %u\n", MCHW_RAPLDEV(dev)->limit.enabled2 );
+        printf( "Info: limit.clamped2 - %u\n", MCHW_RAPLDEV(dev)->limit.clamped2 );
     }
 
-    return 0;
+    return dev;
 }
 
-int mchw_rapldev_close( pwr_dev_t *dev )
+int mchw_rapldev_close( pwr_dev_t dev )
 {
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device close\n" );
 
-    close( MCHW_RAPLDEV(*dev)->fd );
-
-    free( *dev );
-    *dev = 0x0;
+    close( MCHW_RAPLDEV(dev)->fd );
+    free( dev );
 
     return 0;
 }
 
-int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize,
-	PWR_AttrType type[], float reading[], unsigned long long *timestamp )
+int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
 {
     unsigned int i;
     long long msr;
@@ -394,24 +391,23 @@ int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize,
     }
 
     for( i = 0; i < arraysize; i++ ) {
-        switch( type[i] ) {
+        switch( value[i].type ) {
             case PWR_ATTR_ENERGY:
-                reading[i] = energy;
+                *((float *)value[i].ptr) = energy;
                 break;
             default:
                 printf( "Warning: unknown MCHW reading type requested\n" );
                 return 1;
         }
+        value[i].len = sizeof(float);
+        value[i].timeStamp = (unsigned int)time*1000000000ULL + 
+                             (time-(unsigned int)time)*1000000000ULL;
     }
-
-    *timestamp = (unsigned int)time*1000000000ULL + 
-                 (time-(unsigned int)time)*1000000000ULL;
 
     return 0;
 }
 
-int mchw_rapldev_write( pwr_dev_t dev, unsigned int arraysize,
-	PWR_AttrType type[], float setting[], unsigned long long *timestamp )
+int mchw_rapldev_write( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
 {
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device write\n" );
@@ -421,9 +417,18 @@ int mchw_rapldev_write( pwr_dev_t dev, unsigned int arraysize,
 
 int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *time )
 {
+    PWR_Value value[1];
+
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device time\n" );
 
-    return mchw_rapldev_read( dev, 0, 0x0, 0x0, time );
+    value[0].type = PWR_ATTR_POWER;
+    value[0].ptr = malloc(sizeof(float));
+    value[0].len = sizeof(float);
+
+    mchw_rapldev_read( dev, 1, value );
+    *time = value[0].timeStamp;
+
+    return 0;
 }
 

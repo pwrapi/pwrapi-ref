@@ -35,7 +35,7 @@ int main( int argc, char* argv[] )
     setting[0] = 20; setting[1] = 120;
 
     for( i = 0; i < dsize; i++ ) {
-        if( pwr_dev[i].open( &dev, initstr[i] ) < 0 ) {
+        if( (dev=pwr_dev[i].open( initstr[i] )) == 0x0 ) {
             printf( "Error opening power device #%u\n", i );
             return -1;
         }
@@ -60,7 +60,7 @@ int main( int argc, char* argv[] )
             }
         }
  
-        if( pwr_dev[i].close( &dev ) < 0 ) {
+        if( pwr_dev[i].close( dev ) < 0 ) {
             printf( "Error closing power device #%u\n", i );
             return -1;
         }

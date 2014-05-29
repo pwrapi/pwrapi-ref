@@ -89,24 +89,22 @@ int parallel_hint(PWR_Obj obj, PWR_Hint hint, int parallel)
     return 0;
 }
 
-int oshw_cpudev_open( pwr_dev_t *dev, char *initstr )
+pwr_dev_t oshw_cpudev_open( const char *initstr )
+{
+    return 0x0;
+}
+
+int oshw_cpudev_close( pwr_dev_t dev )
 {
     return 0;
 }
 
-int oshw_cpudev_close( pwr_dev_t *dev )
+int oshw_cpudev_read( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
 {
     return 0;
 }
 
-int oshw_cpudev_read( pwr_dev_t dev, unsigned int arraysize,
-    PWR_AttrType type[], float reading[], unsigned long long *timestamp )
-{
-    return 0;
-}
-
-int oshw_cpudev_write( pwr_dev_t dev, unsigned int arraysize,
-    PWR_AttrType type[], float setting[], unsigned long long *timestamp )
+int oshw_cpudev_write( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
 {
     return 0;
 }
