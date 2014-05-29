@@ -77,6 +77,7 @@ typedef struct {
     PWR_AttrType        type; 
     void*               ptr;
     size_t              len;
+    PWR_Time            timeStamp;
 } PWR_Value;
 
 typedef struct {
