@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <typeinfo>
 
 #include "tinyxml2.h"
 
