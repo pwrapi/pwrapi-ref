@@ -122,7 +122,7 @@ static int rapldev_parse( const char *initstr, int *core, int *layer )
     if( rapldev_verbose )
         printf( "Info: received initialization string %s\n", initstr );
 
-    if( (token = strtok( initstr, ":" )) == 0x0 ) {
+    if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
         printf( "Error: missing core separator in initialization string %s\n", initstr );
         return -1;
     }

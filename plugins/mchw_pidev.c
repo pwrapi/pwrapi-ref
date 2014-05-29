@@ -35,7 +35,7 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
 
     *saddr = 0;
     while( shift >= 0 ) {
-        if( (token = strtok( (shift!=24) ? NULL : initstr, (shift!=0) ? "." : ":" )) == 0x0 ) {
+        if( (token = strtok( (shift!=24) ? NULL : (char *)initstr, (shift!=0) ? "." : ":" )) == 0x0 ) {
             printf( "Error: invalid server IP address in initialization string %s\n", initstr );
             return -1;
         }
