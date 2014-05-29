@@ -32,13 +32,14 @@ class DevSrc : public AttrSrc {
     }
 
     virtual int get( void* ptr, size_t len ) {
-//        DBGX("\n");
-        PWR_AttrType type = PWR_ATTR_POWER;
+        float f; 
         PWR_Value value;
-        //float value; 
-        //unsigned long long ts;
+        value.type = PWR_ATTR_POWER;
+        value.ptr = &f;
+        value.len = sizeof(f);
         int retval = m_dev->read( m_devInfo, 1, &value );
-        //DBGX("value=%f\n",value); 
+        DBGX("value=%f\n",f); 
+        *(float*)ptr = f;
         return retval;
     }
 };

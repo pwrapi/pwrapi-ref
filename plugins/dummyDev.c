@@ -20,24 +20,22 @@ static int close( pwr_dev_t dev)
     free( dev );
 }
 
-static int read( pwr_dev_t dev, unsigned int arraysize,
-    PWR_AttrType type[], float reading[], unsigned long long *timestamp)
+static int read( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[] )
 {
     int i;
     printf("dummyDev::%s()\n",__func__);
     for ( i = 0; i < arraysize; i++ ) {
-        printf("dummyDev::%s() %d\n",__func__, type[i]);
-        reading[i] = 10.12011;
+        printf("dummyDev::%s() %d\n",__func__, values[i].type);
+        *(float*)values[i].ptr = 10.12011;
     }
 }
 
-static int write( pwr_dev_t dev, unsigned int arraysize,
-    PWR_AttrType type[], float setting[], unsigned long long *timestamp)
+static int write( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[] )
 {
     int i;
     printf("dummyDev::%s()\n",__func__);
     for ( i = 0; i < arraysize; i++ ) {
-        printf("dummyDev::%s() %d %f\n",__func__, type[i],setting[i]);
+        printf("dummyDev::%s() %d %f\n",__func__, values[i].type, *(float*) values[i].ptr);
     }
 }
 
