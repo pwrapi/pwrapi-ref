@@ -39,6 +39,8 @@ static inline PWR_AttrDataType attrTypeToDataType( PWR_AttrType type )
         return PWR_ATTR_DATA_FLOAT;
     case PWR_ATTR_INVALID:
         break;
+    default:
+        assert(0);
     }
     return PWR_ATTR_DATA_INVALID;
 }

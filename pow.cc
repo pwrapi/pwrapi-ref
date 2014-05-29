@@ -227,6 +227,8 @@ const char* PWR_AttrGetTypeString( PWR_AttrType name )
 	case PWR_ATTR_CURRENT: return "Current";
 	case PWR_ATTR_ENERGY: return "Energy";
 	case PWR_ATTR_INVALID: return "Invalid";
+    default:
+        assert(0);
 	}	
     return NULL;
 }
