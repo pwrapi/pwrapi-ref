@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -21,18 +22,22 @@ int main( int argc, char* argv[] )
     pwr_dev_t dev;
     unsigned int dsize = sizeof(pwr_dev)/sizeof(plugin_dev_t);
 
-    PWR_AttrType rtype[] = { PWR_ATTR_MIN_POWER, PWR_ATTR_MAX_POWER, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
-    PWR_AttrType wtype[] = { PWR_ATTR_MIN_POWER_CAP, PWR_ATTR_MAX_POWER_CAP };
-    unsigned int rsize = sizeof(rtype)/sizeof(PWR_AttrType);
-    unsigned int wsize = sizeof(wtype)/sizeof(PWR_AttrType);
-
-    float reading[rsize];
-    float setting[wsize];
-    unsigned long long time;
-
+    PWR_Value rval[] = {
+        { PWR_ATTR_MIN_POWER, malloc(sizeof(float)), sizeof(float), 0 },
+        { PWR_ATTR_MAX_POWER, malloc(sizeof(float)), sizeof(float), 0 },
+        { PWR_ATTR_POWER, malloc(sizeof(float)), sizeof(float), 0 },
+        { PWR_ATTR_ENERGY, malloc(sizeof(float)), sizeof(float), 0 }
+    };
+    PWR_Value wval[] = {
+        { PWR_ATTR_MIN_PCAP, malloc(sizeof(float)), sizeof(float), 0 },
+        { PWR_ATTR_MAX_PCAP, malloc(sizeof(float)), sizeof(float), 0 }
+    };
+    unsigned int rsize = sizeof(rval)/sizeof(PWR_Value);
+    unsigned int wsize = sizeof(wval)/sizeof(PWR_Value);
     unsigned int i, j;
 
-    setting[0] = 20; setting[1] = 120;
+    *((float *)(wval[0].ptr)) = 20;
+    *((float *)(wval[1].ptr)) = 120;
 
     for( i = 0; i < dsize; i++ ) {
         if( (dev=pwr_dev[i].open( initstr[i] )) == 0x0 ) {
@@ -40,23 +45,23 @@ int main( int argc, char* argv[] )
             return -1;
         }
  
-        if( pwr_dev[i].read( dev, rsize, rtype, reading, &time ) < 0 ) {
+        if( pwr_dev[i].read( dev, rsize, rval ) < 0 ) {
             printf( "Error reading from power device #%u\n", i );
             return -1;
         }
         else {
             for( j = 0; j < rsize; j++ ) {
-                printf( "Reading %u: %f\n", rtype[j], reading[j] );
+                printf( "Reading %u: %f\n", rval[j].type, *((float *)(rval[j].ptr)) );
             }
         }
  
-        if( pwr_dev[i].write( dev, wsize, wtype, setting, &time ) < 0 ) {
+        if( pwr_dev[i].write( dev, wsize, wval ) < 0 ) {
             printf( "Error reading from power device #%u\n", i );
             return -1;
         }
         else {
             for( j = 0; j < wsize; j++ ) {
-                printf( "Setting %u: %f\n", wtype[j], setting[j] );
+                printf( "Setting %u: %f\n", wval[j].type, *((float *)(wval[j].ptr)) );
             }
         }
  

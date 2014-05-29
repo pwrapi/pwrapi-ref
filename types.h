@@ -55,6 +55,8 @@ typedef enum {
 typedef enum {
     PWR_ATTR_NAME,	    /* Required String */
     PWR_ATTR_FREQ,	    /* Required Float  */
+    PWR_ATTR_MAX_PCAP,      /* Required Float  */
+    PWR_ATTR_MIN_PCAP,      /* Required Float  */
     PWR_ATTR_MAX_POWER,     /* Required Float  */
     PWR_ATTR_MIN_POWER,     /* Required Float  */
     PWR_ATTR_AVG_POWER,     /* Required Float  */
