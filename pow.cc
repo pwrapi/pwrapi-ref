@@ -95,7 +95,7 @@ static int foo( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
 {
     _Attr* attr = obj->attrFindType( type ); 
     if ( ! attr ) {
-        return PWR_ERR_FAILURE;
+        return PWR_ERR_INVALID;
     }	
     return attr->getValue( ptr, len );
 }

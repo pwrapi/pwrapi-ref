@@ -14,8 +14,6 @@
         <attr name="POWER" op="SUM">
             <src type="child" name="cab0" />
         </attr>
-        <attr name="VOLTAGE" op="INVALID"/>
-        <attr name="CURRENT" op="INVALID"/>
     </attributes>
 
     <children>
@@ -30,8 +28,6 @@
         <attr name="POWER" op="SUM" >
             <src type="child" name="board0" />
         </attr>
-        <attr name="VOLTAGE" op="INVALID"/>
-        <attr name="CURRENT" op="INVALID"/>
     </attributes>
 
     <children>
@@ -46,8 +42,6 @@
         <attr name="POWER" op="SUM" >
             <src type="child" name="node0" />
         </attr>
-        <attr name="VOLTAGE" op="INVALID"/>
-        <attr name="CURRENT" op="INVALID"/>
     </attributes>
 
     <children>
@@ -62,8 +56,6 @@
         <attr name="POWER" op="SUM" >
             <src type="child" name="socket0" />
         </attr>
-        <attr name="VOLTAGE" op="INVALID"/>
-        <attr name="CURRENT" op="INVALID"/>
     </attributes>
 
     <children>
@@ -79,8 +71,6 @@
             <src type="child" name="core0" />
             <src type="child" name="core1" />
         </attr>
-        <attr name="VOLTAGE" op="INVALID"/>
-        <attr name="CURRENT" op="INVALID"/>
     </attributes>
 
     <children>
