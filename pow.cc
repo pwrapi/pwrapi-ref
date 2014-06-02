@@ -68,57 +68,27 @@ int PWR_ObjGetAttrTypeByIndx( PWR_Obj obj, int index, PWR_AttrType *value )
     return PWR_ERR_SUCCESS;
 }
 
-
 int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
                     size_t len, PWR_Time* ts )
 {
-    PWR_Value value;
-    PWR_Status status = PWR_StatusCreate();
-    value.type = type;
-    value.ptr = ptr;
-    value.len = len;
-    int ret = PWR_ObjAttrGetValues( obj, 1, &value, ts, status );
-    if ( PWR_ERR_SUCCESS == ret ) {
-        return ret;
-    } else {
-        PWR_AttrAccessError err;
-        PWR_StatusPopError( status, &err );
-        ret = err.error;
-    }
-    PWR_StatusDestroy( status );
-
-    return ret;
+    return obj->attrGetValue( type, ptr, len, ts );
 }
 
-
-static int foo( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
-{
-    _Attr* attr = obj->attrFindType( type ); 
-    if ( ! attr ) {
-        return PWR_ERR_INVALID;
-    }	
-    return attr->getValue( ptr, len );
-}
 
 int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
-                                               PWR_Time* ts, PWR_Status status )
+                                                 PWR_Status status )
 {
-    int i;
-    int err;
-    for ( i = 0; i < num; i++ ) {
-        err = foo( obj, values[i].type, values[i].ptr, values[i].len ); 
-        if ( PWR_ERR_SUCCESS != err ) { 
-            status->add( obj, values[i].type, err ); 
+    int* xxx = (int*) malloc( sizeof(int) * num );
+
+    if ( PWR_ERR_SUCCESS != obj->attrGetValues( num, values, xxx ) ) {
+        for ( int i = 0; i < num; i++ ) {
+            if ( PWR_ERR_SUCCESS != xxx[i] ) { 
+                status->add( obj, values[i].type, xxx[i] ); 
+            }
         }
-    }
+    } 
 
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
-
-    if ( ts ) {
-        *ts = tv.tv_sec * 1000000000;
-        *ts += tv.tv_usec * 1000; 
-    }
+    free( xxx );
 
     if ( !status->empty() ) {
         return PWR_ERR_FAILURE;
@@ -127,9 +97,9 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
     }
 }
 
-int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* value, size_t len )
+int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
 {
-    return obj->attrSetValue( type, value, len ); 
+    return obj->attrSetValue( type, ptr, len );
 }
 
 /*

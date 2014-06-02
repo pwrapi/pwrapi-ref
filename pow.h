@@ -34,8 +34,7 @@ PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 
 int PWR_ObjGetNumAttrs( PWR_Obj );
 int PWR_ObjGetAttrTypeByIndx( PWR_Obj, int, PWR_AttrType* value );
-int PWR_ObjAttrGetValues( PWR_Obj, int, PWR_Value values[], PWR_Time*,
-                                                               PWR_Status );
+int PWR_ObjAttrGetValues( PWR_Obj, int, PWR_Value values[], PWR_Status );
 int PWR_ObjAttrSetValues( PWR_Obj, int, PWR_Value values[], PWR_Status );
 int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void*, size_t len, PWR_Time* );
 int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void*, size_t len );

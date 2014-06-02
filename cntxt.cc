@@ -51,31 +51,33 @@ void _Cntxt::initDevices( XMLElement* el )
 
         DBGX("device name=`%s` lib=`%s`\n", el->Attribute("name"), el->Attribute("lib") );
 
-        m_devMap[ el->Attribute("name") ] = el->Attribute("lib"); 
+        m_devLibMap[ el->Attribute("name") ] = el->Attribute("lib"); 
         tmp = tmp->NextSibling();
     }
 }
 
 typedef plugin_dev_t* (*funcPtr_t)(void);
 
-plugin_dev_t* _Cntxt::findDev( const std::string name )
+_Dev* _Cntxt::findDev( const std::string name, const std::string config )
 {
+    DBGX("name=`%s` config=`%s`\n",name.c_str(), config.c_str());
 
-    std::map<std::string,std::string>::iterator iter;
-    if ( (iter = m_devMap.find(name)) == m_devMap.end() ) {
-        return NULL; 
-    }
+    if ( m_devMap.find(name+config) == m_devMap.end() ) {
+
+        std::map<std::string,std::string>::iterator iter;
+        if ( (iter = m_devLibMap.find(name)) == m_devLibMap.end() ) {
+            return NULL;
+        }
+        DBGX("device `%s` library `%s`\n",name.c_str(), (*iter).second.c_str());
+        void* ptr = dlopen((*iter).second.c_str(),RTLD_LAZY);
+        assert(ptr);
+        funcPtr_t funcPtr = (funcPtr_t)dlsym(ptr,"getDev");
+        assert(funcPtr);
     
-    DBGX("device `%s` library `%s`\n",name.c_str(), (*iter).second.c_str());
-
-    void* ptr = dlopen((*iter).second.c_str(),RTLD_LAZY);
-    assert(ptr);
-
-    funcPtr_t funcPtr = (funcPtr_t)dlsym(ptr,"getDev");
-
-    assert(funcPtr);
-
-    return funcPtr();
+        DBGX("XXXXXXXXXXXXXX\n");
+        m_devMap[ name + config ] = new _Dev( funcPtr(), "" ); 
+    } 
+    return m_devMap[name + config];
 }
 
 _Obj* _Cntxt::getSelf() {

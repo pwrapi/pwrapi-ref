@@ -3,30 +3,31 @@
 #define _PWR_ATTRIBUTE_H
 
 #include <deque>
+#include <vector>
 #include <string>
 #include "./types.h"
 #include "tinyxml2.h"
 
 class AttrSrc;
+class Foobar;
 
-class _Attr {
+class _Attr  {
 
   public:
     _Attr( _Obj* obj, tinyxml2::XMLElement* el  );
-    virtual ~_Attr() {
-        if ( m_srcList ) delete m_srcList;
-    }
 
+    std::vector<Foobar*>& foobar();
+    bool srcChild() { return false; }
+    bool srcDev() { return false; }
     PWR_AttrType type() { return m_type; }  
     PWR_AttrDataType dataType() { return m_dataType; }
-    int getValue( void*, size_t len );
+    int getValue( void*, size_t len, PWR_Time* ts );
     int setValue( void*, size_t len );
+    void op( PWR_Value&, const std::vector<PWR_Value*>& );
 
   private:
 
-    typedef std::deque< AttrSrc* > srcList_t;
-
-    srcList_t* initSrcList( tinyxml2::XMLElement* el );
+    void initSrcList( tinyxml2::XMLElement* el );
 
     std::string             m_name;
     _Obj*                   m_obj;
@@ -35,8 +36,10 @@ class _Attr {
     PWR_AttrDataType        m_dataType;
     size_t                  m_len;
     
-    srcList_t*              m_srcList;
-    void                  (*m_op)( int num, void* out, void* in ); 
+    void              (*m_op)( int num, void* out, void* in ); 
+    void              (*m_op2)( PWR_Value&, const std::vector< PWR_Value*>& ); 
+
+    std::vector<Foobar*>    m_foobar;
 };
 
 #endif

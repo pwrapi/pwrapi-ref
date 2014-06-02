@@ -15,12 +15,43 @@
 #include "./attribute.h"
 #include "./debug.h"
 #include "./dev.h"
+#include "./foobar.h"
 
 struct _Grp;
 struct _Cntxt;
 
+class _Dev : public Foobar {
+  public:
 
-struct _Obj {
+    _Dev( plugin_dev_t* dev, const std::string config ) : m_dev( dev ) {
+        m_devInfo = m_dev->open( config.c_str() );
+    }
+
+    int attrGetValues( int num, PWR_Value v[], int s[] ){
+        DBGX("\n");
+        return m_dev->readv( m_devInfo, num, v, s );
+    }
+
+    int attrSetValues( int, PWR_Value [], int [] ){ 
+        DBGX("\n");
+        return PWR_ERR_INVALID;
+    }
+
+    int attrGetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Time* ts ){ 
+        return m_dev->read( m_devInfo, type, ptr, len, ts ); 
+    }
+
+    int attrSetValue( PWR_AttrType type, void* ptr, size_t len ) {
+        DBGX("\n");
+        return m_dev->write( m_devInfo, type, ptr, len ); 
+    }
+
+  private:
+    plugin_dev_t* m_dev;
+    pwr_dev_t     m_devInfo;
+};
+
+struct _Obj : public Foobar{
 
   public:
     _Obj( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el );
@@ -34,40 +65,27 @@ struct _Obj {
 
     int attrGetNumber() { return m_attrVector.size(); }
 	
-    _Attr* attrFindType( PWR_AttrType type );
-
     _Attr* attributeGet( int index ) { 
         return m_attrVector[index]; 
     }
 
-    void attrAdd( _Attr* attr ) {
-        m_attrVector.push_back( attr );
-        m_attrMap[ attr->type() ] = attr; 
-    }
-
-    int attrGetValue( PWR_AttrType type, void* ptr, size_t len ) {
-        DBGX("%s \n",name().c_str());
-        return attrFindType(type)->getValue( ptr, len ); 
-    }
-
-    int attrSetValue( PWR_AttrType type, void* ptr, size_t len ) {
-        DBGX("%s \n",name().c_str());
-        return attrFindType( type)->setValue( ptr, len ); 
-    }
+    int attrGetValues( int, PWR_Value [], int [] );
+    int attrSetValues( int, PWR_Value [], int [] );
+    int attrGetValue( PWR_AttrType, void*, size_t, PWR_Time* );
+    int attrSetValue( PWR_AttrType, void*, size_t );
 
     _Obj* findChild( const std::string name );
-    plugin_dev_t* findDev( const std::string name );
+    _Dev* findDev( const std::string name, const std::string config );
 
   private:
     _Cntxt*     m_ctx;
     _Obj*       m_parent; 
     _Grp*       m_children; 
-    tinyxml2::XMLElement* m_xmlElement;
     std::string m_name;
     PWR_ObjType m_type;
-    
-    std::vector< _Attr* > m_attrVector;
-    std::map< int, _Attr* > m_attrMap;
+
+    tinyxml2::XMLElement*   m_xmlElement;
+    std::vector< _Attr* >   m_attrVector;
 };
 
 struct _Grp {

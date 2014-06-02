@@ -84,19 +84,13 @@
 
     <attributes>
         <attr name="VOLTAGE" op="">
-            <src type="plugin" name="Dummy"  >
-                <initString> addr=10.0.0.1 channel=1 </initString>
-            </src>
+            <src type="plugin" name="Dummy" initString="port=1" />
         </attr>
         <attr name="CURRENT" op="" >
-            <src type="plugin" name="Dummy"  >
-                <initString> addr=10.0.0.1 channel=2 </initString>
-            </src>
+            <src type="plugin" name="Dummy" initString="port=2" />
         </attr>
         <attr name="POWER" op="SUM" >
-            <src type="plugin" name="Dummy"  >
-                <initString> addr=10.0.0.1 channel=3 </initString>
-            </src>
+            <src type="plugin" name="Dummy" initString="port=3" />
         </attr>
     </attributes>
 
@@ -106,19 +100,13 @@
 
     <attributes>
         <attr name="VOLTAGE" op="" >
-            <src type="plugin" name="Dummy"  >
-                <initString> addr=10.0.0.1 channel=4 </initString>
-            </src>
+            <src type="plugin" name="Dummy" initString="port=4" />
         </attr>
         <attr name="CURRENT" op="" >
-            <src type="plugin" name="Dummy"  >
-                <initString> addr=10.0.0.1 channel=5 </initString>
-            </src>
+            <src type="plugin" name="Dummy" initString="port=5" />
         </attr>
         <attr name="POWER" op="SUM" >
-            <src type="plugin" name="Dummy"  >
-                <initString> addr=10.0.0.1 channel=6 </initString>
-            </src>
+            <src type="plugin" name="Dummy" initString="port=6" />
         </attr>
     </attributes>
 

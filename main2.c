@@ -44,5 +44,22 @@ int main( int argc, char* argv[] )
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s\n",value,ctime(&time));
 
+    value = 25.812;
+    retval = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, 
+                            &value, sizeof(value) );
+    assert( retval == PWR_ERR_SUCCESS );
+    printf("set value to %f\n",value);
+
+    PWR_Value v2;
+    v2.type = PWR_ATTR_POWER;
+    v2.ptr = &value;
+    v2.len = sizeof(value);
+    PWR_Status status = PWR_StatusCreate();
+    retval = PWR_ObjAttrGetValues( self, 1, &v2, status );  
+    assert( retval == PWR_ERR_SUCCESS );
+
+    PWR_TimeConvert( v2.timeStamp, &time );
+    printf("POWER=%f %s\n", value, ctime( &time ) );
+
     return 0;
 }

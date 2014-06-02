@@ -33,7 +33,7 @@ struct _Cntxt {
     }
     _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
 
-    plugin_dev_t* findDev( const std::string );
+    _Dev* findDev( const std::string name, const std::string config );
 
   private:
     tinyxml2::XMLElement* XMLFindObject( std::string );
@@ -46,7 +46,8 @@ struct _Cntxt {
 
     tinyxml2::XMLDocument* m_xml;
 
-    std::map<std::string,std::string> m_devMap;
+    std::map<std::string,std::string> m_devLibMap;
+    std::map<std::string,_Dev*>       m_devMap; 
 };
 
 #if 0
