@@ -32,8 +32,9 @@ class _Dev : public Foobar {
         return m_dev->readv( m_devInfo, num, v, s );
     }
 
-    int attrSetValues( int, PWR_Value [], int [] ){ 
+    int attrSetValues( int num, PWR_Value v[], int s[] ){ 
         DBGX("\n");
+        return m_dev->writev( m_devInfo, num, v, s );
         return PWR_ERR_INVALID;
     }
 

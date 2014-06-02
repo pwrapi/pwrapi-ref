@@ -53,13 +53,15 @@ static int readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[], int
     printf("dummyDev::%s()\n",__func__);
     for ( i = 0; i < arraysize; i++ ) {
         printf("dummyDev::%s() %d\n",__func__, values[i].type);
-        *(float*)values[i].ptr = 10.12011;
+        *(float*)values[i].ptr = ((dummyDevInfo_t*) dev)->value;;
 
         struct timeval tv;
         gettimeofday(&tv,NULL);
 
         values[i].timeStamp = tv.tv_sec * 1000000000;
         values[i].timeStamp += tv.tv_usec * 1000;
+
+        status[i] = PWR_ERR_SUCCESS;
     }
 }
 
@@ -69,6 +71,9 @@ static int writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[], in
     printf("dummyDev::%s()\n",__func__);
     for ( i = 0; i < arraysize; i++ ) {
         printf("dummyDev::%s() %d %f\n",__func__, values[i].type, *(float*) values[i].ptr);
+        ((dummyDevInfo_t*) dev)->value = *(float*)values[i].ptr;
+
+        status[i] = PWR_ERR_SUCCESS;
     }
 }
 

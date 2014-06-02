@@ -74,6 +74,11 @@ int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
     return obj->attrGetValue( type, ptr, len, ts );
 }
 
+int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
+{
+    return obj->attrSetValue( type, ptr, len );
+}
+
 
 int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
                                                  PWR_Status status )
@@ -97,9 +102,26 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
     }
 }
 
-int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
+int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_Value values[],
+                                                 PWR_Status status )
 {
-    return obj->attrSetValue( type, ptr, len );
+    int* xxx = (int*) malloc( sizeof(int) * num );
+
+    if ( PWR_ERR_SUCCESS != obj->attrSetValues( num, values, xxx ) ) {
+        for ( int i = 0; i < num; i++ ) {
+            if ( PWR_ERR_SUCCESS != xxx[i] ) { 
+                status->add( obj, values[i].type, xxx[i] ); 
+            }
+        }
+    } 
+
+    free( xxx );
+
+    if ( !status->empty() ) {
+        return PWR_ERR_FAILURE;
+    } else {
+        return PWR_ERR_SUCCESS;
+    }
 }
 
 /*

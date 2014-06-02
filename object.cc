@@ -133,6 +133,12 @@ int _Obj::attrGetValues( int num, PWR_Value v[], int status[] )
 
         (*iter).first->attrGetValues( xx.value.size(), 
                                     &xx.value[0], &xx.status[0] );
+
+        for ( unsigned int i = 0; i < xx.value.size(); i++ ) {
+            if ( PWR_ERR_SUCCESS != xx.status[i] ) {
+                retval = PWR_ERR_FAILURE;
+            }
+        }
     }
 
     for ( int i=0; i < num; i++ ) {
@@ -140,7 +146,6 @@ int _Obj::attrGetValues( int num, PWR_Value v[], int status[] )
         _Attr* attr = m_attrVector[ v[i].type ];
 
         if ( attr ) {
-            // FIXME!! we don't check the return status for this attribute
             if ( !  var1.empty() ) {
                 attr->op( v[i], var1[i] );
             }
@@ -187,25 +192,12 @@ int _Obj::attrSetValues( int num, PWR_Value v[], int status[] )
 
         (*iter).first->attrSetValues( xx.value.size(), 
                                     &xx.value[0], &xx.status[0] );
-    }
-
-
-#if 0
-    for ( int i=0; i < num; i++ ) {
-
-        _Attr* attr = m_attrVector[ v[i].type ];
-
-        if ( attr ) {
-            // FIXME!! we don't check the return status for this attribute
-            if ( !  var1.empty() ) {
-                attr->op( v[i], var1[i] );
+        for ( unsigned int i = 0; i < xx.value.size(); i++ ) {
+            if ( PWR_ERR_SUCCESS != xx.status[i] ) {
+                retval = PWR_ERR_FAILURE;
             }
-        } else {
-            status[i] = PWR_ERR_INVALID;
-            retval = PWR_ERR_FAILURE;
         }
     }
-#endif
 
     return retval;
 }
