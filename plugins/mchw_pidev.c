@@ -97,7 +97,46 @@ int mchw_pidev_close( pwr_dev_t dev )
 
 int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *time )
 {
-     return 0;
+    while( pidev_reading ) sched_yield();
+    pidev_reading = 1;
+    if( piapi_counter( MCHW_PIDEV(dev)->cntx, MCHW_PIDEV(dev)->port ) < 0 ) {
+        printf( "Error: powerinsight hardware read failed\n" );
+        return -1;
+    }
+    while( pidev_reading ) sched_yield();
+
+    if( len != sizeof(float) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(float) );
+        return -1;
+    }
+
+    switch( type ) {
+        case PWR_ATTR_VOLTAGE:
+            *((float *)value) = pidev_counter.raw.volts;
+            break;
+        case PWR_ATTR_CURRENT:
+            *((float *)value) = pidev_counter.raw.amps;
+            break;
+        case PWR_ATTR_POWER:
+            *((float *)value) = pidev_counter.raw.watts;
+            break;
+        case PWR_ATTR_MIN_POWER:
+            *((float *)value) = pidev_counter.min.watts;
+            break;
+        case PWR_ATTR_MAX_POWER:
+            *((float *)value) = pidev_counter.max.watts;
+            break;
+        case PWR_ATTR_ENERGY:
+            *((float *)value) = pidev_counter.energy;
+            break;
+        default:
+            printf( "Warning: unknown MCHW reading type (%u) requested\n", type );
+            break;
+    }
+    *time = pidev_counter.time_sec*1000000000ULL + 
+            pidev_counter.time_usec*1000;
+
+    return 0;
 }
 
 int mchw_pidev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len )
