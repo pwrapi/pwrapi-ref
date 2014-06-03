@@ -9,9 +9,12 @@
 int main( int argc, char* argv[] )
 {
     plugin_dev_t pwr_dev[] = {
-        { mchw_pidev_open, mchw_pidev_close, mchw_pidev_read, mchw_pidev_write, mchw_pidev_time },
-        { mchw_rapldev_open, mchw_rapldev_close, mchw_rapldev_read, mchw_rapldev_write, mchw_rapldev_time },
-        { mchw_xtpmdev_open, mchw_xtpmdev_close, mchw_xtpmdev_read, mchw_xtpmdev_write, mchw_xtpmdev_time }
+        { mchw_pidev_open, mchw_pidev_close, mchw_pidev_read, mchw_pidev_write,
+          mchw_pidev_readv, mchw_pidev_writev, mchw_pidev_time, mchw_pidev_clear },
+        { mchw_rapldev_open, mchw_rapldev_close, mchw_rapldev_read, mchw_rapldev_write,
+          mchw_rapldev_readv, mchw_rapldev_writev, mchw_rapldev_time, mchw_rapldev_clear },
+        { mchw_xtpmdev_open, mchw_xtpmdev_close, mchw_xtpmdev_read, mchw_xtpmdev_write,
+          mchw_xtpmdev_readv, mchw_xtpmdev_writev, mchw_xtpmdev_time, mchw_xtpmdev_clear }
     };
     char initstr[][80] = {
         "10.54.21.97:20201:1", 
@@ -34,6 +37,7 @@ int main( int argc, char* argv[] )
     };
     unsigned int rsize = sizeof(rval)/sizeof(PWR_Value);
     unsigned int wsize = sizeof(wval)/sizeof(PWR_Value);
+    int rstat[rsize], wstat[wsize];
     unsigned int i, j;
 
     *((float *)(wval[0].ptr)) = 20;
@@ -45,7 +49,7 @@ int main( int argc, char* argv[] )
             return -1;
         }
  
-        if( pwr_dev[i].read( dev, rsize, rval ) < 0 ) {
+        if( pwr_dev[i].readv( dev, rsize, rval, rstat ) < 0 ) {
             printf( "Error reading from power device #%u\n", i );
             return -1;
         }
@@ -55,7 +59,7 @@ int main( int argc, char* argv[] )
             }
         }
  
-        if( pwr_dev[i].write( dev, wsize, wval ) < 0 ) {
+        if( pwr_dev[i].writev( dev, wsize, wval, wstat ) < 0 ) {
             printf( "Error reading from power device #%u\n", i );
             return -1;
         }

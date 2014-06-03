@@ -316,7 +316,18 @@ int mchw_rapldev_close( pwr_dev_t dev )
     return 0;
 }
 
-int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
+
+int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *time )
+{
+    return 0;
+}
+
+int mchw_rapldev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len )
+{
+    return 0;
+}
+
+int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
 {
     unsigned int i;
     long long msr;
@@ -407,7 +418,7 @@ int mchw_rapldev_read( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] 
     return 0;
 }
 
-int mchw_rapldev_write( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
+int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
 {
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device write\n" );
@@ -418,6 +429,7 @@ int mchw_rapldev_write( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[]
 int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *time )
 {
     PWR_Value value[1];
+    int status[1];
 
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device time\n" );
@@ -426,9 +438,14 @@ int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *time )
     value[0].ptr = malloc(sizeof(float));
     value[0].len = sizeof(float);
 
-    mchw_rapldev_read( dev, 1, value );
+    mchw_rapldev_readv( dev, 1, value, status );
     *time = value[0].timeStamp;
 
+    return 0;
+}
+
+int mchw_rapldev_clear( pwr_dev_t dev )
+{
     return 0;
 }
 

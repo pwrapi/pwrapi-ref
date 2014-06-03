@@ -94,7 +94,18 @@ int mchw_pidev_close( pwr_dev_t dev )
     return 0;
 }
 
-int mchw_pidev_read( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
+
+int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *time )
+{
+     return 0;
+}
+
+int mchw_pidev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len )
+{
+     return 0;
+}
+
+int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
 {
     unsigned int i;
 
@@ -138,7 +149,7 @@ int mchw_pidev_read( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
     return 0;
 }
 
-int mchw_pidev_write( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
+int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
 {
     return 0;
 }
@@ -146,14 +157,19 @@ int mchw_pidev_write( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[] )
 int mchw_pidev_time( pwr_dev_t dev, unsigned long long *time )
 {
     PWR_Value value[1];
+    int status[1];
 
     value[0].type = PWR_ATTR_POWER;
     value[0].ptr = malloc(sizeof(float));
     value[0].len = sizeof(float);
 
-    mchw_pidev_read( dev, 1, value );
+    mchw_pidev_readv( dev, 1, value, status );
     *time = value[0].timeStamp;
 
     return 0;
 }
 
+int mchw_pidev_clear( pwr_dev_t dev )
+{
+    return 0;
+}
