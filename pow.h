@@ -57,6 +57,7 @@ int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, void*,
                                             size_t len, PWR_Status );
+int         PWR_GrpAttrSetValues( PWR_Grp, int, PWR_Value values[], PWR_Status );
 
 PWR_Status PWR_StatusCreate();
 int PWR_StatusDestroy( PWR_Status );
