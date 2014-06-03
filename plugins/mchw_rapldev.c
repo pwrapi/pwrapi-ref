@@ -317,8 +317,95 @@ int mchw_rapldev_close( pwr_dev_t dev )
 }
 
 
-int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *time )
+int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *timestamp )
 {
+    long long msr;
+    double time = 0;
+    double energy = 0;
+    int policy = 0;
+
+    if( rapldev_verbose ) 
+        printf( "Info: MCHW RAPL device read\n" );
+
+    if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PKG ) {
+        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
+            printf( "Error: MCHW RAPL device read failed\n" );
+            return -1;
+        }
+        energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+
+        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY_EP ||
+            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY_EP ) {
+            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PERF_STATUS, &msr ) < 0 ) {
+                printf( "Error: MCHW RAPL device read failed\n" );
+                return -1;
+            }
+            time = (double)msr * MCHW_RAPLDEV(dev)->units.time;
+        }
+    }
+    else if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PP0 ) {
+        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_ENERGY_STATUS, &msr ) < 0 ) {
+            printf( "Error: MCHW RAPL device read failed\n" );
+            return -1;
+        }
+        energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+
+        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_POLICY_STATUS, &msr ) < 0 ) {
+            printf( "Error: MCHW RAPL device read failed\n" );
+            return -1;
+        }
+        policy = (int)(MSR(msr, PP0_POLICY_SHIFT, PP0_POLICY_MASK));
+
+        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY_EP ||
+            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY_EP ) {
+            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_PERF_STATUS, &msr ) < 0 ) {
+                printf( "Error: MCHW RAPL device read failed\n" );
+                return -1;
+            }
+            time = (double)msr * MCHW_RAPLDEV(dev)->units.time;
+        }
+    }
+    else if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PP1 ) {
+        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY  ||
+            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY    ||
+            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_HASWELL ) {
+            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP1_ENERGY_STATUS, &msr ) < 0 ) {
+                printf( "Error: MCHW RAPL device read failed\n" );
+                return -1;
+            }
+            energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+
+            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP1_POLICY_STATUS, &msr ) < 0 ) {
+                printf( "Error: MCHW RAPL device read failed\n" );
+                return -1;
+            }
+            policy = (int)(MSR(msr, PP1_POLICY_SHIFT, PP1_POLICY_MASK));
+        }
+        else {
+            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_DRAM_ENERGY_STATUS, &msr ) < 0 ) {
+                printf( "Error: MCHW RAPL device read failed\n" );
+                return -1;
+            }
+            energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+        }
+    }
+
+    if( len != sizeof(float) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(float) );
+        return -1;
+    }
+
+    switch( type ) {
+        case PWR_ATTR_ENERGY:
+            *((float *)value) = energy;
+            break;
+        default:
+            printf( "Warning: unknown MCHW reading type requested\n" );
+            break;
+    }
+    *timestamp = (unsigned int)time*1000000000ULL + 
+            (time-(unsigned int)time)*1000000000ULL;
+
     return 0;
 }
 
@@ -426,7 +513,7 @@ int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[
     return 0;
 }
 
-int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *time )
+int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *timestamp )
 {
     PWR_Value value[1];
     int status[1];
@@ -439,7 +526,7 @@ int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *time )
     value[0].len = sizeof(float);
 
     mchw_rapldev_readv( dev, 1, value, status );
-    *time = value[0].timeStamp;
+    *timestamp = value[0].timeStamp;
 
     return 0;
 }

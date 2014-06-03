@@ -99,7 +99,7 @@ int oshw_cpudev_close( pwr_dev_t dev )
     return 0;
 }
 
-int oshw_cpudev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *time )
+int oshw_cpudev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *timestamp )
 {
     return 0;
 }
@@ -119,7 +119,7 @@ int oshw_cpudev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[]
     return 0;
 }
 
-int oshw_cpudev_time( pwr_dev_t dev, unsigned long long *time )
+int oshw_cpudev_time( pwr_dev_t dev, unsigned long long *timestamp )
 {
     return 0;
 }

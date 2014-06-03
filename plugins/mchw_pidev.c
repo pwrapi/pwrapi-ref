@@ -95,7 +95,7 @@ int mchw_pidev_close( pwr_dev_t dev )
 }
 
 
-int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *time )
+int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *timestamp )
 {
     while( pidev_reading ) sched_yield();
     pidev_reading = 1;
@@ -133,7 +133,7 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int
             printf( "Warning: unknown MCHW reading type (%u) requested\n", type );
             break;
     }
-    *time = pidev_counter.time_sec*1000000000ULL + 
+    *timestamp = pidev_counter.time_sec*1000000000ULL + 
             pidev_counter.time_usec*1000;
 
     return 0;
@@ -193,7 +193,7 @@ int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[],
     return 0;
 }
 
-int mchw_pidev_time( pwr_dev_t dev, unsigned long long *time )
+int mchw_pidev_time( pwr_dev_t dev, unsigned long long *timestamp )
 {
     PWR_Value value[1];
     int status[1];
@@ -203,7 +203,7 @@ int mchw_pidev_time( pwr_dev_t dev, unsigned long long *time )
     value[0].len = sizeof(float);
 
     mchw_pidev_readv( dev, 1, value, status );
-    *time = value[0].timeStamp;
+    *timestamp = value[0].timeStamp;
 
     return 0;
 }

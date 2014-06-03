@@ -77,7 +77,7 @@ static int writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[], in
     }
 }
 
-static int time(pwr_dev_t dev, unsigned long long *time)
+static int time( pwr_dev_t dev, unsigned long long *timestamp )
 {
     printf("dummyDev::%s()\n",__func__);
 }
