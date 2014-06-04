@@ -16,6 +16,7 @@
 #include "./debug.h"
 #include "./dev.h"
 #include "./foobar.h"
+#include "./status.h"
 
 struct _Grp;
 struct _Cntxt;
@@ -102,6 +103,23 @@ struct _Grp {
         m_list.push_back( obj );
         return PWR_ERR_SUCCESS; 
     }
+    const std::string& name() {
+        return m_name;
+    }
+
+    int attrSetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Status status ) {
+        for ( unsigned int i = 0; i < m_list.size(); i++ ) {
+            int ret = m_list[i]->attrSetValue( type, ptr, len );
+            if ( PWR_ERR_SUCCESS != ret ) {
+                status->add( m_list[i], type, ret );
+            }
+        }
+        if ( !status->empty() ) {
+            return PWR_ERR_FAILURE;
+        } else {
+            return PWR_ERR_SUCCESS;
+        }
+    }
 
     int remove( _Obj* obj ) {
         std::vector<_Obj*>::iterator iter = m_list.begin();
@@ -135,6 +153,7 @@ struct _Grp {
   private:
     _Cntxt*   m_ctx;
     std::vector<_Obj*> m_list;
+    std::string m_name;
 };
 
 #include "./cntxt.h"

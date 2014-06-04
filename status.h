@@ -26,6 +26,10 @@ struct _Status {
         tmp.error = error;
         m_info.push_back( tmp ); 
     }
+    int clear() {
+        m_info.clear();
+        return PWR_ERR_SUCCESS;
+    }
 
   private:
     

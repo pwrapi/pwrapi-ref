@@ -49,7 +49,6 @@ PWR_ObjType PWR_ObjGetType( PWR_Obj obj )
 PWR_Obj PWR_ObjGetParent(PWR_Obj obj )
 {
     return obj->parent();
-    return NULL;
 }
 
 PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
@@ -134,6 +133,11 @@ int PWR_GrpDestroy( PWR_Grp group )
     return ctx->groupDestroy( group );
 }
 
+const char* PWR_GrpGetName( PWR_Grp group ) 
+{
+    return &group->name()[0];
+}
+
 int PWR_GrpAddObj( PWR_Grp group, PWR_Obj obj )
 {
     return group->add( obj );
@@ -154,35 +158,30 @@ PWR_Obj PWR_GrpGetObjByIndx( PWR_Grp group, int i )
     return group->getObj( i );
 }
 
-PWR_Obj PWR_GrpGetObjByName( PWR_Grp group, int i )
+int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrType type, void* ptr,
+                                        size_t len, PWR_Status status )
 {
-    return NULL;
-}
-
-int PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType type, void* ptr,
-                                        size_t len, PWR_Status )
-{
-    return PWR_ERR_FAILURE;
+    return grp->attrSetValue( type, ptr, len, status );
 }
 
 PWR_Status PWR_StatusCreate()
 {
     return new _Status;
 }
-int PWR_StatusDestroy(PWR_Status)
+int PWR_StatusDestroy(PWR_Status status )
 {
-    return PWR_ERR_FAILURE;
+    delete status;
+    return PWR_ERR_SUCCESS;
 }
-
 
 int PWR_StatusPopError(PWR_Status status, PWR_AttrAccessError* err )
 {
     return status->pop( err );
 }
 
-int PWR_StatusClear( PWR_Status )
+int PWR_StatusClear( PWR_Status status )
 {
-    return PWR_ERR_FAILURE;
+    return status->clear();
 }
 
 const char* PWR_ObjGetName( PWR_Obj obj )
