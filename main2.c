@@ -6,14 +6,15 @@
 
 int main( int argc, char* argv[] )
 {
-    PWR_Status status;
-    PWR_Obj self;
-    PWR_Cntxt cntxt;
-    time_t time;
-    int retval;
-    float value;
-    PWR_Time ts;
-    PWR_Value v2;
+    PWR_Grp     grp;
+    PWR_Status  status;
+    PWR_Obj     self;
+    PWR_Cntxt   cntxt;
+    time_t      time;
+    int         retval;
+    float       value;
+    PWR_Time    ts;
+    PWR_Value   pv;
 
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
@@ -44,27 +45,28 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_ERR_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("POWER=%f %s\n",value,ctime(&time));
+    printf("POWER=%f %s",value,ctime(&time));
 
+    
     value = 25.812;
     retval = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, 
                             &value, sizeof(value) );
     assert( retval == PWR_ERR_SUCCESS );
     printf("set value to %f\n",value);
 
-    v2.type = PWR_ATTR_POWER;
-    v2.ptr = &value;
-    v2.len = sizeof(value);
+    pv.type = PWR_ATTR_POWER;
+    pv.ptr = &value;
+    pv.len = sizeof(value);
     status = PWR_StatusCreate();
 
-    retval = PWR_ObjAttrGetValues( self, 1, &v2, status );  
+    retval = PWR_ObjAttrGetValues( self, 1, &pv, status );  
     assert( retval == PWR_ERR_SUCCESS );
 
-    PWR_TimeConvert( v2.timeStamp, &time );
-    printf("POWER=%f %s\n", value, ctime( &time ) );
+    PWR_TimeConvert( pv.timeStamp, &time );
+    printf("POWER=%f %s", value, ctime( &time ) );
 
     value = 100.10;
-    retval = PWR_ObjAttrSetValues( self, 1, &v2, status );  
+    retval = PWR_ObjAttrSetValues( self, 1, &pv, status );  
     assert( retval == PWR_ERR_SUCCESS );
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, 
@@ -72,7 +74,20 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_ERR_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("POWER=%f %s\n",value,ctime(&time));
+    printf("POWER=%f %s",value,ctime(&time));
 
+    grp = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE );
+    assert( grp );
+
+    value = 0.1;
+    retval = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, sizeof(value), status );
+    assert( retval == PWR_ERR_SUCCESS );
+
+    retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, 
+                            &value, sizeof(value), &ts );
+    assert( retval == PWR_ERR_SUCCESS );
+
+    PWR_TimeConvert( ts, &time );
+    printf("POWER=%f %s",value,ctime(&time));
     return 0;
 }

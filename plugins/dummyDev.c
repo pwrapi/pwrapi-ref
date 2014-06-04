@@ -5,7 +5,7 @@
 
 
 typedef struct {
-    float value;  
+    float value[PWR_ATTR_INVALID];  
 } dummyDevInfo_t;
 
 
@@ -13,7 +13,7 @@ static pwr_dev_t open( const char *initstr )
 {
     printf("dummyDev::%s()\n",__func__);
     dummyDevInfo_t *tmp = malloc( sizeof( dummyDevInfo_t ) );
-    tmp->value = 10.1234;
+    tmp->value[PWR_ATTR_POWER] = 10.1234;
     return tmp;
 }
 
@@ -27,7 +27,7 @@ static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, size_t len, PWR_Ti
 {
     printf("dummyDev::%s()\n",__func__);
 
-    *(float*)ptr = ((dummyDevInfo_t*) dev)->value;
+    *(float*)ptr = ((dummyDevInfo_t*) dev)->value[type];
 
     struct timeval tv;
     gettimeofday(&tv,NULL);
@@ -43,7 +43,7 @@ static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, size_t len, PWR_Ti
 static int write( pwr_dev_t dev, PWR_AttrType type, void* ptr, size_t len )
 {
     printf("dummyDev::%s()\n",__func__);
-    ((dummyDevInfo_t*) dev)->value = *(float*)ptr;
+    ((dummyDevInfo_t*) dev)->value[type] = *(float*)ptr;
     return PWR_ERR_SUCCESS;
 }
 
@@ -53,7 +53,7 @@ static int readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[], int
     printf("dummyDev::%s()\n",__func__);
     for ( i = 0; i < arraysize; i++ ) {
         printf("dummyDev::%s() %d\n",__func__, values[i].type);
-        *(float*)values[i].ptr = ((dummyDevInfo_t*) dev)->value;;
+        *(float*)values[i].ptr = ((dummyDevInfo_t*) dev)->value[values[i].type];
 
         struct timeval tv;
         gettimeofday(&tv,NULL);
@@ -71,7 +71,7 @@ static int writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value values[], in
     printf("dummyDev::%s()\n",__func__);
     for ( i = 0; i < arraysize; i++ ) {
         printf("dummyDev::%s() %d %f\n",__func__, values[i].type, *(float*) values[i].ptr);
-        ((dummyDevInfo_t*) dev)->value = *(float*)values[i].ptr;
+        ((dummyDevInfo_t*) dev)->value[values[i].type] = *(float*)values[i].ptr;
 
         status[i] = PWR_ERR_SUCCESS;
     }

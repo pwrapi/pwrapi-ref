@@ -92,7 +92,7 @@ struct _Obj : public Foobar{
 
 struct _Grp {
   public:
-    _Grp( _Cntxt* ctx ) : m_ctx(ctx) {  }
+    _Grp( _Cntxt* ctx, const std::string name ="" ) : m_ctx(ctx), m_name(name) {  }
 
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }

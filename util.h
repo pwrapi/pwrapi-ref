@@ -5,6 +5,23 @@
 #include "./types.h"
 #include <string>
 
+static inline const char* objTypeToString( PWR_ObjType type )
+{
+    switch( type ) {
+    case PWR_OBJ_PLATFORM: return "Platform";
+    case PWR_OBJ_CABINET:  return "Cabinet";
+    case PWR_OBJ_BOARD:    return "Board";
+    case PWR_OBJ_NODE:     return "Node";
+    case PWR_OBJ_SOCKET:   return "Socket";
+    case PWR_OBJ_CORE:     return "Core";
+    case PWR_OBJ_NIC:      return "Nic";
+    case PWR_OBJ_MEM:      return "Memory";
+    case PWR_OBJ_INVALID:  return "Invalid";
+    }
+    return NULL;
+}
+
+
 static inline PWR_AttrType attrTypeStrToInt( const std::string name )
 {
     if ( 0 == name.compare("POWER") ) {

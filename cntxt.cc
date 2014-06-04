@@ -74,7 +74,6 @@ _Dev* _Cntxt::findDev( const std::string name, const std::string config )
         funcPtr_t funcPtr = (funcPtr_t)dlsym(ptr,"getDev");
         assert(funcPtr);
     
-        DBGX("XXXXXXXXXXXXXX\n");
         m_devMap[ name + config ] = new _Dev( funcPtr(), "" ); 
     } 
     return m_devMap[name + config];
@@ -82,14 +81,16 @@ _Dev* _Cntxt::findDev( const std::string name, const std::string config )
 
 _Obj* _Cntxt::getSelf() {
 
+    if ( m_top ) return m_top;
     DBGX("\n");
     XMLElement* el = XMLFindObject( m_topName );
     assert(el);
     DBGX("\n");
 
-    _Obj* obj = new _Obj( this, NULL, el );
+    m_top = new _Obj( this, NULL, el );
+    m_objMap[ m_top->name() ] = m_top;
     DBGX("\n");
-    return obj;
+    return m_top;
 }
 
 _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
@@ -120,10 +121,18 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
         el = static_cast<XMLElement*>(tmp);
 
         DBGX("%s\n", el->Attribute("name"));
-        XMLElement* child = XMLFindObject( name + "." + el->Attribute("name") );
+        std::string childName = name + "." + el->Attribute("name");
+        XMLElement* child = XMLFindObject( childName );
         assert( child );
 
-        grp->add( new _Obj( this, parent, child ) );
+        _Obj* obj;
+        if ( m_objMap.find( childName ) == m_objMap.end() ) {
+            obj = new _Obj( this, parent, child );
+            m_objMap[ obj->name() ] = obj;
+        } else {
+            obj = m_objMap[ childName ];
+        } 
+        grp->add( obj );
         DBGX("%s done\n", el->Attribute("name"));
 
         tmp = tmp->NextSibling();
@@ -132,6 +141,55 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
     DBGX("return\n");
     return grp;
 }
+
+_Grp* _Cntxt::initGrp( PWR_ObjType type ) {
+    _Grp* grp = new _Grp( this, objTypeToString( type ) );
+
+    XMLNode* tmp = m_xml->RootElement()->FirstChild(); 
+
+    std::string typeStr = objTypeToString( type ); 
+
+    // find the objects element
+    while ( tmp ) {
+        XMLElement* el = static_cast<XMLElement*>(tmp);
+
+        //DBGX("%s\n",el->Name());
+
+        if ( 0 == strcmp( el->Name(), "Objects") ) {
+            tmp = el->FirstChild();
+            break;
+        }
+        tmp = tmp->NextSibling();
+    }
+
+    while ( tmp ) {
+        XMLElement* el = static_cast<XMLElement*>(tmp);
+
+
+        if ( 0 == typeStr.compare( el->Attribute("type") ) ) {
+
+#if  1 
+        DBGX("%s %s name=`%s`\n",el->Name(),
+                el->Attribute("type"), el->Attribute("name"));
+#endif
+            
+            _Obj* obj;
+            std::string name = el->Attribute("name");
+            if ( m_objMap.find( name ) == m_objMap.end() ) {
+                obj = new _Obj( this, NULL, el );
+                m_objMap[ obj->name() ] = obj;
+            } else {
+                obj = m_objMap[ name ];
+            } 
+
+            grp->add( obj );
+        }
+
+        tmp = tmp->NextSibling();
+    }
+
+    return grp;
+}    
 
 XMLElement* _Cntxt::XMLFindObject( const std::string name )
 {
