@@ -36,7 +36,6 @@ class _Dev : public Foobar {
     int attrSetValues( int num, PWR_Value v[], int s[] ){ 
         DBGX("\n");
         return m_dev->writev( m_devInfo, num, v, s );
-        return PWR_ERR_INVALID;
     }
 
     int attrGetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Time* ts ){ 
