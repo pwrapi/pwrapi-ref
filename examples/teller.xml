@@ -3,7 +3,11 @@
 <System>
 
 <Devices>
-    <dev name="Dummy" lib="libdummyDev.dylib"/>
+    <dev name="PowerInsight" lib="libpidev.so"/>
+</Devices>
+
+<Devices>
+    <dev name="CPU" lib="libcpudev.so"/>
 </Devices>
 
 <Objects>
@@ -13,11 +17,15 @@
     <attributes>
         <attr name="POWER" op="SUM">
             <src type="child" name="cab0" />
+            <src type="child" name="cab1" />
+            <src type="child" name="cab2" />
         </attr>
     </attributes>
 
     <children>
         <child name="cab0" />
+        <child name="cab1" />
+        <child name="cab2" />
     </children>
 
 </obj>
@@ -27,11 +35,57 @@
     <attributes>
         <attr name="POWER" op="SUM" >
             <src type="child" name="board0" />
+            <src type="child" name="board1" />
+            <src type="child" name="board2" />
+            <src type="child" name="board3" />
         </attr>
     </attributes>
 
     <children>
         <child name="board0" />
+        <child name="board1" />
+        <child name="board2" />
+        <child name="board3" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1" type="Cabinet" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="board0" />
+            <src type="child" name="board1" />
+            <src type="child" name="board2" />
+            <src type="child" name="board3" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+        <child name="board1" />
+        <child name="board2" />
+        <child name="board3" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2" type="Cabinet" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="board0" />
+            <src type="child" name="board1" />
+            <src type="child" name="board2" />
+            <src type="child" name="board3" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+        <child name="board1" />
+        <child name="board2" />
+        <child name="board3" />
     </children>
 
 </obj >
@@ -41,11 +95,333 @@
     <attributes>
         <attr name="POWER" op="SUM" >
             <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
         </attr>
     </attributes>
 
     <children>
         <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3" type="Board" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+            <src type="child" name="node3" />
+            <src type="child" name="node4" />
+            <src type="child" name="node5" />
+            <src type="child" name="node6" />
+            <src type="child" name="node7" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+        <child name="node2" />
+        <child name="node3" />
+        <child name="node4" />
+        <child name="node5" />
+        <child name="node6" />
+        <child name="node7" />
     </children>
 
 </obj >
@@ -67,49 +443,4019 @@
 <obj name="plat.cab0.board0.node0.socket0" type="Socket" >
 
     <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
         <attr name="POWER" op="SUM" >
-            <src type="child" name="core0" />
-            <src type="child" name="core1" />
+            <src type="plugin" name="PowerInsight" initString="port=1" />
         </attr>
     </attributes>
-
-    <children>
-        <child name="core0"/>
-        <child name="core1"/>
-    </children>
 
 </obj >
 
 <obj name="plat.cab0.board0.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node1.socket0" type="Socket" >
 
     <attributes>
         <attr name="VOLTAGE" op="">
-            <src type="plugin" name="Dummy" initString="port=1" />
+            <src type="plugin" name="PowerInsight" initString="port=1" />
         </attr>
         <attr name="CURRENT" op="" >
-            <src type="plugin" name="Dummy" initString="port=2" />
+            <src type="plugin" name="PowerInsight" initString="port=1" />
         </attr>
         <attr name="POWER" op="SUM" >
-            <src type="plugin" name="Dummy" initString="port=3" />
+            <src type="plugin" name="PowerInsight" initString="port=1" />
         </attr>
     </attributes>
 
 </obj >
 
-<obj name="plat.cab0.board0.node0.socket0.core1" type="Core" >
+<obj name="plat.cab0.board0.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node2" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="" >
-            <src type="plugin" name="Dummy" initString="port=4" />
-        </attr>
-        <attr name="CURRENT" op="" >
-            <src type="plugin" name="Dummy" initString="port=5" />
-        </attr>
         <attr name="POWER" op="SUM" >
-            <src type="plugin" name="Dummy" initString="port=6" />
+            <src type="child" name="socket0" />
         </attr>
     </attributes>
 
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board0.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board1.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board1.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board1.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board2.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board2.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board2.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board3.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board3.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab0.board3.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board0.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board0.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board0.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board1.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board1.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board1.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board2.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board2.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board2.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab1.board3.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab1.board3.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab1.board3.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board0.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board0.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board0.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board1.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board1.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board1.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board2.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board2.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board2.node7.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node0" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node0.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node0.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node0.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node0.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node1" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node1.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node1.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node1.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node1.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node1.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node2" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node2.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node2.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node2.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node2.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node2.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node3" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node3.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node3.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node3.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node3.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node3.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node4" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node4.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node4.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node4.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node4.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node4.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node5" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node5.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node5.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node5.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node5.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node5.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node6" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node6.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node6.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node6.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node6.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node6.socket0.core3" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node7" type="Node" >
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab2.board3.node7.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="VOLTAGE" op="">
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="CURRENT" op="" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="port=1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab2.board3.node7.socket0.core0" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node7.socket0.core1" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node7.socket0.core2" type="Core" >
+</obj >
+
+<obj name="plat.cab2.board3.node7.socket0.core3" type="Core" >
 </obj >
 
 </Objects>
