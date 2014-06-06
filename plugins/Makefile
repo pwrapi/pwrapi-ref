@@ -1,11 +1,11 @@
-CFLAGS = -Wall -I..
+CFLAGS = -Wall -I.. -fPIC
 CXXFLAGS = ${CFLAGS}
-LDFLAGS = -lpiapi -lm -pthread
+LDFLAGS = ${CFLAGS} -L. -lpiapi -lm -pthread
 
 all:  test
 
 test: libmchw_pidev.so libmchw_rapldev.so libmchw_xtpmdev.so liboshw_cpudev.so main.c
-	$(CC) ${CFLAGS} main.c -L. -lmchw_pidev -lmchw_rapldev -lmchw_xtpmdev -loshw_cpudev -o test
+	$(CC) ${LDFLAGS} main.c -lmchw_pidev -lmchw_rapldev -lmchw_xtpmdev -loshw_cpudev -o test
 
 libmchw_pidev.so: mchw_pidev.o
 	$(CC) -shared $(CFLAGS) -lpiapi -o $@ mchw_pidev.o
@@ -20,5 +20,5 @@ liboshw_cpudev.so: oshw_cpudev.o
 	$(CC) -shared $(CFLAGS) -o $@ oshw_cpudev.o
 
 clean:
-	rm -f mchw_*dev.o libmchw_*dev.so test
+	rm -f *hw_*dev.o lib*hw_*dev.so test
 
