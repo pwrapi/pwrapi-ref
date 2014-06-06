@@ -15,8 +15,17 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     // verify type
     // verify role
     // who am I ?
-    m_configFile = "systemX.xml";
-    m_topName    = "plat.cab0.board0.node0";
+    if( getenv( "POWERAPI_CONFIG" ) != NULL ) {
+        m_configFile = getenv( "POWERAPI_CONFIG" );
+    } else {
+        m_configFile = "systemX.xml";
+    }
+
+    if( getenv( "POWERAPI_ROOT" ) != NULL ) {
+        m_topName = getenv( "POWERAPI_ROOT" );
+    } else {
+        m_topName = "plat.cab0.board0.node0";
+    }
 
     m_xml = new tinyxml2::XMLDocument();
     m_xml->LoadFile( m_configFile.c_str() );
