@@ -129,3 +129,17 @@ int oshw_cpudev_clear( pwr_dev_t dev )
     return 0;
 }
 
+static plugin_dev_t dev = {
+    open   : oshw_cpudev_open,
+    close  : oshw_cpudev_close,
+    read   : oshw_cpudev_read,
+    write  : oshw_cpudev_write,
+    readv  : oshw_cpudev_readv,
+    writev : oshw_cpudev_writev,
+    time   : oshw_cpudev_time,
+    clear  : oshw_cpudev_clear
+};
+
+plugin_dev_t* getDev() {
+    return &dev;
+}

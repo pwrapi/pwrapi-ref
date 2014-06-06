@@ -38,7 +38,7 @@ class _Dev : public Foobar {
         return m_dev->writev( m_devInfo, num, v, s );
     }
 
-    int attrGetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Time* ts ){ 
+    int attrGetValue( PWR_AttrType type, void* ptr, size_t len, unsigned long long* ts ){ 
         return m_dev->read( m_devInfo, type, ptr, len, ts ); 
     }
 

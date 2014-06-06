@@ -1,7 +1,7 @@
 
-CFLAGS = -Wall -fPIC -g
+CFLAGS = -Wall -fPIC
 CPPFLAGS = -Itinyxml
-CXXFLAGS = -Wall -fPIC -g
+CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 CC = g++
 

@@ -536,3 +536,17 @@ int mchw_rapldev_clear( pwr_dev_t dev )
     return 0;
 }
 
+static plugin_dev_t dev = {
+    open   : mchw_rapldev_open,
+    close  : mchw_rapldev_close,
+    read   : mchw_rapldev_read,
+    write  : mchw_rapldev_write,
+    readv  : mchw_rapldev_readv,
+    writev : mchw_rapldev_writev,
+    time   : mchw_rapldev_time,
+    clear  : mchw_rapldev_clear
+};
+
+plugin_dev_t* getDev() {
+    return &dev;
+}

@@ -212,3 +212,18 @@ int mchw_pidev_clear( pwr_dev_t dev )
 {
     return 0;
 }
+
+static plugin_dev_t dev = {
+    open   : mchw_pidev_open,
+    close  : mchw_pidev_close,
+    read   : mchw_pidev_read,
+    write  : mchw_pidev_write,
+    readv  : mchw_pidev_readv,
+    writev : mchw_pidev_writev,
+    time   : mchw_pidev_time,
+    clear  : mchw_pidev_clear
+};
+
+plugin_dev_t* getDev() {
+    return &dev;
+}
