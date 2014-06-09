@@ -1,6 +1,6 @@
 CFLAGS = -Wall -I.. -fPIC
 CXXFLAGS = ${CFLAGS}
-LDFLAGS = ${CFLAGS} -L.. -L../plugins -lpow -lmchw_pidev -lmchw_rapldev -lmchw_xtpmdev -loshw_cpudev -lpiapi -lm -ldl -pthread
+LDFLAGS = ${CFLAGS} -L/home/ddeboni/src/prototype -L/home/ddeboni/src/prototype/plugins -lpow -lm -ldl -pthread
 
 all:  example
 
