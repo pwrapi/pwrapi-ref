@@ -7,14 +7,13 @@
 int main( int argc, char* argv[] )
 {
     PWR_Grp     grp;
-    PWR_Status  status;
     PWR_Obj     self;
     PWR_Cntxt   cntxt;
     time_t      time;
     int         retval;
     float       value;
     PWR_Time    ts;
-    PWR_Value   pv;
+    PWR_Status  status;
 
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
@@ -49,24 +48,24 @@ int main( int argc, char* argv[] )
 
     
     value = 25.812;
+    printf("set value to %f\n",value);
     retval = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, 
                             &value, sizeof(value) );
     assert( retval == PWR_ERR_SUCCESS );
-    printf("set value to %f\n",value);
 
-    pv.type = PWR_ATTR_POWER;
-    pv.ptr = &value;
-    pv.len = sizeof(value);
+    
+    PWR_AttrType type = PWR_ATTR_POWER;
+     
     status = PWR_StatusCreate();
 
-    retval = PWR_ObjAttrGetValues( self, 1, &pv, status );  
+    retval = PWR_ObjAttrGetValues( self, 1, &type, &value, &ts, status );  
     assert( retval == PWR_ERR_SUCCESS );
 
-    PWR_TimeConvert( pv.timeStamp, &time );
+    PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s", value, ctime( &time ) );
 
     value = 100.10;
-    retval = PWR_ObjAttrSetValues( self, 1, &pv, status );  
+    retval = PWR_ObjAttrSetValues( self, 1, &type, &value, status );  
     assert( retval == PWR_ERR_SUCCESS );
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, 

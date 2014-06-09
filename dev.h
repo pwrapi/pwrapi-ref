@@ -1,5 +1,5 @@
-#ifndef PWR_DEV_H 
-#define PWR_DEV_H 
+#ifndef PWR_DEV_H
+#define PWR_DEV_H
 
 #include "types.h"
 
@@ -18,9 +18,9 @@ typedef int (*pwr_write_t)( pwr_dev_t dev, PWR_AttrType type,
     void *value, unsigned int len );
 
 typedef int (*pwr_readv_t)( pwr_dev_t dev, unsigned int arraysize,
-    PWR_Value values[], int status[] );
+                const PWR_AttrType types[], void* ptr, PWR_Time ts[], int status[] );
 typedef int (*pwr_writev_t)( pwr_dev_t dev, unsigned int arraysize,
-    PWR_Value values[], int status[] );
+                const PWR_AttrType types[], void* ptr, int status[] );
 
 typedef int (*pwr_time_t)( pwr_dev_t dev, unsigned long long *time );
 typedef int (*pwr_clear_t)( pwr_dev_t dev );

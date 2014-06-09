@@ -32,12 +32,13 @@ const char* PWR_ObjGetName( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 
-int PWR_ObjGetNumAttrs( PWR_Obj );
-int PWR_ObjGetAttrTypeByIndx( PWR_Obj, int, PWR_AttrType* value );
-int PWR_ObjAttrGetValues( PWR_Obj, int, PWR_Value values[], PWR_Status );
-int PWR_ObjAttrSetValues( PWR_Obj, int, PWR_Value values[], PWR_Status );
+int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrType );
+
 int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void*, size_t len, PWR_Time* );
 int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void*, size_t len );
+
+int PWR_ObjAttrGetValues( PWR_Obj, int, PWR_AttrType [], void*, PWR_Time [], PWR_Status  );
+int PWR_ObjAttrSetValues( PWR_Obj, int, PWR_AttrType [], void*, PWR_Status );
 
 int PWR_ObjGetAvgPower( PWR_Obj, PWR_Time* from, PWR_Time* to );
 int PWR_ObjGetEnergy( PWR_Obj, PWR_Time* from, PWR_Time* to );
@@ -57,7 +58,8 @@ int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, void*,
                                             size_t len, PWR_Status );
-int         PWR_GrpAttrSetValues( PWR_Grp, int, PWR_Value values[], PWR_Status );
+int         PWR_GrpAttrSetValues( PWR_Grp, int, PWR_AttrType [], void*, PWR_Status );
+int         PWR_GrpAttrGetValues( PWR_Grp, int, PWR_AttrType [], void*, PWR_Time [], PWR_Status );
 
 PWR_Status PWR_StatusCreate();
 int PWR_StatusDestroy( PWR_Status );

@@ -21,7 +21,7 @@ class _Attr  {
     PWR_AttrDataType dataType() { return m_dataType; }
     int getValue( void*, size_t len, PWR_Time* ts );
     int setValue( void*, size_t len );
-    void op( PWR_Value&, const std::vector<PWR_Value*>& );
+    void op( void*, const std::vector<void*>& );
 
   private:
 
@@ -35,7 +35,7 @@ class _Attr  {
     size_t                  m_len;
     
     void              (*m_op)( int num, void* out, void* in ); 
-    void              (*m_op2)( PWR_Value&, const std::vector< PWR_Value*>& ); 
+    void              (*m_op2)( void*, const std::vector< void* >& ); 
 
     std::vector<Foobar*>    m_foobar;
 };

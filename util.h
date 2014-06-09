@@ -3,7 +3,27 @@
 #define _PWR_UTIL_H
 
 #include "./types.h"
-#include <string>
+
+
+static inline const char* attrTypeToString( PWR_AttrType name )
+{
+    switch( name ){
+    case PWR_ATTR_NAME: return "Name";
+    case PWR_ATTR_FREQ: return "Freq";
+    case PWR_ATTR_PSTATE: return "Pstate";
+    case PWR_ATTR_MAX_POWER: return "Max Power";
+    case PWR_ATTR_MIN_POWER: return "Min Power";
+    case PWR_ATTR_AVG_POWER: return "Avg Power";
+    case PWR_ATTR_POWER: return "Power";
+    case PWR_ATTR_VOLTAGE: return "Voltage";
+    case PWR_ATTR_CURRENT: return "Current";
+    case PWR_ATTR_ENERGY: return "Energy";
+    case PWR_ATTR_INVALID: return "Invalid";
+    default: return "????";
+    }
+    return NULL;
+}
+
 
 static inline const char* objTypeToString( PWR_ObjType type )
 {
@@ -22,15 +42,15 @@ static inline const char* objTypeToString( PWR_ObjType type )
 }
 
 
-static inline PWR_AttrType attrTypeStrToInt( const std::string name )
+static inline PWR_AttrType attrTypeStrToInt( const char* name )
 {
-    if ( 0 == name.compare("POWER") ) {
+    if ( 0 == strcmp(name,"POWER") ) {
         return PWR_ATTR_POWER;
-    } else  if ( 0 == name.compare("VOLTAGE") ) {
+    } else  if ( 0 == strcmp(name,"VOLTAGE") ) {
         return PWR_ATTR_VOLTAGE;
-    } else  if ( 0 == name.compare("CURRENT") ) {
+    } else  if ( 0 == strcmp(name,"CURRENT") ) {
         return PWR_ATTR_CURRENT;
-    } else  if ( 0 == name.compare("FREQ") ) {
+    } else  if ( 0 == strcmp(name,"FREQ") ) {
         return PWR_ATTR_FREQ;
     }
     return PWR_ATTR_INVALID;
@@ -62,19 +82,19 @@ static inline PWR_AttrDataType attrTypeToDataType( PWR_AttrType type )
     return PWR_ATTR_DATA_INVALID;
 }
 
-static inline PWR_ObjType objTypeStrToInt( const std::string name )
+static inline PWR_ObjType objTypeStrToInt( const char* name )
 { 
-    if ( 0 == name.compare( "Platform" ) ) {
+    if ( 0 == strcmp( name, "Platform" ) ) {
         return  PWR_OBJ_PLATFORM;
-    } else if ( 0 == name.compare( "Cabinet" ) ) {
+    } else if ( 0 == strcmp( name, "Cabinet" ) ) {
         return PWR_OBJ_CABINET;
-    } else if ( 0 == name.compare( "Board" ) ) {
+    } else if ( 0 == strcmp( name, "Board" ) ) {
         return PWR_OBJ_BOARD;
-    } else if ( 0 == name.compare( "Node" ) ) {
+    } else if ( 0 == strcmp( name, "Node" ) ) {
         return PWR_OBJ_NODE;
-    } else if ( 0 == name.compare( "Socket" ) ) {
+    } else if ( 0 == strcmp( name, "Socket" ) ) {
         return PWR_OBJ_SOCKET;
-    } else if ( 0 == name.compare( "Core" ) ) {
+    } else if ( 0 == strcmp( name, "Core" ) ) {
         return PWR_OBJ_CORE;
     } 
     return PWR_OBJ_INVALID;

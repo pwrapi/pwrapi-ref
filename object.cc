@@ -66,43 +66,49 @@ _Obj* _Obj::parent()
     return m_parent; 
 }
 
-int _Obj::attrGetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Time* ts )
+int _Obj::attrGetValue( PWR_AttrType type, void* buf, size_t len, PWR_Time* ts )
 {
     _Attr* attr = m_attrVector[type];
     if ( attr ) {
-        return attr->getValue( ptr, len, ts );
+        return attr->getValue( buf, len, ts );
     } else {
         return PWR_ERR_INVALID;
     }
 }
 
-int _Obj::attrSetValue( PWR_AttrType type, void* ptr, size_t len )
+int _Obj::attrSetValue( PWR_AttrType type, void* buf, size_t len )
 {
     _Attr* attr = m_attrVector[type];
     if ( attr ) {
-        return attr->setValue( ptr, len );
+        return attr->setValue( buf, len );
     } else {
         return PWR_ERR_INVALID;
     }
 }
+
+
 
 struct XX {
-    std::vector< PWR_Value >  value;
-    std::vector< int >        status;
-    std::vector< std::vector< unsigned char> > buf;
+    std::vector<PWR_AttrType> attrs;
+    std::vector<uint64_t>     data;
+    std::vector<PWR_Time>     ts;
+    std::vector<int>          status;
+    std::vector<int>          foo;
 };
 
-int _Obj::attrGetValues( int num, PWR_Value v[], int status[] )
+int _Obj::attrGetValues( const std::vector<PWR_AttrType>& attrs, void* buf,
+                         std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
     int retval = PWR_ERR_SUCCESS;
+
     std::map< Foobar*, XX > foobar;
-    std::vector< std::vector<PWR_Value*> > var1( num );
+    std::vector< std::vector<void*> > var1( attrs.size() );
 
-    DBGX("%s \n",name().c_str());
+    DBGX("%s buf=%p\n",name().c_str(),buf);
 
-    for ( int i=0; i < num; i++ ) {
+    for ( unsigned int i=0; i < attrs.size(); i++ ) {
 
-        _Attr* attr = m_attrVector[ v[i].type ];
+        _Attr* attr = m_attrVector[ attrs[i] ];
 
         if ( attr ) {
 
@@ -112,17 +118,8 @@ int _Obj::attrGetValues( int num, PWR_Value v[], int status[] )
 
                 XX& xx = foobar[ attr->foobar()[j] ];
 
-                xx.status.push_back( 0 );
-                xx.buf.push_back( std::vector<unsigned char>(v[i].len) );
-
-                PWR_Value u;
-                u.type = v[i].type;
-                u.len =  v[i].len; 
-                u.ptr =  &xx.buf.back()[0];
-
-                xx.value.push_back( u );
-
-                var1[i].push_back( &xx.value.back() );
+                xx.attrs.push_back( attrs[i] );
+                xx.foo.push_back( i );
             }
         }
     }
@@ -130,35 +127,45 @@ int _Obj::attrGetValues( int num, PWR_Value v[], int status[] )
     std::map<Foobar*, XX >::iterator iter = foobar.begin();
     for ( ; iter != foobar.end(); ++iter ) {
         XX& xx = (*iter).second;
+        unsigned int num = xx.attrs.size();
 
-        (*iter).first->attrGetValues( xx.value.size(), 
-                                    &xx.value[0], &xx.status[0] );
+        xx.data.resize( num );
+        xx.ts.resize( num );
+        xx.status.resize( num );
 
-        for ( unsigned int i = 0; i < xx.value.size(); i++ ) {
+        (*iter).first->attrGetValues( xx.attrs, &xx.data[0], xx.ts, xx.status ); 
+
+        for ( unsigned int i = 0; i < num; i++ ) {
             if ( PWR_ERR_SUCCESS != xx.status[i] ) {
                 retval = PWR_ERR_FAILURE;
             }
+
+            var1[ xx.foo[i] ].push_back( &xx.data[i] ); 
         }
     }
 
-    for ( int i=0; i < num; i++ ) {
+    for ( unsigned int i=0; i < attrs.size(); i++ ) {
 
-        _Attr* attr = m_attrVector[ v[i].type ];
+        DBGX("%s \n",name().c_str());
+
+        _Attr* attr = m_attrVector[ attrs[i] ];
 
         if ( attr ) {
-            if ( !  var1.empty() ) {
-                attr->op( v[i], var1[i] );
+            if ( ! var1[i].empty() ) {
+                attr->op( (void*) &((uint64_t*)buf)[i], var1[i] );
             }
         } else {
             status[i] = PWR_ERR_INVALID;
             retval = PWR_ERR_FAILURE;
         }
+        DBGX("%s \n",name().c_str());
     }
     
     return retval;
 }
 
-int _Obj::attrSetValues( int num, PWR_Value v[], int status[] )
+int _Obj::attrSetValues( const std::vector<PWR_AttrType>& attrs, void* buf,
+                                            std::vector<int>& status  )
 {
     int retval = PWR_ERR_SUCCESS;
     DBGX("%s \n",name().c_str());
@@ -167,9 +174,9 @@ int _Obj::attrSetValues( int num, PWR_Value v[], int status[] )
 
     DBGX("%s \n",name().c_str());
 
-    for ( int i=0; i < num; i++ ) {
+    for ( unsigned int i=0; i < attrs.size(); i++ ) {
 
-        _Attr* attr = m_attrVector[ v[i].type ];
+        _Attr* attr = m_attrVector[ attrs[i] ];
 
         if ( attr ) {
 
@@ -179,9 +186,8 @@ int _Obj::attrSetValues( int num, PWR_Value v[], int status[] )
 
                 XX& xx = foobar[ attr->foobar()[j] ];
 
-                xx.status.push_back( 0 );
-
-                xx.value.push_back( v[i] );
+                xx.data.push_back( ( ( uint64_t* )buf)[i] );
+                xx.attrs.push_back( attrs[i] );
             }
         } 
     }
@@ -189,10 +195,12 @@ int _Obj::attrSetValues( int num, PWR_Value v[], int status[] )
     std::map<Foobar*, XX >::iterator iter = foobar.begin();
     for ( ; iter != foobar.end(); ++iter ) {
         XX& xx = (*iter).second;
+        unsigned int num = xx.attrs.size();
 
-        (*iter).first->attrSetValues( xx.value.size(), 
-                                    &xx.value[0], &xx.status[0] );
-        for ( unsigned int i = 0; i < xx.value.size(); i++ ) {
+        xx.status.resize( num );
+        (*iter).first->attrSetValues( xx.attrs, &xx.data[0], xx.status );
+
+        for ( unsigned int i = 0; i < num; i++ ) {
             if ( PWR_ERR_SUCCESS != xx.status[i] ) {
                 retval = PWR_ERR_FAILURE;
             }

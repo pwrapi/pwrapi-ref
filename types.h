@@ -53,7 +53,7 @@ typedef enum {
 } PWR_ObjType;
 
 typedef enum {
-    PWR_ATTR_NAME,	    /* Required String */
+    PWR_ATTR_NAME = 0,	    /* Required String */
     PWR_ATTR_FREQ,	    /* Required Float  */
     PWR_ATTR_MAX_PCAP,      /* Required Float  */
     PWR_ATTR_MIN_PCAP,      /* Required Float  */
@@ -65,7 +65,10 @@ typedef enum {
     PWR_ATTR_CURRENT,       /* Required Float  */
     PWR_ATTR_ENERGY,        /* Required Float  */
     PWR_ATTR_PSTATE,	    /* Required Int    */
-    PWR_ATTR_INVALID,	    /*  */
+    PWR_ATTR_CSTATE,	    /* Required Int    */
+    PWR_ATTR_SSTATE,	    /* Required Int    */
+    PWR_ATTR_NUM_ATTRS,
+    PWR_ATTR_INVALID = PWR_ATTR_NUM_ATTRS,	    /*  */
 } PWR_AttrType;
 
 typedef enum {
@@ -74,13 +77,6 @@ typedef enum {
     PWR_ATTR_DATA_STRING,
     PWR_ATTR_DATA_INVALID,
 } PWR_AttrDataType;
-
-typedef struct {
-    PWR_AttrType        type; 
-    void*               ptr;
-    size_t              len;
-    PWR_Time            timeStamp;
-} PWR_Value;
 
 typedef struct {
     PWR_Obj      obj;

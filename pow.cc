@@ -56,15 +56,9 @@ PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
     return obj->children();
 }
 
-int PWR_ObjGetNumAttrs( PWR_Obj obj )
+int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrType type )
 {
-    return obj->attrGetNumber();
-}
-
-int PWR_ObjGetAttrTypeByIndx( PWR_Obj obj, int index, PWR_AttrType *value )
-{
-    *value = obj->attributeGet( index )->type();
-    return PWR_ERR_SUCCESS;
+   return obj->attrIsValid( type );
 }
 
 int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
@@ -78,21 +72,24 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
     return obj->attrSetValue( type, ptr, len );
 }
 
-
-int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
-                                                 PWR_Status status )
+int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
+                    void* values, PWR_Time ts[], PWR_Status status )
 {
-    int* xxx = (int*) malloc( sizeof(int) * num );
-
-    if ( PWR_ERR_SUCCESS != obj->attrGetValues( num, values, xxx ) ) {
-        for ( int i = 0; i < num; i++ ) {
-            if ( PWR_ERR_SUCCESS != xxx[i] ) { 
-                status->add( obj, values[i].type, xxx[i] ); 
-            }
-        }
+    std::vector<PWR_AttrType> attrsV(num);
+    std::vector<PWR_Time>     tsV(num);
+    std::vector<int>          statusV(num);
+    for ( int i = 0; i < num; i++ ) {
+        attrsV[i] =  attrs[i];
     } 
 
-    free( xxx );
+    if ( PWR_ERR_SUCCESS != obj->attrGetValues(attrsV,values,tsV,statusV) ) {
+        for ( int i = 0; i < num; i++ ) {
+            if ( PWR_ERR_SUCCESS != statusV[i] ) { 
+                status->add( obj, attrsV[i], statusV[i] ); 
+            }
+            ts[i] = tsV[i];
+        }
+    } 
 
     if ( !status->empty() ) {
         return PWR_ERR_FAILURE;
@@ -101,20 +98,22 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_Value values[],
     }
 }
 
-int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_Value values[],
-                                                 PWR_Status status )
+int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
+                    void* values, PWR_Status status )
 {
-    int* xxx = (int*) malloc( sizeof(int) * num );
+    std::vector<PWR_AttrType> attrsV(num);
+    std::vector<int>          statusV(num);
+    for ( int i = 0; i < num; i++ ) {
+        attrsV[i] =  attrs[i];
+    } 
 
-    if ( PWR_ERR_SUCCESS != obj->attrSetValues( num, values, xxx ) ) {
+    if ( PWR_ERR_SUCCESS != obj->attrSetValues( attrsV, values, statusV ) ) {
         for ( int i = 0; i < num; i++ ) {
-            if ( PWR_ERR_SUCCESS != xxx[i] ) { 
-                status->add( obj, values[i].type, xxx[i] ); 
+            if ( PWR_ERR_SUCCESS != statusV[i] ) { 
+                status->add( obj, attrsV[i], statusV[i] ); 
             }
         }
     } 
-
-    free( xxx );
 
     if ( !status->empty() ) {
         return PWR_ERR_FAILURE;
@@ -195,22 +194,7 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 }
 const char* PWR_AttrGetTypeString( PWR_AttrType name )
 {
-	switch( name ){
-	case PWR_ATTR_NAME: return "Name";
-	case PWR_ATTR_FREQ: return "Freq";
-	case PWR_ATTR_PSTATE: return "Pstate";
-	case PWR_ATTR_MAX_POWER: return "Max Power";
-	case PWR_ATTR_MIN_POWER: return "Min Power";
-	case PWR_ATTR_AVG_POWER: return "Avg Power";
-	case PWR_ATTR_POWER: return "Power";
-	case PWR_ATTR_VOLTAGE: return "Voltage";
-	case PWR_ATTR_CURRENT: return "Current";
-	case PWR_ATTR_ENERGY: return "Energy";
-	case PWR_ATTR_INVALID: return "Invalid";
-    default:
-        assert(0);
-	}	
-    return NULL;
+    return attrTypeToString( name );
 }
 
 int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {

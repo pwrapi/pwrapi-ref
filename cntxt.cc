@@ -83,7 +83,7 @@ _Dev* _Cntxt::findDev( const std::string name, const std::string config )
         funcPtr_t funcPtr = (funcPtr_t)dlsym(ptr,"getDev");
         assert(funcPtr);
     
-        m_devMap[ name + config ] = new _Dev( funcPtr(), "" ); 
+        m_devMap[ name + config ] = new _Dev( funcPtr(), config ); 
     } 
     return m_devMap[name + config];
 }

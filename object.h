@@ -28,14 +28,17 @@ class _Dev : public Foobar {
         m_devInfo = m_dev->open( config.c_str() );
     }
 
-    int attrGetValues( int num, PWR_Value v[], int s[] ){
+    int attrGetValues( const std::vector<PWR_AttrType>& types, void* ptr,
+                    std::vector<PWR_Time>& ts, std::vector<int>& status ){
         DBGX("\n");
-        return m_dev->readv( m_devInfo, num, v, s );
+        return m_dev->readv( m_devInfo, types.size(), &types[0], ptr,  
+                            &ts[0], &status[0] );
     }
 
-    int attrSetValues( int num, PWR_Value v[], int s[] ){ 
+    int attrSetValues( const std::vector<PWR_AttrType>& types, void* ptr,
+                    std::vector<int>& status ){ 
         DBGX("\n");
-        return m_dev->writev( m_devInfo, num, v, s );
+        return m_dev->writev( m_devInfo, types.size(), &types[0], ptr, &status[0] );
     }
 
     int attrGetValue( PWR_AttrType type, void* ptr, size_t len, unsigned long long* ts ){ 
@@ -70,13 +73,20 @@ struct _Obj : public Foobar{
         return m_attrVector[index]; 
     }
 
-    int attrGetValues( int, PWR_Value [], int [] );
-    int attrSetValues( int, PWR_Value [], int [] );
+    int attrGetValues( const std::vector<PWR_AttrType>& types, void* ptr,
+                    std::vector<PWR_Time>& ts, std::vector<int>& status );
+    int attrSetValues(  const std::vector<PWR_AttrType>& types, void* ptr,
+                    std::vector<int>& status );
+
     int attrGetValue( PWR_AttrType, void*, size_t, PWR_Time* );
     int attrSetValue( PWR_AttrType, void*, size_t );
 
     _Obj* findChild( const std::string name );
     _Dev* findDev( const std::string name, const std::string config );
+
+    int attrIsValid( PWR_AttrType type ) {
+        return 0;
+    }
 
   private:
     _Cntxt*     m_ctx;

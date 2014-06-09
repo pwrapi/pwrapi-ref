@@ -8,7 +8,7 @@ using namespace tinyxml2;
 
 
 static void fpSum( int num, void* out, void* in );  
-static void fpSum2( PWR_Value& out, const std::vector<PWR_Value*>& in );  
+static void fpSum2( void* out, const std::vector<void*>& in );  
 
 _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
     m_obj( obj ),
@@ -54,7 +54,7 @@ std::vector<Foobar*>& _Attr::foobar()
     return m_foobar;
 }
 
-void _Attr::op( PWR_Value& out, const std::vector<PWR_Value*>& in )
+void _Attr::op( void* out, const std::vector<void*>& in )
 {
     m_op2( out, in );
 }
@@ -144,14 +144,16 @@ static void fpSum( int num, void* _out, void* _in )
         *out += in[i];
     }
 }
-static void fpSum2( PWR_Value& out, const std::vector<PWR_Value*>& in )
+
+static void fpSum2( void* out, const std::vector<void*>& in  )
 {
-    *((float*) out.ptr) = *((float*) in[0]->ptr);
-    //printf("%s() i=%d val=%f\n",__func__, 0, *((float*) out.ptr));
-    out.timeStamp = in[0]->timeStamp;
+    *((float*) out) = *((float*) in[0]);
+
+    printf("%s() i=%d val=%f\n",__func__, 0, *((float*) out));
+//    out.timeStamp = in[0]->timeStamp;
 
     for ( unsigned int i=1; i < in.size(); i++ ) {
-        //printf("%s() i=%d val=%f\n",__func__, i, *((float*) in[i]->ptr));
-        *((float*) out.ptr) += *((float*) in[i]->ptr);
+        printf("%s() i=%d val=%f\n",__func__, i, *((float*) in[i]));
+        *((float*) out) += *((float*) in[i]);
     } 
 }
