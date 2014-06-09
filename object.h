@@ -116,6 +116,7 @@ struct _Grp {
         return m_name;
     }
 
+    
     int attrSetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Status status ) {
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr, len );
@@ -123,6 +124,65 @@ struct _Grp {
                 status->add( m_list[i], type, ret );
             }
         }
+        if ( !status->empty() ) {
+            return PWR_ERR_FAILURE;
+        } else {
+            return PWR_ERR_SUCCESS;
+        }
+    }
+
+    int attrSetValues( int num, PWR_AttrType attr[], void* buf,
+                                                        PWR_Status status )
+    {
+        for ( unsigned int i = 0; i < m_list.size(); i++ ) {
+
+            std::vector<PWR_AttrType> attrsV(num);
+            std::vector<int>          statusV(num);
+        
+            if ( PWR_ERR_SUCCESS != m_list[i]->attrSetValues( attrsV, buf, statusV ) ) {
+
+                for ( int j = 0; j < num; j++ ) {
+                    if ( PWR_ERR_SUCCESS != statusV[j] ) {
+                        status->add( m_list[i], attrsV[j], statusV[j] );
+                    }
+                }
+            }
+        }
+        if ( !status->empty() ) {
+            return PWR_ERR_FAILURE;
+        } else {
+            return PWR_ERR_SUCCESS;
+        }
+    }
+
+    int attrGetValues( int num, PWR_AttrType attr[], void* buf,
+                                                        PWR_Time ts[], PWR_Status status)
+    {
+        uint64_t* ptr = (uint64_t*) buf;
+        for ( unsigned int i = 0; i < m_list.size(); i++ ) {
+
+            std::vector<PWR_AttrType> attrsV(num);
+            std::vector<PWR_Time>     tsV(num);
+            std::vector<int>          statusV(num);
+
+            for ( int j = 0; j < num; j++ ) {
+                attrsV[j] =  attr[ i * num + j ];
+            }
+
+            if ( PWR_ERR_SUCCESS != m_list[i]->attrGetValues( attrsV, 
+                        ptr + i * num, tsV, statusV ) ) {
+
+                for ( int j = 0; j < num; j++ ) {
+                    if ( PWR_ERR_SUCCESS != statusV[j] ) {
+                        status->add( m_list[i], attrsV[j], statusV[j] );
+                    }
+                }
+            }
+            for ( int j = 0; j < num; j++ ) {
+                ts[ i * num + j ] = tsV[j];
+            }
+        }
+
         if ( !status->empty() ) {
             return PWR_ERR_FAILURE;
         } else {

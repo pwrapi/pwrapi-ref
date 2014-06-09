@@ -87,9 +87,11 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
             if ( PWR_ERR_SUCCESS != statusV[i] ) { 
                 status->add( obj, attrsV[i], statusV[i] ); 
             }
-            ts[i] = tsV[i];
         }
     } 
+    for ( int i = 0; i < num; i++ ) {
+       ts[i] = tsV[i];
+    }
 
     if ( !status->empty() ) {
         return PWR_ERR_FAILURE;
@@ -162,6 +164,18 @@ int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrType type, void* ptr,
 {
     return grp->attrSetValue( type, ptr, len, status );
 }
+
+int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrType attr[], void* buf, PWR_Status status )
+{
+    return grp->attrSetValues( num, attr, buf, status ); 
+}
+
+int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrType attr[], void* buf,
+                                                        PWR_Time ts[], PWR_Status status)
+{
+    return grp->attrGetValues( num, attr, buf, ts, status ); 
+}
+
 
 PWR_Status PWR_StatusCreate()
 {
