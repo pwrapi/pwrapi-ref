@@ -109,12 +109,14 @@ int oshw_cpudev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned i
     return 0;
 }
 
-int oshw_cpudev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int oshw_cpudev_readv( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] )
 {
     return 0;
 }
 
-int oshw_cpudev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int oshw_cpudev_writev( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, int status[] )
 {
     return 0;
 }

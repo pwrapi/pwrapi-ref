@@ -404,7 +404,7 @@ int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned i
             break;
     }
     *timestamp = (unsigned int)time*1000000000ULL + 
-            (time-(unsigned int)time)*1000000000ULL;
+                 (time-(unsigned int)time)*1000000000ULL;
 
     return 0;
 }
@@ -414,7 +414,8 @@ int mchw_rapldev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned 
     return 0;
 }
 
-int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] )
 {
     unsigned int i;
     long long msr;
@@ -489,23 +490,23 @@ int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[]
     }
 
     for( i = 0; i < arraysize; i++ ) {
-        switch( value[i].type ) {
+        switch( types[i] ) {
             case PWR_ATTR_ENERGY:
-                *((float *)value[i].ptr) = energy;
+                *((float *)values+i) = energy;
                 break;
             default:
                 printf( "Warning: unknown MCHW reading type requested\n" );
                 return 1;
         }
-        value[i].len = sizeof(float);
-        value[i].timeStamp = (unsigned int)time*1000000000ULL + 
-                             (time-(unsigned int)time)*1000000000ULL;
+        timestamp = (unsigned int)time*1000000000ULL + 
+                    (time-(unsigned int)time)*1000000000ULL;
     }
 
     return 0;
 }
 
-int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, int status[] )
 {
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device write\n" );

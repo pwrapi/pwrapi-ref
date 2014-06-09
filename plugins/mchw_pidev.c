@@ -144,7 +144,8 @@ int mchw_pidev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned in
      return 0;
 }
 
-int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] )
 {
     unsigned int i;
 
@@ -157,53 +158,47 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], 
     while( pidev_reading ) sched_yield();
 
     for( i = 0; i < arraysize; i++ ) {
-        switch( value[i].type ) {
+        switch( types[i] ) {
             case PWR_ATTR_VOLTAGE:
-                *((float *)value[i].ptr) = pidev_counter.raw.volts;
+                *((float *)values+i) = pidev_counter.raw.volts;
                 break;
             case PWR_ATTR_CURRENT:
-                *((float *)value[i].ptr) = pidev_counter.raw.amps;
+                *((float *)values+i) = pidev_counter.raw.amps;
                 break;
             case PWR_ATTR_POWER:
-                *((float *)value[i].ptr) = pidev_counter.raw.watts;
+                *((float *)values+i) = pidev_counter.raw.watts;
                 break;
             case PWR_ATTR_MIN_POWER:
-                *((float *)value[i].ptr) = pidev_counter.min.watts;
+                *((float *)values+i) = pidev_counter.min.watts;
                 break;
             case PWR_ATTR_MAX_POWER:
-                *((float *)value[i].ptr) = pidev_counter.max.watts;
+                *((float *)values+i) = pidev_counter.max.watts;
                 break;
             case PWR_ATTR_ENERGY:
-                *((float *)value[i].ptr) = pidev_counter.energy;
+                *((float *)values+i) = pidev_counter.energy;
                 break;
             default:
-                printf( "Warning: unknown MCHW reading type (%u) requested at position %u\n", value[i].type, i );
+                printf( "Warning: unknown MCHW reading type (%u) requested at position %u\n", types[i], i );
                 break;
         }
-        value[i].len = sizeof(float);
-        value[i].timeStamp = pidev_counter.time_sec*1000000000ULL + 
-                             pidev_counter.time_usec*1000;
+        timestamp[i] = pidev_counter.time_sec*1000000000ULL + 
+                       pidev_counter.time_usec*1000;
     }
 
     return 0;
 }
 
-int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, int status[] )
 {
     return 0;
 }
 
 int mchw_pidev_time( pwr_dev_t dev, unsigned long long *timestamp )
 {
-    PWR_Value value[1];
-    int status[1];
+    float value;
 
-    value[0].type = PWR_ATTR_POWER;
-    value[0].ptr = malloc(sizeof(float));
-    value[0].len = sizeof(float);
-
-    mchw_pidev_readv( dev, 1, value, status );
-    *timestamp = value[0].timeStamp;
+    mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(float), timestamp );
 
     return 0;
 }

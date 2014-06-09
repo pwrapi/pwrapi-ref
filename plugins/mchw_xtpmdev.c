@@ -24,12 +24,14 @@ int mchw_xtpmdev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned 
     return 0;
 }
 
-int mchw_xtpmdev_readv( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int mchw_xtpmdev_readv( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] )
 {
     return 0;
 }
 
-int mchw_xtpmdev_writev( pwr_dev_t dev, unsigned int arraysize, PWR_Value value[], int status[] )
+int mchw_xtpmdev_writev( pwr_dev_t dev, unsigned int arraysize,
+    const PWR_AttrType types[], void *values, int status[] )
 {
     return 0;
 }
