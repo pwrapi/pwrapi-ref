@@ -29,7 +29,7 @@ class _Dev : public Foobar {
     }
 
     int attrGetValues( const std::vector<PWR_AttrType>& types, void* ptr,
-                    std::vector<PWR_Time>& ts, std::vector<int>& status ){
+                    std::vector<unsigned long long>& ts, std::vector<int>& status ){
         DBGX("\n");
         return m_dev->readv( m_devInfo, types.size(), &types[0], ptr,  
                             &ts[0], &status[0] );
@@ -74,11 +74,11 @@ struct _Obj : public Foobar{
     }
 
     int attrGetValues( const std::vector<PWR_AttrType>& types, void* ptr,
-                    std::vector<PWR_Time>& ts, std::vector<int>& status );
+                    std::vector<unsigned long long>& ts, std::vector<int>& status );
     int attrSetValues(  const std::vector<PWR_AttrType>& types, void* ptr,
                     std::vector<int>& status );
 
-    int attrGetValue( PWR_AttrType, void*, size_t, PWR_Time* );
+    int attrGetValue( PWR_AttrType, void*, size_t, unsigned long long* );
     int attrSetValue( PWR_AttrType, void*, size_t );
 
     _Obj* findChild( const std::string name );
@@ -156,13 +156,13 @@ struct _Grp {
     }
 
     int attrGetValues( int num, PWR_AttrType attr[], void* buf,
-                                                        PWR_Time ts[], PWR_Status status)
+                                                        unsigned long long ts[], PWR_Status status)
     {
         uint64_t* ptr = (uint64_t*) buf;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
             std::vector<PWR_AttrType> attrsV(num);
-            std::vector<PWR_Time>     tsV(num);
+            std::vector<unsigned long long> tsV(num);
             std::vector<int>          statusV(num);
 
             for ( int j = 0; j < num; j++ ) {

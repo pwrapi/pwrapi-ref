@@ -198,9 +198,7 @@ int mchw_pidev_time( pwr_dev_t dev, unsigned long long *timestamp )
 {
     float value;
 
-    mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(float), timestamp );
-
-    return 0;
+    return mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(float), timestamp );
 }
 
 int mchw_pidev_clear( pwr_dev_t dev )

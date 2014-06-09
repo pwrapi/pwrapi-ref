@@ -59,7 +59,7 @@ void _Attr::op( void* out, const std::vector<void*>& in )
     m_op2( out, in );
 }
 
-int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts ) 
+int _Attr::getValue( void* ptr, size_t len, unsigned long long* ts ) 
 {
     DBGX("%s %s\n",m_obj->name().c_str(), m_name.c_str());
 
@@ -72,7 +72,7 @@ int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts )
     unsigned char * buf = (unsigned char* )malloc( len * m_foobar.size() );
     for ( unsigned int i = 0; i <  m_foobar.size(); i++ ) {
         
-        PWR_Time _ts;
+        unsigned long long _ts;
         m_foobar[i]->attrGetValue( m_type, buf + len * i, len, &_ts ); 
         *ts = _ts;
     }

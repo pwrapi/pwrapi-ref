@@ -19,7 +19,7 @@ class _Attr  {
     std::vector<Foobar*>& foobar();
     PWR_AttrType type() { return m_type; }  
     PWR_AttrDataType dataType() { return m_dataType; }
-    int getValue( void*, size_t len, PWR_Time* ts );
+    int getValue( void*, size_t len, unsigned long long* ts );
     int setValue( void*, size_t len );
     void op( void*, const std::vector<void*>& );
 

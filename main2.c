@@ -12,7 +12,7 @@ int main( int argc, char* argv[] )
     time_t      time;
     int         retval;
     float       value;
-    PWR_Time    ts;
+    unsigned long long ts;
     PWR_Status  status;
 
     // Get a context
