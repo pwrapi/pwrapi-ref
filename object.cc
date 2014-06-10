@@ -66,7 +66,7 @@ _Obj* _Obj::parent()
     return m_parent; 
 }
 
-int _Obj::attrGetValue( PWR_AttrType type, void* buf, size_t len, unsigned long long* ts )
+int _Obj::attrGetValue( PWR_AttrType type, void* buf, size_t len, PWR_Time* ts )
 {
     _Attr* attr = m_attrVector[type];
     if ( attr ) {
@@ -91,13 +91,13 @@ int _Obj::attrSetValue( PWR_AttrType type, void* buf, size_t len )
 struct XX {
     std::vector<PWR_AttrType> attrs;
     std::vector<uint64_t>     data;
-    std::vector<unsigned long long>     ts;
+    std::vector<PWR_Time>     ts;
     std::vector<int>          status;
     std::vector<int>          foo;
 };
 
 int _Obj::attrGetValues( const std::vector<PWR_AttrType>& attrs, void* buf,
-                         std::vector<unsigned long long>& ts, std::vector<int>& status )
+                         std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
     int retval = PWR_ERR_SUCCESS;
 

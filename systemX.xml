@@ -3,7 +3,7 @@
 <System>
 
 <Devices>
-    <dev name="Dummy" lib="libdummyDev.dylib"/>
+    <dev name="Dummy" lib="libdummy_dev.so"/>
 </Devices>
 
 <Objects>

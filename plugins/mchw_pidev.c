@@ -41,7 +41,9 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
         }
         *saddr |= ( atoi(token) << shift );
         shift -= 8;
-        printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u)\n", *saddr, *sport );
+
+        if( pidev_verbose )
+            printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u)\n", *saddr, *sport );
     }
 
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
@@ -95,7 +97,7 @@ int mchw_pidev_close( pwr_dev_t dev )
 }
 
 
-int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *timestamp )
+int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, PWR_Time *timestamp )
 {
     while( pidev_reading ) sched_yield();
     pidev_reading = 1;
@@ -145,7 +147,7 @@ int mchw_pidev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned in
 }
 
 int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] )
+    const PWR_AttrType types[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
 
@@ -194,7 +196,7 @@ int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_pidev_time( pwr_dev_t dev, unsigned long long *timestamp )
+int mchw_pidev_time( pwr_dev_t dev, PWR_Time *timestamp )
 {
     float value;
 

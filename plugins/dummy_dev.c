@@ -44,7 +44,7 @@ static int close( pwr_dev_t dev)
     return 0;
 }
 
-static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len, unsigned long long* ts )
+static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len, PWR_Time* ts )
 {
 
     *(float*)ptr = ((dummyDevInfo_t*) dev)->value[type];
@@ -71,7 +71,7 @@ static int write( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len 
 }
 
 static int readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrType attrs[], void* buf,
-                        unsigned long long ts[], int status[] )
+                        PWR_Time ts[], int status[] )
 {
     int i;
     for ( i = 0; i < arraysize; i++ ) {
@@ -105,7 +105,7 @@ static int writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrType att
     return PWR_ERR_SUCCESS;
 }
 
-static int time( pwr_dev_t dev, unsigned long long *timestamp )
+static int time( pwr_dev_t dev, PWR_Time *timestamp )
 {
     DBGX("\n");
 

@@ -62,7 +62,7 @@ int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrType type )
 }
 
 int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
-                    size_t len, unsigned long long* ts )
+                    size_t len, PWR_Time* ts )
 {
     return obj->attrGetValue( type, ptr, len, ts );
 }
@@ -73,10 +73,10 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
 }
 
 int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
-                    void* values, unsigned long long ts[], PWR_Status status )
+                    void* values, PWR_Time ts[], PWR_Status status )
 {
     std::vector<PWR_AttrType> attrsV(num);
-    std::vector<unsigned long long>     tsV(num);
+    std::vector<PWR_Time>     tsV(num);
     std::vector<int>          statusV(num);
     for ( int i = 0; i < num; i++ ) {
         attrsV[i] =  attrs[i];
@@ -171,7 +171,7 @@ int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrType attr[], void* buf, 
 }
 
 int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrType attr[], void* buf,
-                                                        unsigned long long ts[], PWR_Status status)
+                                                        PWR_Time ts[], PWR_Status status)
 {
     return grp->attrGetValues( num, attr, buf, ts, status ); 
 }

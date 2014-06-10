@@ -317,7 +317,7 @@ int mchw_rapldev_close( pwr_dev_t dev )
 }
 
 
-int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, unsigned long long *timestamp )
+int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, PWR_Time *timestamp )
 {
     long long msr;
     double time = 0;
@@ -415,7 +415,7 @@ int mchw_rapldev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned 
 }
 
 int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] )
+    const PWR_AttrType types[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
     long long msr;
@@ -514,7 +514,7 @@ int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_rapldev_time( pwr_dev_t dev, unsigned long long *timestamp )
+int mchw_rapldev_time( pwr_dev_t dev, PWR_Time *timestamp )
 {
     float value;
 

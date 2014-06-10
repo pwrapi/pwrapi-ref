@@ -11,16 +11,16 @@ pwr_dev_t mchw_xtpmdev_open( const char *initstr );
 int mchw_xtpmdev_close( pwr_dev_t dev );
 
 int mchw_xtpmdev_read( pwr_dev_t dev, PWR_AttrType type,
-    void *value, unsigned int len, unsigned long long *timestamp );
+    void *value, unsigned int len, PWR_Time *timestamp );
 int mchw_xtpmdev_write( pwr_dev_t dev, PWR_AttrType type,
     void *value, unsigned int len );
 
 int mchw_xtpmdev_readv( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, unsigned long long timestamp[], int status[] );
+    const PWR_AttrType types[], void *values, PWR_Time timestamp[], int status[] );
 int mchw_xtpmdev_writev( pwr_dev_t dev, unsigned int arraysize,
     const PWR_AttrType types[], void *values, int status[] );
 
-int mchw_xtpmdev_time( pwr_dev_t dev, unsigned long long *timestamp );
+int mchw_xtpmdev_time( pwr_dev_t dev, PWR_Time *timestamp );
 int mchw_xtpmdev_clear( pwr_dev_t dev );
 
 #ifdef __cplusplus

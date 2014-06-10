@@ -42,7 +42,7 @@ int main( int argc, char* argv[] )
     unsigned int rsize = sizeof(rval)/sizeof(float);
     unsigned int wsize = sizeof(wval)/sizeof(float);
 
-    unsigned long long rtime[rsize];
+    PWR_Time rtime[rsize];
     int rstat[rsize], wstat[wsize];
 
     unsigned int i, j;
