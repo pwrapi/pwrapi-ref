@@ -10,7 +10,7 @@ int main( int argc, char* argv[] )
     PWR_Cntxt   cntxt;
     time_t      time;
     float       energy_start, energy_end;
-    unsigned long long energy_start_ts, energy_end_ts;
+    PWR_Time energy_start_ts, energy_end_ts;
 
     if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "MiniMD" )) == 0x0 ) {
       printf( "Error: initialization of PowerAPI context failed\n" );
@@ -40,7 +40,7 @@ int main( int argc, char* argv[] )
     printf( "Ending Energy at time %s is %f\n", ctime(&time), energy_end );
 
     printf( "Total Energy over %llu is %f\n",
-            energy_end_ts - energy_start_ts, energy_end - energy_start );
+            (unsigned long long)(energy_end_ts - energy_start_ts), energy_end - energy_start );
 
     return 0;
 }
