@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "./dev.h"
-#include "../util.h"
+#include <sys/time.h>
 
+#include "dev.h"
+#include "util.h"
 
 #if 1
 
@@ -39,9 +40,11 @@ static int close( pwr_dev_t dev)
 {
     DBGX("\n");
     free( dev );
+
+    return 0;
 }
 
-static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, size_t len, unsigned long long* ts )
+static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len, unsigned long long* ts )
 {
 
     *(float*)ptr = ((dummyDevInfo_t*) dev)->value[type];
@@ -59,7 +62,7 @@ static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, size_t len, unsign
     return PWR_ERR_SUCCESS;
 }
 
-static int write( pwr_dev_t dev, PWR_AttrType type, void* ptr, size_t len )
+static int write( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len )
 {
     DBGX("type=%s %f\n",attrTypeToString(type), *(float*)ptr);
 
@@ -105,6 +108,8 @@ static int writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrType att
 static int time( pwr_dev_t dev, unsigned long long *timestamp )
 {
     DBGX("\n");
+
+    return 0;
 }
 
 static plugin_dev_t dev = {
