@@ -16,33 +16,20 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
     m_op( NULL ),
     m_op2( NULL )
 {
-    m_type = attrTypeStrToInt( el->Attribute("name") );
-    assert( PWR_ATTR_INVALID != m_type );
+    m_name = attrNameStrToInt( el->Attribute("name") );
+    assert( PWR_ATTR_INVALID != m_name );
 
     DBGX("name=`%s` op=`%s`\n",
                     m_xml->Attribute("name"),m_xml->Attribute("op"));
 
-    m_name = m_xml->Attribute("name");
-    m_dataType = attrTypeToDataType( m_type );
+    m_dataType = attrNameToDataType( m_name );
 
     if ( 0 == strcmp( "SUM", m_xml->Attribute("op") ) ) {
         m_op = fpSum;
         m_op2 = fpSum2;
     }
 
-    switch ( m_dataType ) {
-      case PWR_ATTR_DATA_FLOAT:
-        m_len = sizeof(float);
-        break;
-      case PWR_ATTR_DATA_INT:
-        m_len = sizeof(int);
-        break;
-      case PWR_ATTR_DATA_STRING:
-        m_len = 1024;
-        break;
-      case PWR_ATTR_DATA_INVALID:
-        break;
-    }
+    m_len = 8;
 
     if ( 0 != strcmp( m_xml->Attribute("op"), "INVALID" ) ) {
         initSrcList( m_xml );
@@ -61,7 +48,7 @@ void _Attr::op( void* out, const std::vector<void*>& in )
 
 int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts ) 
 {
-    DBGX("%s %s\n",m_obj->name().c_str(), m_name.c_str());
+    DBGX("%s %s\n",m_obj->name().c_str(), attrNameToString(m_name).c_str());
 
     if ( len > m_len ) return PWR_ERR_LENGTH; 
 
@@ -73,7 +60,7 @@ int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts )
     for ( unsigned int i = 0; i <  m_foobar.size(); i++ ) {
         
         PWR_Time _ts;
-        m_foobar[i]->attrGetValue( m_type, buf + len * i, len, &_ts ); 
+        m_foobar[i]->attrGetValue( m_name, buf + len * i, len, &_ts ); 
         *ts = _ts;
     }
 
@@ -93,7 +80,7 @@ int _Attr::setValue( void* ptr, size_t len )
 
     for ( unsigned int i = 0; i <  m_foobar.size(); i++ ) {
         
-        m_foobar[i]->attrSetValue( m_type, ptr, len ); 
+        m_foobar[i]->attrSetValue( m_name, ptr, len ); 
     }
 
     return PWR_ERR_SUCCESS;
@@ -134,8 +121,8 @@ void _Attr::initSrcList( tinyxml2::XMLElement* el )
 
 static void fpSum( int num, void* _out, void* _in )
 {
-    float* out = (float*) _out;
-    float* in  = (float*) _in;
+    double* out = (double*) _out;
+    double* in  = (double*) _in;
     *out = in[0];
      
     //printf("%s() i=%d val=%f\n",__func__, 0, in[0]);
@@ -147,13 +134,13 @@ static void fpSum( int num, void* _out, void* _in )
 
 static void fpSum2( void* out, const std::vector<void*>& in  )
 {
-    *((float*) out) = *((float*) in[0]);
+    *((double*) out) = *((double*) in[0]);
 
-    printf("%s() i=%d val=%f\n",__func__, 0, *((float*) out));
+    printf("%s() i=%d val=%f\n",__func__, 0, *((double*) out));
 //    out.timeStamp = in[0]->timeStamp;
 
     for ( unsigned int i=1; i < in.size(); i++ ) {
-        printf("%s() i=%d val=%f\n",__func__, i, *((float*) in[i]));
-        *((float*) out) += *((float*) in[i]);
+        printf("%s() i=%d val=%f\n",__func__, i, *((double*) in[i]));
+        *((double*) out) += *((double*) in[i]);
     } 
 }

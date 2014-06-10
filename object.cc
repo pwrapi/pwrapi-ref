@@ -49,7 +49,7 @@ _Obj::_Obj( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
                             m_name.c_str(),el->Attribute("name") );
 
         _Attr* attr = new _Attr( this, el );
-        m_attrVector[ attr->type() ] = attr; 
+        m_attrVector[ attr->name() ] = attr; 
 
         tmp = tmp->NextSibling();
     }
@@ -66,9 +66,9 @@ _Obj* _Obj::parent()
     return m_parent; 
 }
 
-int _Obj::attrGetValue( PWR_AttrType type, void* buf, size_t len, PWR_Time* ts )
+int _Obj::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
 {
-    _Attr* attr = m_attrVector[type];
+    _Attr* attr = m_attrVector[name];
     if ( attr ) {
         return attr->getValue( buf, len, ts );
     } else {
@@ -76,9 +76,9 @@ int _Obj::attrGetValue( PWR_AttrType type, void* buf, size_t len, PWR_Time* ts )
     }
 }
 
-int _Obj::attrSetValue( PWR_AttrType type, void* buf, size_t len )
+int _Obj::attrSetValue( PWR_AttrName name, void* buf, size_t len )
 {
-    _Attr* attr = m_attrVector[type];
+    _Attr* attr = m_attrVector[name];
     if ( attr ) {
         return attr->setValue( buf, len );
     } else {
@@ -89,14 +89,14 @@ int _Obj::attrSetValue( PWR_AttrType type, void* buf, size_t len )
 
 
 struct XX {
-    std::vector<PWR_AttrType> attrs;
+    std::vector<PWR_AttrName> attrs;
     std::vector<uint64_t>     data;
     std::vector<PWR_Time>     ts;
     std::vector<int>          status;
     std::vector<int>          foo;
 };
 
-int _Obj::attrGetValues( const std::vector<PWR_AttrType>& attrs, void* buf,
+int _Obj::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                          std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
     int retval = PWR_ERR_SUCCESS;
@@ -164,7 +164,7 @@ int _Obj::attrGetValues( const std::vector<PWR_AttrType>& attrs, void* buf,
     return retval;
 }
 
-int _Obj::attrSetValues( const std::vector<PWR_AttrType>& attrs, void* buf,
+int _Obj::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                                             std::vector<int>& status  )
 {
     int retval = PWR_ERR_SUCCESS;

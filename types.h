@@ -69,18 +69,18 @@ typedef enum {
     PWR_ATTR_SSTATE,	    /* Required Int    */
     PWR_ATTR_NUM_ATTRS,
     PWR_ATTR_INVALID = PWR_ATTR_NUM_ATTRS,	    /*  */
-} PWR_AttrType;
+} PWR_AttrName;
 
 typedef enum {
     PWR_ATTR_DATA_FLOAT,
     PWR_ATTR_DATA_INT,
-    PWR_ATTR_DATA_STRING,
-    PWR_ATTR_DATA_INVALID,
+//    PWR_ATTR_DATA_STRING,
+//    PWR_ATTR_DATA_INVALID,
 } PWR_AttrDataType;
 
 typedef struct {
     PWR_Obj      obj;
-    PWR_AttrType type;
+    PWR_AttrName name;
     int          error;
 } PWR_AttrAccessError;
 

@@ -22,7 +22,7 @@
 
 
 typedef struct {
-    float value[PWR_ATTR_INVALID];  
+    double value[PWR_ATTR_INVALID];  
     char config[100];
 } dummyDevInfo_t;
 
@@ -44,12 +44,12 @@ static int close( pwr_dev_t dev)
     return 0;
 }
 
-static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len, PWR_Time* ts )
+static int read( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
 
-    *(float*)ptr = ((dummyDevInfo_t*) dev)->value[type];
+    *(double*)ptr = ((dummyDevInfo_t*) dev)->value[type];
 
-    DBGX("type=%s %f\n",attrTypeToString(type),*(float*)ptr);
+    DBGX("type=%s %f\n",attrNameToString(type),*(double*)ptr);
 
     struct timeval tv;
     gettimeofday(&tv,NULL);
@@ -62,23 +62,23 @@ static int read( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len, 
     return PWR_ERR_SUCCESS;
 }
 
-static int write( pwr_dev_t dev, PWR_AttrType type, void* ptr, unsigned int len )
+static int write( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len )
 {
-    DBGX("type=%s %f\n",attrTypeToString(type), *(float*)ptr);
+    DBGX("type=%s %f\n",attrNameToString(type), *(double*)ptr);
 
-    ((dummyDevInfo_t*) dev)->value[type] = *(float*)ptr;
+    ((dummyDevInfo_t*) dev)->value[type] = *(double*)ptr;
     return PWR_ERR_SUCCESS;
 }
 
-static int readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrType attrs[], void* buf,
+static int readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
                         PWR_Time ts[], int status[] )
 {
     int i;
     for ( i = 0; i < arraysize; i++ ) {
 
-        ((float*)buf)[i] = ((dummyDevInfo_t*) dev)->value[attrs[i]];
+        ((double*)buf)[i] = ((dummyDevInfo_t*) dev)->value[attrs[i]];
 
-        DBGX("type=%s %f\n",attrTypeToString(attrs[i]), ((float*)buf)[i]);
+        DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
         struct timeval tv;
         gettimeofday(&tv,NULL);
@@ -91,21 +91,21 @@ static int readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrType attr
     return PWR_ERR_SUCCESS;
 }
 
-static int writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrType attrs[], void* buf, int status[] )
+static int writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
 {
     int i;
     DBGX("num attributes %d\n",arraysize);
     for ( i = 0; i < arraysize; i++ ) {
-        DBGX("type=%s %f\n",attrTypeToString(attrs[i]), ((float*)buf)[i]);
+        DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
-        ((dummyDevInfo_t*) dev)->value[attrs[i]] = ((float*)buf)[i];
+        ((dummyDevInfo_t*) dev)->value[attrs[i]] = ((double*)buf)[i];
 
         status[i] = PWR_ERR_SUCCESS;
     }
     return PWR_ERR_SUCCESS;
 }
 
-static int time( pwr_dev_t dev, PWR_Time *timestamp )
+static int _time( pwr_dev_t dev, PWR_Time *timestamp )
 {
     DBGX("\n");
 
@@ -119,7 +119,7 @@ static plugin_dev_t dev = {
     write: write,
     readv: readv,
     writev: writev,
-    time: time,
+    time: _time,
 };
 
 plugin_dev_t* getDev() {

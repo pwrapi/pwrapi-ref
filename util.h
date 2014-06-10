@@ -5,7 +5,7 @@
 #include "./types.h"
 
 
-static inline const char* attrTypeToString( PWR_AttrType name )
+static inline const char* attrNameToString( PWR_AttrName name )
 {
     switch( name ){
     case PWR_ATTR_NAME: return "Name";
@@ -42,7 +42,7 @@ static inline const char* objTypeToString( PWR_ObjType type )
 }
 
 
-static inline PWR_AttrType attrTypeStrToInt( const char* name )
+static inline PWR_AttrName attrNameStrToInt( const char* name )
 {
     if ( 0 == strcmp(name,"POWER") ) {
         return PWR_ATTR_POWER;
@@ -56,11 +56,9 @@ static inline PWR_AttrType attrTypeStrToInt( const char* name )
     return PWR_ATTR_INVALID;
 }
 
-static inline PWR_AttrDataType attrTypeToDataType( PWR_AttrType type )
+static inline PWR_AttrDataType attrNameToDataType( PWR_AttrName name )
 {
-    switch ( type ) {
-    case PWR_ATTR_NAME:
-        return PWR_ATTR_DATA_STRING;
+    switch ( name ) {
 
     case PWR_ATTR_PSTATE:
         return PWR_ATTR_DATA_INT;
@@ -74,12 +72,9 @@ static inline PWR_AttrDataType attrTypeToDataType( PWR_AttrType type )
     case PWR_ATTR_VOLTAGE:
     case PWR_ATTR_CURRENT:
         return PWR_ATTR_DATA_FLOAT;
-    case PWR_ATTR_INVALID:
-        break;
     default:
         assert(0);
     }
-    return PWR_ATTR_DATA_INVALID;
 }
 
 static inline PWR_ObjType objTypeStrToInt( const char* name )

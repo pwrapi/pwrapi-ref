@@ -56,26 +56,25 @@ PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
     return obj->children();
 }
 
-int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrType type )
+int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrName type )
 {
    return obj->attrIsValid( type );
 }
 
-int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrType type, void* ptr,
-                    size_t len, PWR_Time* ts )
+int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts )
 {
-    return obj->attrGetValue( type, ptr, len, ts );
+    return obj->attrGetValue( type, ptr, 8, ts );
 }
 
-int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrType type, void* ptr, size_t len )
+int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, void* ptr )
 {
-    return obj->attrSetValue( type, ptr, len );
+    return obj->attrSetValue( type, ptr, 8 );
 }
 
-int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
+int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
                     void* values, PWR_Time ts[], PWR_Status status )
 {
-    std::vector<PWR_AttrType> attrsV(num);
+    std::vector<PWR_AttrName> attrsV(num);
     std::vector<PWR_Time>     tsV(num);
     std::vector<int>          statusV(num);
     for ( int i = 0; i < num; i++ ) {
@@ -100,10 +99,10 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
     }
 }
 
-int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrType attrs[],
+int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
                     void* values, PWR_Status status )
 {
-    std::vector<PWR_AttrType> attrsV(num);
+    std::vector<PWR_AttrName> attrsV(num);
     std::vector<int>          statusV(num);
     for ( int i = 0; i < num; i++ ) {
         attrsV[i] =  attrs[i];
@@ -159,18 +158,18 @@ PWR_Obj PWR_GrpGetObjByIndx( PWR_Grp group, int i )
     return group->getObj( i );
 }
 
-int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrType type, void* ptr,
-                                        size_t len, PWR_Status status )
+int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrName type, void* ptr,
+                                        PWR_Status status )
 {
-    return grp->attrSetValue( type, ptr, len, status );
+    return grp->attrSetValue( type, ptr, 8, status );
 }
 
-int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrType attr[], void* buf, PWR_Status status )
+int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf, PWR_Status status )
 {
     return grp->attrSetValues( num, attr, buf, status ); 
 }
 
-int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrType attr[], void* buf,
+int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf,
                                                         PWR_Time ts[], PWR_Status status)
 {
     return grp->attrGetValues( num, attr, buf, ts, status ); 
@@ -206,9 +205,9 @@ const char* PWR_ObjGetTypeString( PWR_ObjType type )
 {
     return objTypeToString( type );
 }
-const char* PWR_AttrGetTypeString( PWR_AttrType name )
+const char* PWR_AttrGetTypeString( PWR_AttrName name )
 {
-    return attrTypeToString( name );
+    return attrNameToString( name );
 }
 
 int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {

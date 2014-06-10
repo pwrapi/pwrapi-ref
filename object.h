@@ -28,26 +28,26 @@ class _Dev : public Foobar {
         m_devInfo = m_dev->open( config.c_str() );
     }
 
-    int attrGetValues( const std::vector<PWR_AttrType>& types, void* ptr,
+    int attrGetValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<PWR_Time>& ts, std::vector<int>& status ){
         DBGX("\n");
-        return m_dev->readv( m_devInfo, types.size(), &types[0], ptr,  
+        return m_dev->readv( m_devInfo, names.size(), &names[0], ptr,  
                             &ts[0], &status[0] );
     }
 
-    int attrSetValues( const std::vector<PWR_AttrType>& types, void* ptr,
+    int attrSetValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<int>& status ){ 
         DBGX("\n");
-        return m_dev->writev( m_devInfo, types.size(), &types[0], ptr, &status[0] );
+        return m_dev->writev( m_devInfo, names.size(), &names[0], ptr, &status[0] );
     }
 
-    int attrGetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Time* ts ){ 
-        return m_dev->read( m_devInfo, type, ptr, len, ts ); 
+    int attrGetValue( PWR_AttrName name, void* ptr, size_t len, PWR_Time* ts ){ 
+        return m_dev->read( m_devInfo, name, ptr, len, ts ); 
     }
 
-    int attrSetValue( PWR_AttrType type, void* ptr, size_t len ) {
+    int attrSetValue( PWR_AttrName name, void* ptr, size_t len ) {
         DBGX("\n");
-        return m_dev->write( m_devInfo, type, ptr, len ); 
+        return m_dev->write( m_devInfo, name, ptr, len ); 
     }
 
   private:
@@ -73,18 +73,18 @@ struct _Obj : public Foobar{
         return m_attrVector[index]; 
     }
 
-    int attrGetValues( const std::vector<PWR_AttrType>& types, void* ptr,
+    int attrGetValues( const std::vector<PWR_AttrName>& types, void* ptr,
                     std::vector<PWR_Time>& ts, std::vector<int>& status );
-    int attrSetValues(  const std::vector<PWR_AttrType>& types, void* ptr,
+    int attrSetValues(  const std::vector<PWR_AttrName>& types, void* ptr,
                     std::vector<int>& status );
 
-    int attrGetValue( PWR_AttrType, void*, size_t, PWR_Time* );
-    int attrSetValue( PWR_AttrType, void*, size_t );
+    int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* );
+    int attrSetValue( PWR_AttrName, void*, size_t );
 
     _Obj* findChild( const std::string name );
     _Dev* findDev( const std::string name, const std::string config );
 
-    int attrIsValid( PWR_AttrType type ) {
+    int attrIsValid( PWR_AttrName type ) {
         return 0;
     }
 
@@ -117,7 +117,7 @@ struct _Grp {
     }
 
     
-    int attrSetValue( PWR_AttrType type, void* ptr, size_t len, PWR_Status status ) {
+    int attrSetValue( PWR_AttrName type, void* ptr, size_t len, PWR_Status status ) {
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr, len );
             if ( PWR_ERR_SUCCESS != ret ) {
@@ -131,12 +131,12 @@ struct _Grp {
         }
     }
 
-    int attrSetValues( int num, PWR_AttrType attr[], void* buf,
+    int attrSetValues( int num, PWR_AttrName attr[], void* buf,
                                                         PWR_Status status )
     {
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
-            std::vector<PWR_AttrType> attrsV(num);
+            std::vector<PWR_AttrName> attrsV(num);
             std::vector<int>          statusV(num);
         
             if ( PWR_ERR_SUCCESS != m_list[i]->attrSetValues( attrsV, buf, statusV ) ) {
@@ -155,13 +155,13 @@ struct _Grp {
         }
     }
 
-    int attrGetValues( int num, PWR_AttrType attr[], void* buf,
+    int attrGetValues( int num, PWR_AttrName attr[], void* buf,
                                                         PWR_Time ts[], PWR_Status status)
     {
         uint64_t* ptr = (uint64_t*) buf;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
-            std::vector<PWR_AttrType> attrsV(num);
+            std::vector<PWR_AttrName> attrsV(num);
             std::vector<PWR_Time> tsV(num);
             std::vector<int>          statusV(num);
 

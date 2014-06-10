@@ -17,7 +17,7 @@ class _Attr  {
     _Attr( _Obj* obj, tinyxml2::XMLElement* el  );
 
     std::vector<Foobar*>& foobar();
-    PWR_AttrType type() { return m_type; }  
+    PWR_AttrName name() { return m_name; }  
     PWR_AttrDataType dataType() { return m_dataType; }
     int getValue( void*, size_t len, PWR_Time* ts );
     int setValue( void*, size_t len );
@@ -27,10 +27,9 @@ class _Attr  {
 
     void initSrcList( tinyxml2::XMLElement* el );
 
-    std::string             m_name;
     _Obj*                   m_obj;
     tinyxml2::XMLElement*   m_xml;
-    PWR_AttrType            m_type;
+    PWR_AttrName            m_name;
     PWR_AttrDataType        m_dataType;
     size_t                  m_len;
     

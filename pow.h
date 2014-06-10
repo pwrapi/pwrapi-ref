@@ -32,13 +32,13 @@ const char* PWR_ObjGetName( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 
-int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrType );
+int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName );
 
-int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrType, void*, size_t len, PWR_Time * );
-int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrType, void*, size_t len );
+int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrName name, void* buf, PWR_Time * );
+int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, void* buf );
 
-int PWR_ObjAttrGetValues( PWR_Obj, int, PWR_AttrType [], void*, PWR_Time[], PWR_Status  );
-int PWR_ObjAttrSetValues( PWR_Obj, int, PWR_AttrType [], void*, PWR_Status );
+int PWR_ObjAttrGetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status  );
+int PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Status );
 
 int PWR_ObjGetAvgPower( PWR_Obj, PWR_Time* from, PWR_Time* to );
 int PWR_ObjGetEnergy( PWR_Obj, PWR_Time* from, PWR_Time* to );
@@ -56,10 +56,9 @@ int         PWR_GrpGetNumObjs( PWR_Grp );
 PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
 int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
-int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrType, void*,
-                                            size_t len, PWR_Status );
-int         PWR_GrpAttrSetValues( PWR_Grp, int, PWR_AttrType [], void*, PWR_Status );
-int         PWR_GrpAttrGetValues( PWR_Grp, int, PWR_AttrType [], void*, PWR_Time [], PWR_Status );
+int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName, void*, PWR_Status );
+int         PWR_GrpAttrSetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Status );
+int         PWR_GrpAttrGetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status );
 
 PWR_Status PWR_StatusCreate();
 int PWR_StatusDestroy( PWR_Status );
@@ -71,7 +70,7 @@ int PWR_StatusClear( PWR_Status );
 */
 
 const char* PWR_ObjGetTypeString( PWR_ObjType );
-const char* PWR_AttrGetTypeString( PWR_AttrType );
+const char* PWR_AttrGetTypeString( PWR_AttrName );
 const char* PWR_ObjGetName( PWR_Obj );
 
 int PWR_TimeConvert( PWR_Time time, time_t* );

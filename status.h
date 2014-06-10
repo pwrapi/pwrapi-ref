@@ -19,10 +19,10 @@ struct _Status {
         return PWR_ERR_SUCCESS;
     }
 
-    void add( _Obj* obj, PWR_AttrType type, int error  ) {
+    void add( _Obj* obj, PWR_AttrName name, int error  ) {
         PWR_AttrAccessError tmp;
         tmp.obj = obj;
-        tmp.type = type;
+        tmp.name = name;
         tmp.error = error;
         m_info.push_back( tmp ); 
     }
