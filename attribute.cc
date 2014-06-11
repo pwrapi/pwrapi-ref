@@ -48,7 +48,7 @@ void _Attr::op( void* out, const std::vector<void*>& in )
 
 int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts ) 
 {
-    DBGX("%s %s\n",m_obj->name().c_str(), attrNameToString(m_name).c_str());
+    DBGX("%s %s\n",m_obj->name().c_str(), attrNameToString(m_name));
 
     if ( len > m_len ) return PWR_ERR_LENGTH; 
 

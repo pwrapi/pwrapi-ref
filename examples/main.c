@@ -6,11 +6,11 @@
 
 int main( int argc, char* argv[] )
 {
-    PWR_Obj     self;
-    PWR_Cntxt   cntxt;
-    time_t      time;
-    float       energy_start, energy_end;
-    PWR_Time energy_start_ts, energy_end_ts;
+    PWR_Obj   self;
+    PWR_Cntxt cntxt;
+    time_t    time;
+    float     energy_start, energy_end;
+    PWR_Time  energy_start_ts, energy_end_ts;
 
     if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "MiniMD" )) == 0x0 ) {
       printf( "Error: initialization of PowerAPI context failed\n" );
