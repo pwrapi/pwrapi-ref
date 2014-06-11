@@ -25,7 +25,7 @@ int main( int argc, char* argv[] )
     pwr_dev_t dev;
     unsigned int dsize = sizeof(pwr_dev)/sizeof(plugin_dev_t);
 
-    PWR_AttrType rtype[] = { 
+    PWR_AttrName rtype[] = { 
         PWR_ATTR_MIN_POWER,
         PWR_ATTR_MAX_POWER,
         PWR_ATTR_POWER,
@@ -33,7 +33,7 @@ int main( int argc, char* argv[] )
     };
     float rval[] = { 0.0, 0.0 };
 
-    PWR_AttrType wtype[] = {
+    PWR_AttrName wtype[] = {
         PWR_ATTR_MIN_PCAP,
         PWR_ATTR_MAX_PCAP
     };

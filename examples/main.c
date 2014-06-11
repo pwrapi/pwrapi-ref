@@ -23,16 +23,14 @@ int main( int argc, char* argv[] )
     }
     printf("Profiling `%s`\n", PWR_ObjGetTypeString( PWR_ObjGetType( self ) ) ); 
 
-    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_start,
-        sizeof(energy_start), &energy_start_ts ) == PWR_ERR_INVALID ) {
+    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_start, &energy_start_ts ) == PWR_ERR_INVALID ) {
       printf( "Error: getting attribute value from PowerAPI self failed\n" );
       return -1;
     }
     PWR_TimeConvert( energy_start_ts, &time );
     printf( "Starting Energy at time %s is %f\n", ctime(&time), energy_start );
 
-    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_end,
-        sizeof(energy_end), &energy_end_ts ) == PWR_ERR_INVALID ) {
+    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_end, &energy_end_ts ) == PWR_ERR_INVALID ) {
       printf( "Error: getting attribute energy value from PowerAPI self failed\n" );
       return -1;
     }

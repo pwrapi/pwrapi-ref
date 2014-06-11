@@ -1,4 +1,4 @@
-CFLAGS = -Wall -I.. -fPIC
+CFLAGS = -Wall -I.. -fPIC -Wgnu-designator
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L. -lpiapi -lm -pthread
 
@@ -23,5 +23,5 @@ liboshw_cpudev.so: oshw_cpudev.o
 	$(CC) -shared $(CFLAGS) -o $@ oshw_cpudev.o
 
 clean:
-	rm -f *hw_*dev.o lib*hw_*dev.so test
+	rm -f *_*dev.o lib*hw_*dev.so test
 

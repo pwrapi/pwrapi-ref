@@ -2,7 +2,7 @@
 #ifndef _PWR_UTIL_H
 #define _PWR_UTIL_H
 
-#include "./types.h"
+#include "types.h"
 
 
 static inline const char* attrNameToString( PWR_AttrName name )
@@ -72,8 +72,9 @@ static inline PWR_AttrDataType attrNameToDataType( PWR_AttrName name )
     case PWR_ATTR_VOLTAGE:
     case PWR_ATTR_CURRENT:
         return PWR_ATTR_DATA_FLOAT;
+
     default:
-        assert(0);
+        return PWR_ATTR_DATA_INVALID;
     }
 }
 

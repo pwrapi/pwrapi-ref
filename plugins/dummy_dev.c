@@ -27,7 +27,7 @@ typedef struct {
 } dummyDevInfo_t;
 
 
-static pwr_dev_t open( const char *initstr )
+static pwr_dev_t dummy_dev_open( const char *initstr )
 {
     DBGX("`%s`\n",initstr);
     dummyDevInfo_t *tmp = malloc( sizeof( dummyDevInfo_t ) );
@@ -36,7 +36,7 @@ static pwr_dev_t open( const char *initstr )
     return tmp;
 }
 
-static int close( pwr_dev_t dev)
+static int dummy_dev_close( pwr_dev_t dev)
 {
     DBGX("\n");
     free( dev );
@@ -44,7 +44,7 @@ static int close( pwr_dev_t dev)
     return 0;
 }
 
-static int read( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
+static int dummy_dev_read( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
 
     *(double*)ptr = ((dummyDevInfo_t*) dev)->value[type];
@@ -62,7 +62,7 @@ static int read( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len, 
     return PWR_ERR_SUCCESS;
 }
 
-static int write( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len )
+static int dummy_dev_write( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len )
 {
     DBGX("type=%s %f\n",attrNameToString(type), *(double*)ptr);
 
@@ -70,7 +70,7 @@ static int write( pwr_dev_t dev, PWR_AttrName type, void* ptr, unsigned int len 
     return PWR_ERR_SUCCESS;
 }
 
-static int readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
+static int dummy_dev_readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
                         PWR_Time ts[], int status[] )
 {
     int i;
@@ -91,7 +91,7 @@ static int readv( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attr
     return PWR_ERR_SUCCESS;
 }
 
-static int writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
+static int dummy_dev_writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
 {
     int i;
     DBGX("num attributes %d\n",arraysize);
@@ -105,7 +105,14 @@ static int writev( pwr_dev_t dev, unsigned int arraysize, const PWR_AttrName att
     return PWR_ERR_SUCCESS;
 }
 
-static int _time( pwr_dev_t dev, PWR_Time *timestamp )
+static int dummy_dev_time( pwr_dev_t dev, PWR_Time *timestamp )
+{
+    DBGX("\n");
+
+    return 0;
+}
+
+static int dummy_dev_clear( pwr_dev_t dev )
 {
     DBGX("\n");
 
@@ -113,13 +120,14 @@ static int _time( pwr_dev_t dev, PWR_Time *timestamp )
 }
 
 static plugin_dev_t dev = {
-    open: open, 
-    close: close,
-    read: read,
-    write: write,
-    readv: readv,
-    writev: writev,
-    time: _time,
+    .open   = dummy_dev_open, 
+    .close  = dummy_dev_close,
+    .read   = dummy_dev_read,
+    .write  = dummy_dev_write,
+    .readv  = dummy_dev_readv,
+    .writev = dummy_dev_writev,
+    .time   = dummy_dev_time,
+    .clear  = dummy_dev_clear
 };
 
 plugin_dev_t* getDev() {

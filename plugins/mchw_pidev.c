@@ -97,7 +97,7 @@ int mchw_pidev_close( pwr_dev_t dev )
 }
 
 
-int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, PWR_Time *timestamp )
+int mchw_pidev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     while( pidev_reading ) sched_yield();
     pidev_reading = 1;
@@ -112,7 +112,7 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int
         return -1;
     }
 
-    switch( type ) {
+    switch( attr ) {
         case PWR_ATTR_VOLTAGE:
             *((float *)value) = pidev_counter.raw.volts;
             break;
@@ -132,7 +132,7 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int
             *((float *)value) = pidev_counter.energy;
             break;
         default:
-            printf( "Warning: unknown MCHW reading type (%u) requested\n", type );
+            printf( "Warning: unknown MCHW reading attr (%u) requested\n", attr );
             break;
     }
     *timestamp = pidev_counter.time_sec*1000000000ULL + 
@@ -141,13 +141,13 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int
     return 0;
 }
 
-int mchw_pidev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len )
+int mchw_pidev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len )
 {
      return 0;
 }
 
 int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, PWR_Time timestamp[], int status[] )
+    const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
 
@@ -160,7 +160,7 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
     while( pidev_reading ) sched_yield();
 
     for( i = 0; i < arraysize; i++ ) {
-        switch( types[i] ) {
+        switch( attrs[i] ) {
             case PWR_ATTR_VOLTAGE:
                 *((float *)values+i) = pidev_counter.raw.volts;
                 break;
@@ -180,7 +180,7 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
                 *((float *)values+i) = pidev_counter.energy;
                 break;
             default:
-                printf( "Warning: unknown MCHW reading type (%u) requested at position %u\n", types[i], i );
+                printf( "Warning: unknown MCHW reading attr (%u) requested at position %u\n", attrs[i], i );
                 break;
         }
         timestamp[i] = pidev_counter.time_sec*1000000000ULL + 
@@ -191,7 +191,7 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
 }
 
 int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, int status[] )
+    const PWR_AttrName attrs[], void *values, int status[] )
 {
     return 0;
 }
@@ -209,14 +209,14 @@ int mchw_pidev_clear( pwr_dev_t dev )
 }
 
 static plugin_dev_t dev = {
-    open   : mchw_pidev_open,
-    close  : mchw_pidev_close,
-    read   : mchw_pidev_read,
-    write  : mchw_pidev_write,
-    readv  : mchw_pidev_readv,
-    writev : mchw_pidev_writev,
-    time   : mchw_pidev_time,
-    clear  : mchw_pidev_clear
+    .open   = mchw_pidev_open,
+    .close  = mchw_pidev_close,
+    .read   = mchw_pidev_read,
+    .write  = mchw_pidev_write,
+    .readv  = mchw_pidev_readv,
+    .writev = mchw_pidev_writev,
+    .time   = mchw_pidev_time,
+    .clear  = mchw_pidev_clear
 };
 
 plugin_dev_t* getDev() {

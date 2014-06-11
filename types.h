@@ -75,7 +75,7 @@ typedef enum {
     PWR_ATTR_DATA_FLOAT,
     PWR_ATTR_DATA_INT,
 //    PWR_ATTR_DATA_STRING,
-//    PWR_ATTR_DATA_INVALID,
+    PWR_ATTR_DATA_INVALID
 } PWR_AttrDataType;
 
 typedef struct {

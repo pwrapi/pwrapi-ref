@@ -317,7 +317,7 @@ int mchw_rapldev_close( pwr_dev_t dev )
 }
 
 
-int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len, PWR_Time *timestamp )
+int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     long long msr;
     double time = 0;
@@ -395,12 +395,12 @@ int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned i
         return -1;
     }
 
-    switch( type ) {
+    switch( attr ) {
         case PWR_ATTR_ENERGY:
             *((float *)value) = energy;
             break;
         default:
-            printf( "Warning: unknown MCHW reading type requested\n" );
+            printf( "Warning: unknown MCHW reading attr requested\n" );
             break;
     }
     *timestamp = (unsigned int)time*1000000000ULL + 
@@ -409,13 +409,13 @@ int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned i
     return 0;
 }
 
-int mchw_rapldev_write( pwr_dev_t dev, PWR_AttrType type, void *value, unsigned int len )
+int mchw_rapldev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len )
 {
     return 0;
 }
 
 int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, PWR_Time timestamp[], int status[] )
+    const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
     long long msr;
@@ -490,12 +490,12 @@ int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
     }
 
     for( i = 0; i < arraysize; i++ ) {
-        switch( types[i] ) {
+        switch( attrs[i] ) {
             case PWR_ATTR_ENERGY:
                 *((float *)values+i) = energy;
                 break;
             default:
-                printf( "Warning: unknown MCHW reading type requested\n" );
+                printf( "Warning: unknown MCHW reading attr requested\n" );
                 return 1;
         }
         *timestamp = (unsigned int)time*1000000000ULL + 
@@ -506,7 +506,7 @@ int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
 }
 
 int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize,
-    const PWR_AttrType types[], void *values, int status[] )
+    const PWR_AttrName attrs[], void *values, int status[] )
 {
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device write\n" );
@@ -530,14 +530,14 @@ int mchw_rapldev_clear( pwr_dev_t dev )
 }
 
 static plugin_dev_t dev = {
-    open   : mchw_rapldev_open,
-    close  : mchw_rapldev_close,
-    read   : mchw_rapldev_read,
-    write  : mchw_rapldev_write,
-    readv  : mchw_rapldev_readv,
-    writev : mchw_rapldev_writev,
-    time   : mchw_rapldev_time,
-    clear  : mchw_rapldev_clear
+    .open   = mchw_rapldev_open,
+    .close  = mchw_rapldev_close,
+    .read   = mchw_rapldev_read,
+    .write  = mchw_rapldev_write,
+    .readv  = mchw_rapldev_readv,
+    .writev = mchw_rapldev_writev,
+    .time   = mchw_rapldev_time,
+    .clear  = mchw_rapldev_clear
 };
 
 plugin_dev_t* getDev() {
