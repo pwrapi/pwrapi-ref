@@ -1,4 +1,4 @@
-CFLAGS = -Wall -I.. -fPIC -Wgnu-designator
+CFLAGS = -Wall -I.. -fPIC
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L. -lpiapi -lm -pthread
 
