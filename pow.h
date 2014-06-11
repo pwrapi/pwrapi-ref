@@ -32,7 +32,7 @@ const char* PWR_ObjGetName( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 
-int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName );
+int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName name );
 
 int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrName name, void* buf, PWR_Time * );
 int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, void* buf );
@@ -56,7 +56,7 @@ int         PWR_GrpGetNumObjs( PWR_Grp );
 PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
 int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
-int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName, void*, PWR_Status );
+int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName name, void* buf, PWR_Status );
 int         PWR_GrpAttrSetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Status );
 int         PWR_GrpAttrGetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status );
 
