@@ -390,14 +390,14 @@ int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned i
         }
     }
 
-    if( len != sizeof(float) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(float) );
+    if( len != sizeof(double) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_ENERGY:
-            *((float *)value) = energy;
+            *((double *)value) = energy;
             break;
         default:
             printf( "Warning: unknown MCHW reading attr requested\n" );
@@ -492,7 +492,7 @@ int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
     for( i = 0; i < arraysize; i++ ) {
         switch( attrs[i] ) {
             case PWR_ATTR_ENERGY:
-                *((float *)values+i) = energy;
+                *((double *)values+i) = energy;
                 break;
             default:
                 printf( "Warning: unknown MCHW reading attr requested\n" );
@@ -516,12 +516,12 @@ int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize,
 
 int mchw_rapldev_time( pwr_dev_t dev, PWR_Time *timestamp )
 {
-    float value;
+    double value;
 
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device time\n" );
 
-    return mchw_rapldev_read( dev, PWR_ATTR_POWER, &value, sizeof(float), timestamp );
+    return mchw_rapldev_read( dev, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }
 
 int mchw_rapldev_clear( pwr_dev_t dev )

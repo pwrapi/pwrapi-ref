@@ -107,29 +107,29 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int
     }
     while( pidev_reading ) sched_yield();
 
-    if( len != sizeof(float) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(float) );
+    if( len != sizeof(double) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_VOLTAGE:
-            *((float *)value) = pidev_counter.raw.volts;
+            *((double *)value) = pidev_counter.raw.volts;
             break;
         case PWR_ATTR_CURRENT:
-            *((float *)value) = pidev_counter.raw.amps;
+            *((double *)value) = pidev_counter.raw.amps;
             break;
         case PWR_ATTR_POWER:
-            *((float *)value) = pidev_counter.raw.watts;
+            *((double *)value) = pidev_counter.raw.watts;
             break;
         case PWR_ATTR_MIN_POWER:
-            *((float *)value) = pidev_counter.min.watts;
+            *((double *)value) = pidev_counter.min.watts;
             break;
         case PWR_ATTR_MAX_POWER:
-            *((float *)value) = pidev_counter.max.watts;
+            *((double *)value) = pidev_counter.max.watts;
             break;
         case PWR_ATTR_ENERGY:
-            *((float *)value) = pidev_counter.energy;
+            *((double *)value) = pidev_counter.energy;
             break;
         default:
             printf( "Warning: unknown MCHW reading attr (%u) requested\n", attr );
@@ -162,22 +162,22 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
     for( i = 0; i < arraysize; i++ ) {
         switch( attrs[i] ) {
             case PWR_ATTR_VOLTAGE:
-                *((float *)values+i) = pidev_counter.raw.volts;
+                *((double *)values+i) = pidev_counter.raw.volts;
                 break;
             case PWR_ATTR_CURRENT:
-                *((float *)values+i) = pidev_counter.raw.amps;
+                *((double *)values+i) = pidev_counter.raw.amps;
                 break;
             case PWR_ATTR_POWER:
-                *((float *)values+i) = pidev_counter.raw.watts;
+                *((double *)values+i) = pidev_counter.raw.watts;
                 break;
             case PWR_ATTR_MIN_POWER:
-                *((float *)values+i) = pidev_counter.min.watts;
+                *((double *)values+i) = pidev_counter.min.watts;
                 break;
             case PWR_ATTR_MAX_POWER:
-                *((float *)values+i) = pidev_counter.max.watts;
+                *((double *)values+i) = pidev_counter.max.watts;
                 break;
             case PWR_ATTR_ENERGY:
-                *((float *)values+i) = pidev_counter.energy;
+                *((double *)values+i) = pidev_counter.energy;
                 break;
             default:
                 printf( "Warning: unknown MCHW reading attr (%u) requested at position %u\n", attrs[i], i );
@@ -198,9 +198,9 @@ int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
 
 int mchw_pidev_time( pwr_dev_t dev, PWR_Time *timestamp )
 {
-    float value;
+    double value;
 
-    return mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(float), timestamp );
+    return mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }
 
 int mchw_pidev_clear( pwr_dev_t dev )

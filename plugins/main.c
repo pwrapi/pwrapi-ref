@@ -31,16 +31,16 @@ int main( int argc, char* argv[] )
         PWR_ATTR_POWER,
         PWR_ATTR_ENERGY
     };
-    float rval[] = { 0.0, 0.0 };
+    double rval[] = { 0.0, 0.0 };
 
     PWR_AttrName wtype[] = {
         PWR_ATTR_MIN_PCAP,
         PWR_ATTR_MAX_PCAP
     };
-    float wval[] = { 20.0, 120.0 };
+    double wval[] = { 20.0, 120.0 };
 
-    unsigned int rsize = sizeof(rval)/sizeof(float);
-    unsigned int wsize = sizeof(wval)/sizeof(float);
+    unsigned int rsize = sizeof(rval)/sizeof(double);
+    unsigned int wsize = sizeof(wval)/sizeof(double);
 
     PWR_Time rtime[rsize];
     int rstat[rsize], wstat[wsize];
