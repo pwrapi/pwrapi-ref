@@ -44,14 +44,26 @@ static inline const char* objTypeToString( PWR_ObjType type )
 
 static inline PWR_AttrName attrNameStrToInt( const char* name )
 {
-    if ( 0 == strcmp(name,"POWER") ) {
-        return PWR_ATTR_POWER;
-    } else  if ( 0 == strcmp(name,"VOLTAGE") ) {
-        return PWR_ATTR_VOLTAGE;
-    } else  if ( 0 == strcmp(name,"CURRENT") ) {
-        return PWR_ATTR_CURRENT;
-    } else  if ( 0 == strcmp(name,"FREQ") ) {
+    if ( 0 == strcmp(name,"NAME") ) {
+        return PWR_ATTR_NAME;
+    } else if ( 0 == strcmp(name,"FREQ") ) {
         return PWR_ATTR_FREQ;
+    } else if ( 0 == strcmp(name,"PSTATE") ) {
+        return PWR_ATTR_PSTATE;
+    } else if ( 0 == strcmp(name,"MAX_POWER") ) {
+        return PWR_ATTR_MAX_POWER;
+    } else if ( 0 == strcmp(name,"MIN_POWER") ) {
+        return PWR_ATTR_MIN_POWER;
+    } else if ( 0 == strcmp(name,"AVG_POWER") ) {
+        return PWR_ATTR_AVG_POWER;
+    } else if ( 0 == strcmp(name,"POWER") ) {
+        return PWR_ATTR_POWER;
+    } else if ( 0 == strcmp(name,"VOLTAGE") ) {
+        return PWR_ATTR_VOLTAGE;
+    } else if ( 0 == strcmp(name,"CURRENT") ) {
+        return PWR_ATTR_CURRENT;
+    } else if ( 0 == strcmp(name,"ENERGY") ) {
+        return PWR_ATTR_ENERGY;
     }
     return PWR_ATTR_INVALID;
 }
