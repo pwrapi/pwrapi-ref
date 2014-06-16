@@ -1,5 +1,11 @@
 
 #include <dlfcn.h>
+#include <assert.h>
+
+#include "./dev.h"
+#include "./object.h"
+#include "./group.h"
+#include "./objectUrl.h"
 
 #include "cntxt.h"
 #include "debug.h"
@@ -96,7 +102,7 @@ _Obj* _Cntxt::getSelf() {
     assert(el);
     DBGX("\n");
 
-    m_top = new _Obj( this, NULL, el );
+    m_top = new _ObjEl( this, NULL, el );
     m_objMap[ m_top->name() ] = m_top;
     DBGX("\n");
     return m_top;
@@ -131,12 +137,23 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
 
         DBGX("%s\n", el->Attribute("name"));
         std::string childName = name + "." + el->Attribute("name");
-        XMLElement* child = XMLFindObject( childName );
-        assert( child );
+
+		XMLElement* child = NULL;
+		std::string url; 
+		if ( el->Attribute("url" ) ) {
+			url = el->Attribute("url");
+		} else {
+        	child = XMLFindObject( childName );
+        	assert( child );
+		}
 
         _Obj* obj;
         if ( m_objMap.find( childName ) == m_objMap.end() ) {
-            obj = new _Obj( this, parent, child );
+			if ( child ) {
+            	obj = new _ObjEl( this, parent, child );
+			} else {
+            	obj = new _ObjUrl( this, parent, childName, url );
+			}
             m_objMap[ obj->name() ] = obj;
         } else {
             obj = m_objMap[ childName ];
@@ -185,7 +202,7 @@ _Grp* _Cntxt::initGrp( PWR_ObjType type ) {
             _Obj* obj;
             std::string name = el->Attribute("name");
             if ( m_objMap.find( name ) == m_objMap.end() ) {
-                obj = new _Obj( this, NULL, el );
+                obj = new _ObjEl( this, NULL, el );
                 m_objMap[ obj->name() ] = obj;
             } else {
                 obj = m_objMap[ name ];
@@ -199,6 +216,30 @@ _Grp* _Cntxt::initGrp( PWR_ObjType type ) {
 
     return grp;
 }    
+
+_Grp* _Cntxt::groupCreate( std::string name ) {
+    if ( m_groupMap.find( name ) != m_groupMap.end() ) {
+        return NULL;
+    }
+    _Grp* grp = new _Grp( this, name );
+    m_groupMap[name] = grp;
+    return grp;
+}
+
+int _Cntxt::groupDestroy( _Grp* grp ) {
+    int retval = PWR_ERR_FAILURE;
+    std::map<std::string,_Grp*>::iterator iter = m_groupMap.begin();
+    for ( ; iter != m_groupMap.end(); ++iter ) {
+        if ( iter->second == grp ) {
+            delete grp;
+            m_groupMap.erase( iter );
+            retval = PWR_ERR_SUCCESS;
+            break;
+        }
+    }
+    return retval;
+}
+
 
 XMLElement* _Cntxt::XMLFindObject( const std::string name )
 {

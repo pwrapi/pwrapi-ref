@@ -1,14 +1,44 @@
 
 #include "./object.h"
+#include "./objectUrl.h"
 #include "./util.h"
+#include "./group.h"
 
 #include "./debug.h"
 
 using namespace tinyxml2;
 
-_Obj::_Obj( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
-    m_ctx(ctx),
-    m_parent(parent),
+_ObjUrl::_ObjUrl( _Cntxt* ctx, _Obj* parent, 
+					std::string name, std::string url ) :
+	_Obj( ctx, parent ),
+	m_url( url )
+{
+	m_name = name;
+	printf("url=%s\n",m_url.c_str());
+}
+
+int _ObjUrl::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
+{
+	assert(0);
+}
+int _ObjUrl::attrSetValue( PWR_AttrName name, void* buf, size_t len )
+{
+	assert(0);
+}
+int _ObjUrl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
+                         std::vector<PWR_Time>& ts, std::vector<int>& status )
+{
+	assert(0);
+}
+
+int _ObjUrl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
+                                            std::vector<int>& status  )
+{
+	assert(0);
+}
+
+_ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
+	_Obj( ctx, parent ),
     m_children( NULL ),
     m_xmlElement(el)
 {
@@ -56,17 +86,8 @@ _Obj::_Obj( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
     DBGX("return %s\n",m_name.c_str());
 }
  
-PWR_ObjType _Obj::type()
-{
-    return m_type;
-}
 
-_Obj* _Obj::parent() 
-{
-    return m_parent; 
-}
-
-int _Obj::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
+int _ObjEl::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
 {
     _Attr* attr = m_attrVector[name];
     if ( attr ) {
@@ -76,7 +97,7 @@ int _Obj::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
     }
 }
 
-int _Obj::attrSetValue( PWR_AttrName name, void* buf, size_t len )
+int _ObjEl::attrSetValue( PWR_AttrName name, void* buf, size_t len )
 {
     _Attr* attr = m_attrVector[name];
     if ( attr ) {
@@ -86,8 +107,6 @@ int _Obj::attrSetValue( PWR_AttrName name, void* buf, size_t len )
     }
 }
 
-
-
 struct XX {
     std::vector<PWR_AttrName> attrs;
     std::vector<uint64_t>     data;
@@ -96,7 +115,7 @@ struct XX {
     std::vector<int>          foo;
 };
 
-int _Obj::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
+int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                          std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
     int retval = PWR_ERR_SUCCESS;
@@ -164,7 +183,7 @@ int _Obj::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     return retval;
 }
 
-int _Obj::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
+int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                                             std::vector<int>& status  )
 {
     int retval = PWR_ERR_SUCCESS;
@@ -210,12 +229,12 @@ int _Obj::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     return retval;
 }
 
-_Dev* _Obj::findDev( const std::string name, const std::string config )
+_Dev* _ObjEl::findDev( const std::string name, const std::string config )
 {
     return m_ctx->findDev( name, config );
 }
 
-_Obj* _Obj::findChild( std::string name ) 
+_Obj* _ObjEl::findChild( std::string name ) 
 {
     DBGX("%s\n",name.c_str());
     if ( ! m_children ) {
@@ -226,7 +245,7 @@ _Obj* _Obj::findChild( std::string name )
     return m_children->find( name );
 }
 
-_Grp* _Obj::children() 
+_Grp* _ObjEl::children() 
 { 
     if ( ! m_children ) return m_children; 
 

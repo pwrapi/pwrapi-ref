@@ -2,9 +2,12 @@
 #include <string.h>
 #include <sys/time.h>
 
+#include "./object.h"
+#include "./group.h"
+
 #include "./status.h"
 #include "./pow.h"
-#include "./object.h"
+#include "./cntxt.h"
 #include "./init.h"
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )

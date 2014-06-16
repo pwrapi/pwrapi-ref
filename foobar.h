@@ -2,6 +2,7 @@
 #ifndef _PWR_FOOBAR_H
 #define _PWR_FOOBAR_H
 
+#include <vector>
 #include "./types.h"
 
 class _Value;

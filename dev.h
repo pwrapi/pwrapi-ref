@@ -1,5 +1,5 @@
-#ifndef PWR_DEV_H
-#define PWR_DEV_H
+#ifndef _PWR_DEV_H
+#define _PWR_DEV_H
 
 #include "types.h"
 

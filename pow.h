@@ -1,5 +1,5 @@
-#ifndef PWR_H 
-#define PWR_H 
+#ifndef _PWR_H 
+#define _PWR_H 
 
 #include <time.h>
 

@@ -1,6 +1,6 @@
 
-#ifndef PWR_TYPES_H
-#define PWR_TYPES_H
+#ifndef _PWR_TYPES_H
+#define _PWR_TYPES_H
 
 #include <stddef.h>
 #include <stdint.h>

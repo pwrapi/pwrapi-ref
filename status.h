@@ -1,6 +1,6 @@
 
 #ifndef _PWR_STATUS_H
-#define  _PWR_STATUS_H
+#define _PWR_STATUS_H
 
 #include <deque>
 

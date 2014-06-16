@@ -1,17 +1,22 @@
 #ifndef _PWR_CNTXT_h
 #define _PWR_CNTXT_h
 
-#include "tinyxml2.h"
+#include <string>
+#include <map>
 
-#include "./object.h"
-#include "./dev.h"
+#include "tinyxml2.h"
+#include "./util.h"
+#include "./types.h"
+
+struct _Grp;
+struct _Object;
+class  _Dev;
 
 struct _Cntxt {
 
   public:
 
     _Cntxt( PWR_CntxtType type, PWR_Role role, const char* name );
-
     ~_Cntxt( ) { }
 
     _Obj* getSelf();
@@ -32,31 +37,9 @@ struct _Cntxt {
         return m_groupMap[name];
     }
 
-    _Grp* groupCreate( std::string name ) {
-        if ( m_groupMap.find( name ) != m_groupMap.end() ) {
-            return NULL;
-        }
-        _Grp* grp = new _Grp( this, name );    
-        m_groupMap[name] = grp;
-        return grp;
-    }
-
-    int groupDestroy( _Grp* grp ) {
-        int retval = PWR_ERR_FAILURE;
-        std::map<std::string,_Grp*>::iterator iter = m_groupMap.begin();
-        for ( ; iter != m_groupMap.end(); ++iter ) {
-            if ( iter->second == grp ) {
-                delete grp;
-                m_groupMap.erase( iter );
-                retval = PWR_ERR_SUCCESS;
-                break;
-            }
-        }
-        return retval;
-    }
-
+    _Grp* groupCreate( std::string name );
+    int groupDestroy( _Grp* grp );
     _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
-
     _Dev* findDev( const std::string name, const std::string config );
 
   private:

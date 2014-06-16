@@ -1,6 +1,6 @@
 
-#ifndef PWR_INIT_H
-#define PWR_INIT_H
+#ifndef _PWR_INIT_H
+#define _PWR_INIT_H
 
 #include "./types.h"
 
