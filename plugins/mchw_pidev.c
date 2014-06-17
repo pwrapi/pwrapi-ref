@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sched.h>
 
-static int pidev_verbose = 0;
+static int pidev_verbose = 1;
 
 typedef struct {
     void *cntx;
@@ -19,10 +19,10 @@ static int pidev_reading;
 
 static void pidev_callback( piapi_sample_t *sample )
 {
+    pidev_counter = *sample;
+
     if( sample->total && sample->number == sample->total )
         pidev_reading = 0;
-
-    pidev_counter = *sample;
 }
 
 static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *sport, unsigned int *port )
@@ -114,22 +114,22 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int
 
     switch( attr ) {
         case PWR_ATTR_VOLTAGE:
-            *((double *)value) = pidev_counter.raw.volts;
+            *((double *)value) = (double)pidev_counter.raw.volts;
             break;
         case PWR_ATTR_CURRENT:
-            *((double *)value) = pidev_counter.raw.amps;
+            *((double *)value) = (double)pidev_counter.raw.amps;
             break;
         case PWR_ATTR_POWER:
-            *((double *)value) = pidev_counter.raw.watts;
+            *((double *)value) = (double)pidev_counter.raw.watts;
             break;
         case PWR_ATTR_MIN_POWER:
-            *((double *)value) = pidev_counter.min.watts;
+            *((double *)value) = (double)pidev_counter.min.watts;
             break;
         case PWR_ATTR_MAX_POWER:
-            *((double *)value) = pidev_counter.max.watts;
+            *((double *)value) = (double)pidev_counter.max.watts;
             break;
         case PWR_ATTR_ENERGY:
-            *((double *)value) = pidev_counter.energy;
+            *((double *)value) = (double)pidev_counter.energy;
             break;
         default:
             printf( "Warning: unknown MCHW reading attr (%u) requested\n", attr );

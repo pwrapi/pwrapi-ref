@@ -1,3 +1,4 @@
+CC = gcc
 CFLAGS = -Wall -I.. -fPIC
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L. -lpiapi -lm -pthread
@@ -23,5 +24,5 @@ liboshw_cpudev.so: oshw_cpudev.o
 	$(CC) -shared $(CFLAGS) -o $@ oshw_cpudev.o
 
 clean:
-	rm -f *_*dev.o lib*hw_*dev.so test
+	rm -f *_*dev.o lib*_*dev.so test
 
