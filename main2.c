@@ -83,5 +83,7 @@ int main( int argc, char* argv[] )
 
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s",value,ctime(&time));
+
+	PWR_CntxtDestroy( cntxt );
     return 0;
 }
