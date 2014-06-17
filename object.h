@@ -39,6 +39,9 @@ class _Dev : public Foobar {
         DBGX("\n");
         return m_dev->write( m_devInfo, name, ptr, len ); 
     }
+	~_Dev() {
+		m_dev->close( m_devInfo );
+	}
 
   private:
     plugin_dev_t* m_dev;

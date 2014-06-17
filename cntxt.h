@@ -17,7 +17,7 @@ struct _Cntxt {
   public:
 
     _Cntxt( PWR_CntxtType type, PWR_Role role, const char* name );
-    ~_Cntxt( ) { }
+    ~_Cntxt( );
 
     _Obj* getSelf();
 
@@ -46,6 +46,7 @@ struct _Cntxt {
     tinyxml2::XMLElement* XMLFindObject( std::string );
     void printTree(  tinyxml2::XMLNode* );
     void initDevices( tinyxml2::XMLElement* );
+	void finiDevices( );
     
     _Grp* initGrp( PWR_ObjType type );
     std::string m_configFile;

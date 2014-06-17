@@ -41,6 +41,11 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     DBGX("return\n");
 }
 
+_Cntxt::~_Cntxt()
+{
+	finiDevices();
+}
+
 void _Cntxt::initDevices( XMLElement* el )
 {
     DBGX("%s\n",el->Name());
@@ -69,6 +74,14 @@ void _Cntxt::initDevices( XMLElement* el )
         m_devLibMap[ el->Attribute("name") ] = el->Attribute("lib"); 
         tmp = tmp->NextSibling();
     }
+}
+
+void _Cntxt::finiDevices()
+{
+	std::map<std::string,_Dev*>::iterator iter = m_devMap.begin();
+	for ( ; iter != m_devMap.end(); ++ iter ) {
+		delete iter->second;
+	}
 }
 
 typedef plugin_dev_t* (*funcPtr_t)(void);
