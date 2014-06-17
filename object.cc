@@ -1,41 +1,11 @@
 
 #include "./object.h"
-#include "./objectUrl.h"
 #include "./util.h"
 #include "./group.h"
 
 #include "./debug.h"
 
 using namespace tinyxml2;
-
-_ObjUrl::_ObjUrl( _Cntxt* ctx, _Obj* parent, 
-					std::string name, std::string url ) :
-	_Obj( ctx, parent ),
-	m_url( url )
-{
-	m_name = name;
-	printf("url=%s\n",m_url.c_str());
-}
-
-int _ObjUrl::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
-{
-	assert(0);
-}
-int _ObjUrl::attrSetValue( PWR_AttrName name, void* buf, size_t len )
-{
-	assert(0);
-}
-int _ObjUrl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
-                         std::vector<PWR_Time>& ts, std::vector<int>& status )
-{
-	assert(0);
-}
-
-int _ObjUrl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
-                                            std::vector<int>& status  )
-{
-	assert(0);
-}
 
 _ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
 	_Obj( ctx, parent ),

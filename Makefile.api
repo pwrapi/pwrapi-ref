@@ -1,11 +1,14 @@
 
+ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
+
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml
+CPPFLAGS = -Itinyxml -I$(ULXMLRPC)/include
 CXXFLAGS = -Wall -fPIC
-LDFLAGS = -shared
+LDFLAGS = -shared -L$(ULXMLRPC)/lib
+LDLIBS=-ldl -lulxmlrpcpp
 CC = g++
 
-LIB_SRC=pow.cc init.cc cntxt.cc object.cc attribute.cc
+LIB_SRC=pow.cc init.cc cntxt.cc object.cc attribute.cc objectUrl.cc
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 
@@ -16,7 +19,7 @@ XML_OBJS=tinyxml/tinyxml2.o
 DEPS = $(LIB_OBJS:.o=.d) 
 
 ${LIB}: ${LIB_OBJS} ${XML_OBJS}
-	$(CC) -shared $(CFLAGS) -o $@ ${LIB_OBJS} ${XML_OBJS}
+	$(CC) $(LDFLAGS) $(CFLAGS) $(LDLIBS) -o $@ ${LIB_OBJS} ${XML_OBJS}
 
 clean:
 	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} $(DEPS)

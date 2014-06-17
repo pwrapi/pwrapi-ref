@@ -2,8 +2,32 @@
 #ifndef _PWR_UTIL_H
 #define _PWR_UTIL_H
 
+#include <string.h>
+#include <sstream>
+
 #include "types.h"
 
+
+class NumToString : public std::string  {
+  public:
+	NumToString( uint64_t num ) {
+		std::stringstream tmpSS;
+    	tmpSS << num;
+		append( tmpSS.str() );
+	}
+};   
+
+class StringToNum {
+  public:
+	StringToNum( const std::string str ) {
+	    std::stringstream( str ) >> num;
+	}
+	uint64_t uint64() {
+		return num;
+	}
+  private:
+	uint64_t  num;
+};
 
 static inline const char* attrNameToString( PWR_AttrName name )
 {

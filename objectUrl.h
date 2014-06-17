@@ -1,6 +1,11 @@
 #ifndef _PWR_OBJECTURL_H 
 #define _PWR_OBJECTURL_H
 
+#include <ulxmlrpcpp/ulxr_tcpip_connection.h>
+#include <ulxmlrpcpp/ulxr_http_protocol.h>
+#include <ulxmlrpcpp/ulxr_requester.h>
+
+
 #include "./object.h" 
 
 struct _ObjUrl : public _Obj
@@ -17,6 +22,7 @@ struct _ObjUrl : public _Obj
 
   private:
     std::string m_url;
+	int         m_port;
 };
 
 #endif
