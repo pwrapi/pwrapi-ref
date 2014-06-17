@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Devices>
+    <dev name="PowerInsight" lib="libmchw_pidev.so"/>
+</Devices>
+
+<Devices>
+    <dev name="CPU" lib="libcpudev.so"/>
+</Devices>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="child" name="cab0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" >
+            <src type="child" name="board0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0.board0" type="Board" >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" >
+            <src type="child" name="node0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0.board0.node0" type="Node" >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0.board0.node0.socket0" type="Socket" >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" >
+            <src type="plugin" name="PowerInsight" initString="10.54.21.78:20201:1" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.cab0.board0.node0.socket0.core0" type="Core" >
+</obj>
+
+<obj name="plat.cab0.board0.node0.socket0.core1" type="Core" >
+</obj>
+
+<obj name="plat.cab0.board0.node0.socket0.core2" type="Core" >
+</obj>
+
+<obj name="plat.cab0.board0.node0.socket0.core3" type="Core" >
+</obj>
+
+</Objects>
+</System>

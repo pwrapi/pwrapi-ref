@@ -41,9 +41,6 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
         }
         *saddr |= ( atoi(token) << shift );
         shift -= 8;
-
-        if( pidev_verbose )
-            printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u)\n", *saddr, *sport );
     }
 
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
@@ -71,6 +68,9 @@ pwr_dev_t mchw_pidev_open( const char *initstr )
     pwr_dev_t *dev = malloc( sizeof(mchw_pidev_t) );
     bzero( dev, sizeof(mchw_pidev_t) );
 
+    if( pidev_verbose )
+        printf( "Info: opening MCHW PowerInsight device\n" );
+
     if( initstr == 0x0 || pidev_parse(initstr, &saddr, &sport, &port) < 0 ) {
         printf( "Error: invalid monitor and control hardware initialization string\n" );
         return 0x0;
@@ -86,6 +86,9 @@ pwr_dev_t mchw_pidev_open( const char *initstr )
 
 int mchw_pidev_close( pwr_dev_t dev )
 {
+    if( pidev_verbose )
+        printf( "Info: closing MCHW PowerInsight device\n" );
+
     if( piapi_destroy( &(MCHW_PIDEV(dev)->cntx) ) < 0 ) {
         printf( "Error: powerinsight hardware finalization failed\n" );
         return -1;
@@ -138,12 +141,20 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int
     *timestamp = pidev_counter.time_sec*1000000000ULL + 
             pidev_counter.time_usec*1000;
 
+    if( pidev_verbose )
+        printf( "Info: reading of type %u at time %llu with value %lf\n",
+                attr, *(unsigned long long *)timestamp, *(double *)value );
+
     return 0;
 }
 
 int mchw_pidev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len )
 {
-     return 0;
+    if( pidev_verbose )
+        printf( "Info: setting of type %u with value %lf\n",
+                attr, *(double *)value );
+
+    return 0;
 }
 
 int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
@@ -185,6 +196,10 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
         }
         timestamp[i] = pidev_counter.time_sec*1000000000ULL + 
                        pidev_counter.time_usec*1000;
+
+        if( pidev_verbose )
+            printf( "Info: reading of type %u at time %llu with value %lf\n",
+                    attrs[i], *(unsigned long long *)timestamp[i], *((double *)(values+i)) );
     }
 
     return 0;
@@ -193,6 +208,20 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
 int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ ) {
+        switch( attrs[i] ) {
+            default:
+                printf( "Warning: unknown MCHW reading attr (%u) requested at position %u\n", attrs[i], i );
+                break;
+        }
+
+        if( pidev_verbose )
+            printf( "Info: setting of type %u with value %lf\n",
+                    attrs[i], *((double *)(values+i)) );
+    }
+
     return 0;
 }
 
@@ -200,13 +229,19 @@ int mchw_pidev_time( pwr_dev_t dev, PWR_Time *timestamp )
 {
     double value;
 
+    if( pidev_verbose )
+        printf( "Info: getting time from MCHW PowerInsight device\n" );
+
     return mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }
 
 int mchw_pidev_clear( pwr_dev_t dev )
 {
+    if( pidev_verbose )
+        printf( "Info: clearing MCHW PowerInsight device\n" );
+
     return 0;
-}
+} 
 
 static plugin_dev_t dev = {
     .open   = mchw_pidev_open,

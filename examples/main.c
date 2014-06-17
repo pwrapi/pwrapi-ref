@@ -10,7 +10,7 @@ int main( int argc, char* argv[] )
     PWR_Obj   self;
     PWR_Cntxt cntxt;
     time_t    time;
-    float     energy_start = 0.0, energy_end = 0.0;
+    double    energy_start = 0.0, energy_end = 0.0;
     PWR_Time  energy_start_ts = 0, energy_end_ts = 0;
 
     if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "MiniMD" )) == 0x0 ) {
@@ -29,7 +29,7 @@ int main( int argc, char* argv[] )
       return -1;
     }
     PWR_TimeConvert( energy_start_ts, &time );
-    printf( "Starting Energy at time %s is %f\n", ctime(&time), energy_start );
+    printf( "Starting Energy at time %s is %lf\n", ctime(&time), energy_start );
 
     sleep( 10 );
 
@@ -37,9 +37,9 @@ int main( int argc, char* argv[] )
       return -1;
     }
     PWR_TimeConvert( energy_end_ts, &time );
-    printf( "Ending Energy at time %s is %f\n", ctime(&time), energy_end );
+    printf( "Ending Energy at time %s is %lf\n", ctime(&time), energy_end );
 
-    printf( "Total Energy over %f seconds is %f\n",
+    printf( "Total Energy over %f seconds is %lf\n",
             (unsigned long long)(energy_end_ts - energy_start_ts)/1000000000.0, energy_end - energy_start );
 
     return 0;
