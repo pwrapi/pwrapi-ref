@@ -1,14 +1,21 @@
-
-ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
+XMLRPC = y
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml -I$(ULXMLRPC)/include
+CPPFLAGS = -Itinyxml
 CXXFLAGS = -Wall -fPIC
-LDFLAGS = -shared -L$(ULXMLRPC)/lib
-LDLIBS=-ldl -lulxmlrpcpp
+LDFLAGS = -shared
+LDLIBS = -ldl
 CC = g++
 
-LIB_SRC=pow.cc init.cc cntxt.cc object.cc attribute.cc objectUrl.cc objectEl.cc
+LIB_SRC=pow.cc init.cc cntxt.cc attribute.cc objectEl.cc
+
+ifeq ($(XMLRPC),y)
+ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
+LIB_SRC += objectUrl.cc
+CPPFLAGS += -DUSE_ULXMLRPC -I$(ULXMLRPC)/include
+LDFLAGS += -L$(ULXMLRPC)/lib
+LDLIBS += -lulxmlrpcpp
+endif
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 

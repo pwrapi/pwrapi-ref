@@ -2,10 +2,13 @@
 #include <dlfcn.h>
 #include <assert.h>
 
-#include "./dev.h"
-#include "./group.h"
-#include "./objectUrl.h"
-#include "./objectEl.h"
+#include "dev.h"
+#include "group.h"
+#include "objectEl.h"
+
+#ifdef POWERAPI_XMLRPC
+#include "objectUrl.h"
+#endif
 
 #include "cntxt.h"
 #include "debug.h"
@@ -164,8 +167,10 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
         if ( m_objMap.find( childName ) == m_objMap.end() ) {
 			if ( child ) {
             	obj = createObj( this, parent, child );
+#ifdef USE_ULXMLRPC
 			} else {
             	obj = createObj( this, parent, childName, url );
+#endif
 			}
             m_objMap[ obj->name() ] = obj;
         } else {

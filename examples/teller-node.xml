@@ -72,7 +72,7 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM" >
-            <src type="plugin" name="PowerInsight" initString="10.54.21.78:20201:1" />
+            <src type="plugin" name="PowerInsight" initString="10.54.21.75:20201:1" />
         </attr>
     </attributes>
 
