@@ -1,4 +1,7 @@
+#ifdef USE_ULXMLRPC
 #include "./objectUrl.h"
+#endif
+
 #include "./objectEl.h"
 #include "./object.h"
 

@@ -7,7 +7,7 @@ LDFLAGS = -shared
 LDLIBS = -ldl
 CC = g++
 
-LIB_SRC=pow.cc init.cc cntxt.cc attribute.cc objectEl.cc
+LIB_SRC=pow.cc init.cc cntxt.cc attribute.cc object.cc objectEl.cc
 
 ifeq ($(XMLRPC),y)
 ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install

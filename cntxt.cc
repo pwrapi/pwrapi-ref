@@ -6,7 +6,7 @@
 #include "group.h"
 #include "objectEl.h"
 
-#ifdef POWERAPI_XMLRPC
+#ifdef USE_ULXMLRPC
 #include "objectUrl.h"
 #endif
 
