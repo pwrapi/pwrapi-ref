@@ -2,10 +2,12 @@
 #ifndef _PWR_UTIL_H
 #define _PWR_UTIL_H
 
+#include "types.h"
+
+#ifdef __cplusplus
+
 #include <string.h>
 #include <sstream>
-
-#include "types.h"
 
 
 class NumToString : public std::string  {
@@ -28,6 +30,7 @@ class StringToNum {
   private:
 	uint64_t  num;
 };
+#endif
 
 static inline const char* attrNameToString( PWR_AttrName name )
 {
