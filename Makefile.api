@@ -8,7 +8,7 @@ LDFLAGS = -shared -L$(ULXMLRPC)/lib
 LDLIBS=-ldl -lulxmlrpcpp
 CC = g++
 
-LIB_SRC=pow.cc init.cc cntxt.cc object.cc attribute.cc objectUrl.cc
+LIB_SRC=pow.cc init.cc cntxt.cc object.cc attribute.cc objectUrl.cc objectEl.cc
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 

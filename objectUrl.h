@@ -25,4 +25,9 @@ struct _ObjUrl : public _Obj
 	int         m_port;
 };
 
+inline PWR_Obj createObj( _Cntxt* ctx, PWR_Obj parent, std::string name, std::string url )
+{
+	return rosebud( new _ObjUrl( ctx, parent, name, url ) );
+}
+
 #endif

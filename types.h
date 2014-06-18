@@ -7,9 +7,9 @@
 
 #define PWR_NULL NULL
 
-typedef struct _Cntxt* PWR_Cntxt;
-typedef struct _Grp*   PWR_Grp;
-typedef struct _Obj*   PWR_Obj;
+typedef struct _Cntxt*  PWR_Cntxt;
+typedef struct _Grp*    PWR_Grp;
+typedef struct _Obj*    PWR_Obj;
 typedef struct _Status* PWR_Status;
 
 typedef int PWR_CntxtState;

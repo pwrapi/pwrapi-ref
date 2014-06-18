@@ -9,7 +9,6 @@
 #include "./types.h"
 
 struct _Grp;
-struct _Object;
 class  _Dev;
 
 struct _Cntxt {

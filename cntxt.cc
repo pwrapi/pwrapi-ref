@@ -3,9 +3,9 @@
 #include <assert.h>
 
 #include "./dev.h"
-#include "./object.h"
 #include "./group.h"
 #include "./objectUrl.h"
+#include "./objectEl.h"
 
 #include "cntxt.h"
 #include "debug.h"
@@ -115,7 +115,7 @@ _Obj* _Cntxt::getSelf() {
     assert(el);
     DBGX("\n");
 
-    m_top = new _ObjEl( this, NULL, el );
+    m_top = createObj( this, NULL, el );
     m_objMap[ m_top->name() ] = m_top;
     DBGX("\n");
     return m_top;
@@ -163,9 +163,9 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
         _Obj* obj;
         if ( m_objMap.find( childName ) == m_objMap.end() ) {
 			if ( child ) {
-            	obj = new _ObjEl( this, parent, child );
+            	obj = createObj( this, parent, child );
 			} else {
-            	obj = new _ObjUrl( this, parent, childName, url );
+            	obj = createObj( this, parent, childName, url );
 			}
             m_objMap[ obj->name() ] = obj;
         } else {
@@ -215,7 +215,7 @@ _Grp* _Cntxt::initGrp( PWR_ObjType type ) {
             _Obj* obj;
             std::string name = el->Attribute("name");
             if ( m_objMap.find( name ) == m_objMap.end() ) {
-                obj = new _ObjEl( this, NULL, el );
+                obj = createObj( this, NULL, el );
                 m_objMap[ obj->name() ] = obj;
             } else {
                 obj = m_objMap[ name ];

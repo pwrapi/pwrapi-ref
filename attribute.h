@@ -10,6 +10,7 @@
 
 class AttrSrc;
 class Foobar;
+class _Obj;
 
 class _Attr  {
 

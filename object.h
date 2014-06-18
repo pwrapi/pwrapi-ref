@@ -1,15 +1,16 @@
-
 #ifndef _PWR_OBJECT_H
 #define _PWR_OBJECT_H
 
 #include <string>
 #include <assert.h>
-#include "tinyxml2.h"
 
 #include "./attribute.h"
 #include "./debug.h"
 #include "./dev.h"
 #include "./foobar.h"
+
+class _Cntxt;
+class _Grp;
 
 class _Dev : public Foobar {
   public:
@@ -84,39 +85,12 @@ struct _Obj : public Foobar{
   protected:
     _Cntxt*     m_ctx;
     std::string m_name;
+
   private:
     _Obj*       m_parent; 
 };
 
-struct _ObjEl : public _Obj 
-{
-  public:
-    _ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el );
-    PWR_ObjType type() { return m_type; }
-    _Grp* children();
 
-    int attrGetNumber() { return m_attrVector.size(); }
-    _Attr* attributeGet( int index ) { return m_attrVector[index]; }
-    int attrIsValid( PWR_AttrName type ) { return 0; }
-
-    _Obj* findChild( const std::string name );
-    _Dev* findDev( const std::string name, const std::string config );
-
-    int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* ); 
-    int attrSetValue( PWR_AttrName, void*, size_t );
-
-    int attrGetValues( const std::vector<PWR_AttrName>& types,
-			void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status );
-    int attrSetValues(  const std::vector<PWR_AttrName>& types,
-			void* ptr, std::vector<int>& status );
-  private:
-    PWR_ObjType m_type;
-    _Grp*       m_children; 
-
-    tinyxml2::XMLElement*   m_xmlElement;
-    std::vector< _Attr* >   m_attrVector;
-};
-
-#include "./cntxt.h"
+PWR_Obj rosebud( _Obj* obj );
 
 #endif
