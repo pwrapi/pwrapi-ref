@@ -136,11 +136,10 @@ static void fpSum2( void* out, const std::vector<void*>& in  )
 {
     *((double*) out) = *((double*) in[0]);
 
-    printf("%s() i=%d val=%f\n",__func__, 0, *((double*) out));
-//    out.timeStamp = in[0]->timeStamp;
+//    printf("%s() i=%d val=%f\n",__func__, 0, *((double*) out));
 
     for ( unsigned int i=1; i < in.size(); i++ ) {
-        printf("%s() i=%d val=%f\n",__func__, i, *((double*) in[i]));
+//        printf("%s() i=%d val=%f\n",__func__, i, *((double*) in[i]));
         *((double*) out) += *((double*) in[i]);
     } 
 }

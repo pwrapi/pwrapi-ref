@@ -68,6 +68,8 @@ int main( int argc, char* argv[] )
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
     assert( retval == PWR_ERR_SUCCESS );
 
+    assert( value == 200.20 );
+
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s",value,ctime(&time));
 
@@ -80,6 +82,8 @@ int main( int argc, char* argv[] )
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
     assert( retval == PWR_ERR_SUCCESS );
+
+    assert( value == 0.2 );
 
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s",value,ctime(&time));
