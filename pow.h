@@ -69,6 +69,28 @@ int PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
 int PWR_StatusClear( PWR_Status );
 
 /*
+ * Statistics
+ */
+
+
+PWR_Stat PWR_ObjCreateStat( PWR_Obj, PWR_AttrName name, PWR_AttrStat stat );
+PWR_Stat PWR_GrpCreateStat( PWR_Grp, PWR_AttrName name, PWR_AttrStat stat );
+
+int PWR_StatDestroy( PWR_Stat );
+
+int PWR_StatStart( PWR_Stat );
+int PWR_StatStop( PWR_Stat );
+int PWR_StatClear( PWR_Stat );
+
+
+int PWR_StatGetValue( PWR_Stat, double* valuePtr, PWR_StatTimes* statTimes );
+/*
+ * size of array passed in is know by the function
+ */
+int PWR_StatGrpGetValues( PWR_Stat, double values[],
+                                            PWR_StatTimes statTimes[] );
+
+/*
 *  Utility Functions
 */
 
