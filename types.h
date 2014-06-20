@@ -11,6 +11,7 @@ typedef struct _Cntxt*  PWR_Cntxt;
 typedef struct _Grp*    PWR_Grp;
 typedef struct _Obj*    PWR_Obj;
 typedef struct _Status* PWR_Status;
+typedef struct _Stat*   PWR_Stat;
 
 typedef int PWR_CntxtState;
 
@@ -72,9 +73,24 @@ typedef enum {
 } PWR_AttrName;
 
 typedef enum {
+    PWR_ATTR_STAT_MIN,
+    PWR_ATTR_STAT_MAX,
+    PWR_ATTR_STAT_AVG,
+    PWR_ATTR_STAT_STDEV,
+    PWR_ATTR_STAT_MEAN,
+    PWR_ATTR_STAT_CV,
+    PWR_ATTR_STAT_ETC,
+} PWR_AttrStat;
+
+typedef struct {
+    PWR_Time    start;
+    PWR_Time    stop;
+    PWR_Time    instant;
+} PWR_StatTimes;
+
+typedef enum {
     PWR_ATTR_DATA_FLOAT,
     PWR_ATTR_DATA_INT,
-//    PWR_ATTR_DATA_STRING,
     PWR_ATTR_DATA_INVALID
 } PWR_AttrDataType;
 
