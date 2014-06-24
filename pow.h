@@ -85,7 +85,7 @@ int PWR_StatClear( PWR_Stat );
 
 int PWR_StatGetValue( PWR_Stat, double* valuePtr, PWR_StatTimes* statTimes );
 /*
- * size of array passed in is know by the function
+ * size of array passed in is derived by the function
  */
 int PWR_StatGrpGetValues( PWR_Stat, double values[],
                                             PWR_StatTimes statTimes[] );
