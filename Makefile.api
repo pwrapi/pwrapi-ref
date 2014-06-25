@@ -1,4 +1,4 @@
-XMLRPC = y
+XMLRPC = n
 
 CFLAGS = -Wall -fPIC
 CPPFLAGS = -Itinyxml

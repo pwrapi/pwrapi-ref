@@ -7,21 +7,24 @@
 extern "C" {
 #endif
 
-pwr_dev_t oshw_cpudev_open( const char *initstr );
-int oshw_cpudev_close( pwr_dev_t dev );
+pwr_dev_t oshw_cpudev_init( const char *initstr );
+int oshw_cpudev_final( pwr_dev_t dev );
 
-int oshw_cpudev_read( pwr_dev_t dev, PWR_AttrName attr,
+pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *openstr );
+int oshw_cpudev_close( pwr_fd_t fd );
+
+int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr,
     void *value, unsigned int len, PWR_Time *timestamp );
-int oshw_cpudev_write( pwr_dev_t dev, PWR_AttrName attr,
+int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr,
     void *value, unsigned int len );
 
-int oshw_cpudev_readv(pwr_dev_t dev, unsigned int arraysize,
+int oshw_cpudev_readv(pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] );
-int oshw_cpudev_writev(pwr_dev_t dev, unsigned int arraysize,
+int oshw_cpudev_writev(pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] );
 
-int oshw_cpudev_time( pwr_dev_t dev, PWR_Time *timestamp );
-int oshw_cpudev_clear( pwr_dev_t dev );
+int oshw_cpudev_time( pwr_fd_t fd, PWR_Time *timestamp );
+int oshw_cpudev_clear( pwr_fd_t fd );
 
 #ifdef __cplusplus
 }

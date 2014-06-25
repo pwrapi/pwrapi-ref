@@ -3,7 +3,7 @@
 <System>
 
 <Devices>
-    <dev name="PowerInsight" lib="libmchw_pidev.so"/>
+    <dev name="PowerInsight" lib="libdummy_dev.so"/>
 </Devices>
 
 <Devices>

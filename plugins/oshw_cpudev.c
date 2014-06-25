@@ -89,49 +89,61 @@ int parallel_hint(PWR_Obj obj, PWR_Hint hint, int parallel)
     return 0;
 }
 
-pwr_dev_t oshw_cpudev_open( const char *initstr )
+pwr_dev_t oshw_cpudev_init( const char *initstr )
 {
     return 0x0;
 }
 
-int oshw_cpudev_close( pwr_dev_t dev )
+int oshw_cpudev_final( pwr_dev_t dev )
 {
     return 0;
 }
 
-int oshw_cpudev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
+pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *initstr )
+{
+    return 0x0;
+}
+
+int oshw_cpudev_close( pwr_fd_t fd )
 {
     return 0;
 }
 
-int oshw_cpudev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len )
+int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     return 0;
 }
 
-int oshw_cpudev_readv( pwr_dev_t dev, unsigned int arraysize,
+int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
+{
+    return 0;
+}
+
+int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     return 0;
 }
 
-int oshw_cpudev_writev( pwr_dev_t dev, unsigned int arraysize,
+int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
     return 0;
 }
 
-int oshw_cpudev_time( pwr_dev_t dev, PWR_Time *timestamp )
+int oshw_cpudev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     return 0;
 }
 
-int oshw_cpudev_clear( pwr_dev_t dev )
+int oshw_cpudev_clear( pwr_fd_t fd )
 {
     return 0;
 }
 
 static plugin_dev_t dev = {
+    .init   = oshw_cpudev_init,
+    .final  = oshw_cpudev_final,
     .open   = oshw_cpudev_open,
     .close  = oshw_cpudev_close,
     .read   = oshw_cpudev_read,

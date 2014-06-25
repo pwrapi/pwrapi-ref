@@ -112,8 +112,12 @@ typedef struct {
         unsigned short clamped2; /* limit 2 clamped */
     } limit;
 } mchw_rapldev_t;
-
 #define MCHW_RAPLDEV(X) ((mchw_rapldev_t *)(X))
+
+typedef struct {
+    mchw_rapldev_t *dev;
+} mchw_raplfd_t;
+#define MCHW_RAPLFD(X) ((mchw_raplfd_t *)(X))
 
 static int rapldev_parse( const char *initstr, int *core, int *layer )
 {
@@ -207,7 +211,7 @@ static int rapldev_read( int fd, int offset, long long *msr )
     return 0;
 }
 
-pwr_dev_t mchw_rapldev_open( const char *initstr )
+pwr_dev_t mchw_rapldev_init( const char *initstr )
 {
     char file[80] = "";
     int core = 0;
@@ -305,7 +309,7 @@ pwr_dev_t mchw_rapldev_open( const char *initstr )
     return dev;
 }
 
-int mchw_rapldev_close( pwr_dev_t dev )
+int mchw_rapldev_final( pwr_dev_t dev )
 {
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device close\n" );
@@ -316,8 +320,23 @@ int mchw_rapldev_close( pwr_dev_t dev )
     return 0;
 }
 
+pwr_fd_t mchw_rapldev_open( pwr_dev_t dev, const char *openstr )
+{
+    pwr_fd_t *fd = malloc( sizeof(mchw_raplfd_t) );
+    MCHW_RAPLFD(fd)->dev = MCHW_RAPLDEV(dev);
 
-int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
+    return 0;
+}
+
+int mchw_rapldev_close( pwr_fd_t fd )
+{
+    MCHW_RAPLFD(fd)->dev = 0x0;
+    free( fd );
+
+    return 0;
+}
+
+int mchw_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     long long msr;
     double time = 0;
@@ -327,66 +346,66 @@ int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned i
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device read\n" );
 
-    if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PKG ) {
-        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
+    if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->layer == INTEL_LAYER_PKG ) {
+        if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
             printf( "Error: MCHW RAPL device read failed\n" );
             return -1;
         }
-        energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+        energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
 
-        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY_EP ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY_EP ) {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PERF_STATUS, &msr ) < 0 ) {
+        if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_SANDY_EP ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_IVY_EP ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PERF_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            time = (double)msr * MCHW_RAPLDEV(dev)->units.time;
+            time = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.time;
         }
     }
-    else if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PP0 ) {
-        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_ENERGY_STATUS, &msr ) < 0 ) {
+    else if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->layer == INTEL_LAYER_PP0 ) {
+        if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP0_ENERGY_STATUS, &msr ) < 0 ) {
             printf( "Error: MCHW RAPL device read failed\n" );
             return -1;
         }
-        energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+        energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
 
-        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_POLICY_STATUS, &msr ) < 0 ) {
+        if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP0_POLICY_STATUS, &msr ) < 0 ) {
             printf( "Error: MCHW RAPL device read failed\n" );
             return -1;
         }
         policy = (int)(MSR(msr, PP0_POLICY_SHIFT, PP0_POLICY_MASK));
 
-        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY_EP ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY_EP ) {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_PERF_STATUS, &msr ) < 0 ) {
+        if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_SANDY_EP ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_IVY_EP ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP0_PERF_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            time = (double)msr * MCHW_RAPLDEV(dev)->units.time;
+            time = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.time;
         }
     }
-    else if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PP1 ) {
-        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY  ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY    ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_HASWELL ) {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP1_ENERGY_STATUS, &msr ) < 0 ) {
+    else if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->layer == INTEL_LAYER_PP1 ) {
+        if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_SANDY  ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_IVY    ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_HASWELL ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP1_ENERGY_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+            energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
 
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP1_POLICY_STATUS, &msr ) < 0 ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP1_POLICY_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
             policy = (int)(MSR(msr, PP1_POLICY_SHIFT, PP1_POLICY_MASK));
         }
         else {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_DRAM_ENERGY_STATUS, &msr ) < 0 ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_DRAM_ENERGY_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+            energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
         }
     }
 
@@ -409,12 +428,12 @@ int mchw_rapldev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned i
     return 0;
 }
 
-int mchw_rapldev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len )
+int mchw_rapldev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
     return 0;
 }
 
-int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
+int mchw_rapldev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
@@ -426,66 +445,66 @@ int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device read\n" );
 
-    if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PKG ) {
-        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
+    if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->layer == INTEL_LAYER_PKG ) {
+        if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
             printf( "Error: MCHW RAPL device read failed\n" );
             return -1;
         }
-        energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+        energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
 
-        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY_EP ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY_EP ) {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PERF_STATUS, &msr ) < 0 ) {
+        if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_SANDY_EP ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_IVY_EP ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PERF_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            time = (double)msr * MCHW_RAPLDEV(dev)->units.time;
+            time = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.time;
         }
     }
-    else if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PP0 ) {
-        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_ENERGY_STATUS, &msr ) < 0 ) {
+    else if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->layer == INTEL_LAYER_PP0 ) {
+        if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP0_ENERGY_STATUS, &msr ) < 0 ) {
             printf( "Error: MCHW RAPL device read failed\n" );
             return -1;
         }
-        energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+        energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
 
-        if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_POLICY_STATUS, &msr ) < 0 ) {
+        if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP0_POLICY_STATUS, &msr ) < 0 ) {
             printf( "Error: MCHW RAPL device read failed\n" );
             return -1;
         }
         policy = (int)(MSR(msr, PP0_POLICY_SHIFT, PP0_POLICY_MASK));
 
-        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY_EP ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY_EP ) {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP0_PERF_STATUS, &msr ) < 0 ) {
+        if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_SANDY_EP ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_IVY_EP ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP0_PERF_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            time = (double)msr * MCHW_RAPLDEV(dev)->units.time;
+            time = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.time;
         }
     }
-    else if( MCHW_RAPLDEV(dev)->layer == INTEL_LAYER_PP1 ) {
-        if( MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_SANDY  ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_IVY    ||
-            MCHW_RAPLDEV(dev)->cpu_model == CPU_MODEL_HASWELL ) {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP1_ENERGY_STATUS, &msr ) < 0 ) {
+    else if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->layer == INTEL_LAYER_PP1 ) {
+        if( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_SANDY  ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_IVY    ||
+            MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->cpu_model == CPU_MODEL_HASWELL ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP1_ENERGY_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+            energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
 
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_PP1_POLICY_STATUS, &msr ) < 0 ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_PP1_POLICY_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
             policy = (int)(MSR(msr, PP1_POLICY_SHIFT, PP1_POLICY_MASK));
         }
         else {
-            if( rapldev_read( MCHW_RAPLDEV(dev)->fd, MSR_DRAM_ENERGY_STATUS, &msr ) < 0 ) {
+            if( rapldev_read( MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->fd, MSR_DRAM_ENERGY_STATUS, &msr ) < 0 ) {
                 printf( "Error: MCHW RAPL device read failed\n" );
                 return -1;
             }
-            energy = (double)msr * MCHW_RAPLDEV(dev)->units.energy;
+            energy = (double)msr * MCHW_RAPLDEV(MCHW_RAPLFD(fd)->dev)->units.energy;
         }
     }
 
@@ -505,7 +524,7 @@ int mchw_rapldev_readv( pwr_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize,
+int mchw_rapldev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
     if( rapldev_verbose ) 
@@ -514,22 +533,24 @@ int mchw_rapldev_writev( pwr_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_rapldev_time( pwr_dev_t dev, PWR_Time *timestamp )
+int mchw_rapldev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
     if( rapldev_verbose ) 
         printf( "Info: MCHW RAPL device time\n" );
 
-    return mchw_rapldev_read( dev, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
+    return mchw_rapldev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }
 
-int mchw_rapldev_clear( pwr_dev_t dev )
+int mchw_rapldev_clear( pwr_fd_t fd )
 {
     return 0;
 }
 
 static plugin_dev_t dev = {
+    .init   = mchw_rapldev_init,
+    .final  = mchw_rapldev_final,
     .open   = mchw_rapldev_open,
     .close  = mchw_rapldev_close,
     .read   = mchw_rapldev_read,

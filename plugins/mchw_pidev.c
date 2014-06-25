@@ -10,9 +10,14 @@ static int pidev_verbose = 0;
 
 typedef struct {
     void *cntx;
-    piapi_port_t port;
 } mchw_pidev_t;
 #define MCHW_PIDEV(X) ((mchw_pidev_t *)(X))
+
+typedef struct {
+    mchw_pidev_t *dev;
+    piapi_port_t port;
+} mchw_pifd_t;
+#define MCHW_PIFD(X) ((mchw_pifd_t *)(X))
 
 static piapi_sample_t pidev_counter;
 static int pidev_reading;
@@ -25,7 +30,7 @@ static void pidev_callback( piapi_sample_t *sample )
         pidev_reading = 0;
 }
 
-static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *sport, unsigned int *port )
+static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *sport )
 {
     int shift = 24;
     char *token;
@@ -49,29 +54,23 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
     }
     *sport = atoi(token);
 
-    if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        printf( "Error: missing sensor port separator in initialization string %s\n", initstr );
-        return -1;
-    }
-    *port = atoi(token);
-
     if( pidev_verbose )
-        printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u, PORT=%u)\n", *saddr, *sport, *port );
+        printf( "Info: extracted initialization string (SADDR=%08x, SPORT=%u)\n", *saddr, *sport );
 
     return 0;
 }
 
-pwr_dev_t mchw_pidev_open( const char *initstr )
+pwr_dev_t mchw_pidev_init( const char *initstr )
 {
-    unsigned int saddr = 0, sport = 0, port = 0;
+    unsigned int saddr = 0, sport = 0;
 
     pwr_dev_t *dev = malloc( sizeof(mchw_pidev_t) );
     bzero( dev, sizeof(mchw_pidev_t) );
 
     if( pidev_verbose )
-        printf( "Info: opening MCHW PowerInsight device\n" );
+        printf( "Info: initializing MCHW PowerInsight device\n" );
 
-    if( initstr == 0x0 || pidev_parse(initstr, &saddr, &sport, &port) < 0 ) {
+    if( initstr == 0x0 || pidev_parse(initstr, &saddr, &sport) < 0 ) {
         printf( "Error: invalid monitor and control hardware initialization string\n" );
         return 0x0;
     }
@@ -84,10 +83,10 @@ pwr_dev_t mchw_pidev_open( const char *initstr )
     return dev;
 }
 
-int mchw_pidev_close( pwr_dev_t dev )
+int mchw_pidev_final( pwr_dev_t dev )
 {
     if( pidev_verbose )
-        printf( "Info: closing MCHW PowerInsight device\n" );
+        printf( "Info: finaling MCHW PowerInsight device\n" );
 
     if( piapi_destroy( &(MCHW_PIDEV(dev)->cntx) ) < 0 ) {
         printf( "Error: powerinsight hardware finalization failed\n" );
@@ -99,12 +98,46 @@ int mchw_pidev_close( pwr_dev_t dev )
     return 0;
 }
 
+pwr_fd_t mchw_pidev_open( pwr_dev_t dev, const char *openstr )
+{
+    char *token;
 
-int mchw_pidev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
+    pwr_fd_t *fd = malloc( sizeof(mchw_pifd_t) );
+    bzero( fd, sizeof(mchw_pifd_t) );
+
+    if( pidev_verbose )
+        printf( "Info: opening MCHW PowerInsight descriptor\n" );
+
+    MCHW_PIFD(fd)->dev = MCHW_PIDEV(dev);
+
+    if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
+        printf( "Error: missing sensor port separator in initialization string %s\n", openstr );
+        return 0x0;
+    }
+    MCHW_PIFD(fd)->port = atoi(token);
+
+    if( pidev_verbose )
+        printf( "Info: extracted initialization string (PORT=%u)\n", MCHW_PIFD(fd)->port );
+
+    return fd;
+}
+
+int mchw_pidev_close( pwr_fd_t fd )
+{
+    if( pidev_verbose )
+        printf( "Info: closing MCHW PowerInsight descriptor\n" );
+
+    MCHW_PIFD(fd)->dev = 0x0;
+    free( fd );
+
+    return 0;
+}
+
+int mchw_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     while( pidev_reading ) sched_yield();
     pidev_reading = 1;
-    if( piapi_counter( MCHW_PIDEV(dev)->cntx, MCHW_PIDEV(dev)->port ) < 0 ) {
+    if( piapi_counter( MCHW_PIDEV(MCHW_PIFD(fd)->dev)->cntx, MCHW_PIFD(fd)->port ) < 0 ) {
         printf( "Error: powerinsight hardware read failed\n" );
         return -1;
     }
@@ -148,7 +181,7 @@ int mchw_pidev_read( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int
     return 0;
 }
 
-int mchw_pidev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned int len )
+int mchw_pidev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
     if( pidev_verbose )
         printf( "Info: setting of type %u with value %lf\n",
@@ -157,14 +190,14 @@ int mchw_pidev_write( pwr_dev_t dev, PWR_AttrName attr, void *value, unsigned in
     return 0;
 }
 
-int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
+int mchw_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
 
     while( pidev_reading ) sched_yield();
     pidev_reading = 1;
-    if( piapi_counter( MCHW_PIDEV(dev)->cntx, MCHW_PIDEV(dev)->port ) < 0 ) {
+    if( piapi_counter( MCHW_PIDEV(MCHW_PIFD(fd)->dev)->cntx, MCHW_PIFD(fd)->port ) < 0 ) {
         printf( "Error: powerinsight hardware read failed\n" );
         return -1;
     }
@@ -205,7 +238,7 @@ int mchw_pidev_readv( pwr_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
+int mchw_pidev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
     unsigned int i;
@@ -225,17 +258,17 @@ int mchw_pidev_writev( pwr_dev_t dev, unsigned int arraysize,
     return 0;
 }
 
-int mchw_pidev_time( pwr_dev_t dev, PWR_Time *timestamp )
+int mchw_pidev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
     if( pidev_verbose )
         printf( "Info: getting time from MCHW PowerInsight device\n" );
 
-    return mchw_pidev_read( dev, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
+    return mchw_pidev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }
 
-int mchw_pidev_clear( pwr_dev_t dev )
+int mchw_pidev_clear( pwr_fd_t fd )
 {
     if( pidev_verbose )
         printf( "Info: clearing MCHW PowerInsight device\n" );
@@ -244,6 +277,8 @@ int mchw_pidev_clear( pwr_dev_t dev )
 } 
 
 static plugin_dev_t dev = {
+    .init   = mchw_pidev_init,
+    .final  = mchw_pidev_final,
     .open   = mchw_pidev_open,
     .close  = mchw_pidev_close,
     .read   = mchw_pidev_read,
