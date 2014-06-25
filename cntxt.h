@@ -39,11 +39,13 @@ struct _Cntxt {
     _Grp* groupCreate( std::string name );
     int groupDestroy( _Grp* grp );
     _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
-    _Dev* findDev( const std::string name, const std::string config );
+    _Dev* newDev( const std::string name, const std::string openString );
 
   private:
     tinyxml2::XMLElement* XMLFindObject( std::string );
     void printTree(  tinyxml2::XMLNode* );
+    void initPlugins( tinyxml2::XMLElement* );
+	void finiPlugins( );
     void initDevices( tinyxml2::XMLElement* );
 	void finiDevices( );
     
@@ -55,9 +57,15 @@ struct _Cntxt {
     tinyxml2::XMLDocument* m_xml;
 
     std::map<std::string,_Obj*>       m_objMap;
-    std::map<std::string,std::string> m_devLibMap;
-    std::map<std::string,_Dev*>       m_devMap; 
-    std::map<std::string,_Grp*>       m_groupMap;
+
+    struct Y {
+        pwr_dev_t dev;
+        std::string pluginName;         
+    };
+
+    std::map<std::string, plugin_dev_t*>    m_pluginLibMap;
+    std::map<std::string, Y>    m_devMap;
+    std::map<std::string,_Grp*> m_groupMap;
 };
 
 #endif

@@ -28,6 +28,37 @@ _ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
         m_attrVector[i] = NULL;
     }
 
+    // find the devices element
+    while ( tmp ) {
+        el = static_cast<XMLElement*>(tmp);
+
+        //DBGX("%s\n",el->Name());
+
+        if ( 0 == strcmp( el->Name(), "devices") ) {
+            tmp = el->FirstChild();
+            break;
+        }
+        tmp = tmp->NextSibling();
+    }
+
+    // iterate over the devices 
+    while ( tmp ) {
+        el = static_cast<XMLElement*>(tmp);
+
+        const char* name = el->Attribute("name");
+        const char* device = el->Attribute("device"); 
+        const char* openString = el->Attribute("openString"); 
+        DBGX("obj=`%s` adding dev=`%s` device=`%s` openString=`%s`\n",
+                            m_name.c_str(), name, device, openString );
+
+        m_devices[ name ] = m_ctx->newDev( device, openString );
+
+        tmp = tmp->NextSibling();
+    }
+
+
+    tmp = m_xmlElement->FirstChild();
+
     // find the attributes element
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
@@ -55,7 +86,14 @@ _ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
     }
     DBGX("return %s\n",m_name.c_str());
 }
- 
+
+_ObjEl::~_ObjEl()
+{
+    std::map<std::string, _Dev* >::iterator iter = m_devices.begin();
+    for ( ; iter != m_devices.end(); ++iter ) {
+        delete iter->second;
+    }
+}
 
 int _ObjEl::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts )
 {
@@ -199,9 +237,10 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     return retval;
 }
 
-_Dev* _ObjEl::findDev( const std::string name, const std::string config )
+_Dev* _ObjEl::findDev( const std::string name )
 {
-    return m_ctx->findDev( name, config );
+    DBGX("%s\n",name.c_str());
+    return m_devices[name];
 }
 
 _Obj* _ObjEl::findChild( std::string name ) 

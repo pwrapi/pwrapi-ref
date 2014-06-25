@@ -40,6 +40,7 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     m_xml->LoadFile( m_configFile.c_str() );
     assert( tinyxml2::XML_SUCCESS == m_xml->ErrorID() );
     //printTree( m_xml->RootElement() );
+    initPlugins( m_xml->RootElement() );
     initDevices( m_xml->RootElement() );
     DBGX("return\n");
 }
@@ -47,8 +48,52 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
 _Cntxt::~_Cntxt()
 {
 	finiDevices();
+    std::map<std::string, _Obj*>::iterator iter = m_objMap.begin();
+    for ( ; iter != m_objMap.end(); ++iter ) {
+        delete iter->second;
+    }
 }
 
+typedef plugin_dev_t* (*funcPtr_t)(void);
+
+void _Cntxt::initPlugins( XMLElement* el )
+{
+    DBGX("%s\n",el->Name());
+
+    XMLNode* tmp = el->FirstChild(); 
+
+    // find the children element
+    while ( tmp ) {
+        el = static_cast<XMLElement*>(tmp);
+
+        //DBGX("%s\n",el->Name());
+
+        if ( 0 == strcmp( el->Name(), "Plugins") ) {
+            tmp = el->FirstChild();
+            break;
+        }
+        tmp = tmp->NextSibling();
+    }
+
+    // iterate over the children
+    while ( tmp ) {
+        el = static_cast<XMLElement*>(tmp);
+
+        DBGX("plugin name=`%s` lib=`%s`\n", el->Attribute("name"), el->Attribute("lib") );
+
+        void* ptr = dlopen( el->Attribute("lib"), RTLD_LAZY);
+        assert(ptr);
+
+        void* funcPtr = dlsym(ptr,"getDev");
+        assert(funcPtr);
+
+        m_pluginLibMap[ el->Attribute("name") ] = 
+                    ( (plugin_dev_t* (*)(void)) funcPtr)();
+        assert( m_pluginLibMap[ el->Attribute("name") ] );
+
+        tmp = tmp->NextSibling();
+    }
+}
 void _Cntxt::initDevices( XMLElement* el )
 {
     DBGX("%s\n",el->Name());
@@ -72,42 +117,36 @@ void _Cntxt::initDevices( XMLElement* el )
     while ( tmp ) {
         el = static_cast<XMLElement*>(tmp);
 
-        DBGX("device name=`%s` lib=`%s`\n", el->Attribute("name"), el->Attribute("lib") );
+        const char* name = el->Attribute("name");
+        const char* plugin = el->Attribute("plugin");
+        const char* initString = el->Attribute("initString");
+        DBGX("device name=`%s` plugin=`%s` initString=`%s`\n", name, plugin, initString ); 
 
-        m_devLibMap[ el->Attribute("name") ] = el->Attribute("lib"); 
+        m_devMap[ name ].dev = m_pluginLibMap[ plugin ]->init( initString ); 
+        assert( m_devMap[ el->Attribute("name") ].dev );
+
+        m_devMap[ name ].pluginName = plugin;
+
         tmp = tmp->NextSibling();
     }
 }
 
 void _Cntxt::finiDevices()
 {
-	std::map<std::string,_Dev*>::iterator iter = m_devMap.begin();
+	std::map<std::string,Y>::iterator iter = m_devMap.begin();
+
 	for ( ; iter != m_devMap.end(); ++ iter ) {
-		delete iter->second;
+		m_pluginLibMap[ iter->second.pluginName ]->final( iter->second.dev );
 	}
 }
 
-typedef plugin_dev_t* (*funcPtr_t)(void);
 
-_Dev* _Cntxt::findDev( const std::string name, const std::string config )
+_Dev* _Cntxt::newDev( const std::string name, const std::string config )
 {
     DBGX("name=`%s` config=`%s`\n",name.c_str(), config.c_str());
 
-    if ( m_devMap.find(name+config) == m_devMap.end() ) {
-
-        std::map<std::string,std::string>::iterator iter;
-        if ( (iter = m_devLibMap.find(name)) == m_devLibMap.end() ) {
-            return NULL;
-        }
-        DBGX("device `%s` library `%s`\n",name.c_str(), (*iter).second.c_str());
-        void* ptr = dlopen((*iter).second.c_str(),RTLD_LAZY);
-        assert(ptr);
-        funcPtr_t funcPtr = (funcPtr_t)dlsym(ptr,"getDev");
-        assert(funcPtr);
-    
-        m_devMap[ name + config ] = new _Dev( funcPtr(), config ); 
-    } 
-    return m_devMap[name + config];
+    return new _Dev( m_devMap[name].dev, 
+            m_pluginLibMap[ m_devMap[name].pluginName ], config );
 }
 
 _Obj* _Cntxt::getSelf() {

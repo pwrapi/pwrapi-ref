@@ -105,11 +105,10 @@ void _Attr::initSrcList( tinyxml2::XMLElement* el )
 
             m_foobar.push_back( m_obj->findChild( el->Attribute("name") ) );
             
-        } else if ( 0 == strcmp( "plugin", el->Attribute("type" ) ) )  {
+        } else if ( 0 == strcmp( "device", el->Attribute("type" ) ) )  {
 
             DBGX("plugin name=`%s`\n",el->Attribute("name"));
-            m_foobar.push_back( m_obj->findDev( el->Attribute("name"),
-                                                el->Attribute("initString") ) );
+            m_foobar.push_back( m_obj->findDev( el->Attribute("name") ) );
 
         }
         tmp = tmp->NextSibling();

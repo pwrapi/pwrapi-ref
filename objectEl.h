@@ -1,12 +1,16 @@
 #ifndef _PWR_OBJECTEL_H 
 #define _PWR_OBJECTEL_H
 
+#include <map>
+
 #include "./object.h"
+
 
 struct _ObjEl : public _Obj
 {
   public:
     _ObjEl( _Cntxt* ctx, PWR_Obj parent, tinyxml2::XMLElement* el );
+    ~_ObjEl();
     PWR_ObjType type() { return m_type; }
     _Grp* children();
 
@@ -15,7 +19,7 @@ struct _ObjEl : public _Obj
     int attrIsValid( PWR_AttrName type ) { return 0; }
 
     _Obj* findChild( const std::string name );
-    _Dev* findDev( const std::string name, const std::string config );
+    _Dev* findDev( const std::string name );
 
     int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* );
     int attrSetValue( PWR_AttrName, void*, size_t );
@@ -27,6 +31,8 @@ struct _ObjEl : public _Obj
   private:
     PWR_ObjType m_type;
     _Grp*       m_children;
+
+    std::map< std::string, _Dev* >       m_devices;
 
     tinyxml2::XMLElement*   m_xmlElement;
     std::vector< _Attr* >   m_attrVector;

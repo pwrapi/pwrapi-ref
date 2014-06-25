@@ -46,6 +46,8 @@ typedef struct {
     pwr_clear_t clear;
 } plugin_dev_t;
 
+plugin_dev_t* getDev();
+
 #ifdef __cplusplus
 }
 #endif

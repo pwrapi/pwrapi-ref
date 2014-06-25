@@ -15,38 +15,45 @@ class _Grp;
 class _Dev : public Foobar {
   public:
 
-    _Dev( plugin_dev_t* dev, const std::string config ) : m_dev( dev ) {
-        m_devInfo = m_dev->open( config.c_str() );
+    _Dev( pwr_dev_t dev, plugin_dev_t* ops, const std::string config ) : m_ops( ops ) {
+        DBGX("\n");
+        m_fd = m_ops->open( dev, config.c_str() );
     }
 
     int attrGetValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<PWR_Time>& ts, std::vector<int>& status ){
         DBGX("\n");
-        return m_dev->readv( m_devInfo, names.size(), &names[0], ptr,  
+        return m_ops->readv( m_fd, names.size(), &names[0], ptr,  
                             &ts[0], &status[0] );
+        return -1;
     }
 
     int attrSetValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<int>& status ){ 
         DBGX("\n");
-        return m_dev->writev( m_devInfo, names.size(), &names[0], ptr, &status[0] );
+        return m_ops->writev( m_fd, names.size(), &names[0], ptr,
+                                                            &status[0] );
+        return -1;
     }
 
     int attrGetValue( PWR_AttrName name, void* ptr, size_t len, PWR_Time* ts ){ 
-        return m_dev->read( m_devInfo, name, ptr, len, ts ); 
+        DBGX("\n");
+        return m_ops->read( m_fd, name, ptr, len, ts ); 
+        return -1;
     }
 
     int attrSetValue( PWR_AttrName name, void* ptr, size_t len ) {
         DBGX("\n");
-        return m_dev->write( m_devInfo, name, ptr, len ); 
+        return m_ops->write( m_fd, name, ptr, len ); 
+        return -1;
     }
 	~_Dev() {
-		m_dev->close( m_devInfo );
+		m_ops->close( m_fd );
 	}
 
   private:
-    plugin_dev_t* m_dev;
-    pwr_dev_t     m_devInfo;
+    plugin_dev_t*   m_ops;
+    pwr_fd_t        m_fd;
 };
 
 struct _Obj : public Foobar{
@@ -54,6 +61,7 @@ struct _Obj : public Foobar{
   public:
     _Obj( _Cntxt* ctx, _Obj* parent ) : 
 		m_ctx( ctx ), m_parent( parent ) {}
+    virtual ~_Obj() {};
 
     _Obj* parent() { return m_parent; }
     void setParent( _Obj* obj ) { m_parent = obj; }
@@ -77,7 +85,7 @@ struct _Obj : public Foobar{
 	{ assert(0); } 
 
     virtual _Obj* findChild( const std::string name ) { assert(0); }
-    virtual _Dev* findDev( const std::string name, const std::string config )
+    virtual _Dev* findDev( const std::string name )
 	{ assert(0); } 
 
     virtual int attrIsValid( PWR_AttrName type ) { assert(0); }

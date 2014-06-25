@@ -1,8 +1,6 @@
 #ifndef _PWR_DEBUG_H
 #define _PWR_DEBUG_H
 
-
-
 #if 0
 
 #include <cxxabi.h>
