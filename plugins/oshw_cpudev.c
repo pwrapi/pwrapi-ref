@@ -149,6 +149,35 @@ int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
 
 int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
+    if( len != sizeof(double) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+        return -1;
+    }
+
+    switch( attr ) {
+        case PWR_ATTR_PSTATE:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_CSTATE:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_SSTATE:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_FREQ:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_TEMP:
+            *((double *)value) = (double)0;
+            break;
+        default:
+            printf( "Warning: unknown OSHW writing attr (%u) requested\n", attr );
+            break;
+    }
+
+    if( cpudev_verbose )
+        printf( "Info: writing of type %u with value %lf\n", attr, *(double *)value );
+
     return 0;
 }
 
@@ -181,8 +210,7 @@ int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
         timestamp[i] = 0;
 
         if( cpudev_verbose )
-            printf( "Info: reading of type %u at time %llu with value %lf\n",
-                    attrs[i], *(unsigned long long *)timestamp[i], *((double *)(values+i)) );
+            printf( "Info: reading of type %u with value %lf\n", attrs[i], *((double *)(values+i)) );
     }
 
     return 0;
@@ -191,6 +219,34 @@ int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
 int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ ) {
+        switch( attrs[i] ) {
+            case PWR_ATTR_PSTATE:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_CSTATE:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_SSTATE:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_FREQ:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_TEMP:
+                *((double *)values+i) = (double)0;
+                break;
+            default:
+                printf( "Warning: unknown OSHW writing attr (%u) requested at position %u\n", attrs[i], i );
+                break;
+        }
+
+        if( cpudev_verbose )
+            printf( "Info: writing of type %u with value %lf\n", attrs[i], *((double *)(values+i)) );
+    }
+
     return 0;
 }
 
