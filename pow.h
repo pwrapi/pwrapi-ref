@@ -83,11 +83,11 @@ int PWR_StatStop( PWR_Stat );
 int PWR_StatClear( PWR_Stat );
 
 
-int PWR_StatGetValue( PWR_Stat, double* valuePtr, PWR_StatTimes* statTimes );
+int PWR_StatGetValue( PWR_Stat, double* value, PWR_StatTimes* statTimes );
 /*
  * size of array passed in is derived by the function
  */
-int PWR_StatGrpGetValues( PWR_Stat, double values[],
+int PWR_StatGetValues( PWR_Stat, double values[],
                                             PWR_StatTimes statTimes[] );
 
 /*
