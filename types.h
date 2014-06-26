@@ -66,6 +66,7 @@ typedef enum {
     PWR_ATTR_VOLTAGE,       /* Required Float  */
     PWR_ATTR_CURRENT,       /* Required Float  */
     PWR_ATTR_ENERGY,        /* Required Float  */
+    PWR_ATTR_TEMP,          /* Required Float  */
     PWR_ATTR_PSTATE,	    /* Required Int    */
     PWR_ATTR_CSTATE,	    /* Required Int    */
     PWR_ATTR_SSTATE,	    /* Required Int    */

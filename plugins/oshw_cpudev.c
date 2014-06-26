@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+static int cpudev_verbose = 0;
+
 int online_cpulist[1000];
 int num_cpus;
 int started = 0;
@@ -111,6 +113,37 @@ int oshw_cpudev_close( pwr_fd_t fd )
 
 int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
+    if( len != sizeof(double) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+        return -1;
+    }
+
+    switch( attr ) {
+        case PWR_ATTR_PSTATE:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_CSTATE:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_SSTATE:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_FREQ:
+            *((double *)value) = (double)0;
+            break;
+        case PWR_ATTR_TEMP:
+            *((double *)value) = (double)0;
+            break;
+        default:
+            printf( "Warning: unknown OSHW reading attr (%u) requested\n", attr );
+            break;
+    }
+    *timestamp = 0;
+
+    if( cpudev_verbose )
+        printf( "Info: reading of type %u at time %llu with value %lf\n",
+                attr, *(unsigned long long *)timestamp, *(double *)value );
+
     return 0;
 }
 
@@ -122,6 +155,36 @@ int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
 int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ ) {
+        switch( attrs[i] ) {
+            case PWR_ATTR_PSTATE:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_CSTATE:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_SSTATE:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_FREQ:
+                *((double *)values+i) = (double)0;
+                break;
+            case PWR_ATTR_TEMP:
+                *((double *)values+i) = (double)0;
+                break;
+            default:
+                printf( "Warning: unknown OSHW reading attr (%u) requested at position %u\n", attrs[i], i );
+                break;
+        }
+        timestamp[i] = 0;
+
+        if( cpudev_verbose )
+            printf( "Info: reading of type %u at time %llu with value %lf\n",
+                    attrs[i], *(unsigned long long *)timestamp[i], *((double *)(values+i)) );
+    }
+
     return 0;
 }
 
