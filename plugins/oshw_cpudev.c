@@ -52,45 +52,6 @@ int online_cpus(int number_desired)
     return 0;
 }
 
-int parallel_hint(PWR_Obj obj, PWR_Hint hint, int parallel)
-{
-    if( started == 0 ) {
-        //printf("first time hint is run, bootstrapping \n");
-        num_cpus = sysconf(_SC_NPROCESSORS_CONF);
-        int i;
-        for (i = 1; i <= num_cpus - 1; i++){
-            int fd;
-            char one = '1';
-            char cpupath[100];
-            sprintf(cpupath,"/sys/devices/system/cpu/cpu%i/online",i);
-            fd = open(cpupath, O_WRONLY);
-            write (fd, &one, 1);
-            close(fd);
-            online_cpulist[i] = 1;
-        }
-        started = 1;
-    }
-
-    /* For now we assume that this always operates on the node */
-    switch( hint ) {
-       case PWR_REGION_PARALLEL:
-           online_cpus(parallel);
-           break;
-       case PWR_REGION_SERIAL:
-           online_cpus(1);
-           break;
-       case PWR_REGION_COMPUTE:
-           break;
-       case PWR_REGION_COMMUNICATE:
-           online_cpus(2);
-           break;
-       default:
-           fprintf(stderr,"INVALID HINT\n");
-    }
-
-    return 0;
-}
-
 pwr_dev_t oshw_cpudev_init( const char *initstr )
 {
     return 0x0;

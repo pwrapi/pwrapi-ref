@@ -1,14 +1,14 @@
-
 #include <string.h>
 #include <sys/time.h>
+#include <fcntl.h>
 
-#include "./object.h"
-#include "./group.h"
+#include "object.h"
+#include "group.h"
 
-#include "./status.h"
-#include "./pow.h"
-#include "./cntxt.h"
-#include "./init.h"
+#include "status.h"
+#include "pow.h"
+#include "cntxt.h"
+#include "init.h"
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
@@ -213,16 +213,48 @@ const char* PWR_AttrGetTypeString( PWR_AttrName name )
     return attrNameToString( name );
 }
 
-int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {
+int PWR_AppHint( PWR_Obj obj, PWR_Hint hint)
+{
+    static int started = 0;
+    static int num_cpus = 0;
+    static int online_cpulist[1000];
 
-	switch( hint ){
-	case PWR_REGION_SERIAL: return PWR_ERR_SUCCESS;
-	case PWR_REGION_PARALLEL: return PWR_ERR_SUCCESS;
-	case PWR_REGION_COMPUTE: return PWR_ERR_SUCCESS;
-	case PWR_REGION_COMMUNICATE: return PWR_ERR_SUCCESS;
-	case PWR_REGION_IO: return PWR_ERR_SUCCESS;
-	case PWR_REGION_MEM_BOUND: return PWR_ERR_SUCCESS;
-	}	
+    if( started == 0 ) {
+        int i;
+
+        num_cpus = sysconf(_SC_NPROCESSORS_CONF);
+        for( i = 1; i <= num_cpus -1; i++ ) {
+            int fd;
+            char one = '1';
+            char cpupath[100] = "";
+            sprintf( cpupath, "/sys/devices/system/cpu/cpu%i/online", i );
+            fd = open( cpupath, O_WRONLY );
+            write( fd, &one, 1 );
+            close( fd );
+            online_cpulist[i] = 1;
+        }
+        started = 1;
+    }        
+
+    /* TBD - need to hook in plugin call for oshw_cpudev */        
+    switch( hint ){
+        case PWR_REGION_SERIAL:
+            /* online_cpus( parallel ); */
+            return PWR_ERR_SUCCESS;
+        case PWR_REGION_PARALLEL:
+            /* online_cpus( 1 ); */
+            return PWR_ERR_SUCCESS;
+        case PWR_REGION_COMPUTE:
+            return PWR_ERR_SUCCESS;
+        case PWR_REGION_COMMUNICATE:
+            /* online_cpus( 2 ); */
+            return PWR_ERR_SUCCESS;
+        case PWR_REGION_IO:
+            return PWR_ERR_SUCCESS;
+        case PWR_REGION_MEM_BOUND:
+            return PWR_ERR_SUCCESS;
+    }
+	
     return PWR_ERR_FAILURE;
 }
 
