@@ -20,6 +20,21 @@ typedef struct {
 } oshw_cpufd_t;
 #define OSHW_CPUFD(X) ((oshw_cpufd_t *)(X))
 
+int online_cpu( int cpu, int state )
+{
+    int fd;
+    char onoff;
+    char cpupath[100] = "";
+
+    sprintf( cpupath, "/sys/devices/system/cpu/cpu%i/online", cpu );
+    fd = open( cpupath, O_WRONLY );
+    onoff = (state ? '1' : '0');
+    write( fd, &onoff, 1 );
+    close( fd );
+
+    return 0;
+}
+
 pwr_dev_t oshw_cpudev_init( const char *initstr )
 {
     int i;
@@ -32,13 +47,7 @@ pwr_dev_t oshw_cpudev_init( const char *initstr )
 
     OSHW_CPUDEV(dev)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
     for( i = 1; i <= OSHW_CPUDEV(dev)->num_cpus -1; i++ ) {
-        int fd;
-        char one = '1';
-        char cpupath[100] = "";
-        sprintf( cpupath, "/sys/devices/system/cpu/cpu%i/online", i );
-        fd = open( cpupath, O_WRONLY );
-        write( fd, &one, 1 );
-        close( fd );
+        online_cpu( i, 1 );
         OSHW_CPUDEV(dev)->online_cpulist[i] = 1;
     }        
 
@@ -54,8 +63,10 @@ int oshw_cpudev_final( pwr_dev_t dev )
     return 0;
 }
 
-pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *initstr )
+pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *openstr )
 {
+    char *token;
+
     pwr_fd_t *fd = malloc( sizeof(oshw_cpufd_t) );
     bzero( fd, sizeof(oshw_cpufd_t) );
 
@@ -63,6 +74,15 @@ pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *initstr )
         printf( "Info: opening OSHW CPU descriptor\n" );
 
     OSHW_CPUFD(fd)->dev = OSHW_CPUDEV(dev);
+
+    if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
+        printf( "Error: missing CPU separator in initialization string %s\n", openstr );
+        return 0x0;
+    }
+    OSHW_CPUFD(fd)->cpu = atoi(token);
+
+    if( cpudev_verbose )
+        printf( "Info: extracted initialization string (CPU=%u)\n", OSHW_CPUFD(fd)->cpu );
 
     return fd;
 }
@@ -80,20 +100,21 @@ int oshw_cpudev_close( pwr_fd_t fd )
 
 int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
-    if( len != sizeof(double) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+    if( len != sizeof(unsigned long long) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_PSTATE:
-            *((double *)value) = (double)0;
+            *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_CSTATE:
-            *((double *)value) = (double)0;
+            *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_SSTATE:
-            *((double *)value) = (double)0;
+            *((unsigned long long *)value) =
+                (unsigned long long)OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu];
             break;
         case PWR_ATTR_FREQ:
             *((double *)value) = (double)0;
@@ -116,20 +137,22 @@ int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
 
 int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
-    if( len != sizeof(double) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+    if( len != sizeof(unsigned long long) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_PSTATE:
-            *((double *)value) = (double)0;
+            *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_CSTATE:
-            *((double *)value) = (double)0;
+            *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_SSTATE:
-            *((double *)value) = (double)0;
+            if( online_cpu( OSHW_CPUFD(fd)->cpu, *((unsigned long long *)value) ) == 0 )
+                OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu] =
+                    *((unsigned long long *)value);
             break;
         case PWR_ATTR_FREQ:
             *((double *)value) = (double)0;
@@ -156,13 +179,14 @@ int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
     for( i = 0; i < arraysize; i++ ) {
         switch( attrs[i] ) {
             case PWR_ATTR_PSTATE:
-                *((double *)values+i) = (double)0;
+                *((unsigned long long *)values+i) = (unsigned long long)0;
                 break;
             case PWR_ATTR_CSTATE:
-                *((double *)values+i) = (double)0;
+                *((unsigned long long *)values+i) = (unsigned long long)0;
                 break;
             case PWR_ATTR_SSTATE:
-                *((double *)values+i) = (double)0;
+                *((unsigned long long *)values+i) =
+                    (unsigned long long)OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu];
                 break;
             case PWR_ATTR_FREQ:
                 *((double *)values+i) = (double)0;
@@ -191,13 +215,15 @@ int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
     for( i = 0; i < arraysize; i++ ) {
         switch( attrs[i] ) {
             case PWR_ATTR_PSTATE:
-                *((double *)values+i) = (double)0;
+                *((unsigned long long *)values+i) = (unsigned long long)0;
                 break;
             case PWR_ATTR_CSTATE:
-                *((double *)values+i) = (double)0;
+                *((unsigned long long *)values+i) = (unsigned long long)0;
                 break;
             case PWR_ATTR_SSTATE:
-                *((double *)values+i) = (double)0;
+                if( online_cpu( OSHW_CPUFD(fd)->cpu, *((unsigned long long *)values+i) ) == 0 )
+                    OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu] =
+                        *((unsigned long long *)values+i);
                 break;
             case PWR_ATTR_FREQ:
                 *((double *)values+i) = (double)0;
