@@ -220,6 +220,8 @@ int PWR_AppHint( PWR_Obj obj, PWR_Hint hint) {
 	case PWR_REGION_PARALLEL: return PWR_ERR_SUCCESS;
 	case PWR_REGION_COMPUTE: return PWR_ERR_SUCCESS;
 	case PWR_REGION_COMMUNICATE: return PWR_ERR_SUCCESS;
+	case PWR_REGION_IO: return PWR_ERR_SUCCESS;
+	case PWR_REGION_MEM_BOUND: return PWR_ERR_SUCCESS;
 	}	
     return PWR_ERR_FAILURE;
 }
