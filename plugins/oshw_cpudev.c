@@ -8,67 +8,73 @@
 
 static int cpudev_verbose = 0;
 
-int online_cpulist[1000];
-int num_cpus;
-int started = 0;
+typedef struct {
+    int online_cpulist[1000];
+    int num_cpus;
+} oshw_cpudev_t;
+#define OSHW_CPUDEV(X) ((oshw_cpudev_t *)(X))
 
-int online_cpus(int number_desired)
-{
-    int i = 0;
-    
-    //int num_cpus = sysconf(_SC_NPROCESSORS_CONF);
-
-    for (i = 1; i <= number_desired - 1; i++){
-        if (online_cpulist[i] == 0){ 
-            int fd;
-            char one = '1';
-            char cpupath[100];
-            sprintf(cpupath,"/sys/devices/system/cpu/cpu%i/online",i);
-            fd = open(cpupath, O_WRONLY);
-            write (fd, &one, 1);
-            close(fd);
-            online_cpulist[i] = 1;
-        }
-        else{
-            //printf("skip, already on\n");
-        }
-    }
-    for (i = number_desired; i < num_cpus; i++){
-        if (online_cpulist[i] == 1){
-            int fd;
-            char zero = '0';
-            char cpupath[100];
-            sprintf(cpupath,"/sys/devices/system/cpu/cpu%i/online",i);
-            fd = open(cpupath, O_WRONLY);
-            write (fd, &zero, 1);
-            close(fd);
-            online_cpulist[i] = 0;
-        }
-        else{
-            //printf("skip, already off\n");
-        }
-    }
-
-    return 0;
-}
+typedef struct {
+    oshw_cpudev_t *dev;
+    int cpu;
+} oshw_cpufd_t;
+#define OSHW_CPUFD(X) ((oshw_cpufd_t *)(X))
 
 pwr_dev_t oshw_cpudev_init( const char *initstr )
 {
-    return 0x0;
+    int i;
+
+    pwr_dev_t *dev = malloc( sizeof(oshw_cpudev_t) );
+    bzero( dev, sizeof(oshw_cpudev_t) );
+
+    if( cpudev_verbose )
+        printf( "Info: initializing OSHW CPU device\n" );
+
+    OSHW_CPUDEV(dev)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
+    for( i = 1; i <= OSHW_CPUDEV(dev)->num_cpus -1; i++ ) {
+        int fd;
+        char one = '1';
+        char cpupath[100] = "";
+        sprintf( cpupath, "/sys/devices/system/cpu/cpu%i/online", i );
+        fd = open( cpupath, O_WRONLY );
+        write( fd, &one, 1 );
+        close( fd );
+        OSHW_CPUDEV(dev)->online_cpulist[i] = 1;
+    }        
+
+    return dev;
 }
 
 int oshw_cpudev_final( pwr_dev_t dev )
 {
+    if( cpudev_verbose )
+        printf( "Info: finaling OSHW CPU device\n" );
+
+    free( dev );
     return 0;
 }
 
 pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *initstr )
 {
-    return 0x0;
+    pwr_fd_t *fd = malloc( sizeof(oshw_cpufd_t) );
+    bzero( fd, sizeof(oshw_cpufd_t) );
+
+    if( cpudev_verbose )
+        printf( "Info: opening OSHW CPU descriptor\n" );
+
+    OSHW_CPUFD(fd)->dev = OSHW_CPUDEV(dev);
+
+    return fd;
 }
 
 int oshw_cpudev_close( pwr_fd_t fd )
 {
+    if( cpudev_verbose )
+        printf( "Info: closing OSHW CPU descriptor\n" );
+
+    OSHW_CPUFD(fd)->dev = 0x0;
+    free( fd );
+
     return 0;
 }
 
