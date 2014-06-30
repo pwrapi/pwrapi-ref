@@ -121,4 +121,20 @@ typedef enum {
     PWR_REGION_MEM_BOUND
 } PWR_Hint;
 
+typedef enum {
+    PWR_SLEEP_NO
+    PWR_SLEEP_SHALLOW
+    PWR_SLEEP_MEDIUM
+    PWR_SLEEP_DEEP
+    PWR_SLEEP_DEEPEST
+} PWR_SleepState;
+
+typedef enum {
+    PWR_PERF_FASTEST
+    PWR_PERF_FAST
+    PWR_PERF_MEDIUM
+    PWR_PERF_SLOW
+    PWR_PERF_SLOWEST
+} PWR_PerfState;
+
 #endif
