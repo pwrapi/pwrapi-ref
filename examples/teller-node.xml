@@ -2,12 +2,13 @@
 
 <System>
 
-<Devices>
-    <dev name="PowerInsight" lib="libdummy_dev.so"/>
-</Devices>
+<Plugins>
+    <plugin name="PowerInsight" lib="libpidev_dev.so"/>
+</Plugins>
 
 <Devices>
-    <dev name="CPU" lib="libcpudev.so"/>
+    <device name="PowerInsight-node1" plugin="PowerInsight" initString="10.54.21.41:20201"/>
+    <device name="PowerInsight-node2" plugin="PowerInsight" initString="10.54.21.42:20201"/>
 </Devices>
 
 <Objects>
@@ -70,9 +71,13 @@
 
 <obj name="plat.cab0.board0.node0.socket0" type="Socket" >
 
+    <devices>
+        <dev name="pidev1" device="PowerInsight-node1" openString="1" /> 
+    </devices>
+
     <attributes>
-        <attr name="ENERGY" op="SUM" >
-            <src type="plugin" name="PowerInsight" initString="10.54.21.75:20201:1" />
+        <attr name="VOLTAGE" op="">
+            <src type="device" name="pidev1" />
         </attr>
     </attributes>
 
