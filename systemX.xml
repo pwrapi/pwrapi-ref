@@ -116,7 +116,7 @@
             <src type="device" name="dev1" />
         </attr>
         <attr name="CURRENT" op="" >
-            <src type="devicen" name="dev1" />
+            <src type="device" name="dev1" />
         </attr>
         <attr name="POWER" op="SUM" >
             <src type="device" name="dev1" />
