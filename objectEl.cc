@@ -101,7 +101,7 @@ int _ObjEl::attrGetValue( PWR_AttrName name, void* buf, size_t len, PWR_Time* ts
     if ( attr ) {
         return attr->getValue( buf, len, ts );
     } else {
-        return PWR_ERR_INVALID;
+        return PWR_RET_INVALID;
     }
 }
 
@@ -111,7 +111,7 @@ int _ObjEl::attrSetValue( PWR_AttrName name, void* buf, size_t len )
     if ( attr ) {
         return attr->setValue( buf, len );
     } else {
-        return PWR_ERR_INVALID;
+        return PWR_RET_INVALID;
     }
 }
 
@@ -126,7 +126,7 @@ struct XX {
 int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                          std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
-    int retval = PWR_ERR_SUCCESS;
+    int retval = PWR_RET_SUCCESS;
 
     std::map< Foobar*, XX > foobar;
     std::vector< std::vector<void*> > var1( attrs.size() );
@@ -163,8 +163,8 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
         (*iter).first->attrGetValues( xx.attrs, &xx.data[0], xx.ts, xx.status ); 
 
         for ( unsigned int i = 0; i < num; i++ ) {
-            if ( PWR_ERR_SUCCESS != xx.status[i] ) {
-                retval = PWR_ERR_FAILURE;
+            if ( PWR_RET_SUCCESS != xx.status[i] ) {
+                retval = PWR_RET_FAILURE;
             }
 
             var1[ xx.foo[i] ].push_back( &xx.data[i] ); 
@@ -182,8 +182,8 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                 attr->op( (void*) &((uint64_t*)buf)[i], var1[i] );
             }
         } else {
-            status[i] = PWR_ERR_INVALID;
-            retval = PWR_ERR_FAILURE;
+            status[i] = PWR_RET_INVALID;
+            retval = PWR_RET_FAILURE;
         }
         DBGX("%s \n",name().c_str());
     }
@@ -194,7 +194,7 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
 int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                                             std::vector<int>& status  )
 {
-    int retval = PWR_ERR_SUCCESS;
+    int retval = PWR_RET_SUCCESS;
     DBGX("%s \n",name().c_str());
 
     std::map< Foobar*, XX > foobar;
@@ -228,8 +228,8 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
         (*iter).first->attrSetValues( xx.attrs, &xx.data[0], xx.status );
 
         for ( unsigned int i = 0; i < num; i++ ) {
-            if ( PWR_ERR_SUCCESS != xx.status[i] ) {
-                retval = PWR_ERR_FAILURE;
+            if ( PWR_RET_SUCCESS != xx.status[i] ) {
+                retval = PWR_RET_FAILURE;
             }
         }
     }

@@ -36,10 +36,10 @@ int main( int argc, char* argv[] )
     }
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_VOLTAGE, &value, &ts );
-    assert( retval == PWR_ERR_INVALID );
+    assert( retval == PWR_RET_INVALID );
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s",value,ctime(&time));
@@ -48,7 +48,7 @@ int main( int argc, char* argv[] )
     value = 25.812;
     printf("set value to %f\n",value);
     retval = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, &value );
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     
     PWR_AttrName name = PWR_ATTR_POWER;
@@ -56,17 +56,17 @@ int main( int argc, char* argv[] )
     status = PWR_StatusCreate();
 
     retval = PWR_ObjAttrGetValues( self, 1, &name, &value, &ts, status );  
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s", value, ctime( &time ) );
 
     value = 100.10;
     retval = PWR_ObjAttrSetValues( self, 1, &name, &value, status );  
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     assert( value == 200.20 );
 
@@ -78,10 +78,10 @@ int main( int argc, char* argv[] )
 
     value = 0.1;
     retval = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( retval == PWR_ERR_SUCCESS );
+    assert( retval == PWR_RET_SUCCESS );
 
     assert( value == 0.2 );
 

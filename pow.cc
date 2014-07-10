@@ -79,9 +79,9 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
         attrsV[i] =  attrs[i];
     } 
 
-    if ( PWR_ERR_SUCCESS != obj->attrGetValues(attrsV,values,tsV,statusV) ) {
+    if ( PWR_RET_SUCCESS != obj->attrGetValues(attrsV,values,tsV,statusV) ) {
         for ( int i = 0; i < num; i++ ) {
-            if ( PWR_ERR_SUCCESS != statusV[i] ) { 
+            if ( PWR_RET_SUCCESS != statusV[i] ) { 
                 status->add( obj, attrsV[i], statusV[i] ); 
             }
         }
@@ -91,9 +91,9 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
     }
 
     if ( !status->empty() ) {
-        return PWR_ERR_FAILURE;
+        return PWR_RET_FAILURE;
     } else {
-        return PWR_ERR_SUCCESS;
+        return PWR_RET_SUCCESS;
     }
 }
 
@@ -106,18 +106,18 @@ int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
         attrsV[i] =  attrs[i];
     } 
 
-    if ( PWR_ERR_SUCCESS != obj->attrSetValues( attrsV, values, statusV ) ) {
+    if ( PWR_RET_SUCCESS != obj->attrSetValues( attrsV, values, statusV ) ) {
         for ( int i = 0; i < num; i++ ) {
-            if ( PWR_ERR_SUCCESS != statusV[i] ) { 
+            if ( PWR_RET_SUCCESS != statusV[i] ) { 
                 status->add( obj, attrsV[i], statusV[i] ); 
             }
         }
     } 
 
     if ( !status->empty() ) {
-        return PWR_ERR_FAILURE;
+        return PWR_RET_FAILURE;
     } else {
-        return PWR_ERR_SUCCESS;
+        return PWR_RET_SUCCESS;
     }
 }
 
@@ -186,7 +186,7 @@ PWR_Status PWR_StatusCreate()
 int PWR_StatusDestroy(PWR_Status status )
 {
     delete status;
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 int PWR_StatusPopError(PWR_Status status, PWR_AttrAccessError* err )
@@ -225,26 +225,26 @@ int PWR_AppHint( PWR_Obj obj, PWR_Hint hint)
     switch( hint ){
         case PWR_REGION_SERIAL:
             /* online_cpus( parallel ); */
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         case PWR_REGION_PARALLEL:
             online_cpus( 1 );
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         case PWR_REGION_COMPUTE:
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         case PWR_REGION_COMMUNICATE:
             online_cpus( 2 );
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         case PWR_REGION_IO:
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         case PWR_REGION_MEM_BOUND:
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
     }
 
-    return PWR_ERR_FAILURE;
+    return PWR_RET_FAILURE;
 }
 
 int PWR_TimeConvert( PWR_Time in, time_t* out )
 {
    *out = in / 1000000000;
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }

@@ -50,10 +50,10 @@ int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts )
 {
     DBGX("%s %s\n",m_obj->name().c_str(), attrNameToString(m_name));
 
-    if ( len > m_len ) return PWR_ERR_LENGTH; 
+    if ( len > m_len ) return PWR_RET_LENGTH; 
 
     if ( m_foobar.empty() ) {
-        return PWR_ERR_INVALID;
+        return PWR_RET_INVALID;
     } 
 
     unsigned char * buf = (unsigned char* )malloc( len * m_foobar.size() );
@@ -67,15 +67,15 @@ int _Attr::getValue( void* ptr, size_t len, PWR_Time* ts )
     assert( m_op );
     m_op( m_foobar.size(), ptr, buf );
 
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 int _Attr::setValue( void* ptr, size_t len )
 {
-    if ( len > m_len ) return PWR_ERR_LENGTH; 
+    if ( len > m_len ) return PWR_RET_LENGTH; 
 
     if ( m_foobar.empty() ) {
-        return PWR_ERR_INVALID;
+        return PWR_RET_INVALID;
     } 
 
     for ( unsigned int i = 0; i <  m_foobar.size(); i++ ) {
@@ -83,7 +83,7 @@ int _Attr::setValue( void* ptr, size_t len )
         m_foobar[i]->attrSetValue( m_name, ptr, len ); 
     }
 
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 void _Attr::initSrcList( tinyxml2::XMLElement* el )

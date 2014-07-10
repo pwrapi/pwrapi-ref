@@ -284,13 +284,13 @@ _Grp* _Cntxt::groupCreate( std::string name ) {
 }
 
 int _Cntxt::groupDestroy( _Grp* grp ) {
-    int retval = PWR_ERR_FAILURE;
+    int retval = PWR_RET_FAILURE;
     std::map<std::string,_Grp*>::iterator iter = m_groupMap.begin();
     for ( ; iter != m_groupMap.end(); ++iter ) {
         if ( iter->second == grp ) {
             delete grp;
             m_groupMap.erase( iter );
-            retval = PWR_ERR_SUCCESS;
+            retval = PWR_RET_SUCCESS;
             break;
         }
     }

@@ -23,7 +23,7 @@ struct _Grp {
 
     int add( _Obj* obj ) {
         m_list.push_back( obj );
-        return PWR_ERR_SUCCESS; 
+        return PWR_RET_SUCCESS; 
     }
     const std::string& name() {
         return m_name;
@@ -33,14 +33,14 @@ struct _Grp {
     int attrSetValue( PWR_AttrName type, void* ptr, size_t len, PWR_Status status ) {
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr, len );
-            if ( PWR_ERR_SUCCESS != ret ) {
+            if ( PWR_RET_SUCCESS != ret ) {
                 status->add( m_list[i], type, ret );
             }
         }
         if ( !status->empty() ) {
-            return PWR_ERR_FAILURE;
+            return PWR_RET_FAILURE;
         } else {
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         }
     }
 
@@ -52,19 +52,19 @@ struct _Grp {
             std::vector<PWR_AttrName> attrsV(num);
             std::vector<int>          statusV(num);
         
-            if ( PWR_ERR_SUCCESS != m_list[i]->attrSetValues( attrsV, buf, statusV ) ) {
+            if ( PWR_RET_SUCCESS != m_list[i]->attrSetValues( attrsV, buf, statusV ) ) {
 
                 for ( int j = 0; j < num; j++ ) {
-                    if ( PWR_ERR_SUCCESS != statusV[j] ) {
+                    if ( PWR_RET_SUCCESS != statusV[j] ) {
                         status->add( m_list[i], attrsV[j], statusV[j] );
                     }
                 }
             }
         }
         if ( !status->empty() ) {
-            return PWR_ERR_FAILURE;
+            return PWR_RET_FAILURE;
         } else {
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         }
     }
 
@@ -82,11 +82,11 @@ struct _Grp {
                 attrsV[j] =  attr[ i * num + j ];
             }
 
-            if ( PWR_ERR_SUCCESS != m_list[i]->attrGetValues( attrsV, 
+            if ( PWR_RET_SUCCESS != m_list[i]->attrGetValues( attrsV, 
                         ptr + i * num, tsV, statusV ) ) {
 
                 for ( int j = 0; j < num; j++ ) {
-                    if ( PWR_ERR_SUCCESS != statusV[j] ) {
+                    if ( PWR_RET_SUCCESS != statusV[j] ) {
                         status->add( m_list[i], attrsV[j], statusV[j] );
                     }
                 }
@@ -97,9 +97,9 @@ struct _Grp {
         }
 
         if ( !status->empty() ) {
-            return PWR_ERR_FAILURE;
+            return PWR_RET_FAILURE;
         } else {
-            return PWR_ERR_SUCCESS;
+            return PWR_RET_SUCCESS;
         }
     }
 
@@ -111,7 +111,7 @@ struct _Grp {
                 break;
             }
         }
-        return PWR_ERR_SUCCESS;
+        return PWR_RET_SUCCESS;
     }
 
     _Obj* find( std::string name ) {

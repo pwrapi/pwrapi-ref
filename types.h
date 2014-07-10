@@ -15,12 +15,12 @@ typedef struct _Stat*   PWR_Stat;
 
 typedef int PWR_CntxtState;
 
-#define PWR_ERR_SUCCESS 0
-#define PWR_ERR_FAILURE -1
-#define PWR_ERR_NOT_IMPLEMENTED -2
-#define PWR_ERR_EMPTY -3
-#define PWR_ERR_INVALID -4
-#define PWR_ERR_LENGTH -5
+#define PWR_RET_SUCCESS 0
+#define PWR_RET_FAILURE -1
+#define PWR_RET_NOT_IMPLEMENTED -2
+#define PWR_RET_EMPTY -3
+#define PWR_RET_INVALID -4
+#define PWR_RET_LENGTH -5
 
 typedef int64_t PWR_Time; 
 #define PWR_TIME_UNINIT 0

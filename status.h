@@ -13,10 +13,10 @@ struct _Status {
         return m_info.empty();
     }
     int pop( PWR_AttrAccessError* ptr ) {
-        if ( m_info.empty() ) return PWR_ERR_FAILURE;
+        if ( m_info.empty() ) return PWR_RET_FAILURE;
         *ptr = m_info.front();
         m_info.pop_front();
-        return PWR_ERR_SUCCESS;
+        return PWR_RET_SUCCESS;
     }
 
     void add( _Obj* obj, PWR_AttrName name, int error  ) {
@@ -28,7 +28,7 @@ struct _Status {
     }
     int clear() {
         m_info.clear();
-        return PWR_ERR_SUCCESS;
+        return PWR_RET_SUCCESS;
     }
 
   private:

@@ -76,7 +76,7 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
         *ts += tv.tv_usec * 1000;
     }
 
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 static int dummy_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len )
@@ -84,7 +84,7 @@ static int dummy_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned 
     DBGX("type=%s %f\n",attrNameToString(type), *(double*)ptr);
 
     ((dummyFdInfo_t*) fd)->value[type] = *(double*)ptr;
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 static int dummy_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
@@ -103,9 +103,9 @@ static int dummy_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrN
         ts[i] = tv.tv_sec * 1000000000;
         ts[i] += tv.tv_usec * 1000;
 
-        status[i] = PWR_ERR_SUCCESS;
+        status[i] = PWR_RET_SUCCESS;
     }
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 static int dummy_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
@@ -117,9 +117,9 @@ static int dummy_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_Attr
 
         ((dummyFdInfo_t*) fd)->value[attrs[i]] = ((double*)buf)[i];
 
-        status[i] = PWR_ERR_SUCCESS;
+        status[i] = PWR_RET_SUCCESS;
     }
-    return PWR_ERR_SUCCESS;
+    return PWR_RET_SUCCESS;
 }
 
 static int dummy_dev_time( pwr_fd_t fd, PWR_Time *timestamp )
