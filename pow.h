@@ -18,7 +18,6 @@ int       PWR_CntxtDestroy( PWR_Cntxt );
 PWR_Obj   PWR_CntxtGetSelf( PWR_Cntxt );
 PWR_Grp   PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );
 PWR_Grp   PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name );
-PWR_Grp   PWR_CntxtCreateGrp( PWR_Cntxt, const char* name );
 
 PWR_CntxtState PWR_CntxtSave( PWR_Cntxt );
 int            PWR_CntxtRestore( PWR_Cntxt, PWR_CntxtState );
@@ -50,6 +49,7 @@ int PWR_ObjGetEnergy( PWR_Obj, PWR_Time* from, PWR_Time* to );
 // note that PWR_GrpDestroy() pairs with PWR_CntxtCreateGrp() but it 
 // does not take a context as an argument, should it? 
 
+PWR_Grp     PWR_GrpCreate( PWR_Cntxt, const char* name );
 int         PWR_GrpDestroy( PWR_Grp );
 const char* PWR_GrpGetName( PWR_Grp );
 int         PWR_GrpGetNumObjs( PWR_Grp );
@@ -78,6 +78,8 @@ PWR_Stat PWR_GrpCreateStat( PWR_Grp, PWR_AttrName name, PWR_AttrStat stat );
 
 int PWR_StatDestroy( PWR_Stat );
 
+int PWR_StatStartWindow( PWR_Stat, PWR_Time period  );
+int PWR_StatStopWindow( PWR_Stat  );
 int PWR_StatStart( PWR_Stat );
 int PWR_StatStop( PWR_Stat );
 int PWR_StatClear( PWR_Stat );

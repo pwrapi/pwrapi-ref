@@ -29,10 +29,6 @@ PWR_Grp PWR_CntxtGetGrpByType( PWR_Cntxt ctx, PWR_ObjType type )
     return ctx->getGrp( type );
 }
 
-PWR_Grp PWR_CntxtCreateGrp( PWR_Cntxt ctx, const char* name )
-{
-    return ctx->groupCreate( name );
-}
 
 PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name )
 {
@@ -128,6 +124,11 @@ int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
 /*
 * Subset of API that works on Grp
 */
+
+PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx, const char* name )
+{
+    return ctx->groupCreate( name );
+}
 
 int PWR_GrpDestroy( PWR_Grp group )
 {
