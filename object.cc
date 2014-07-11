@@ -6,11 +6,11 @@
 #include "./object.h"
 
 #if 0
-static std::map< PWR_Obj, _Obj* > _rosebudMap;
+static std::map< _Obj*, _Obj* > _rosebudMap;
 static int objNum = 0; 
 #endif
 
-PWR_Obj rosebud( _Obj* obj ) 
+_Obj* rosebud( _Obj* obj ) 
 {
 	return obj;
 #if 0

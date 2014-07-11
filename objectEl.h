@@ -9,7 +9,7 @@
 struct _ObjEl : public _Obj
 {
   public:
-    _ObjEl( _Cntxt* ctx, PWR_Obj parent, tinyxml2::XMLElement* el );
+    _ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el );
     ~_ObjEl();
     PWR_ObjType type() { return m_type; }
     _Grp* children();
@@ -38,7 +38,7 @@ struct _ObjEl : public _Obj
     std::vector< _Attr* >   m_attrVector;
 };
 
-inline PWR_Obj createObj( _Cntxt* ctx, PWR_Obj parent,
+inline _Obj* createObj( _Cntxt* ctx, _Obj* parent,
 										tinyxml2::XMLElement* el )
 {
 	return rosebud( new _ObjEl( ctx, parent, el ) );

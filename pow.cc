@@ -16,22 +16,25 @@ PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
 {
-    return PWR::destroy( ctx );
+    return PWR::destroy( (_Cntxt*)ctx );
 }
 
-PWR_Obj PWR_CntxtGetSelf( PWR_Cntxt ctx )
+PWR_Obj PWR_CntxtGetSelf( PWR_Cntxt ctx_p )
 {
+    _Cntxt* ctx = (_Cntxt*) ctx_p;
     return ctx->getSelf();
 }
 
-PWR_Grp PWR_CntxtGetGrpByType( PWR_Cntxt ctx, PWR_ObjType type )
+PWR_Grp PWR_CntxtGetGrpByType( PWR_Cntxt ctx_p, PWR_ObjType type )
 {
+    _Cntxt* ctx = (_Cntxt*) ctx_p;
     return ctx->getGrp( type );
 }
 
 
-PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name )
+PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx_p, const char* name )
 {
+    _Cntxt* ctx = (_Cntxt*) ctx_p;
     return ctx->getGrpByName( name );
 }
 
@@ -39,39 +42,47 @@ PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name )
 * Subset of API that works on Obj
 */
 
-PWR_ObjType PWR_ObjGetType( PWR_Obj obj )
+PWR_ObjType PWR_ObjGetType( PWR_Obj obj_p )
 {
+    _Obj* obj = (_Obj*) obj_p;
     return obj->type();
 }
 
-PWR_Obj PWR_ObjGetParent(PWR_Obj obj )
+PWR_Obj PWR_ObjGetParent(PWR_Obj obj_p )
 {
+    _Obj* obj = (_Obj*) obj_p;
     return obj->parent();
 }
 
-PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
+PWR_Grp PWR_ObjGetChildren( PWR_Obj obj_p )
 {
+    _Obj* obj = (_Obj*) obj_p;
     return obj->children();
 }
 
-int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrName type )
+int PWR_ObjAttrIsValid( PWR_Obj obj_p, PWR_AttrName type )
 {
+    _Obj* obj = (_Obj*) obj_p;
    return obj->attrIsValid( type );
 }
 
-int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts )
+int PWR_ObjAttrGetValue( PWR_Obj obj_p, PWR_AttrName type, void* ptr, PWR_Time* ts )
 {
+    _Obj* obj = (_Obj*) obj_p;
     return obj->attrGetValue( type, ptr, 8, ts );
 }
 
-int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, void* ptr )
+int PWR_ObjAttrSetValue( PWR_Obj obj_p, PWR_AttrName type, void* ptr )
 {
+    _Obj* obj = (_Obj*) obj_p;
     return obj->attrSetValue( type, ptr, 8 );
 }
 
-int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
-                    void* values, PWR_Time ts[], PWR_Status status )
+int PWR_ObjAttrGetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
+                    void* values, PWR_Time ts[], PWR_Status status_p )
 {
+    _Obj* obj = (_Obj*) obj_p;
+    _Status* status =(_Status*) status_p;
     std::vector<PWR_AttrName> attrsV(num);
     std::vector<PWR_Time>     tsV(num);
     std::vector<int>          statusV(num);
@@ -97,9 +108,11 @@ int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
     }
 }
 
-int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
-                    void* values, PWR_Status status )
+int PWR_ObjAttrSetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
+                    void* values, PWR_Status status_p )
 {
+    _Obj* obj = (_Obj*) obj_p;
+    _Status* status =(_Status*) status_p;
     std::vector<PWR_AttrName> attrsV(num);
     std::vector<int>          statusV(num);
     for ( int i = 0; i < num; i++ ) {
@@ -125,56 +138,66 @@ int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
 * Subset of API that works on Grp
 */
 
-PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx, const char* name )
+PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx_p, const char* name )
 {
+    _Cntxt* ctx = (_Cntxt*) ctx_p;
     return ctx->groupCreate( name );
 }
 
-int PWR_GrpDestroy( PWR_Grp group )
+int PWR_GrpDestroy( PWR_Grp group_p )
 {
+    _Grp* group = (_Grp*) group_p;
     _Cntxt* ctx = group->getCtx();
     return ctx->groupDestroy( group );
 }
 
-const char* PWR_GrpGetName( PWR_Grp group ) 
+const char* PWR_GrpGetName( PWR_Grp group_p ) 
 {
+    _Grp* group = (_Grp*) group_p;
     return &group->name()[0];
 }
 
-int PWR_GrpAddObj( PWR_Grp group, PWR_Obj obj )
+int PWR_GrpAddObj( PWR_Grp group_p, PWR_Obj obj )
 {
-    return group->add( obj );
+    _Grp* group = (_Grp*) group_p;
+    return group->add( (_Obj*)obj );
 }
 
-int PWR_GrpObjRemove( PWR_Grp group, PWR_Obj obj )
+int PWR_GrpObjRemove( PWR_Grp group_p, PWR_Obj obj )
 {
-    return group->remove( obj );
+    _Grp* group = (_Grp*) group_p;
+    return group->remove( (_Obj*) obj );
 }
 
-int PWR_GrpGetNumObjs( PWR_Grp group )
+int PWR_GrpGetNumObjs( PWR_Grp group_p )
 {
+    _Grp* group = (_Grp*) group_p;
     return group->size();
 }
 
-PWR_Obj PWR_GrpGetObjByIndx( PWR_Grp group, int i )
+PWR_Obj PWR_GrpGetObjByIndx( PWR_Grp group_p, int i )
 {
+    _Grp* group = (_Grp*) group_p;
     return group->getObj( i );
 }
 
-int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrName type, void* ptr,
+int PWR_GrpAttrSetValue( PWR_Grp grp_p, PWR_AttrName type, void* ptr,
                                         PWR_Status status )
 {
+    _Grp* grp = (_Grp*) grp_p;
     return grp->attrSetValue( type, ptr, 8, status );
 }
 
-int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf, PWR_Status status )
+int PWR_GrpAttrSetValues( PWR_Grp grp_p, int num, PWR_AttrName attr[], void* buf, PWR_Status status )
 {
+    _Grp* grp = (_Grp*) grp_p;
     return grp->attrSetValues( num, attr, buf, status ); 
 }
 
-int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf,
-                                                        PWR_Time ts[], PWR_Status status)
+int PWR_GrpAttrGetValues( PWR_Grp grp_p, int num, PWR_AttrName attr[],
+                                  void* buf, PWR_Time ts[], PWR_Status status)
 {
+    _Grp* grp = (_Grp*) grp_p;
     return grp->attrGetValues( num, attr, buf, ts, status ); 
 }
 
@@ -185,22 +208,25 @@ PWR_Status PWR_StatusCreate()
 }
 int PWR_StatusDestroy(PWR_Status status )
 {
-    delete status;
+    delete (_Status*)status;
     return PWR_RET_SUCCESS;
 }
 
-int PWR_StatusPopError(PWR_Status status, PWR_AttrAccessError* err )
+int PWR_StatusPopError(PWR_Status status_p, PWR_AttrAccessError* err )
 {
+    _Status* status = (_Status*) status_p;
     return status->pop( err );
 }
 
-int PWR_StatusClear( PWR_Status status )
+int PWR_StatusClear( PWR_Status status_p )
 {
+    _Status* status = (_Status*) status_p;
     return status->clear();
 }
 
-const char* PWR_ObjGetName( PWR_Obj obj )
+const char* PWR_ObjGetName( PWR_Obj obj_p )
 {
+    _Obj* obj = (_Obj*) obj_p;
     return &obj->name()[0];
 }
 

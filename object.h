@@ -99,6 +99,6 @@ struct _Obj : public Foobar{
 };
 
 
-PWR_Obj rosebud( _Obj* obj );
+_Obj* rosebud( _Obj* obj );
 
 #endif

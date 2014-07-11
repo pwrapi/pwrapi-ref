@@ -30,7 +30,9 @@ struct _Grp {
     }
 
     
-    int attrSetValue( PWR_AttrName type, void* ptr, size_t len, PWR_Status status ) {
+    int attrSetValue( PWR_AttrName type, void* ptr, size_t len, 
+                    PWR_Status status_p ) {
+        _Status* status = (_Status*)status_p;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr, len );
             if ( PWR_RET_SUCCESS != ret ) {
@@ -45,8 +47,9 @@ struct _Grp {
     }
 
     int attrSetValues( int num, PWR_AttrName attr[], void* buf,
-                                                        PWR_Status status )
+                                                        PWR_Status status_p )
     {
+        _Status* status = (_Status*)status_p;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
             std::vector<PWR_AttrName> attrsV(num);
@@ -69,8 +72,9 @@ struct _Grp {
     }
 
     int attrGetValues( int num, PWR_AttrName attr[], void* buf,
-                                                        PWR_Time ts[], PWR_Status status)
+                                                        PWR_Time ts[], PWR_Status status_p)
     {
+        _Status* status = (_Status*)status_p;
         uint64_t* ptr = (uint64_t*) buf;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 

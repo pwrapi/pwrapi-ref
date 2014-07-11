@@ -7,11 +7,11 @@
 
 #define PWR_NULL NULL
 
-typedef struct _Cntxt*  PWR_Cntxt;
-typedef struct _Grp*    PWR_Grp;
-typedef struct _Obj*    PWR_Obj;
-typedef struct _Status* PWR_Status;
-typedef struct _Stat*   PWR_Stat;
+typedef void* PWR_Cntxt;
+typedef void* PWR_Grp;
+typedef void* PWR_Obj;
+typedef void* PWR_Status;
+typedef void* PWR_Stat;
 
 typedef int PWR_CntxtState;
 
@@ -23,7 +23,7 @@ typedef int PWR_CntxtState;
 #define PWR_RET_LENGTH -5
 
 typedef int64_t PWR_Time; 
-#define PWR_TIME_UNINIT 0
+#define PWR_TIME_NOT_SET 0
 
 typedef enum {
     PWR_CNTXT_DEFAULT,	/* Required */

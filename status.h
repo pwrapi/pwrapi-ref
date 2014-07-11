@@ -6,6 +6,8 @@
 
 #include "./types.h"
 
+class _Obj;
+
 struct _Status {
 
   public:
