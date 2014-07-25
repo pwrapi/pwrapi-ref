@@ -24,7 +24,7 @@ int main( int argc, char* argv[] )
     }
     printf("Profiling `%s`\n", PWR_ObjGetTypeString( PWR_ObjGetType( self ) ) ); 
 
-    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_start, &energy_start_ts ) == PWR_ERR_INVALID ) {
+    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_start, &energy_start_ts ) == PWR_RET_INVALID ) {
       printf( "Error: getting attribute value from PowerAPI self failed\n" );
       return -1;
     }
@@ -33,7 +33,7 @@ int main( int argc, char* argv[] )
 
     sleep( 10 );
 
-    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_end, &energy_end_ts ) == PWR_ERR_INVALID ) {
+    if( PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &energy_end, &energy_end_ts ) == PWR_RET_INVALID ) {
       return -1;
     }
     PWR_TimeConvert( energy_end_ts, &time );
