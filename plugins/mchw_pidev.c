@@ -26,6 +26,30 @@ static void pidev_callback( piapi_sample_t *sample )
 {
     pidev_counter = *sample;
 
+    if( pidev_verbose ) {
+        printf( "Sample on port %d:\n", sample->port);
+       	printf( "\tsample       - %u of %u\n", sample->number, sample->total );
+        printf( "\ttime         - %f\n", sample->time_sec+sample->time_usec/1000000.0 );
+       	printf( "\tvolts        - %f\n", sample->raw.volts );
+       	printf( "\tamps         - %f\n", sample->raw.amps );
+       	printf( "\twatts        - %f\n", sample->raw.watts );
+
+       	printf( "\tavg volts    - %f\n", sample->avg.volts );
+       	printf( "\tavg amps     - %f\n", sample->avg.amps );
+        printf( "\tavg watts    - %f\n", sample->avg.watts );
+
+       	printf( "\tmin volts    - %f\n", sample->min.volts );
+       	printf( "\tmin amps     - %f\n", sample->min.amps );
+        printf( "\tmin watts    - %f\n", sample->min.watts );
+
+       	printf( "\tmax volts    - %f\n", sample->max.volts );
+       	printf( "\tmax amps     - %f\n", sample->max.amps );
+        printf( "\tmax watts    - %f\n", sample->max.watts );
+
+       	printf( "\ttotal time   - %f\n", sample->time_total );
+       	printf( "\ttotal energy - %f\n", sample->energy );
+    }
+	
     if( sample->total && sample->number == sample->total )
         pidev_reading = 0;
 }
@@ -137,6 +161,8 @@ int mchw_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 {
     while( pidev_reading ) sched_yield();
     pidev_reading = 1;
+    if( pidev_verbose )
+        printf( "Info: reading counter for port %d\n", MCHW_PIFD(fd)->port );
     if( piapi_counter( MCHW_PIDEV(MCHW_PIFD(fd)->dev)->cntx, MCHW_PIFD(fd)->port ) < 0 ) {
         printf( "Error: powerinsight hardware read failed\n" );
         return -1;
