@@ -75,7 +75,7 @@
     </devices>
 
     <attributes>
-        <attr name="ENERGY" op="">
+        <attr name="ENERGY" op="SUM">
             <src type="device" name="pidev1" />
         </attr>
     </attributes>
