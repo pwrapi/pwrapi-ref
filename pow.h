@@ -9,6 +9,9 @@
 extern "C" {
 #endif
 
+int PWR_GetMajorVersion();
+int PWR_GetMinorVersion();
+
 /*
 * Subset of API that works on Cntxt
 */
@@ -21,6 +24,9 @@ PWR_Grp   PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name );
 
 PWR_CntxtState PWR_CntxtSave( PWR_Cntxt );
 int            PWR_CntxtRestore( PWR_Cntxt, PWR_CntxtState );
+
+
+PWR_Obj PWR_CntxtGetObjByName( PWR_Cntxt, const char* name );
 
 /*
 * Subset of API that works on Obj 
