@@ -29,7 +29,7 @@ int main( int argc, char* argv[] )
       return -1;
     }
     PWR_TimeConvert( energy_start_ts, &time );
-    printf( "Starting Energy at time %s is %lf\n", ctime(&time), energy_start );
+    printf( "Starting energy is %lf Joules on %s", energy_start, ctime(&time) );
 
     sleep( 10 );
 
@@ -37,10 +37,10 @@ int main( int argc, char* argv[] )
       return -1;
     }
     PWR_TimeConvert( energy_end_ts, &time );
-    printf( "Ending Energy at time %s is %lf\n", ctime(&time), energy_end );
+    printf( "Ending energy is %lf Joules on %s", energy_end, ctime(&time) );
 
-    printf( "Total Energy over %f seconds is %lf\n",
-            (unsigned long long)(energy_end_ts - energy_start_ts)/1000000000.0, energy_end - energy_start );
+    printf( "Total energy is %lf Joules over %f seconds\n", energy_end - energy_start,
+            (unsigned long long)(energy_end_ts - energy_start_ts)/1000000000.0 );
 
     return 0;
 }
