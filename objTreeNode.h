@@ -5,15 +5,14 @@
 #include <assert.h>
 #include "treeNode.h"
 
-class _Cntxt;
 class _Grp;
 class _Attr;
 
 struct ObjTreeNode : public TreeNode {
 
   public:
-    ObjTreeNode( _Cntxt* ctx, TreeNode* parent ) : TreeNode( parent ),
-		m_ctx( ctx ) {}
+    ObjTreeNode( _Cntxt* ctx, TreeNode* parent ) : 
+		TreeNode( ctx, parent ) {}
     virtual ~ObjTreeNode() {};
 
     void setParent( TreeNode* obj ) { m_parent = obj; }
@@ -40,12 +39,6 @@ struct ObjTreeNode : public TreeNode {
 	{ assert(0); } 
 
     virtual int attrIsValid( PWR_AttrName type ) { assert(0); }
-
-  protected:
-    _Cntxt*     m_ctx;
-
-  private:
-    TreeNode*       m_parent; 
 };
 
 

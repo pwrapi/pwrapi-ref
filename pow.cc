@@ -1,7 +1,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#include "object.h"
+#include "objTreeNode.h"
 #include "group.h"
 
 #include "status.h"

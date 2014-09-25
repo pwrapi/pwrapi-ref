@@ -8,8 +8,8 @@
 #include <ulxmlrpcpp/ulxr_value.h>
 #include <ulxmlrpcpp/ulxr_except.h>
 
-#include "./objectUrl.h"
-#include "./util.h"
+#include "objectUrl.h"
+#include "util.h"
 
 using namespace ulxr;
 

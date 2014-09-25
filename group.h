@@ -7,7 +7,7 @@
 
 #include "status.h"
 #include "types.h"
-#include "object.h"
+#include "objTreeNode.h"
 #include "debug.h"
 
 struct _Cntxt;
@@ -143,6 +143,6 @@ struct _Grp {
     std::string m_name;
 };
 
-#include "./cntxt.h"
+#include "cntxt.h"
 
 #endif

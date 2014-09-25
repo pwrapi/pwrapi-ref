@@ -1,8 +1,8 @@
 #include <assert.h>
-#include "./attribute.h"
-#include "./util.h"
-#include "./object.h"
-#include "./debug.h"
+#include "attribute.h"
+#include "util.h"
+#include "objTreeNode.h"
+#include "debug.h"
 
 using namespace tinyxml2;
 

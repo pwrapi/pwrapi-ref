@@ -11,7 +11,7 @@ class DevTreeNode : public TreeNode {
   public:
 
     DevTreeNode( pwr_dev_t dev, plugin_dev_t* ops, const std::string config )
-	  : m_ops( ops ) 
+      : TreeNode(NULL), m_ops( ops ) 
 	{
         DBGX("\n");
         m_fd = m_ops->open( dev, config.c_str() );

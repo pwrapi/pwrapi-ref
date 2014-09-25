@@ -4,9 +4,12 @@
 #include <vector>
 #include "types.h"
 
+class _Cntxt;
+
 class TreeNode {
   public:
-	TreeNode( TreeNode* parent = NULL ) : m_parent(parent) {}
+	TreeNode( _Cntxt* ctx, TreeNode* parent = NULL ) : 
+		m_ctx(ctx), m_parent(parent) {}
 
 	TreeNode* parent() { return m_parent; }
 	virtual std::string& name() { return m_name; }
@@ -25,10 +28,11 @@ class TreeNode {
     virtual int attrSetValue( PWR_AttrName, void*, size_t ) {
 		assert(0);
 	};
+
   protected:
+	_Cntxt*			m_ctx;
 	std::string 	m_name;
     TreeNode*       m_parent;
-
 };
 
 #endif
