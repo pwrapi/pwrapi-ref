@@ -3,14 +3,14 @@
 #include "util.h"
 #include "group.h"
 #include "attribute.h"
-#include "devGraphNode.h"
+#include "devTreeNode.h"
 
 #include "debug.h"
 
 using namespace tinyxml2;
 
-_ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
-	_Obj( ctx, parent ),
+_ObjEl::_ObjEl( _Cntxt* ctx, TreeNode* parent, tinyxml2::XMLElement* el ) :
+	ObjTreeNode( ctx, parent ),
     m_children( NULL ),
     m_xmlElement(el)
 {
@@ -91,7 +91,7 @@ _ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
 
 _ObjEl::~_ObjEl()
 {
-    std::map<std::string, GraphNode* >::iterator iter = m_devices.begin();
+    std::map<std::string, TreeNode* >::iterator iter = m_devices.begin();
     for ( ; iter != m_devices.end(); ++iter ) {
         delete iter->second;
     }
@@ -130,7 +130,7 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
 {
     int retval = PWR_RET_SUCCESS;
 
-    std::map< GraphNode*, XX > foobar;
+    std::map< TreeNode*, XX > foobar;
     std::vector< std::vector<void*> > var1( attrs.size() );
 
     DBGX("%s buf=%p\n",name().c_str(),buf);
@@ -153,7 +153,7 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
         }
     }
  
-    std::map<GraphNode*, XX >::iterator iter = foobar.begin();
+    std::map<TreeNode*, XX >::iterator iter = foobar.begin();
     for ( ; iter != foobar.end(); ++iter ) {
         XX& xx = (*iter).second;
         unsigned int num = xx.attrs.size();
@@ -199,7 +199,7 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     int retval = PWR_RET_SUCCESS;
     DBGX("%s \n",name().c_str());
 
-    std::map< GraphNode*, XX > foobar;
+    std::map< TreeNode*, XX > foobar;
 
     DBGX("%s \n",name().c_str());
 
@@ -221,7 +221,7 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
         } 
     }
  
-    std::map<GraphNode*, XX >::iterator iter = foobar.begin();
+    std::map<TreeNode*, XX >::iterator iter = foobar.begin();
     for ( ; iter != foobar.end(); ++iter ) {
         XX& xx = (*iter).second;
         unsigned int num = xx.attrs.size();
@@ -239,13 +239,13 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     return retval;
 }
 
-GraphNode* _ObjEl::findDev( const std::string name )
+TreeNode* _ObjEl::findDev( const std::string name )
 {
     DBGX("%s\n",name.c_str());
     return m_devices[name];
 }
 
-_Obj* _ObjEl::findChild( std::string name ) 
+TreeNode* _ObjEl::findChild( std::string name ) 
 {
     DBGX("%s\n",name.c_str());
     if ( ! m_children ) {

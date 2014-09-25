@@ -2,7 +2,7 @@
 #include <dlfcn.h>
 #include <assert.h>
 
-#include "devGraphNode.h"
+#include "devTreeNode.h"
 #include "dev.h"
 #include "group.h"
 #include "objectEl.h"
@@ -49,8 +49,8 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
 _Cntxt::~_Cntxt()
 {
 	finiDevices();
-    std::map<std::string, _Obj*>::iterator iter = m_objMap.begin();
-    for ( ; iter != m_objMap.end(); ++iter ) {
+    std::map<std::string, TreeNode*>::iterator iter = m_graphNodeMap.begin();
+    for ( ; iter != m_graphNodeMap.end(); ++iter ) {
         delete iter->second;
     }
 }
@@ -142,29 +142,30 @@ void _Cntxt::finiDevices()
 }
 
 
-DevGraphNode* _Cntxt::newDev( const std::string name, const std::string config )
+DevTreeNode* _Cntxt::newDev( const std::string name, const std::string config )
 {
     DBGX("name=`%s` config=`%s`\n",name.c_str(), config.c_str());
 
-    return new DevGraphNode( m_devMap[name].dev, 
+    return new DevTreeNode( m_devMap[name].dev, 
             m_pluginLibMap[ m_devMap[name].pluginName ], config );
 }
 
-_Obj* _Cntxt::getSelf() {
+ObjTreeNode* _Cntxt::getSelf() {
 
-    if ( m_top ) return m_top;
-    DBGX("\n");
-    XMLElement* el = XMLFindObject( m_topName );
-    assert(el);
-    DBGX("\n");
+    if ( ! m_top ) {
+    	DBGX("\n");
+    	XMLElement* el = XMLFindObject( m_topName );
+    	assert(el);
+    	DBGX("\n");
 
-    m_top = createObj( this, NULL, el );
-    m_objMap[ m_top->name() ] = m_top;
-    DBGX("\n");
-    return m_top;
+    	m_top = createObj( this, NULL, el );
+    	m_graphNodeMap[ m_top->name() ] = m_top;
+    	DBGX("\n");
+	}
+    return static_cast<ObjTreeNode*>(m_top);
 }
 
-_Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
+_Grp* _Cntxt::findChildren( XMLElement* el, ObjTreeNode* parent )
 {
     _Grp* grp = NULL;
     const std::string name = el->Attribute("name"); 
@@ -203,8 +204,8 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
         	assert( child );
 		}
 
-        _Obj* obj;
-        if ( m_objMap.find( childName ) == m_objMap.end() ) {
+        TreeNode* obj;
+        if ( m_graphNodeMap.find( childName ) == m_graphNodeMap.end() ) {
 			if ( child ) {
             	obj = createObj( this, parent, child );
 #ifdef USE_ULXMLRPC
@@ -212,9 +213,9 @@ _Grp* _Cntxt::findChildren( XMLElement* el, _Obj* parent )
             	obj = createObj( this, parent, childName, url );
 #endif
 			}
-            m_objMap[ obj->name() ] = obj;
+            m_graphNodeMap[ obj->name() ] = obj;
         } else {
-            obj = m_objMap[ childName ];
+            obj = m_graphNodeMap[ childName ];
         } 
         grp->add( obj );
         DBGX("%s done\n", el->Attribute("name"));
@@ -257,13 +258,13 @@ _Grp* _Cntxt::initGrp( PWR_ObjType type ) {
                 el->Attribute("type"), el->Attribute("name"));
 #endif
             
-            _Obj* obj;
+            TreeNode* obj;
             std::string name = el->Attribute("name");
-            if ( m_objMap.find( name ) == m_objMap.end() ) {
+            if ( m_graphNodeMap.find( name ) == m_graphNodeMap.end() ) {
                 obj = createObj( this, NULL, el );
-                m_objMap[ obj->name() ] = obj;
+                m_graphNodeMap[ obj->name() ] = obj;
             } else {
-                obj = m_objMap[ name ];
+                obj = m_graphNodeMap[ name ];
             } 
 
             grp->add( obj );

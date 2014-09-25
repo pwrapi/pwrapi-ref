@@ -11,7 +11,7 @@
 #include "debug.h"
 
 struct _Cntxt;
-struct _Obj;
+struct TreeNode;
 
 struct _Grp {
   public:
@@ -20,9 +20,9 @@ struct _Grp {
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
 
-    _Obj* getObj( int i ) { return m_list[i]; }
+    TreeNode* getObj( int i ) { return m_list[i]; }
 
-    int add( _Obj* obj ) {
+    int add( TreeNode* obj ) {
         m_list.push_back( obj );
         return PWR_RET_SUCCESS; 
     }
@@ -108,8 +108,8 @@ struct _Grp {
         }
     }
 
-    int remove( _Obj* obj ) {
-        std::vector<_Obj*>::iterator iter = m_list.begin();
+    int remove( TreeNode* obj ) {
+        std::vector<TreeNode*>::iterator iter = m_list.begin();
         for ( ; iter != m_list.end(); ++iter ) {
             if ( *iter == obj ) {
                 m_list.erase( iter );
@@ -119,11 +119,11 @@ struct _Grp {
         return PWR_RET_SUCCESS;
     }
 
-    _Obj* find( std::string name ) {
+    TreeNode* find( std::string name ) {
         DBGX("%s\n", name.c_str());
         
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
-            _Obj* obj = m_list[i];
+            TreeNode* obj = m_list[i];
             if ( obj->parent() ) {
                 std::string tmp = m_list[i]->parent()->name() + "." + name;
                 DBGX("%s %s\n",tmp.c_str(), obj->name().c_str() );
@@ -139,7 +139,7 @@ struct _Grp {
 
   private:
     _Cntxt*   m_ctx;
-    std::vector<_Obj*> m_list;
+    std::vector<TreeNode*> m_list;
     std::string m_name;
 };
 

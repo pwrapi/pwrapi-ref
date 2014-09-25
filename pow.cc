@@ -44,44 +44,44 @@ PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx_p, const char* name )
 
 PWR_ObjType PWR_ObjGetType( PWR_Obj obj_p )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     return obj->type();
 }
 
 PWR_Obj PWR_ObjGetParent(PWR_Obj obj_p )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     return obj->parent();
 }
 
 PWR_Grp PWR_ObjGetChildren( PWR_Obj obj_p )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     return obj->children();
 }
 
 int PWR_ObjAttrIsValid( PWR_Obj obj_p, PWR_AttrName type )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
    return obj->attrIsValid( type );
 }
 
 int PWR_ObjAttrGetValue( PWR_Obj obj_p, PWR_AttrName type, void* ptr, PWR_Time* ts )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     return obj->attrGetValue( type, ptr, 8, ts );
 }
 
 int PWR_ObjAttrSetValue( PWR_Obj obj_p, PWR_AttrName type, void* ptr )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     return obj->attrSetValue( type, ptr, 8 );
 }
 
 int PWR_ObjAttrGetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
                     void* values, PWR_Time ts[], PWR_Status status_p )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     _Status* status =(_Status*) status_p;
     std::vector<PWR_AttrName> attrsV(num);
     std::vector<PWR_Time>     tsV(num);
@@ -111,7 +111,7 @@ int PWR_ObjAttrGetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
 int PWR_ObjAttrSetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
                     void* values, PWR_Status status_p )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     _Status* status =(_Status*) status_p;
     std::vector<PWR_AttrName> attrsV(num);
     std::vector<int>          statusV(num);
@@ -160,13 +160,13 @@ const char* PWR_GrpGetName( PWR_Grp group_p )
 int PWR_GrpAddObj( PWR_Grp group_p, PWR_Obj obj )
 {
     _Grp* group = (_Grp*) group_p;
-    return group->add( (_Obj*)obj );
+    return group->add( (ObjTreeNode*)obj );
 }
 
 int PWR_GrpObjRemove( PWR_Grp group_p, PWR_Obj obj )
 {
     _Grp* group = (_Grp*) group_p;
-    return group->remove( (_Obj*) obj );
+    return group->remove( (ObjTreeNode*) obj );
 }
 
 int PWR_GrpGetNumObjs( PWR_Grp group_p )
@@ -226,7 +226,7 @@ int PWR_StatusClear( PWR_Status status_p )
 
 const char* PWR_ObjGetName( PWR_Obj obj_p )
 {
-    _Obj* obj = (_Obj*) obj_p;
+    ObjTreeNode* obj = (ObjTreeNode*) obj_p;
     return &obj->name()[0];
 }
 

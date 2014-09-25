@@ -9,9 +9,9 @@
 #include "types.h"
 #include "dev.h"
 
-struct _Obj;
+struct ObjTreeNode;
 struct _Grp;
-class  DevGraphNode;
+class  DevTreeNode;
 
 struct _Cntxt {
 
@@ -20,7 +20,7 @@ struct _Cntxt {
     _Cntxt( PWR_CntxtType type, PWR_Role role, const char* name );
     ~_Cntxt( );
 
-    _Obj* getSelf();
+    ObjTreeNode* getSelf();
 
     _Grp* getGrp( PWR_ObjType type ) {
         _Grp* grp = getGrpByName( objTypeToString( type ) ); 
@@ -40,8 +40,8 @@ struct _Cntxt {
 
     _Grp* groupCreate( std::string name );
     int groupDestroy( _Grp* grp );
-    _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
-    DevGraphNode* newDev( const std::string name, const std::string openString );
+    _Grp* findChildren( tinyxml2::XMLElement*, ObjTreeNode* );
+    DevTreeNode* newDev( const std::string name, const std::string openString );
 
   private:
     tinyxml2::XMLElement* XMLFindObject( std::string );
@@ -54,11 +54,11 @@ struct _Cntxt {
     _Grp* initGrp( PWR_ObjType type );
     std::string m_configFile;
     std::string m_topName;
-    _Obj*       m_top;
+    TreeNode*       m_top;
 
     tinyxml2::XMLDocument* m_xml;
 
-    std::map<std::string,_Obj*>       m_objMap;
+    std::map<std::string,TreeNode*>       m_graphNodeMap;
 
     struct Y {
         pwr_dev_t dev;

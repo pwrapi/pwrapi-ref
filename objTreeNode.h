@@ -3,24 +3,22 @@
 
 #include <string>
 #include <assert.h>
-#include "graphNode.h"
+#include "treeNode.h"
 
 class _Cntxt;
 class _Grp;
 class _Attr;
 
-struct _Obj : public GraphNode {
+struct ObjTreeNode : public TreeNode {
 
   public:
-    _Obj( _Cntxt* ctx, _Obj* parent ) : 
-		m_ctx( ctx ), m_parent( parent ) {}
-    virtual ~_Obj() {};
+    ObjTreeNode( _Cntxt* ctx, TreeNode* parent ) : TreeNode( parent ),
+		m_ctx( ctx ) {}
+    virtual ~ObjTreeNode() {};
 
-    _Obj* parent() { return m_parent; }
-    void setParent( _Obj* obj ) { m_parent = obj; }
+    void setParent( TreeNode* obj ) { m_parent = obj; }
 
     virtual _Grp* children() { assert(0); }
-    virtual std::string& name() { return m_name; }
     virtual PWR_ObjType type() { assert(0); }
     virtual int attrGetNumber() { assert(0); }
     virtual _Attr* attributeGet( int index ) { assert(0); }
@@ -37,21 +35,20 @@ struct _Obj : public GraphNode {
     virtual int attrSetValue( PWR_AttrName, void*, size_t )
 	{ assert(0); } 
 
-    virtual _Obj* findChild( const std::string name ) { assert(0); }
-    virtual GraphNode* findDev( const std::string name )
+    virtual TreeNode* findChild( const std::string name ) { assert(0); }
+    virtual TreeNode* findDev( const std::string name )
 	{ assert(0); } 
 
     virtual int attrIsValid( PWR_AttrName type ) { assert(0); }
 
   protected:
     _Cntxt*     m_ctx;
-    std::string m_name;
 
   private:
-    _Obj*       m_parent; 
+    TreeNode*       m_parent; 
 };
 
 
-_Obj* rosebud( _Obj* obj );
+TreeNode* rosebud( TreeNode* obj );
 
 #endif

@@ -1,25 +1,34 @@
-#ifndef _PWR_GRAPHNODE_H
-#define _PWR_GRAPHNODE_H
+#ifndef _PWR_TREENODE_H
+#define _PWR_TREENODE_H
 
 #include <vector>
 #include "types.h"
 
-class GraphNode {
+class TreeNode {
   public:
+	TreeNode( TreeNode* parent = NULL ) : m_parent(parent) {}
+
+	TreeNode* parent() { return m_parent; }
+	virtual std::string& name() { return m_name; }
+
     virtual int attrGetValues( const std::vector<PWR_AttrName>& names,
 		void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status  ) {
-        return PWR_RET_FAILURE;
+		assert(0);
     };
     virtual int attrSetValues( const std::vector<PWR_AttrName>& names,
 		void* ptr, std::vector<int>& status  ) {
-        return PWR_RET_FAILURE;
+		assert(0);
     };
     virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* ) {
-        return PWR_RET_FAILURE;
+		assert(0);
     };
     virtual int attrSetValue( PWR_AttrName, void*, size_t ) {
-        return PWR_RET_FAILURE;
+		assert(0);
 	};
+  protected:
+	std::string 	m_name;
+    TreeNode*       m_parent;
+
 };
 
 #endif

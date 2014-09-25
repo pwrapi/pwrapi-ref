@@ -10,7 +10,7 @@ using namespace tinyxml2;
 static void fpSum( int num, void* out, void* in );  
 static void fpSum2( void* out, const std::vector<void*>& in );  
 
-_Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
+_Attr::_Attr( TreeNode* obj, tinyxml2::XMLElement* el  ) :
     m_obj( obj ),
     m_xml( el ),
     m_op( NULL ),
@@ -36,7 +36,7 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
     }
 }
 
-std::vector<GraphNode*>& _Attr::foobar()
+std::vector<TreeNode*>& _Attr::foobar()
 {
     return m_foobar;
 }
@@ -103,12 +103,12 @@ void _Attr::initSrcList( tinyxml2::XMLElement* el )
 
         if ( 0 == strcmp( "child", el->Attribute("type" ) ) ) {
 
-            m_foobar.push_back( m_obj->findChild( el->Attribute("name") ) );
+            m_foobar.push_back( static_cast<ObjTreeNode*>( m_obj )->findChild( el->Attribute("name") ) );
             
         } else if ( 0 == strcmp( "device", el->Attribute("type" ) ) )  {
 
             DBGX("plugin name=`%s`\n",el->Attribute("name"));
-            m_foobar.push_back( m_obj->findDev( el->Attribute("name") ) );
+            m_foobar.push_back( static_cast<ObjTreeNode*>(m_obj)->findDev( el->Attribute("name") ) );
 
         }
         tmp = tmp->NextSibling();

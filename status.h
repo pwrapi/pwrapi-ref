@@ -6,7 +6,7 @@
 
 #include "types.h"
 
-class _Obj;
+class TreeNode;
 
 struct _Status {
 
@@ -21,7 +21,7 @@ struct _Status {
         return PWR_RET_SUCCESS;
     }
 
-    void add( _Obj* obj, PWR_AttrName name, int error  ) {
+    void add( TreeNode* obj, PWR_AttrName name, int error  ) {
         PWR_AttrAccessError tmp;
         tmp.obj = obj;
         tmp.name = name;
