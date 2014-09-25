@@ -209,6 +209,12 @@ int mchw_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 
 int mchw_pidev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
+    switch( attr ) {
+        default:
+            printf( "Warning: unknown MCHW writing attr (%u) requested\n", attr );
+            break;
+    }
+
     if( pidev_verbose )
         printf( "Info: setting of type %u with value %lf\n",
                 attr, *(double *)value );
@@ -272,7 +278,7 @@ int mchw_pidev_writev( pwr_fd_t fd, unsigned int arraysize,
     for( i = 0; i < arraysize; i++ ) {
         switch( attrs[i] ) {
             default:
-                printf( "Warning: unknown MCHW reading attr (%u) requested at position %u\n", attrs[i], i );
+                printf( "Warning: unknown MCHW writing attr (%u) requested at position %u\n", attrs[i], i );
                 break;
         }
 
