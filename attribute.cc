@@ -36,7 +36,7 @@ _Attr::_Attr( _Obj* obj, tinyxml2::XMLElement* el  ) :
     }
 }
 
-std::vector<Foobar*>& _Attr::foobar()
+std::vector<GraphNode*>& _Attr::foobar()
 {
     return m_foobar;
 }

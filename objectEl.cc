@@ -128,7 +128,7 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
 {
     int retval = PWR_RET_SUCCESS;
 
-    std::map< Foobar*, XX > foobar;
+    std::map< GraphNode*, XX > foobar;
     std::vector< std::vector<void*> > var1( attrs.size() );
 
     DBGX("%s buf=%p\n",name().c_str(),buf);
@@ -151,7 +151,7 @@ int _ObjEl::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
         }
     }
  
-    std::map<Foobar*, XX >::iterator iter = foobar.begin();
+    std::map<GraphNode*, XX >::iterator iter = foobar.begin();
     for ( ; iter != foobar.end(); ++iter ) {
         XX& xx = (*iter).second;
         unsigned int num = xx.attrs.size();
@@ -197,7 +197,7 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     int retval = PWR_RET_SUCCESS;
     DBGX("%s \n",name().c_str());
 
-    std::map< Foobar*, XX > foobar;
+    std::map< GraphNode*, XX > foobar;
 
     DBGX("%s \n",name().c_str());
 
@@ -219,7 +219,7 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
         } 
     }
  
-    std::map<Foobar*, XX >::iterator iter = foobar.begin();
+    std::map<GraphNode*, XX >::iterator iter = foobar.begin();
     for ( ; iter != foobar.end(); ++iter ) {
         XX& xx = (*iter).second;
         unsigned int num = xx.attrs.size();

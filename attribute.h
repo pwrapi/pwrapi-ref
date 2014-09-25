@@ -9,7 +9,7 @@
 #include "tinyxml2.h"
 
 class AttrSrc;
-class Foobar;
+class GraphNode;
 class _Obj;
 
 class _Attr  {
@@ -17,7 +17,7 @@ class _Attr  {
   public:
     _Attr( _Obj* obj, tinyxml2::XMLElement* el  );
 
-    std::vector<Foobar*>& foobar();
+    std::vector<GraphNode*>& foobar();
     PWR_AttrName name() { return m_name; }  
     PWR_AttrDataType dataType() { return m_dataType; }
     int getValue( void*, size_t len, PWR_Time* ts );
@@ -37,7 +37,7 @@ class _Attr  {
     void              (*m_op)( int num, void* out, void* in ); 
     void              (*m_op2)( void*, const std::vector< void* >& ); 
 
-    std::vector<Foobar*>    m_foobar;
+    std::vector<GraphNode*>    m_foobar;
 };
 
 #endif

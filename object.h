@@ -7,12 +7,12 @@
 #include "./attribute.h"
 #include "./debug.h"
 #include "./dev.h"
-#include "./foobar.h"
+#include "./graphNode.h"
 
 class _Cntxt;
 class _Grp;
 
-class _Dev : public Foobar {
+class _Dev : public GraphNode {
   public:
 
     _Dev( pwr_dev_t dev, plugin_dev_t* ops, const std::string config ) : m_ops( ops ) {
@@ -56,7 +56,7 @@ class _Dev : public Foobar {
     pwr_fd_t        m_fd;
 };
 
-struct _Obj : public Foobar{
+struct _Obj : public GraphNode {
 
   public:
     _Obj( _Cntxt* ctx, _Obj* parent ) : 
