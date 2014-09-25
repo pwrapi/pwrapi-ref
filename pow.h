@@ -3,7 +3,7 @@
 
 #include <time.h>
 
-#include "./types.h"
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C" {

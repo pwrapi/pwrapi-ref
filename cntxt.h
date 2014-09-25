@@ -5,11 +5,13 @@
 #include <map>
 
 #include "tinyxml2.h"
-#include "./util.h"
-#include "./types.h"
+#include "util.h"
+#include "types.h"
+#include "dev.h"
 
+struct _Obj;
 struct _Grp;
-class  _Dev;
+class  DevGraphNode;
 
 struct _Cntxt {
 
@@ -39,7 +41,7 @@ struct _Cntxt {
     _Grp* groupCreate( std::string name );
     int groupDestroy( _Grp* grp );
     _Grp* findChildren( tinyxml2::XMLElement*, _Obj* );
-    _Dev* newDev( const std::string name, const std::string openString );
+    DevGraphNode* newDev( const std::string name, const std::string openString );
 
   private:
     tinyxml2::XMLElement* XMLFindObject( std::string );

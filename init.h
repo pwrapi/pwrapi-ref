@@ -2,7 +2,7 @@
 #ifndef _PWR_INIT_H
 #define _PWR_INIT_H
 
-#include "./types.h"
+#include "types.h"
 class _Cntxt;
 
 namespace PWR {

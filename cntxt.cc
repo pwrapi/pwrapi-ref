@@ -2,6 +2,7 @@
 #include <dlfcn.h>
 #include <assert.h>
 
+#include "devGraphNode.h"
 #include "dev.h"
 #include "group.h"
 #include "objectEl.h"
@@ -141,11 +142,11 @@ void _Cntxt::finiDevices()
 }
 
 
-_Dev* _Cntxt::newDev( const std::string name, const std::string config )
+DevGraphNode* _Cntxt::newDev( const std::string name, const std::string config )
 {
     DBGX("name=`%s` config=`%s`\n",name.c_str(), config.c_str());
 
-    return new _Dev( m_devMap[name].dev, 
+    return new DevGraphNode( m_devMap[name].dev, 
             m_pluginLibMap[ m_devMap[name].pluginName ], config );
 }
 

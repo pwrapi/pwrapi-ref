@@ -4,7 +4,7 @@
 
 #include <deque>
 
-#include "./types.h"
+#include "types.h"
 
 class _Obj;
 

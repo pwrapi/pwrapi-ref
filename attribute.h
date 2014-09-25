@@ -5,7 +5,7 @@
 #include <deque>
 #include <vector>
 #include <string>
-#include "./types.h"
+#include "types.h"
 #include "tinyxml2.h"
 
 class AttrSrc;

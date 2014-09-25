@@ -5,9 +5,10 @@
 #include <vector>
 #include <string>
 
-#include "./status.h"
-#include "./types.h"
-#include "./object.h"
+#include "status.h"
+#include "types.h"
+#include "object.h"
+#include "debug.h"
 
 struct _Cntxt;
 struct _Obj;

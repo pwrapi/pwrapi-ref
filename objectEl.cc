@@ -1,9 +1,11 @@
 
-#include "./objectEl.h"
-#include "./util.h"
-#include "./group.h"
+#include "objectEl.h"
+#include "util.h"
+#include "group.h"
+#include "attribute.h"
+#include "devGraphNode.h"
 
-#include "./debug.h"
+#include "debug.h"
 
 using namespace tinyxml2;
 
@@ -89,7 +91,7 @@ _ObjEl::_ObjEl( _Cntxt* ctx, _Obj* parent, tinyxml2::XMLElement* el ) :
 
 _ObjEl::~_ObjEl()
 {
-    std::map<std::string, _Dev* >::iterator iter = m_devices.begin();
+    std::map<std::string, GraphNode* >::iterator iter = m_devices.begin();
     for ( ; iter != m_devices.end(); ++iter ) {
         delete iter->second;
     }
@@ -237,7 +239,7 @@ int _ObjEl::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
     return retval;
 }
 
-_Dev* _ObjEl::findDev( const std::string name )
+GraphNode* _ObjEl::findDev( const std::string name )
 {
     DBGX("%s\n",name.c_str());
     return m_devices[name];

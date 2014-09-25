@@ -2,7 +2,7 @@
 #define _PWR_GRAPHNODE_H
 
 #include <vector>
-#include "./types.h"
+#include "types.h"
 
 class GraphNode {
   public:

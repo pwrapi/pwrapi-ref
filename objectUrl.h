@@ -6,7 +6,7 @@
 #include <ulxmlrpcpp/ulxr_requester.h>
 
 
-#include "./object.h" 
+#include "object.h" 
 
 struct _ObjUrl : public _Obj
 {
