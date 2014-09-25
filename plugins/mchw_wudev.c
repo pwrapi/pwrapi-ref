@@ -57,8 +57,7 @@ static int wudev_open( const char *port, int baud )
     if( tcgetattr( fd, &opts ) < 0 )
         return -1;
 
-    switch( baud )
-    {
+    switch( baud ) {
         case 4800:
             rate = B4800;
             break;
@@ -121,27 +120,35 @@ static int wudev_read( int fd, char *buf, char term )
     char c;
     int i = 0, n;
 
-    do
-    {
+    do {
         n = read( fd, &c, 1 );
 
         if( n == -1 )
             return -1;
 
-        if( n == 0 )
-        {
+        if( n == 0 ) {
             usleep(5 * 1000);
             continue;
         }
 
         if( c != '\r' && c != '\n' )
             buf[i++] = c;
-
-    }
-    while( c != term );
+    } while( c != term );
 
     buf[i] = '\0';
     return 0;
+}
+
+static long long wudev_extract( const char *buf, int pos )
+{
+    char *token;
+    int i;
+
+    for( i = 0; i < pos; i++ )
+        if( (token = strtok( i ? NULL : (char *)buf, "," )) == 0x0 )
+            return 0;
+
+    return atol(token);
 }
 
 pwr_dev_t mchw_wudev_init( const char *initstr )
@@ -173,6 +180,7 @@ int mchw_wudev_final( pwr_dev_t dev )
     if( wudev_verbose )
         printf( "Info: finalizing MCHW Wattsup device\n" );
 
+    close( MCHW_WUDEV(dev)->fd );
     free( dev );
 
     return 0;
@@ -207,33 +215,146 @@ int mchw_wudev_close( pwr_fd_t fd )
 
 int mchw_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
+    char buf[256] = "";
+
+    if( wudev_verbose )
+        printf( "Info: reading from watts up device\n" );
+ 
+    if( wudev_write( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
+        printf( "Error: command write to wattsup device failed\n" );
+        return -1;
+    }
+
+    if( wudev_read( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
+        printf( "Error: reading from wattsup device failed\n" );
+        return -1;
+    }
+
+    if( strlen( buf ) > 0 ) {
+        if( wudev_verbose )
+            printf( "Info: read buffer is %s\n", buf );
+
+        switch( attr ) {
+            case PWR_ATTR_VOLTAGE:
+                *((double *)value) = wudev_extract( buf, 6 ) / 10;
+                break;
+            case PWR_ATTR_CURRENT:
+                *((double *)value) = wudev_extract( buf, 7 ) / 1000;
+                break;
+            case PWR_ATTR_POWER:
+                *((double *)value) = wudev_extract( buf, 5 ) / 10;
+                break;
+            default:
+                printf( "Warning: unknown MCHW reading attr (%u) requested\n", attr );
+                break;
+        }
+        *timestamp = wudev_extract( buf, 1 );
+    }
+    
     return 0;
 }
 
 int mchw_wudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
+    if( wudev_verbose )
+        printf( "Info: writing to Wattsup device\n" );
+
+    switch( attr ) {
+        default:
+            printf( "Warning: unknown MCHW reading attr (%u)\n", attr );
+            break;
+
+        if( wudev_verbose )
+            printf( "Info: setting of type %u with value %lf\n",
+                    attr, *((double *)value) );
+    }
+
     return 0;
 }
 
 int mchw_wudev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
+    unsigned int i;
+    char buf[256] = "";
+
+    if( wudev_verbose )
+        printf( "Info: reading from Wattsup device\n" );
+ 
+    if( wudev_write( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
+        printf( "Error: command write to wattsup device failed\n" );
+        return -1;
+    }
+
+    if( wudev_read( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
+        printf( "Error: reading from wattsup device failed\n" );
+        return -1;
+    }
+
+    if( strlen( buf ) > 0 ) {
+        if( wudev_verbose )
+            printf( "Info: read buffer is %s\n", buf );
+
+        for( i = 0; i < arraysize; i++ ) {
+            switch( attrs[i] ) {
+                case PWR_ATTR_VOLTAGE:
+                    *((double *)values+i) = (double)wudev_extract( buf, 6 ) / 10; 
+                    break;
+                case PWR_ATTR_CURRENT:
+                    *((double *)values+i) = (double)wudev_extract( buf, 7 ) / 1000; 
+                    break;
+                case PWR_ATTR_POWER:
+                    *((double *)values+i) = (double)wudev_extract( buf, 5 ) / 10; 
+                    break;
+                default:
+                    printf( "Warning: unknown MCHW reading attr (%u) requested at position %u\n", attrs[i], i );
+                    break;
+            }
+            timestamp[i] = wudev_extract( buf, 1 );
+
+            if( wudev_verbose )
+                printf( "Info: reading of type %u at time %llu with value %lf\n",
+                        attrs[i], *(unsigned long long *)timestamp[i], *((double *)(values+i)) );
+        }
+    }
+    
     return 0;
 }
 
 int mchw_wudev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ ) {
+        switch( attrs[i] ) {
+            default:
+                printf( "Warning: unknown MCHW writing attr (%u) requested at position %u\n", attrs[i], i );
+
+        if( wudev_verbose )
+            printf( "Info: setting of type %u with value %lf\n",
+                    attrs[i], *((double *)(values+i)) );
+        }
+    }
+
     return 0;
 }
 
 int mchw_wudev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
-    return 0;
+    double value;
+
+    if( wudev_verbose )
+        printf( "Info: getting time from MCHW Wattsup device\n" );
+
+    return mchw_wudev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp);
 }
 
 int mchw_wudev_clear( pwr_fd_t fd )
 {
+    if( wudev_verbose )
+        printf( "Info: clearing MCHW Wattsup device\n" );
+
     return 0;
 }
 
