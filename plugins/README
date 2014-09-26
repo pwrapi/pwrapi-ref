@@ -1,0 +1,23 @@
+Plugins
+-------
+
+Currently supported:
+  libmchw_pidev		Penguin PowerInsight
+  libmchw_rapldev	Intel Running Average Power Limit (RAPL)
+  libmchw_wudev		WattsUp
+  libmchw_xtpmdev	Cray XC30 Power Manager
+  liboshw_cpudev	System level CPU adjustments
+
+Attributes	PI	RAPL	WU	XTPM	CPU
+----------	--	----	--	----	---
+  power		G	G	G	G	
+  energy	G	G	G	G
+  voltage	G		G
+  current	G		G
+  min_power		G/S		G/S
+  max_power		G/S		G/S
+  freq						G/S
+  temp						G
+  pstate					G/S
+  cstate					G/S
+  sstate					G/S
