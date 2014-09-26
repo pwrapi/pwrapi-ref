@@ -10,7 +10,10 @@ static int cpudev_verbose = 0;
 
 typedef struct {
     int online_cpulist[1000];
+    int freq_cpulist[1000];
     int num_cpus;
+    int avail_freqlist[100];
+    int num_freq;
 } oshw_cpudev_t;
 #define OSHW_CPUDEV(X) ((oshw_cpudev_t *)(X))
 
@@ -20,7 +23,7 @@ typedef struct {
 } oshw_cpufd_t;
 #define OSHW_CPUFD(X) ((oshw_cpufd_t *)(X))
 
-int online_cpu( int cpu, int state )
+static int online_cpu( int cpu, int state )
 {
     int fd;
     char onoff;
@@ -28,8 +31,52 @@ int online_cpu( int cpu, int state )
 
     sprintf( cpupath, "/sys/devices/system/cpu/cpu%i/online", cpu );
     fd = open( cpupath, O_WRONLY );
+
     onoff = (state ? '1' : '0');
     write( fd, &onoff, 1 );
+
+    close( fd );
+
+    return 0;
+}
+
+static int change_freq( int cpu, int freq )
+{
+    int fd;
+    char val[20] = "";
+    char freqpath[100] = "";
+
+    sprintf( freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq", cpu );
+    fd = open( freqpath, O_WRONLY );
+
+    sprintf( val, "%d", freq );
+    write( fd, val, strlen(val) );
+
+    close( fd );
+
+    return 0;
+}
+
+static int avail_freq( int cpu, int freq[], int *count )
+{
+    int fd;
+    char freqpath[100] = "";
+    char val[20] = "";
+    int offset = 0;
+
+    sprintf( freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq/scaling_available_frequencies", cpu );
+    fd = open( freqpath, O_RDONLY );
+
+    while( read( fd, val+offset, 1 ) != EOF ) {
+        if( val[offset] == ' ' ) {
+            freq[*count] = atoi(val);
+            (*count)++;
+            bzero( val, strlen(val) );
+            offset = 0;
+        } else
+            offset++;
+    }
+        
     close( fd );
 
     return 0;
@@ -50,6 +97,8 @@ pwr_dev_t oshw_cpudev_init( const char *initstr )
         online_cpu( i, 1 );
         OSHW_CPUDEV(dev)->online_cpulist[i] = 1;
     }        
+
+    avail_freq(0, OSHW_CPUDEV(dev)->avail_freqlist, &(OSHW_CPUDEV(dev)->num_freq));
 
     return dev;
 }

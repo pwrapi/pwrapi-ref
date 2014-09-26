@@ -209,7 +209,7 @@ static int rapldev_read( int fd, int offset, long long *msr )
     uint64_t value;
     int size = sizeof(uint64_t);
 
-    if( pread( fd, &value, size, offset ) != size ) {
+    if( read( fd, &value, size ) != size ) {
         printf( "Error: RAPL read failed\n" );
         return -1;
     }
