@@ -218,15 +218,15 @@ int mchw_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
     char buf[256] = "";
 
     if( wudev_verbose )
-        printf( "Info: reading from watts up device\n" );
+        printf( "Info: reading from MCHW Wattsup device\n" );
  
     if( wudev_write( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
-        printf( "Error: command write to wattsup device failed\n" );
+        printf( "Error: command write to Wattsup device failed\n" );
         return -1;
     }
 
     if( wudev_read( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
-        printf( "Error: reading from wattsup device failed\n" );
+        printf( "Error: reading from Wattsup device failed\n" );
         return -1;
     }
 
@@ -257,7 +257,7 @@ int mchw_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 int mchw_wudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
     if( wudev_verbose )
-        printf( "Info: writing to Wattsup device\n" );
+        printf( "Info: writing to MCHW Wattsup device\n" );
 
     switch( attr ) {
         default:
@@ -279,15 +279,15 @@ int mchw_wudev_readv( pwr_fd_t fd, unsigned int arraysize,
     char buf[256] = "";
 
     if( wudev_verbose )
-        printf( "Info: reading from Wattsup device\n" );
+        printf( "Info: reading from MCHW Wattsup device\n" );
  
     if( wudev_write( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
-        printf( "Error: command write to wattsup device failed\n" );
+        printf( "Error: command write to Wattsup device failed\n" );
         return -1;
     }
 
     if( wudev_read( MCHW_WUDEV(MCHW_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
-        printf( "Error: reading from wattsup device failed\n" );
+        printf( "Error: reading from Wattsup device failed\n" );
         return -1;
     }
 
