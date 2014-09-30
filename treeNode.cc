@@ -8,7 +8,7 @@
 #include "config.h"
 #include "cntxt.h"
 
-TreeNode::TreeNode( _Cntxt* ctx ) 
+TreeNode::TreeNode( Cntxt* ctx ) 
 	: m_ctx(ctx)
 {
     m_attrMap.resize( PWR_ATTR_INVALID, AttrEntry(this, m_ctx) );

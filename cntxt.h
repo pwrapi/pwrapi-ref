@@ -10,25 +10,25 @@
 #include "types.h"
 #include "dev.h"
 
-struct _Grp;
+struct Grp;
 class ObjTreeNode;
 class Config;
 
-struct _Cntxt {
+struct Cntxt {
 
   public:
 
-    _Cntxt( PWR_CntxtType type, PWR_Role role, const char* name );
-    ~_Cntxt( );
+    Cntxt( PWR_CntxtType type, PWR_Role role, const char* name );
+    ~Cntxt( );
 
 	void initAttr( TreeNode*, TreeNode::AttrEntry& );
 	ObjTreeNode* findNode( std::string name );
-	_Grp* findChildren( ObjTreeNode* );
+	Grp* findChildren( ObjTreeNode* );
 
     ObjTreeNode* getSelf();
 
-    _Grp* getGrp( PWR_ObjType type ) {
-        _Grp* grp = getGrpByName( objTypeToString( type ) ); 
+    Grp* getGrp( PWR_ObjType type ) {
+        Grp* grp = getGrpByName( objTypeToString( type ) ); 
         if ( ! grp ) {
             grp = initGrp( type ); 
             m_groupMap[ objTypeToString( type ) ] = grp;
@@ -36,15 +36,15 @@ struct _Cntxt {
         return grp; 
     }
 
-    _Grp* getGrpByName( std::string name ) {
+    Grp* getGrpByName( std::string name ) {
         if ( m_groupMap.find( name ) == m_groupMap.end() ) {
             return NULL;
         }
         return m_groupMap[name];
     }
 
-    _Grp* groupCreate( std::string name );
-    int groupDestroy( _Grp* grp );
+    Grp* groupCreate( std::string name );
+    int groupDestroy( Grp* grp );
 
 	Config* config() { return m_config; }
 
@@ -55,7 +55,7 @@ struct _Cntxt {
     void initDevices( Config& );
 	void finiDevices( );
     
-    _Grp* initGrp( PWR_ObjType type );
+    Grp* initGrp( PWR_ObjType type );
 	
     std::string 	m_configFile;
     ObjTreeNode*    m_top;
@@ -71,7 +71,7 @@ struct _Cntxt {
 
     std::map< std::string, plugin_dev_t* >  m_pluginLibMap;
     std::map< std::string, DevMapEntry >    m_devMap;
-    std::map< std::string,_Grp* > 			m_groupMap;
+    std::map< std::string, Grp* > 			m_groupMap;
 
 };
 

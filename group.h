@@ -10,11 +10,11 @@
 #include "debug.h"
 #include "objTreeNode.h"
 
-struct _Cntxt;
+struct Cntxt;
 
-struct _Grp {
+struct Grp {
   public:
-    _Grp( _Cntxt* ctx, const std::string name ="" ) : m_ctx(ctx), m_name(name) {  }
+    Grp( Cntxt* ctx, const std::string name ="" ) : m_ctx(ctx), m_name(name) {  }
 
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
@@ -32,7 +32,7 @@ struct _Grp {
     
     int attrSetValue( PWR_AttrName type, void* ptr, size_t len, 
                     PWR_Status status_p ) {
-        _Status* status = (_Status*)status_p;
+        Status* status = (Status*)status_p;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr, len );
             if ( PWR_RET_SUCCESS != ret ) {
@@ -49,7 +49,7 @@ struct _Grp {
     int attrSetValues( int num, PWR_AttrName attr[], void* buf,
                                                         PWR_Status status_p )
     {
-        _Status* status = (_Status*)status_p;
+        Status* status = (Status*)status_p;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
             std::vector<PWR_AttrName> attrsV(num);
@@ -74,7 +74,7 @@ struct _Grp {
     int attrGetValues( int num, PWR_AttrName attr[], void* buf,
                                                         PWR_Time ts[], PWR_Status status_p)
     {
-        _Status* status = (_Status*)status_p;
+        Status* status = (Status*)status_p;
         uint64_t* ptr = (uint64_t*) buf;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
@@ -134,10 +134,10 @@ struct _Grp {
         return NULL;
     }
 
-    _Cntxt* getCtx() { return m_ctx; }
+    Cntxt* getCtx() { return m_ctx; }
 
   private:
-    _Cntxt*   m_ctx;
+    Cntxt*   m_ctx;
     std::vector<ObjTreeNode*> m_list;
     std::string m_name;
 };

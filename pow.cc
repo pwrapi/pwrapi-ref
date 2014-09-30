@@ -16,25 +16,25 @@ PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
 {
-    return PWR::destroy( (_Cntxt*)ctx );
+    return PWR::destroy( (Cntxt*)ctx );
 }
 
 PWR_Obj PWR_CntxtGetSelf( PWR_Cntxt ctx_p )
 {
-    _Cntxt* ctx = (_Cntxt*) ctx_p;
+    Cntxt* ctx = (Cntxt*) ctx_p;
     return ctx->getSelf();
 }
 
 PWR_Grp PWR_CntxtGetGrpByType( PWR_Cntxt ctx_p, PWR_ObjType type )
 {
-    _Cntxt* ctx = (_Cntxt*) ctx_p;
+    Cntxt* ctx = (Cntxt*) ctx_p;
     return ctx->getGrp( type );
 }
 
 
 PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx_p, const char* name )
 {
-    _Cntxt* ctx = (_Cntxt*) ctx_p;
+    Cntxt* ctx = (Cntxt*) ctx_p;
     return ctx->getGrpByName( name );
 }
 
@@ -82,7 +82,7 @@ int PWR_ObjAttrGetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
                     void* values, PWR_Time ts[], PWR_Status status_p )
 {
     ObjTreeNode* obj = (ObjTreeNode*) obj_p;
-    _Status* status =(_Status*) status_p;
+    Status* status =(Status*) status_p;
     std::vector<PWR_AttrName> attrsV(num);
     std::vector<PWR_Time>     tsV(num);
     std::vector<int>          statusV(num);
@@ -112,7 +112,7 @@ int PWR_ObjAttrSetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
                     void* values, PWR_Status status_p )
 {
     ObjTreeNode* obj = (ObjTreeNode*) obj_p;
-    _Status* status =(_Status*) status_p;
+    Status* status =(Status*) status_p;
     std::vector<PWR_AttrName> attrsV(num);
     std::vector<int>          statusV(num);
     for ( int i = 0; i < num; i++ ) {
@@ -140,87 +140,87 @@ int PWR_ObjAttrSetValues( PWR_Obj obj_p, int num, PWR_AttrName attrs[],
 
 PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx_p, const char* name )
 {
-    _Cntxt* ctx = (_Cntxt*) ctx_p;
+    Cntxt* ctx = (Cntxt*) ctx_p;
     return ctx->groupCreate( name );
 }
 
 int PWR_GrpDestroy( PWR_Grp group_p )
 {
-    _Grp* group = (_Grp*) group_p;
-    _Cntxt* ctx = group->getCtx();
+    Grp* group = (Grp*) group_p;
+    Cntxt* ctx = group->getCtx();
     return ctx->groupDestroy( group );
 }
 
 const char* PWR_GrpGetName( PWR_Grp group_p ) 
 {
-    _Grp* group = (_Grp*) group_p;
+    Grp* group = (Grp*) group_p;
     return &group->name()[0];
 }
 
 int PWR_GrpAddObj( PWR_Grp group_p, PWR_Obj obj )
 {
-    _Grp* group = (_Grp*) group_p;
+    Grp* group = (Grp*) group_p;
     return group->add( (ObjTreeNode*)obj );
 }
 
 int PWR_GrpObjRemove( PWR_Grp group_p, PWR_Obj obj )
 {
-    _Grp* group = (_Grp*) group_p;
+    Grp* group = (Grp*) group_p;
     return group->remove( (ObjTreeNode*) obj );
 }
 
 int PWR_GrpGetNumObjs( PWR_Grp group_p )
 {
-    _Grp* group = (_Grp*) group_p;
+    Grp* group = (Grp*) group_p;
     return group->size();
 }
 
 PWR_Obj PWR_GrpGetObjByIndx( PWR_Grp group_p, int i )
 {
-    _Grp* group = (_Grp*) group_p;
+    Grp* group = (Grp*) group_p;
     return group->getObj( i );
 }
 
 int PWR_GrpAttrSetValue( PWR_Grp grp_p, PWR_AttrName type, void* ptr,
                                         PWR_Status status )
 {
-    _Grp* grp = (_Grp*) grp_p;
+    Grp* grp = (Grp*) grp_p;
     return grp->attrSetValue( type, ptr, 8, status );
 }
 
 int PWR_GrpAttrSetValues( PWR_Grp grp_p, int num, PWR_AttrName attr[], void* buf, PWR_Status status )
 {
-    _Grp* grp = (_Grp*) grp_p;
+    Grp* grp = (Grp*) grp_p;
     return grp->attrSetValues( num, attr, buf, status ); 
 }
 
 int PWR_GrpAttrGetValues( PWR_Grp grp_p, int num, PWR_AttrName attr[],
                                   void* buf, PWR_Time ts[], PWR_Status status)
 {
-    _Grp* grp = (_Grp*) grp_p;
+    Grp* grp = (Grp*) grp_p;
     return grp->attrGetValues( num, attr, buf, ts, status ); 
 }
 
 
 PWR_Status PWR_StatusCreate()
 {
-    return new _Status;
+    return new Status;
 }
 int PWR_StatusDestroy(PWR_Status status )
 {
-    delete (_Status*)status;
+    delete (Status*)status;
     return PWR_RET_SUCCESS;
 }
 
 int PWR_StatusPopError(PWR_Status status_p, PWR_AttrAccessError* err )
 {
-    _Status* status = (_Status*) status_p;
+    Status* status = (Status*) status_p;
     return status->pop( err );
 }
 
 int PWR_StatusClear( PWR_Status status_p )
 {
-    _Status* status = (_Status*) status_p;
+    Status* status = (Status*) status_p;
     return status->clear();
 }
 

@@ -5,12 +5,12 @@
 #include "treeNode.h"
 #include "cntxt.h"
 
-class _Grp;
+class Grp;
 
 struct ObjTreeNode : public TreeNode {
 
   public:
-    ObjTreeNode( _Cntxt* ctx, std::string name,
+    ObjTreeNode( Cntxt* ctx, std::string name,
 					PWR_ObjType type, ObjTreeNode* parent = NULL ) 
 	  : TreeNode( ctx ), m_name(name), m_type(type), 
 		m_parent(parent), m_children(NULL) {}
@@ -22,7 +22,7 @@ struct ObjTreeNode : public TreeNode {
     void setParent( ObjTreeNode* obj )  { m_parent = obj; }
     virtual PWR_ObjType type() 			{ return m_type; }
 
-    virtual _Grp* children() {
+    virtual Grp* children() {
     	if ( m_children ) return m_children;
 
     	m_children = m_ctx->findChildren( this );
@@ -34,7 +34,7 @@ struct ObjTreeNode : public TreeNode {
     std::string     m_name;
 	PWR_ObjType		m_type;
     ObjTreeNode*    m_parent;
-	_Grp*			m_children;
+	Grp*			m_children;
 };
 
 

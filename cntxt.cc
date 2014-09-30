@@ -13,7 +13,7 @@
 
 #include "ops.h"
 
-_Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
+Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
             m_top( NULL )
 {
     DBGX("enter\n");
@@ -47,7 +47,7 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     DBGX("return\n");
 }
 
-_Cntxt::~_Cntxt()
+Cntxt::~Cntxt()
 {
 	finiDevices();
 
@@ -59,14 +59,14 @@ _Cntxt::~_Cntxt()
 	delete m_config;
 }
 
-ObjTreeNode* _Cntxt::getSelf() 
+ObjTreeNode* Cntxt::getSelf() 
 {
     DBGX("%s\n",m_top->name().c_str());
 
     return static_cast<ObjTreeNode*>(m_top);
 }
 
-ObjTreeNode* _Cntxt::findNode( std::string name ) 
+ObjTreeNode* Cntxt::findNode( std::string name ) 
 {
     DBGX("find %s\n",name.c_str());
 	ObjTreeNode* node = NULL; 
@@ -84,7 +84,7 @@ ObjTreeNode* _Cntxt::findNode( std::string name )
 	return node;
 }
 
-void _Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr ) 
+void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr ) 
 {
 	ObjTreeNode* node = static_cast<ObjTreeNode*>(_node);
 	DBGX("%s %s\n",node->name().c_str(), attrNameToString(attr.name()));
@@ -143,7 +143,7 @@ void _Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 	}
 }
 
-void _Cntxt::initPlugins( Config& cfg )
+void Cntxt::initPlugins( Config& cfg )
 {
 	std::deque< Config::Plugin > plugins = m_config->findPlugins(); 
 	
@@ -168,7 +168,7 @@ void _Cntxt::initPlugins( Config& cfg )
     }
 }
 
-void _Cntxt::initDevices( Config& cfg )
+void Cntxt::initDevices( Config& cfg )
 {
 	initPlugins( cfg );	
 
@@ -189,11 +189,11 @@ void _Cntxt::initDevices( Config& cfg )
     }
 }
 
-void _Cntxt::finiPlugins()
+void Cntxt::finiPlugins()
 {
 }
 
-void _Cntxt::finiDevices()
+void Cntxt::finiDevices()
 {
 	std::map< std::string, DevMapEntry >::iterator iter = m_devMap.begin();
 
@@ -203,9 +203,9 @@ void _Cntxt::finiDevices()
 	finiPlugins();
 }
 
-_Grp* _Cntxt::findChildren( ObjTreeNode* parent )
+Grp* Cntxt::findChildren( ObjTreeNode* parent )
 {
-    _Grp* grp = new _Grp( this, "" );
+    Grp* grp = new Grp( this, "" );
 	
 	std::deque< std::string > children =
 			m_config->findChildren( parent->name() );
@@ -225,9 +225,9 @@ _Grp* _Cntxt::findChildren( ObjTreeNode* parent )
     return grp;
 }
 
-_Grp* _Cntxt::initGrp( PWR_ObjType type ) {
+Grp* Cntxt::initGrp( PWR_ObjType type ) {
 
-    _Grp* grp = new _Grp( this, objTypeToString( type ) );
+    Grp* grp = new Grp( this, objTypeToString( type ) );
 
 	std::deque< std::string > objs = m_config->findObjType( type );	
 
@@ -250,18 +250,18 @@ _Grp* _Cntxt::initGrp( PWR_ObjType type ) {
     return grp;
 }    
 
-_Grp* _Cntxt::groupCreate( std::string name ) {
+Grp* Cntxt::groupCreate( std::string name ) {
     if ( m_groupMap.find( name ) != m_groupMap.end() ) {
         return NULL;
     }
-    _Grp* grp = new _Grp( this, name );
+    Grp* grp = new Grp( this, name );
     m_groupMap[name] = grp;
     return grp;
 }
 
-int _Cntxt::groupDestroy( _Grp* grp ) {
+int Cntxt::groupDestroy( Grp* grp ) {
     int retval = PWR_RET_FAILURE;
-    std::map<std::string,_Grp*>::iterator iter = m_groupMap.begin();
+    std::map<std::string,Grp*>::iterator iter = m_groupMap.begin();
     for ( ; iter != m_groupMap.end(); ++iter ) {
         if ( iter->second == grp ) {
             delete grp;

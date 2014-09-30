@@ -4,11 +4,11 @@
 #include <vector>
 #include "types.h"
 
-class _Cntxt;
+class Cntxt;
 
 class TreeNode {
   public:
-	TreeNode( _Cntxt* ctx );
+	TreeNode( Cntxt* ctx );
 
     virtual int attrGetValues( const std::vector<PWR_AttrName>& names,
 		void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status  );
@@ -20,7 +20,7 @@ class TreeNode {
 
 	class AttrEntry  {
       public:
-	    AttrEntry( TreeNode* node, _Cntxt* ctx ) 
+	    AttrEntry( TreeNode* node, Cntxt* ctx ) 
 			: op(NULL), op2(NULL), m_node(node),
 				m_ctx(ctx), m_attrName(PWR_ATTR_INVALID) {}
 
@@ -45,13 +45,13 @@ class TreeNode {
 		std::vector< TreeNode* > m_nodes;	
 
 		TreeNode*  		m_node;
-		_Cntxt*			m_ctx;
+		Cntxt*			m_ctx;
 		PWR_AttrName 	m_attrName;
 	};
 
   protected:
 
-	_Cntxt*			m_ctx;
+	Cntxt*			m_ctx;
 
 	std::vector< AttrEntry > m_attrMap;
 };

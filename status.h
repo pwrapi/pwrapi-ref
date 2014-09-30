@@ -8,7 +8,7 @@
 
 class TreeNode;
 
-struct _Status {
+struct Status {
 
   public:
     bool empty() {
