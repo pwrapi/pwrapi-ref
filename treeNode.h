@@ -8,31 +8,52 @@ class _Cntxt;
 
 class TreeNode {
   public:
-	TreeNode( _Cntxt* ctx, TreeNode* parent = NULL ) : 
-		m_ctx(ctx), m_parent(parent) {}
-
-	TreeNode* parent() { return m_parent; }
-	virtual std::string& name() { return m_name; }
+	TreeNode( _Cntxt* ctx );
 
     virtual int attrGetValues( const std::vector<PWR_AttrName>& names,
-		void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status  ) {
-		assert(0);
-    };
+		void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status  );
     virtual int attrSetValues( const std::vector<PWR_AttrName>& names,
-		void* ptr, std::vector<int>& status  ) {
-		assert(0);
-    };
-    virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* ) {
-		assert(0);
-    };
-    virtual int attrSetValue( PWR_AttrName, void*, size_t ) {
-		assert(0);
+		void* ptr, std::vector<int>& status  );
+    virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* );
+    virtual int attrSetValue( PWR_AttrName, void*, size_t );
+	virtual int attrIsValid( PWR_AttrName );
+
+	class AttrEntry  {
+      public:
+	    AttrEntry( TreeNode* node, _Cntxt* ctx ) 
+			: op(NULL), op2(NULL), m_node(node),
+				m_ctx(ctx), m_attrName(PWR_ATTR_INVALID) {}
+
+		bool inited() { return m_attrName != PWR_ATTR_INVALID; }
+
+		void init( PWR_AttrName );
+		void (*op)( int num, void* out, void* in );
+		void (*op2)( void*, const std::vector< void* >& );
+
+		PWR_AttrName name() { return m_attrName; }
+		void addSrc( TreeNode* node ) { m_nodes.push_back( node ); }
+		std::vector< TreeNode* >& nodes() { return m_nodes; }	
+
+		void setOp( void (*_op)( int num, void* out, void* in )  ) {
+			op = _op;
+		}
+		void setOp2( void (*_op)( void*, const std::vector< void* >& ) ) {
+			op2 = _op;
+		}
+		
+      private:
+		std::vector< TreeNode* > m_nodes;	
+
+		TreeNode*  		m_node;
+		_Cntxt*			m_ctx;
+		PWR_AttrName 	m_attrName;
 	};
 
   protected:
+
 	_Cntxt*			m_ctx;
-	std::string 	m_name;
-    TreeNode*       m_parent;
+
+	std::vector< AttrEntry > m_attrMap;
 };
 
 #endif

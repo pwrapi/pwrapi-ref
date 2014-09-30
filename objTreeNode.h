@@ -2,43 +2,39 @@
 #define _PWR_OBJECT_H
 
 #include <string>
-#include <assert.h>
 #include "treeNode.h"
+#include "cntxt.h"
 
 class _Grp;
-class _Attr;
 
 struct ObjTreeNode : public TreeNode {
 
   public:
-    ObjTreeNode( _Cntxt* ctx, TreeNode* parent ) : 
-		TreeNode( ctx, parent ) {}
+    ObjTreeNode( _Cntxt* ctx, std::string name,
+					PWR_ObjType type, ObjTreeNode* parent = NULL ) 
+	  : TreeNode( ctx ), m_name(name), m_type(type), 
+		m_parent(parent), m_children(NULL) {}
+
     virtual ~ObjTreeNode() {};
 
-    void setParent( TreeNode* obj ) { m_parent = obj; }
+    ObjTreeNode* parent() 				{ return m_parent; }
+    virtual std::string& name() 		{ return m_name; }
+    void setParent( ObjTreeNode* obj )  { m_parent = obj; }
+    virtual PWR_ObjType type() 			{ return m_type; }
 
-    virtual _Grp* children() { assert(0); }
-    virtual PWR_ObjType type() { assert(0); }
-    virtual int attrGetNumber() { assert(0); }
-    virtual _Attr* attributeGet( int index ) { assert(0); }
+    virtual _Grp* children() {
+    	if ( m_children ) return m_children;
 
-    virtual int attrGetValues( const std::vector<PWR_AttrName>& types,
-			void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status )
-	{ assert(0); } 
-    virtual int attrSetValues(  const std::vector<PWR_AttrName>& types,
-			void* ptr, std::vector<int>& status )
-	{ assert(0); } 
+    	m_children = m_ctx->findChildren( this );
+    	return m_children;
+	}
 
-    virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* ) 
-	{ assert(0); } 
-    virtual int attrSetValue( PWR_AttrName, void*, size_t )
-	{ assert(0); } 
 
-    virtual TreeNode* findChild( const std::string name ) { assert(0); }
-    virtual TreeNode* findDev( const std::string name )
-	{ assert(0); } 
-
-    virtual int attrIsValid( PWR_AttrName type ) { assert(0); }
+  protected:
+    std::string     m_name;
+	PWR_ObjType		m_type;
+    ObjTreeNode*    m_parent;
+	_Grp*			m_children;
 };
 
 

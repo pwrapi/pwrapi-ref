@@ -13,7 +13,7 @@ int main( int argc, char* argv[] )
     int         retval;
     double       value;
     PWR_Time ts;
-    PWR_Status  status;
+	PWR_Status  status;
 
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
@@ -43,7 +43,6 @@ int main( int argc, char* argv[] )
 
     PWR_TimeConvert( ts, &time );
     printf("POWER=%f %s",value,ctime(&time));
-
     
     value = 25.812;
     printf("set value to %f\n",value);
@@ -75,11 +74,14 @@ int main( int argc, char* argv[] )
 
     grp = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE );
     assert( grp );
+	assert( PWR_GrpGetNumObjs( grp ) );
 
+printf("set\n");
     value = 0.1;
     retval = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
     assert( retval == PWR_RET_SUCCESS );
 
+printf("get\n");
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
     assert( retval == PWR_RET_SUCCESS );
 

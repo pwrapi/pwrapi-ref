@@ -4,6 +4,8 @@
 
 #include "objTreeNode.h"
 
+#include "cntxt.h"
+
 #if 0
 static std::map< _Obj*, _Obj* > _rosebudMap;
 static int objNum = 0; 

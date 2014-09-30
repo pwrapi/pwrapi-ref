@@ -20,7 +20,7 @@ class DevTreeNode : public TreeNode {
     int attrGetValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<PWR_Time>& ts, std::vector<int>& status ){
         DBGX("\n");
-        return m_ops->readv( m_fd, names.size(), &names[0], ptr,
+		return m_ops->readv( m_fd, names.size(), &names[0], ptr,
                             &ts[0], &status[0] );
     }
 

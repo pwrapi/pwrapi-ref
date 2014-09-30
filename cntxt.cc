@@ -1,21 +1,17 @@
 
+#include <iostream>
 #include <dlfcn.h>
 #include <assert.h>
 
 #include "devTreeNode.h"
+#include "objTreeNode.h"
 #include "dev.h"
 #include "group.h"
-#include "objectEl.h"
-
-#ifdef USE_ULXMLRPC
-#include "objectUrl.h"
-#endif
-
+#include "xmlConfig.h"
 #include "cntxt.h"
 #include "debug.h"
 
-using namespace tinyxml2;
-
+#include "ops.h"
 
 _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
             m_top( NULL )
@@ -31,247 +27,225 @@ _Cntxt::_Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
         m_configFile = "systemX.xml";
     }
 
+	std::string selfName;
     if( getenv( "POWERAPI_ROOT" ) != NULL ) {
-        m_topName = getenv( "POWERAPI_ROOT" );
+        selfName = getenv( "POWERAPI_ROOT" );
     } else {
-        m_topName = "plat.cab0.board0.node0";
+        selfName = "plat.cab0.board0.node0";
     }
 
-    m_xml = new tinyxml2::XMLDocument();
-    m_xml->LoadFile( m_configFile.c_str() );
-    assert( tinyxml2::XML_SUCCESS == m_xml->ErrorID() );
-    //printTree( m_xml->RootElement() );
-    initPlugins( m_xml->RootElement() );
-    initDevices( m_xml->RootElement() );
+	m_config = new XmlConfig( m_configFile );
+	
+#if 0
+	m_config->print( std::cout );
+#endif
+
+	m_top = findNode( selfName );
+
+	initDevices( *m_config );
+
     DBGX("return\n");
 }
 
 _Cntxt::~_Cntxt()
 {
 	finiDevices();
-    std::map<std::string, TreeNode*>::iterator iter = m_graphNodeMap.begin();
-    for ( ; iter != m_graphNodeMap.end(); ++iter ) {
+
+    std::map<std::string, TreeNode*>::iterator iter = m_objTreeNodeMap.begin();
+    for ( ; iter != m_objTreeNodeMap.end(); ++iter ) {
         delete iter->second;
     }
+
+	delete m_config;
 }
 
-typedef plugin_dev_t* (*funcPtr_t)(void);
-
-void _Cntxt::initPlugins( XMLElement* el )
+ObjTreeNode* _Cntxt::getSelf() 
 {
-    DBGX("%s\n",el->Name());
+    DBGX("%s\n",m_top->name().c_str());
 
-    XMLNode* tmp = el->FirstChild(); 
+    return static_cast<ObjTreeNode*>(m_top);
+}
 
-    // find the children element
-    while ( tmp ) {
-        el = static_cast<XMLElement*>(tmp);
+ObjTreeNode* _Cntxt::findNode( std::string name ) 
+{
+    DBGX("find %s\n",name.c_str());
+	ObjTreeNode* node = NULL; 
+	if ( m_objTreeNodeMap.find( name ) == m_objTreeNodeMap.end()) {
+    	DBGX("not in table %s\n",name.c_str());
+		if ( m_config->findObject( name ) ) {
+    		DBGX("found in config %s\n",name.c_str());
+			node = new ObjTreeNode( this, name, m_config->objType( name ) );
+			static_cast<ObjTreeNode*>(node)->type();
+			m_objTreeNodeMap[ name ] = node; 
+		}
+	} else {
+		node = static_cast<ObjTreeNode*>( m_objTreeNodeMap[ name ] );
+	}	
+	return node;
+}
 
-        //DBGX("%s\n",el->Name());
+void _Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr ) 
+{
+	ObjTreeNode* node = static_cast<ObjTreeNode*>(_node);
+	DBGX("%s %s\n",node->name().c_str(), attrNameToString(attr.name()));
+	{
+		std::deque< std::string > children =
+			m_config->findAttrChildren( node->name(), attr.name() );
+			
+		std::deque< std::string >::iterator iter = children.begin();
 
-        if ( 0 == strcmp( el->Name(), "Plugins") ) {
-            tmp = el->FirstChild();
-            break;
-        }
-        tmp = tmp->NextSibling();
-    }
+		for ( ; iter != children.end(); ++iter ) {
 
-    // iterate over the children
-    while ( tmp ) {
-        el = static_cast<XMLElement*>(tmp);
+			DBGX("%s\n",iter->c_str());
 
-        DBGX("plugin name=`%s` lib=`%s`\n", el->Attribute("name"), el->Attribute("lib") );
+			if ( m_objTreeNodeMap.find( *iter ) == m_objTreeNodeMap.end()) {
+				DBGX("create %s\n",iter->c_str());
+				m_objTreeNodeMap[ *iter ] = new ObjTreeNode( this, *iter, 
+										m_config->objType( *iter ), node );
+			}
+			assert( m_objTreeNodeMap[ *iter ] );
+			attr.addSrc( m_objTreeNodeMap[ *iter ] );	
+		}
+	}
+	{
+		std::deque< Config::ObjDev > devices =
+			m_config->findObjDevs( node->name(), attr.name() );
 
-        void* ptr = dlopen( el->Attribute("lib"), RTLD_LAZY);
+		std::deque< Config::ObjDev >:: iterator iter = devices.begin();
+			
+		for ( ; iter != devices.end(); ++iter ) {
+			Config::ObjDev& dev = *iter;
+
+			DBGX("dev=`%s` openString=`%s`\n",dev.device.c_str(),
+												 dev.openString.c_str());
+
+			assert ( m_devMap.find( dev.device.c_str() ) != m_devMap.end() );
+
+			DevTreeNode* node =
+    		new DevTreeNode( m_devMap[dev.device].dev, 
+            		m_pluginLibMap[ m_devMap[dev.device].pluginName ], 
+					dev.openString );
+
+
+			attr.addSrc( node );
+
+			m_devTreeNodes.push_back( node );
+		}
+	}
+
+	if ( ! attr.nodes().empty() ) {
+		std::string op = m_config->findAttrOp( node->name(), attr.name() );
+		DBGX("%s\n",op.c_str());
+		if ( ! op.compare( "SUM" ) ) {
+			attr.setOp(fpSum);
+			attr.setOp2(fpSum2);
+		}
+	}
+}
+
+void _Cntxt::initPlugins( Config& cfg )
+{
+	std::deque< Config::Plugin > plugins = m_config->findPlugins(); 
+	
+	std::deque< Config::Plugin >::iterator iter = plugins.begin();
+
+    for ( ; iter != plugins.end(); ++ iter ) {
+		
+		Config::Plugin& plugin = *iter;
+
+        DBGX("plugin name=`%s` lib=`%s`\n", plugin.name.c_str(),
+										plugin.lib.c_str() );
+
+        void* ptr = dlopen( plugin.lib.c_str(), RTLD_LAZY);
         assert(ptr);
 
         void* funcPtr = dlsym(ptr,"getDev");
         assert(funcPtr);
 
-        m_pluginLibMap[ el->Attribute("name") ] = 
+        m_pluginLibMap[ plugin.name ] = 
                     ( (plugin_dev_t* (*)(void)) funcPtr)();
-        assert( m_pluginLibMap[ el->Attribute("name") ] );
-
-        tmp = tmp->NextSibling();
+        assert( m_pluginLibMap[ plugin.name ] );
     }
 }
-void _Cntxt::initDevices( XMLElement* el )
+
+void _Cntxt::initDevices( Config& cfg )
 {
-    DBGX("%s\n",el->Name());
+	initPlugins( cfg );	
 
-    XMLNode* tmp = el->FirstChild(); 
+	std::deque< Config::SysDev > devices = cfg.findSysDevs(); 
+	std::deque< Config::SysDev >::iterator iter = devices.begin();
 
-    // find the children element
-    while ( tmp ) {
-        el = static_cast<XMLElement*>(tmp);
+	for ( ; iter != devices.end(); ++iter ) {
 
-        //DBGX("%s\n",el->Name());
+		Config::SysDev dev = *iter;
+        DBGX("device name=`%s` plugin=`%s` initString=`%s`\n", 
+			dev.name.c_str(), dev.plugin.c_str(), dev.initString.c_str() ); 
 
-        if ( 0 == strcmp( el->Name(), "Devices") ) {
-            tmp = el->FirstChild();
-            break;
-        }
-        tmp = tmp->NextSibling();
+        m_devMap[ dev.name ].dev = 
+			m_pluginLibMap[ dev.plugin ]->init( dev.initString.c_str() ); 
+        assert( m_devMap[ dev.name ].dev );
+
+        m_devMap[ dev.name ].pluginName = dev.plugin;
     }
+}
 
-    // iterate over the children
-    while ( tmp ) {
-        el = static_cast<XMLElement*>(tmp);
-
-        const char* name = el->Attribute("name");
-        const char* plugin = el->Attribute("plugin");
-        const char* initString = el->Attribute("initString");
-        DBGX("device name=`%s` plugin=`%s` initString=`%s`\n", name, plugin, initString ); 
-
-        m_devMap[ name ].dev = m_pluginLibMap[ plugin ]->init( initString ); 
-        assert( m_devMap[ el->Attribute("name") ].dev );
-
-        m_devMap[ name ].pluginName = plugin;
-
-        tmp = tmp->NextSibling();
-    }
+void _Cntxt::finiPlugins()
+{
 }
 
 void _Cntxt::finiDevices()
 {
-	std::map<std::string,Y>::iterator iter = m_devMap.begin();
+	std::map< std::string, DevMapEntry >::iterator iter = m_devMap.begin();
 
 	for ( ; iter != m_devMap.end(); ++ iter ) {
 		m_pluginLibMap[ iter->second.pluginName ]->final( iter->second.dev );
 	}
+	finiPlugins();
 }
 
-
-DevTreeNode* _Cntxt::newDev( const std::string name, const std::string config )
+_Grp* _Cntxt::findChildren( ObjTreeNode* parent )
 {
-    DBGX("name=`%s` config=`%s`\n",name.c_str(), config.c_str());
+    _Grp* grp = new _Grp( this, "" );
+	
+	std::deque< std::string > children =
+			m_config->findChildren( parent->name() );
+			
+	std::deque< std::string >::iterator iter = children.begin();
 
-    return new DevTreeNode( m_devMap[name].dev, 
-            m_pluginLibMap[ m_devMap[name].pluginName ], config );
-}
+	for ( ; iter != children.end(); ++iter ) {
 
-ObjTreeNode* _Cntxt::getSelf() {
-
-    if ( ! m_top ) {
-    	DBGX("\n");
-    	XMLElement* el = XMLFindObject( m_topName );
-    	assert(el);
-    	DBGX("\n");
-
-    	m_top = createObj( this, NULL, el );
-    	m_graphNodeMap[ m_top->name() ] = m_top;
-    	DBGX("\n");
-	}
-    return static_cast<ObjTreeNode*>(m_top);
-}
-
-_Grp* _Cntxt::findChildren( XMLElement* el, ObjTreeNode* parent )
-{
-    _Grp* grp = NULL;
-    const std::string name = el->Attribute("name"); 
-
-    XMLNode* tmp = el->FirstChild(); 
-
-    // find the children element
-    while ( tmp ) {
-        el = static_cast<XMLElement*>(tmp);
-
-        //DBGX("%s\n",el->Name());
-
-        if ( 0 == strcmp( el->Name(), "children") ) {
-            tmp = el->FirstChild();
-            if ( tmp ) {
-                grp = new _Grp(this); 
-            }
-            break;
-        }
-        tmp = tmp->NextSibling();
-    }
-
-    // iterate over the children
-    while ( tmp ) {
-        el = static_cast<XMLElement*>(tmp);
-
-        DBGX("%s\n", el->Attribute("name"));
-        std::string childName = name + "." + el->Attribute("name");
-
-		XMLElement* child = NULL;
-		std::string url; 
-		if ( el->Attribute("url" ) ) {
-			url = el->Attribute("url");
-		} else {
-        	child = XMLFindObject( childName );
-        	assert( child );
+		if ( m_objTreeNodeMap.find( *iter ) == m_objTreeNodeMap.end()) {
+			DBGX("create %s\n",iter->c_str());
+			m_objTreeNodeMap[ *iter ] = new ObjTreeNode( this, *iter,
+									m_config->objType( *iter ), parent );
 		}
-
-        TreeNode* obj;
-        if ( m_graphNodeMap.find( childName ) == m_graphNodeMap.end() ) {
-			if ( child ) {
-            	obj = createObj( this, parent, child );
-#ifdef USE_ULXMLRPC
-			} else {
-            	obj = createObj( this, parent, childName, url );
-#endif
-			}
-            m_graphNodeMap[ obj->name() ] = obj;
-        } else {
-            obj = m_graphNodeMap[ childName ];
-        } 
-        grp->add( obj );
-        DBGX("%s done\n", el->Attribute("name"));
-
-        tmp = tmp->NextSibling();
-    }
-    
-    DBGX("return\n");
+		grp->add( static_cast<ObjTreeNode*>( m_objTreeNodeMap[ *iter ] ) );	
+		
+	}
     return grp;
 }
 
 _Grp* _Cntxt::initGrp( PWR_ObjType type ) {
+
     _Grp* grp = new _Grp( this, objTypeToString( type ) );
 
-    XMLNode* tmp = m_xml->RootElement()->FirstChild(); 
+	std::deque< std::string > objs = m_config->findObjType( type );	
 
-    std::string typeStr = objTypeToString( type ); 
+	std::deque < std::string >::iterator iter = objs.begin();
 
-    // find the objects element
-    while ( tmp ) {
-        XMLElement* el = static_cast<XMLElement*>(tmp);
+	for ( ; iter != objs.end(); ++iter ) {
 
-        //DBGX("%s\n",el->Name());
+		if ( m_objTreeNodeMap.find( *iter ) == m_objTreeNodeMap.end()) {
+			DBGX("create %s\n",iter->c_str());
 
-        if ( 0 == strcmp( el->Name(), "Objects") ) {
-            tmp = el->FirstChild();
-            break;
-        }
-        tmp = tmp->NextSibling();
-    }
-
-    while ( tmp ) {
-        XMLElement* el = static_cast<XMLElement*>(tmp);
-
-
-        if ( 0 == typeStr.compare( el->Attribute("type") ) ) {
-
-#if  1 
-        DBGX("%s %s name=`%s`\n",el->Name(),
-                el->Attribute("type"), el->Attribute("name"));
-#endif
-            
-            TreeNode* obj;
-            std::string name = el->Attribute("name");
-            if ( m_graphNodeMap.find( name ) == m_graphNodeMap.end() ) {
-                obj = createObj( this, NULL, el );
-                m_graphNodeMap[ obj->name() ] = obj;
-            } else {
-                obj = m_graphNodeMap[ name ];
-            } 
-
-            grp->add( obj );
-        }
-
-        tmp = tmp->NextSibling();
-    }
+			//
+			// We need to fill in the parent if it's in the map
+			//
+			m_objTreeNodeMap[ *iter ] = new ObjTreeNode( this, *iter,
+									m_config->objType( *iter ), NULL );
+		}
+		grp->add( static_cast<ObjTreeNode*>( m_objTreeNodeMap[ *iter ] ) );	
+	}	
 
     return grp;
 }    
@@ -297,67 +271,4 @@ int _Cntxt::groupDestroy( _Grp* grp ) {
         }
     }
     return retval;
-}
-
-
-XMLElement* _Cntxt::XMLFindObject( const std::string name )
-{
-    DBGX("`%s`\n",name.c_str());
-    XMLNode* tmp = m_xml->RootElement()->FirstChild(); 
-
-    // find the objects element
-    while ( tmp ) {
-        XMLElement* el = static_cast<XMLElement*>(tmp);
-
-        //DBGX("%s\n",el->Name());
-
-        if ( 0 == strcmp( el->Name(), "Objects") ) {
-            tmp = el->FirstChild();
-            break;
-        }
-        tmp = tmp->NextSibling();
-    }
-
-    while ( tmp ) {
-        XMLElement* el = static_cast<XMLElement*>(tmp);
-
-#if 0 
-        DBGX("%s %s name=`%s`\n",el->Name(),
-                el->Attribute("type"), el->Attribute("name"));
-#endif
-
-        if ( 0 == name.compare( el->Attribute("name") ) ) {
-            return el;
-        }
-        tmp = tmp->NextSibling();
-    }
-
-    return NULL;
-}
-
-void _Cntxt::printTree( XMLNode* node )
-{
-    XMLElement* el = static_cast<XMLElement*>(node);
-
-    if ( NULL == el ) return;
-
-    if ( ! strcmp(el->Name(),"obj") ) {
-        DBGX("%s type=`%s` name=`%s`\n",el->Name(),
-                el->Attribute("type"),
-                el->Attribute("name"));
-    } else if ( ! strcmp(el->Name(),"child") ) {
-        DBGX("%s name=`%s`\n",el->Name(),el->Attribute("name"));
-    } else if ( ! strcmp(el->Name(),"attr") ) {
-        DBGX("%s name=`%s` op=`%s`\n",el->Name(), el->Attribute("name"),
-                        el->Attribute("op"));
-    } else {
-       DBGX("%s \n",el->Name());
-    }
-
-    if ( ! node->NoChildren() ) {
-        XMLNode* tmp = node->FirstChild();
-        do {
-            printTree( tmp );
-        } while ( ( tmp = tmp->NextSibling() ) );
-    }
 }
