@@ -12,11 +12,11 @@ namespace PowerAPI {
 class DevTreeNode : public TreeNode {
   public:
 
-    DevTreeNode( pwr_dev_t dev, plugin_dev_t* ops, const std::string config )
+    DevTreeNode( plugin_devops_t* ops, const std::string config )
       : TreeNode(NULL), m_ops( ops ) 
 	{
         DBGX("\n");
-        m_fd = m_ops->open( dev, config.c_str() );
+        m_fd = m_ops->open( ops, config.c_str() );
     }
 
     int attrGetValues( const std::vector<PWR_AttrName>& names, void* ptr,
@@ -47,7 +47,7 @@ class DevTreeNode : public TreeNode {
     }
 
   private:
-    plugin_dev_t*   m_ops;
+    plugin_devops_t*   m_ops;
     pwr_fd_t        m_fd;
 };
 

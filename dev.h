@@ -7,13 +7,11 @@
 extern "C" {
 #endif
 
-typedef void* pwr_dev_t;
 typedef void* pwr_fd_t;
 
-typedef pwr_dev_t (*pwr_init_t)( const char *initstr );
-typedef int (*pwr_final_t)( pwr_dev_t dev );
+struct plugin_devops_t;
 
-typedef pwr_fd_t (*pwr_open_t)( pwr_dev_t dev, const char *openstr );
+typedef pwr_fd_t (*pwr_open_t)( struct plugin_devops_t*, const char *openstr );
 typedef int (*pwr_close_t)( pwr_fd_t fd );
 
 typedef int (*pwr_read_t)( pwr_fd_t fd, PWR_AttrName name,
@@ -29,10 +27,7 @@ typedef int (*pwr_writev_t)( pwr_fd_t fd, unsigned int arraysize,
 typedef int (*pwr_time_t)( pwr_fd_t fd, PWR_Time *time );
 typedef int (*pwr_clear_t)( pwr_fd_t fd );
 
-typedef struct {
-    pwr_init_t  init;
-    pwr_final_t final;
-
+typedef struct plugin_devops_t {
     pwr_open_t  open;
     pwr_close_t close;
 
@@ -44,9 +39,21 @@ typedef struct {
 
     pwr_time_t  time;
     pwr_clear_t clear;
+
+	void*		privateData;
+
+} plugin_devops_t;
+
+typedef plugin_devops_t* (*pwr_init_t)( const char *initstr );
+typedef int (*pwr_final_t)( plugin_devops_t* );
+
+typedef struct {
+    pwr_init_t  init;
+    pwr_final_t final;
 } plugin_dev_t;
 
-plugin_dev_t* getDev();
+#define GETDEVFUNC "getDev"
+typedef plugin_dev_t* (*getDevFuncPtr_t)(void); 
 
 #ifdef __cplusplus
 }

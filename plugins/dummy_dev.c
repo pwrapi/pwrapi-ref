@@ -29,23 +29,7 @@ typedef struct {
     double value[PWR_ATTR_INVALID];
 } dummyFdInfo_t;
   
-static pwr_dev_t dummy_dev_init( const char *initstr )
-{
-    dummyDevInfo_t *tmp = malloc( sizeof( dummyDevInfo_t ) );
-    DBGX("`%s`\n",initstr);
-    strcpy( tmp->config, initstr );
-    return tmp;
-}
-
-static int dummy_dev_final( pwr_dev_t dev)
-{
-    DBGX("\n");
-    free( dev );
-
-    return 0;
-}
-
-static pwr_fd_t dummy_dev_open( pwr_dev_t dev, const char *openstr )
+static pwr_fd_t dummy_dev_open( plugin_devOps_t* ops, const char *openstr )
 {
     DBGX("`%s`\n",openstr);
     dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
@@ -66,7 +50,7 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
 
     *(double*)ptr = ((dummyFdInfo_t*) fd)->value[type];
 
-    DBGX("type=%s %f\n",attrNameToString(type),*(double*)ptr);
+    DBGX("type=%s %f\n", attrNameToString(type),*(double*)ptr);
 
     struct timeval tv;
     gettimeofday(&tv,NULL);
@@ -136,9 +120,7 @@ static int dummy_dev_clear( pwr_fd_t fd )
     return 0;
 }
 
-static plugin_dev_t dev = {
-    .init   = dummy_dev_init, 
-    .final  = dummy_dev_final,
+static plugin_devOps_t devOps = {
     .open   = dummy_dev_open, 
     .close  = dummy_dev_close,
     .read   = dummy_dev_read,
@@ -147,6 +129,27 @@ static plugin_dev_t dev = {
     .writev = dummy_dev_writev,
     .time   = dummy_dev_time,
     .clear  = dummy_dev_clear
+};
+
+static plugin_devOps_t* dummy_dev_init( const char *initstr )
+{
+	plugin_devOps_t* ops = malloc(sizeof(*ops));
+	*ops = devOps;
+	ops->privateData = malloc( sizeof( dummyDevInfo_t ) );
+    return ops;
+}
+
+static int dummy_dev_final( plugin_devOps_t *ops )
+{
+    DBGX("\n");
+	free( ops->privateData );
+    free( ops );
+    return 0;
+}
+
+static plugin_dev_t dev = {
+    .init   = dummy_dev_init, 
+    .final  = dummy_dev_final,
 };
 
 plugin_dev_t* getDev() {
