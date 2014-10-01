@@ -2,10 +2,11 @@
 #ifndef _PWR_UTIL_H
 #define _PWR_UTIL_H
 
+#include "types.h"
+
+#if 0
 #include <string.h>
 #include <sstream>
-
-#include "types.h"
 
 class NumToString : public std::string  {
   public:
@@ -27,8 +28,9 @@ class StringToNum {
   private:
 	uint64_t  num;
 };
+#endif
 
-static inline std::string objTypeToString( PWR_ObjType type )
+static inline const char* objTypeToString( PWR_ObjType type )
 {
     switch( type ) {
     case PWR_OBJ_PLATFORM: return "Platform";
@@ -44,7 +46,7 @@ static inline std::string objTypeToString( PWR_ObjType type )
     return NULL;
 }
 
-static inline std::string attrNameToString( PWR_AttrName name )
+static inline const char* attrNameToString( PWR_AttrName name )
 {
     switch( name ){
     case PWR_ATTR_NAME: return "Name";
