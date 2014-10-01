@@ -7,16 +7,18 @@
 #include "status.h"
 #include "pow.h"
 #include "cntxt.h"
-#include "init.h"
+
+using namespace PowerAPI;
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
-    return PWR::init( type, role, name );
+	return new Cntxt( type, role, name );
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
 {
-    return PWR::destroy( (Cntxt*)ctx );
+	delete (Cntxt*)ctx;
+    return PWR_RET_SUCCESS;
 }
 
 PWR_Obj PWR_CntxtGetSelf( PWR_Cntxt ctx_p )

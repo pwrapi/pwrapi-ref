@@ -6,6 +6,8 @@
 
 #include "types.h"
 
+namespace PowerAPI {
+
 class TreeNode;
 
 struct Status {
@@ -38,5 +40,6 @@ struct Status {
     std::deque<PWR_AttrAccessError> m_info;
 };
 
+}
 
 #endif

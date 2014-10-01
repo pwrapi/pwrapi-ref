@@ -13,6 +13,8 @@
 
 #include "ops.h"
 
+using namespace PowerAPI;
+
 Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
             m_top( NULL )
 {

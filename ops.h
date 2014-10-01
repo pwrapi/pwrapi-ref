@@ -4,6 +4,8 @@
 
 #include <vector>
 
+namespace PowerAPI {
+
 static void fpSum( int num, void* _out, void* _in )
 {
     double* out = (double*) _out;
@@ -28,6 +30,8 @@ static void fpSum2( void* out, const std::vector<void*>& in  )
         //fprintf(stderr,"%s() i=%d val=%f\n",__func__, i, *((double*) in[i]));
         *((double*) out) += *((double*) in[i]);
     }
+}
+
 }
 
 #endif

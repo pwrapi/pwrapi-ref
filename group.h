@@ -10,6 +10,8 @@
 #include "debug.h"
 #include "objTreeNode.h"
 
+namespace PowerAPI {
+
 struct Cntxt;
 
 struct Grp {
@@ -142,6 +144,6 @@ struct Grp {
     std::string m_name;
 };
 
-#include "cntxt.h"
+}
 
 #endif

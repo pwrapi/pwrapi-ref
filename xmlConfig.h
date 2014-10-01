@@ -6,6 +6,8 @@
 #include "config.h"
 #include "tinyxml2.h"
 
+namespace PowerAPI {
+
 using namespace tinyxml2;
 
 
@@ -49,5 +51,7 @@ class XmlConfig : public Config {
 
 	XMLNode* m_systemNode;
 };
+
+}
 
 #endif

@@ -5,6 +5,8 @@
 #include "treeNode.h"
 #include "cntxt.h"
 
+namespace PowerAPI {
+
 class Grp;
 
 struct ObjTreeNode : public TreeNode {
@@ -37,7 +39,6 @@ struct ObjTreeNode : public TreeNode {
 	Grp*			m_children;
 };
 
-
-TreeNode* rosebud( TreeNode* obj );
+}
 
 #endif

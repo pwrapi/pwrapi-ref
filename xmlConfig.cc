@@ -3,6 +3,8 @@
 #include "xmlConfig.h"
 #include "debug.h"
 
+using namespace PowerAPI;
+
 XmlConfig::XmlConfig( std::string file ) 
 {
 	DBGX("config file `%s`\n",file.c_str());

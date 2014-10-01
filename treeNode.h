@@ -4,6 +4,8 @@
 #include <vector>
 #include "types.h"
 
+namespace PowerAPI {
+
 class Cntxt;
 
 class TreeNode {
@@ -55,5 +57,7 @@ class TreeNode {
 
 	std::vector< AttrEntry > m_attrMap;
 };
+
+}
 
 #endif

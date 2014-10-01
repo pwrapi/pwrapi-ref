@@ -8,6 +8,8 @@
 
 #include "types.h"
 
+namespace PowerAPI {
+
 class Config {
   public:
 
@@ -42,5 +44,7 @@ class Config {
 	virtual PWR_ObjType objType( const std::string ) = 0;
 	virtual void print( std::ostream& ) {};
 };
+
+}
 
 #endif

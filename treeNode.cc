@@ -8,6 +8,8 @@
 #include "config.h"
 #include "cntxt.h"
 
+using namespace PowerAPI;
+
 TreeNode::TreeNode( Cntxt* ctx ) 
 	: m_ctx(ctx)
 {

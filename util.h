@@ -9,7 +9,6 @@
 #include <string.h>
 #include <sstream>
 
-
 class NumToString : public std::string  {
   public:
 	NumToString( uint64_t num ) {

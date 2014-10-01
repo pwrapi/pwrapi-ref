@@ -10,6 +10,8 @@
 #include "types.h"
 #include "dev.h"
 
+namespace PowerAPI {
+
 struct Grp;
 class ObjTreeNode;
 class Config;
@@ -74,5 +76,7 @@ struct Cntxt {
     std::map< std::string, Grp* > 			m_groupMap;
 
 };
+
+}
 
 #endif

@@ -7,6 +7,8 @@
 #include "treeNode.h"
 #include "dev.h"
 
+namespace PowerAPI {
+
 class DevTreeNode : public TreeNode {
   public:
 
@@ -48,5 +50,7 @@ class DevTreeNode : public TreeNode {
     plugin_dev_t*   m_ops;
     pwr_fd_t        m_fd;
 };
+
+}
 
 #endif
