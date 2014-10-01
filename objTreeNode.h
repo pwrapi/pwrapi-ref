@@ -9,7 +9,7 @@ namespace PowerAPI {
 
 class Grp;
 
-struct ObjTreeNode : public TreeNode {
+class ObjTreeNode : public TreeNode {
 
   public:
     ObjTreeNode( Cntxt* ctx, std::string name,

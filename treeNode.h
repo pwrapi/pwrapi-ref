@@ -39,7 +39,7 @@ class TreeNode {
 		void setOp( void (*_op)( int num, void* out, void* in )  ) {
 			op = _op;
 		}
-		void setOp2( void (*_op)( void*, const std::vector< void* >& ) ) {
+		void setOp( void (*_op)( void*, const std::vector< void* >& ) ) {
 			op2 = _op;
 		}
 		

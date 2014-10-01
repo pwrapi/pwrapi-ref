@@ -12,11 +12,11 @@
 
 namespace PowerAPI {
 
-struct Grp;
+class Grp;
 class ObjTreeNode;
 class Config;
 
-struct Cntxt {
+class Cntxt {
 
   public:
 

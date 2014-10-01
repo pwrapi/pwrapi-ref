@@ -12,11 +12,12 @@
 
 namespace PowerAPI {
 
-struct Cntxt;
+class Cntxt;
 
-struct Grp {
+class Grp {
   public:
-    Grp( Cntxt* ctx, const std::string name ="" ) : m_ctx(ctx), m_name(name) {  }
+    Grp( Cntxt* ctx, const std::string name ="" ) 
+		: m_ctx(ctx), m_name(name) {}
 
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
@@ -27,14 +28,13 @@ struct Grp {
         m_list.push_back( obj );
         return PWR_RET_SUCCESS; 
     }
+
     const std::string& name() {
         return m_name;
     }
-
     
-    int attrSetValue( PWR_AttrName type, void* ptr, size_t len, 
-                    PWR_Status status_p ) {
-        Status* status = (Status*)status_p;
+    int attrSetValue( PWR_AttrName type, void* ptr, size_t len, Status* status )
+	{
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr, len );
             if ( PWR_RET_SUCCESS != ret ) {
@@ -48,17 +48,16 @@ struct Grp {
         }
     }
 
-    int attrSetValues( int num, PWR_AttrName attr[], void* buf,
-                                                        PWR_Status status_p )
+    int attrSetValues( int num, PWR_AttrName attr[], void* buf, Status* status )
     {
-        Status* status = (Status*)status_p;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
             std::vector<PWR_AttrName> attrsV(num);
             std::vector<int>          statusV(num);
         
-            if ( PWR_RET_SUCCESS != m_list[i]->attrSetValues( attrsV, buf, statusV ) ) {
-
+            if ( PWR_RET_SUCCESS !=
+						m_list[i]->attrSetValues( attrsV, buf, statusV ) ) 
+			{
                 for ( int j = 0; j < num; j++ ) {
                     if ( PWR_RET_SUCCESS != statusV[j] ) {
                         status->add( m_list[i], attrsV[j], statusV[j] );
@@ -74,9 +73,8 @@ struct Grp {
     }
 
     int attrGetValues( int num, PWR_AttrName attr[], void* buf,
-                                   		PWR_Time ts[], PWR_Status status_p)
+                                   		PWR_Time ts[], Status* status)
     {
-        Status* status = (Status*)status_p;
         uint64_t* ptr = (uint64_t*) buf;
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
@@ -89,8 +87,8 @@ struct Grp {
             }
 
             if ( PWR_RET_SUCCESS != m_list[i]->attrGetValues( attrsV, 
-                        ptr + i * num, tsV, statusV ) ) {
-
+                        				ptr + i * num, tsV, statusV ) ) 
+			{
                 for ( int j = 0; j < num; j++ ) {
                     if ( PWR_RET_SUCCESS != statusV[j] ) {
                         status->add( m_list[i], attrsV[j], statusV[j] );
@@ -139,9 +137,9 @@ struct Grp {
     Cntxt* getCtx() { return m_ctx; }
 
   private:
-    Cntxt*   m_ctx;
-    std::vector<ObjTreeNode*> m_list;
-    std::string m_name;
+    Cntxt*   					m_ctx;
+    std::string 				m_name;
+    std::vector<ObjTreeNode*> 	m_list;
 };
 
 }

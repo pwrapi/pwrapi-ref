@@ -10,7 +10,6 @@ namespace PowerAPI {
 
 using namespace tinyxml2;
 
-
 class XmlConfig : public Config {
   public:
 	XmlConfig( std::string file );
@@ -18,21 +17,13 @@ class XmlConfig : public Config {
 	std::deque< std::string >
                 findAttrChildren( std::string, PWR_AttrName );
 	std::string findAttrOp( std::string, PWR_AttrName );
-
-	std::deque< std::string >
-                findChildren( std::string );
-
-	std::deque< Config::ObjDev >
-                findObjDevs( std::string, PWR_AttrName );
-
+	std::deque< std::string > findChildren( std::string );
+	std::deque< Config::ObjDev > findObjDevs( std::string, PWR_AttrName );
 	std::deque< Config::Plugin > findPlugins();
 	std::deque< Config::SysDev > findSysDevs();
-    virtual std::deque< std::string >
-                        findObjType( PWR_ObjType );
-
+    std::deque< std::string > findObjType( PWR_ObjType );
 	bool findObject( const std::string name );
 	PWR_ObjType objType( const std::string );
-
 	void print( std::ostream& );
 
   private:
@@ -47,9 +38,8 @@ class XmlConfig : public Config {
 	PWR_ObjType objTypeStrToInt( const std::string );
 	std::string objTypeToString( PWR_ObjType type );
 
-	tinyxml2::XMLDocument* m_xml;
-
-	XMLNode* m_systemNode;
+	XMLDocument* 	m_xml;
+	XMLNode* 		m_systemNode;
 };
 
 }

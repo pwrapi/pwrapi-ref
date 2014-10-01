@@ -140,7 +140,7 @@ void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 		DBGX("%s\n",op.c_str());
 		if ( ! op.compare( "SUM" ) ) {
 			attr.setOp(fpSum);
-			attr.setOp2(fpSum2);
+			attr.setOp(fpSum2);
 		}
 	}
 }

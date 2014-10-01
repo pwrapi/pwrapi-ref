@@ -10,7 +10,7 @@ namespace PowerAPI {
 
 class TreeNode;
 
-struct Status {
+class Status {
 
   public:
     bool empty() {
