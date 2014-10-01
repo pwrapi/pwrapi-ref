@@ -1,9 +1,10 @@
 #ifndef _PWR_DEBUG_H
 #define _PWR_DEBUG_H
 
-#if 0 
+#ifdef DEBUG_ON  
 
 #include <cxxabi.h>
+#include <stdlib.h>
 
 #define DBGX( fmt, args... ) \
 {\
@@ -14,9 +15,13 @@
     if ( realname ) free(realname);\
 }
 
+#define DBG( fmt, args... ) \
+    fprintf( stderr, "%s():%d: "fmt, __func__, __LINE__, ##args)
+
 #else
 
 #define DBGX( fmt, args... )
+#define DBG( fmt, args... )
 
 #endif
 

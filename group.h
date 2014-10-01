@@ -74,7 +74,7 @@ struct Grp {
     }
 
     int attrGetValues( int num, PWR_AttrName attr[], void* buf,
-                                                        PWR_Time ts[], PWR_Status status_p)
+                                   		PWR_Time ts[], PWR_Status status_p)
     {
         Status* status = (Status*)status_p;
         uint64_t* ptr = (uint64_t*) buf;

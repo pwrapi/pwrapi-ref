@@ -1,7 +1,7 @@
 XMLRPC = n
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml
+CPPFLAGS = -Itinyxml # -DDEBUG_ON=0
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 LDLIBS = -ldl

@@ -76,12 +76,10 @@ int main( int argc, char* argv[] )
     assert( grp );
 	assert( PWR_GrpGetNumObjs( grp ) );
 
-printf("set\n");
     value = 0.1;
     retval = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
     assert( retval == PWR_RET_SUCCESS );
 
-printf("get\n");
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
     assert( retval == PWR_RET_SUCCESS );
 

@@ -31,7 +31,6 @@ struct ObjTreeNode : public TreeNode {
     	return m_children;
 	}
 
-
   protected:
     std::string     m_name;
 	PWR_ObjType		m_type;
