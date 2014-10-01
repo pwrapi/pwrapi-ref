@@ -124,7 +124,7 @@ void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 			assert ( m_devMap.find( dev.device.c_str() ) != m_devMap.end() );
 
 			DevTreeNode* node = 
-				new DevTreeNode( m_devMap[dev.device], dev.openString );
+				new DevTreeNode( m_devMap[dev.device].second, dev.openString );
 
 			attr.addSrc( node );
 
@@ -183,21 +183,21 @@ void Cntxt::initDevices( Config& cfg )
         DBGX("device name=`%s` plugin=`%s` initString=`%s`\n", 
 			dev.name.c_str(), dev.plugin.c_str(), dev.initString.c_str() ); 
 
-        m_devMap[ dev.name ] = 
+		m_devMap[ dev.name ].second = 
 			m_pluginLibMap[ dev.plugin ]->init( dev.initString.c_str() ); 
-        assert( m_devMap[ dev.name ] );
+		assert( m_devMap[ dev.name ].second );
+
+		m_devMap[ dev.name ].first = m_pluginLibMap[ dev.plugin ]; 
     }
 }
 
 void Cntxt::finiDevices()
 {
-#if 0
-	std::map< std::string, >::iterator iter = m_devMap.begin();
+	std::map< std::string, std::pair< plugin_dev_t*, plugin_devops_t* > >::iterator iter = m_devMap.begin();
 
 	for ( ; iter != m_devMap.end(); ++ iter ) {
-		m_pluginLibMap[ iter->second.pluginName ]->final( iter->second.dev );
+		iter->second.first->final( iter->second.second );
 	}
-#endif
 	finiPlugins();
 }
 

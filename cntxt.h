@@ -67,8 +67,8 @@ class Cntxt {
 	std::deque< TreeNode* >			m_devTreeNodes;
 
     std::map< std::string, plugin_dev_t* >     m_pluginLibMap;
-    std::map< std::string, plugin_devops_t* >  m_devMap;
     std::map< std::string, Grp* > 			   m_groupMap;
+    std::map< std::string, std::pair< plugin_dev_t*, plugin_devops_t* > > m_devMap;
 };
 
 }
