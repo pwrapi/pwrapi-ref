@@ -211,11 +211,11 @@ const char* PWR_ObjGetName( PWR_Obj obj )
 
 const char* PWR_ObjGetTypeString( PWR_ObjType type )
 {
-    return objTypeToString( type ).c_str();
+    return objTypeToString( type );
 }
 const char* PWR_AttrGetTypeString( PWR_AttrName name )
 {
-    return attrNameToString( name ).c_str();
+    return attrNameToString( name );
 }
 
 static int online_cpus(int number_desired)
