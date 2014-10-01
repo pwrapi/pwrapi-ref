@@ -22,15 +22,18 @@ class XmlConfig : public Config {
 	std::deque< Config::Plugin > findPlugins();
 	std::deque< Config::SysDev > findSysDevs();
     std::deque< std::string > findObjType( PWR_ObjType );
-	bool findObject( const std::string name );
+	bool hasObject( const std::string name );
 	PWR_ObjType objType( const std::string );
 	void print( std::ostream& );
 
   private:
 	XMLNode* findNode( XMLNode*, const std::string name );
+	XMLNode* findNodes1stChild( XMLNode*, const std::string name );
+	XMLNode* findNodeWithAttr( XMLElement*, const std::string nodeName, 
+				const std::string attrName, const std::string attrValue );
 
 	void printTree( std::ostream&, XMLNode* node );
-	XMLElement* findObject_p( const std::string name );
+	XMLElement* findObject( const std::string name );
 	PWR_ObjType getType( XMLElement* );
 	XMLNode* findAttr( XMLElement*, const std::string name );
 	XMLNode* findDev( XMLElement*, const std::string name );

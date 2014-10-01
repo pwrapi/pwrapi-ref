@@ -29,18 +29,18 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
         m_configFile = "systemX.xml";
     }
 
+	m_config = new XmlConfig( m_configFile );
+	
+#if 0
+	m_config->print( std::cout );
+#endif
+
 	std::string selfName;
     if( getenv( "POWERAPI_ROOT" ) != NULL ) {
         selfName = getenv( "POWERAPI_ROOT" );
     } else {
         selfName = "plat.cab0.board0.node0";
     }
-
-	m_config = new XmlConfig( m_configFile );
-	
-#if 0
-	m_config->print( std::cout );
-#endif
 
 	m_top = findNode( selfName );
 
@@ -65,7 +65,7 @@ ObjTreeNode* Cntxt::getSelf()
 {
     DBGX("%s\n",m_top->name().c_str());
 
-    return static_cast<ObjTreeNode*>(m_top);
+    return static_cast< ObjTreeNode* >(m_top);
 }
 
 ObjTreeNode* Cntxt::findNode( std::string name ) 
@@ -74,7 +74,7 @@ ObjTreeNode* Cntxt::findNode( std::string name )
 	ObjTreeNode* node = NULL; 
 	if ( m_objTreeNodeMap.find( name ) == m_objTreeNodeMap.end()) {
     	DBGX("not in table %s\n",name.c_str());
-		if ( m_config->findObject( name ) ) {
+		if ( m_config->hasObject( name ) ) {
     		DBGX("found in config %s\n",name.c_str());
 			node = new ObjTreeNode( this, name, m_config->objType( name ) );
 			static_cast<ObjTreeNode*>(node)->type();
@@ -170,6 +170,10 @@ void Cntxt::initPlugins( Config& cfg )
     }
 }
 
+void Cntxt::finiPlugins()
+{
+}
+
 void Cntxt::initDevices( Config& cfg )
 {
 	initPlugins( cfg );	
@@ -189,10 +193,6 @@ void Cntxt::initDevices( Config& cfg )
 
         m_devMap[ dev.name ].pluginName = dev.plugin;
     }
-}
-
-void Cntxt::finiPlugins()
-{
 }
 
 void Cntxt::finiDevices()

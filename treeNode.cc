@@ -29,7 +29,8 @@ int TreeNode::attrIsValid( PWR_AttrName attr )
 	assert(0);
 }
 
-int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr, size_t len, PWR_Time* ts )
+int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr,
+											size_t len, PWR_Time* ts )
 {
     DBGX("%s\n", attrNameToString(attr));
 
@@ -92,8 +93,8 @@ struct Tmp {
     std::vector<int>          attrPos;
 };
 
-int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* valuePtr,
-                         std::vector<PWR_Time>& ts, std::vector<int>& status )
+int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
+		void* valuePtr, std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
     int retval = PWR_RET_SUCCESS;
 
@@ -130,7 +131,8 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* value
         tmp.ts.resize( tmp.attrs.size() );
         tmp.status.resize( tmp.attrs.size() );
 
-        (*iter).first->attrGetValues( tmp.attrs, &tmp.data[0], tmp.ts, tmp.status );
+        (*iter).first->attrGetValues( tmp.attrs, &tmp.data[0],
+												tmp.ts, tmp.status );
 
         for ( unsigned int i = 0; i < tmp.attrs.size(); i++ ) {
 
@@ -142,7 +144,9 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* value
         }
     }
 
-	std::map< PWR_AttrName, std::vector<void*> >::iterator iter2 = opInput.begin();
+	std::map< PWR_AttrName, std::vector<void*> >::
+										iterator iter2 = opInput.begin();
+
     for ( int pos = 0; iter2 != opInput.end(); ++iter2, pos++ ) {
 
 		int attr = iter2->first;
@@ -159,8 +163,8 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs, void* value
     return retval;
 }
 
-int TreeNode::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* valuePtr,
-                                            std::vector<int>& status  )
+int TreeNode::attrSetValues( const std::vector<PWR_AttrName>& attrs,
+									void* valuePtr, std::vector<int>& status  )
 {
     int retval = PWR_RET_SUCCESS;
 
@@ -178,7 +182,8 @@ int TreeNode::attrSetValues( const std::vector<PWR_AttrName>& attrs, void* value
 
         for ( unsigned int j = 0; j < nodes.size(); j++ ) {
 
-        	DBGX("TreeNode %p for attr=%s \n", nodes[j], attrNameToString(attrs[i]) );
+        	DBGX("TreeNode %p for attr=%s \n", nodes[j],
+											attrNameToString(attrs[i]) );
 
             Tmp& tmp = tmpMap[ nodes[j] ];
             tmp.attrs.push_back( attrs[i] );

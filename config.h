@@ -38,7 +38,7 @@ class Config {
 	virtual std::deque< SysDev > findSysDevs() = 0;
 	virtual std::deque< std::string > findObjType( PWR_ObjType ) = 0; 
 
-	virtual bool findObject( const std::string ) = 0;
+	virtual bool hasObject( const std::string ) = 0;
 	virtual PWR_ObjType objType( const std::string ) = 0;
 	virtual void print( std::ostream& ) {};
 };
