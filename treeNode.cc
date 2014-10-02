@@ -1,6 +1,7 @@
 #include <string>
 #include <map>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "util.h"
 #include "debug.h"
