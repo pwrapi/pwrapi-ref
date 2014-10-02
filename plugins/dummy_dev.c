@@ -29,7 +29,7 @@ typedef struct {
     double value[PWR_ATTR_INVALID];
 } dummyFdInfo_t;
   
-static pwr_fd_t dummy_dev_open( plugin_devOps_t* ops, const char *openstr )
+static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
     DBGX("`%s`\n",openstr);
     dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
@@ -120,7 +120,7 @@ static int dummy_dev_clear( pwr_fd_t fd )
     return 0;
 }
 
-static plugin_devOps_t devOps = {
+static plugin_devops_t devOps = {
     .open   = dummy_dev_open, 
     .close  = dummy_dev_close,
     .read   = dummy_dev_read,
@@ -131,15 +131,15 @@ static plugin_devOps_t devOps = {
     .clear  = dummy_dev_clear
 };
 
-static plugin_devOps_t* dummy_dev_init( const char *initstr )
+static plugin_devops_t* dummy_dev_init( const char *initstr )
 {
-	plugin_devOps_t* ops = malloc(sizeof(*ops));
+	plugin_devops_t* ops = malloc(sizeof(*ops));
 	*ops = devOps;
 	ops->privateData = malloc( sizeof( dummyDevInfo_t ) );
     return ops;
 }
 
-static int dummy_dev_final( plugin_devOps_t *ops )
+static int dummy_dev_final( plugin_devops_t *ops )
 {
     DBGX("\n");
 	free( ops->privateData );
