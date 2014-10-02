@@ -1,6 +1,7 @@
 
 #include <ulxmlrpcpp/ulxmlrpcpp.h>
 
+#include <string.h>
 #include <assert.h>
 #include <stdio.h>
 #include <cstdlib>
@@ -19,6 +20,28 @@
 using namespace ulxr;
 
 std::map< int, PWR_Obj > _objMap;
+
+
+class NumToString : public std::string  {
+  public:
+    NumToString( uint64_t num ) {
+        std::stringstream tmpSS;
+        tmpSS << num;
+        append( tmpSS.str() );
+    }
+};   
+
+class StringToNum {
+  public:
+    StringToNum( const std::string str ) {
+        std::stringstream( str ) >> num;
+    }
+    uint64_t uint64() {
+        return num;
+    }
+  private:
+    uint64_t  num;
+};
 
 PWR_Obj findObj( PWR_Obj obj, std::string name )
 {
@@ -130,7 +153,7 @@ MethodResponse attrGetValues(const MethodCall &calldata)
 	Array tsArray;
 	Array statusArray;
 
-	if ( retval != PWR_ERR_SUCCESS ) { 	
+	if ( retval != PWR_RET_SUCCESS ) { 	
         PWR_AttrAccessError error;
 		while ( PWR_StatusPopError( status, &error ) ) {
             Struct xxx;
@@ -189,7 +212,7 @@ MethodResponse attrSetValues(const MethodCall &calldata)
 	Array tsArray;
 	Array statusArray;
 
-	if ( retval != PWR_ERR_SUCCESS ) { 	
+	if ( retval != PWR_RET_SUCCESS ) { 	
         PWR_AttrAccessError error;
 		while ( PWR_StatusPopError( status, &error ) ) {
             Struct xxx;
