@@ -4,32 +4,6 @@
 
 #include "types.h"
 
-#if 0
-#include <string.h>
-#include <sstream>
-
-class NumToString : public std::string  {
-  public:
-	NumToString( uint64_t num ) {
-		std::stringstream tmpSS;
-    	tmpSS << num;
-		append( tmpSS.str() );
-	}
-};   
-
-class StringToNum {
-  public:
-	StringToNum( const std::string str ) {
-	    std::stringstream( str ) >> num;
-	}
-	uint64_t uint64() {
-		return num;
-	}
-  private:
-	uint64_t  num;
-};
-#endif
-
 static inline const char* objTypeToString( PWR_ObjType type )
 {
     switch( type ) {
