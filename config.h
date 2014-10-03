@@ -29,14 +29,25 @@ class Config {
 		std::string lib;
 	};
 
+    struct Child {
+        std::string name;
+        std::string location;
+    };
+
+    struct Location {
+        std::string type;
+        std::string config;
+    };
+
 	virtual std::string findAttrOp( std::string, PWR_AttrName ) = 0;
-	virtual std::deque< std::string > 
+	virtual std::deque< Child > 
 						findAttrChildren( std::string, PWR_AttrName ) = 0;
-	virtual std::deque< std::string > findChildren( std::string ) = 0;
+	virtual std::deque< Child > findChildren( std::string ) = 0;
 	virtual std::deque< ObjDev > findObjDevs( std::string, PWR_AttrName ) = 0;
 	virtual std::deque< Plugin > findPlugins() = 0;
 	virtual std::deque< SysDev > findSysDevs() = 0;
 	virtual std::deque< std::string > findObjType( PWR_ObjType ) = 0; 
+    virtual Location findLocation( std::string ) = 0;
 
 	virtual bool hasObject( const std::string ) = 0;
 	virtual PWR_ObjType objType( const std::string ) = 0;

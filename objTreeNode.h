@@ -1,5 +1,5 @@
-#ifndef _PWR_OBJECT_H
-#define _PWR_OBJECT_H
+#ifndef _PWR_OBJTREENODE_H
+#define _PWR_OBJTREENODE_H
 
 #include <string>
 #include "treeNode.h"

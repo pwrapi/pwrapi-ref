@@ -9,12 +9,12 @@
 #include "util.h"
 #include "types.h"
 #include "dev.h"
+#include "config.h"
 
 namespace PowerAPI {
 
 class Grp;
 class ObjTreeNode;
-class Config;
 
 class Cntxt {
 
@@ -56,9 +56,12 @@ class Cntxt {
 	void finiPlugins( );
     void initDevices( Config& );
 	void finiDevices( );
+
+    ObjTreeNode* findChild( Config::Child&, ObjTreeNode* parent = NULL );
     
     Grp* initGrp( PWR_ObjType type );
 	
+    std::string     m_myLocation;
     std::string 	m_configFile;
     ObjTreeNode*    m_top;
 	Config*			m_config;

@@ -5,6 +5,7 @@
 
 #include "devTreeNode.h"
 #include "objTreeNode.h"
+#include "rpcTreeNode.h"
 #include "dev.h"
 #include "group.h"
 #include "xmlConfig.h"
@@ -28,6 +29,12 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     } else {
         m_configFile = "systemX.xml";
     }
+    DBGX("configFile=`%s`\n",m_configFile.c_str());
+
+    if( getenv( "POWERAPI_LOCATION" ) != NULL ) {
+        m_myLocation = getenv( "POWERAPI_LOCATION" );
+    }
+    DBGX("location=`%s`\n",m_myLocation.c_str());
 
 	m_config = new XmlConfig( m_configFile );
 	
@@ -41,6 +48,7 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     } else {
         selfName = "plat.cab0.board0.node0";
     }
+    DBGX("root=`%s`\n",selfName.c_str());
 
 	m_top = findNode( selfName );
 
@@ -91,24 +99,20 @@ void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 	ObjTreeNode* node = static_cast<ObjTreeNode*>(_node);
 	DBGX("%s %s\n",node->name().c_str(), attrNameToString(attr.name()));
 	{
-		std::deque< std::string > children =
+		std::deque< Config::Child > children =
 			m_config->findAttrChildren( node->name(), attr.name() );
 			
-		std::deque< std::string >::iterator iter = children.begin();
+		std::deque< Config::Child >::iterator iter = children.begin();
 
 		for ( ; iter != children.end(); ++iter ) {
 
-			DBGX("%s\n",iter->c_str());
-
-			if ( m_objTreeNodeMap.find( *iter ) == m_objTreeNodeMap.end()) {
-				DBGX("create %s\n",iter->c_str());
-				m_objTreeNodeMap[ *iter ] = new ObjTreeNode( this, *iter, 
-										m_config->objType( *iter ), node );
-			}
-			assert( m_objTreeNodeMap[ *iter ] );
-			attr.addSrc( m_objTreeNodeMap[ *iter ] );	
+			DBGX("%s\n",iter->name.c_str());
+			attr.addSrc( findChild( *iter, node ) );	
 		}
 	}
+
+    DBGX("Add devs\n");
+
 	{
 		std::deque< Config::ObjDev > devices =
 			m_config->findObjDevs( node->name(), attr.name() );
@@ -193,7 +197,8 @@ void Cntxt::initDevices( Config& cfg )
 
 void Cntxt::finiDevices()
 {
-	std::map< std::string, std::pair< plugin_dev_t*, plugin_devops_t* > >::iterator iter = m_devMap.begin();
+	std::map< std::string, std::pair< plugin_dev_t*, plugin_devops_t* > >
+                    ::iterator iter = m_devMap.begin();
 
 	for ( ; iter != m_devMap.end(); ++ iter ) {
 		iter->second.first->final( iter->second.second );
@@ -205,22 +210,41 @@ Grp* Cntxt::findChildren( ObjTreeNode* parent )
 {
     Grp* grp = new Grp( this, "" );
 	
-	std::deque< std::string > children =
+	std::deque< Config::Child > children =
 			m_config->findChildren( parent->name() );
 			
-	std::deque< std::string >::iterator iter = children.begin();
+	std::deque< Config::Child >::iterator iter = children.begin();
 
 	for ( ; iter != children.end(); ++iter ) {
-
-		if ( m_objTreeNodeMap.find( *iter ) == m_objTreeNodeMap.end()) {
-			DBGX("create %s\n",iter->c_str());
-			m_objTreeNodeMap[ *iter ] = new ObjTreeNode( this, *iter,
-									m_config->objType( *iter ), parent );
-		}
-		grp->add( static_cast<ObjTreeNode*>( m_objTreeNodeMap[ *iter ] ) );	
-		
+		grp->add( findChild( *iter, parent ) );	
 	}
     return grp;
+}
+
+
+ObjTreeNode* Cntxt::findChild( Config::Child& child, ObjTreeNode* parent )
+{
+    if ( m_objTreeNodeMap.find( child.name ) == m_objTreeNodeMap.end()) {
+        TreeNode* node;
+
+		DBGX("create %s %s\n",child.name.c_str(),child.location.c_str());
+
+        if ( 1 || 0 == child.location.compare( m_myLocation ) ) {
+            node = new ObjTreeNode( this, child.name,
+									m_config->objType( child.name ), parent );
+
+        } else {
+            Config::Location location = m_config->findLocation( child.location );
+
+            DBGX("%s %s\n",location.type.c_str(), location.config.c_str());
+
+
+            node = new RpcTreeNode( this, child.name,
+                        m_config->objType( child.name ), location.config.c_str(), parent );
+        }
+        m_objTreeNodeMap[ child.name ] = node; 
+	}
+    return  static_cast<ObjTreeNode*>(m_objTreeNodeMap[ child.name ]);
 }
 
 Grp* Cntxt::initGrp( PWR_ObjType type ) {

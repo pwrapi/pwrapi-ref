@@ -150,12 +150,12 @@ std::deque< Config::ObjDev >
 	return ret;
 }
 
-std::deque< std::string >
+std::deque< Config::Child >
         XmlConfig::findAttrChildren( std::string name, PWR_AttrName attr )
 {
 	DBGX("%s %s\n",name.c_str(), attrNameToString(attr).c_str());
 
-	std::deque< std::string > ret;
+	std::deque< Config::Child > ret;
 
 	XMLElement* obj = findObject( name );
 	assert( obj );
@@ -163,21 +163,53 @@ std::deque< std::string >
 	if ( ! node ) return ret;
 
 	node = node->FirstChild();
+
     while ( node ) {
         XMLElement* elm = static_cast<XMLElement*>(node);
 
 		assert( ! strcmp( elm->Name(), "src" ) );
 
         if ( 0 == strcmp( elm->Attribute("type"), "child") ) {
-			DBGX("%s\n",elm->Attribute("name") );
-			std::string name = obj->Attribute("name");
-			name += ".";
-			name += elm->Attribute("name");			
-			ret.push_back( name ); 
-			DBGX("%s\n",ret.back().c_str());
+            DBGX("%s\n",elm->Attribute("name") );
+            Config::Child child;
+            child.name = elm->Attribute("name");            
+            ret.push_back( child ); 
+
+            DBGX("%s\n",ret.back().name.c_str());
         }
 
         node = node->NextSibling();
+    }
+
+    std::deque< Config::Child >::iterator iter = ret.begin(); 
+
+    for ( ; iter != ret.end(); ++iter ) {
+        
+        Config::Child& child = *iter;
+        DBGX("child's name `%s`\n",child.name.c_str());
+
+       node = findNodes1stChild( obj->FirstChild(), "children" );
+        assert(node);
+
+        while ( node ) {
+            XMLElement* elm = static_cast<XMLElement*>(node);
+
+            if ( 0 == child.name.compare( elm->Attribute("name") ) ) {
+                DBGX("found `%s` `%s`\n",elm->Attribute("name"),elm->Attribute("location"));
+                child.location = elm->Attribute("location");
+            }
+
+            DBGX("%s\n",child.name.c_str());
+            
+            node = node->NextSibling();
+        }
+    }
+
+    for ( iter = ret.begin() ; iter != ret.end(); ++iter ) {
+        
+        Config::Child& child = *iter;
+        DBGX("child's name `%s`\n",child.name.c_str());
+       child.name = std::string(obj->Attribute("name")) + "." + child.name;
     }
 
 	return ret;
@@ -198,11 +230,11 @@ std::string XmlConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	}
 }
 
-std::deque< std::string > XmlConfig::findChildren( std::string name )
+std::deque< Config::Child > XmlConfig::findChildren( std::string name )
 {
 	DBGX("%s\n",name.c_str() );
 
-	std::deque< std::string > ret;
+	std::deque< Child > ret;
 
 	XMLElement* obj = findObject( name );
 	assert( obj );
@@ -214,11 +246,13 @@ std::deque< std::string > XmlConfig::findChildren( std::string name )
 
 		assert( ! strcmp( elm->Name(), "child" ) );
 
-		std::string tmp = obj->Attribute("name");
-		tmp += ".";
-		tmp += elm->Attribute("name");			
-		ret.push_back( tmp ); 
-		DBGX("found child %s\n",ret.back().c_str());
+        Config::Child child;
+        child.location = elm->Attribute("location");
+		child.name = obj->Attribute("name");
+		child.name += ".";
+		child.name += elm->Attribute("name");			
+		ret.push_back( child ); 
+		DBGX("found child %s\n",ret.back().name.c_str());
 
         node = node->NextSibling();
     }
@@ -255,6 +289,33 @@ XMLNode* XmlConfig::findDev( XMLElement* elm, std::string name )
 {
 	return findNodeWithAttr( elm, "devices", "name", name );
 } 
+
+Config::Location XmlConfig::findLocation( std::string name )
+{
+    Config::Location location;
+
+   XMLNode* node = findNodes1stChild( m_systemNode->FirstChild(), "Locations" );
+
+   while ( node ) {
+        XMLElement* elm = static_cast<XMLElement*>(node);
+
+       assert( ! strcmp( elm->Name(), "location" ) );
+
+       if ( 0 == name.compare( elm->Attribute("name")) ) {
+            location.type = elm->Attribute("type");
+            location.config = elm->Attribute("config");
+           DBGX("found %s %s %s\n",elm->Attribute("name"), location.type.c_str(), location.config.c_str());
+            
+           break;
+       }
+
+        node = node->NextSibling();
+   } 
+
+
+    return location;
+}
+
 
 XMLNode* XmlConfig::findAttr( XMLElement* elm, std::string attr )
 {

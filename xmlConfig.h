@@ -14,14 +14,15 @@ class XmlConfig : public Config {
   public:
 	XmlConfig( std::string file );
 	
-	std::deque< std::string >
+	std::deque< Child >
                 findAttrChildren( std::string, PWR_AttrName );
 	std::string findAttrOp( std::string, PWR_AttrName );
-	std::deque< std::string > findChildren( std::string );
+	std::deque< Child > findChildren( std::string );
 	std::deque< Config::ObjDev > findObjDevs( std::string, PWR_AttrName );
 	std::deque< Config::Plugin > findPlugins();
 	std::deque< Config::SysDev > findSysDevs();
     std::deque< std::string > findObjType( PWR_ObjType );
+    Location findLocation( std::string );
 	bool hasObject( const std::string name );
 	PWR_ObjType objType( const std::string );
 	void print( std::ostream& );
