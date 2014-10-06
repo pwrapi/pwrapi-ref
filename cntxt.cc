@@ -5,7 +5,9 @@
 
 #include "devTreeNode.h"
 #include "objTreeNode.h"
+#ifdef USE_RPC
 #include "rpcTreeNode.h"
+#endif
 #include "dev.h"
 #include "group.h"
 #include "xmlConfig.h"
@@ -62,6 +64,8 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     printf("standAlone=%s\n", standAlone() ? "yes":"no");
 
 	m_top = findNode( selfName );
+    assert(m_top);
+    DBGX("%s\n",m_top->name().c_str());
 
 	initDevices( *m_config );
 
@@ -243,8 +247,10 @@ ObjTreeNode* Cntxt::findObject( std::string name )
 
             DBGX("%s %s\n", tmp.type.c_str(), tmp.config.c_str());
 
+#ifdef USE_RPC
             node = new RpcTreeNode( this, name,
                         m_config->objType( name ), tmp.config.c_str(), parent );
+#endif
         }
         m_objTreeNodeMap[ name ] = node; 
 	}
