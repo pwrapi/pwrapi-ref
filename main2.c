@@ -4,6 +4,8 @@
 
 #include <pow.h> 
 
+char* myctime(const time_t *timep);
+
 int main( int argc, char* argv[] )
 {
     PWR_Grp     grp;
@@ -35,7 +37,6 @@ int main( int argc, char* argv[] )
                         PWR_GrpGetObjByIndx( children, i ) ) );
     }
 
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_VOLTAGE)\n");
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_VOLTAGE, &value, &ts );
     assert( retval == PWR_RET_INVALID );
 
@@ -43,7 +44,7 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,ctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
     
     value = 25.812;
     printf("PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=%f\n",value);
@@ -59,7 +60,7 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", value, ctime( &time ) );
+    printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", value, myctime( &time ) );
 
     value = 100.10;
     printf("PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=%f\n",value);
@@ -72,7 +73,7 @@ int main( int argc, char* argv[] )
     assert( value == 200.20 );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,ctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
 
     grp = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE );
     assert( grp );
@@ -89,8 +90,14 @@ int main( int argc, char* argv[] )
     assert( value == 0.2 );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f tx=`%s`\n",value,ctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
 
 	PWR_CntxtDestroy( cntxt );
     return 0;
+}
+char* myctime(const time_t *timep)
+{
+    char* tmp = ctime(timep);
+    tmp[ strlen(tmp) - 1 ] = 0; 
+    return tmp;
 }
