@@ -2,6 +2,7 @@
 #include <map>
 #include <assert.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "util.h"
 #include "debug.h"
@@ -156,7 +157,14 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
 
         DBGX("call op2 \n");
 
-    	entry.op2( (void*) &((uint64_t*)valuePtr)[pos], iter2->second );
+    	entry.op2( (void*) &((uint64_t*)valuePtr)[pos], iter2->second  );
+
+        // Should the calculation of the timestamp be moved to the "op"? 
+        struct timeval tv;
+        gettimeofday(&tv,NULL);
+
+        ts[pos] = tv.tv_sec * 1000000000;
+        ts[pos] += tv.tv_usec * 1000;
     }
 
     DBGX("leave\n");
