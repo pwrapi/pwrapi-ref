@@ -46,7 +46,7 @@ static int xtpmdev_write( )
     return 0;
 }
 
-pwr_dev_t mchw_xtpmdev_init( const char *initstr )
+plugin_devops_t *mchw_xtpmdev_init( const char *initstr )
 {
     if( xtpmdev_verbose )
         printf( "Info: initializing MCHW XTPM device\n" );
@@ -54,7 +54,7 @@ pwr_dev_t mchw_xtpmdev_init( const char *initstr )
     return 0x0;
 }
 
-int mchw_xtpmdev_final( pwr_dev_t dev )
+int mchw_xtpmdev_final( plugin_devops_t *dev )
 {
     if( xtpmdev_verbose )
         printf( "Info: finalizing MCHW XTPM device\n" );
@@ -62,7 +62,7 @@ int mchw_xtpmdev_final( pwr_dev_t dev )
     return 0;
 }
 
-pwr_fd_t mchw_xtpmdev_open( pwr_dev_t dev, const char *openstr )
+pwr_fd_t mchw_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
 {
     if( xtpmdev_verbose )
         printf( "Info: opening MCHW XTPM device\n" );
@@ -125,9 +125,7 @@ int mchw_xtpmdev_clear( pwr_fd_t fd )
     return 0;
 }
 
-static plugin_dev_t dev = {
-    .init   = mchw_xtpmdev_init,
-    .final  = mchw_xtpmdev_final,
+static plugin_devops_t devops = {
     .open   = mchw_xtpmdev_open,
     .close  = mchw_xtpmdev_close,
     .read   = mchw_xtpmdev_read,
@@ -136,6 +134,11 @@ static plugin_dev_t dev = {
     .writev = mchw_xtpmdev_writev,
     .time   = mchw_xtpmdev_time,
     .clear  = mchw_xtpmdev_clear
+};
+
+static plugin_dev_t dev = {
+    .init   = mchw_xtpmdev_init,
+    .final  = mchw_xtpmdev_final,
 };
 
 plugin_dev_t* getDev() {

@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-pwr_dev_t oshw_cpudev_init( const char *initstr );
-int oshw_cpudev_final( pwr_dev_t dev );
+plugin_devops_t *oshw_cpudev_init( const char *initstr );
+int oshw_cpudev_final( plugin_devops_t *dev );
 
-pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *openstr );
+pwr_fd_t oshw_cpudev_open( plugin_devops_t *dev, const char *openstr );
 int oshw_cpudev_close( pwr_fd_t fd );
 
 int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr,

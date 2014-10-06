@@ -40,7 +40,7 @@ typedef struct plugin_devops_t {
     pwr_time_t  time;
     pwr_clear_t clear;
 
-	void*		privateData;
+    void *private_data;
 
 } plugin_devops_t;
 

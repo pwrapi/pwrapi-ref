@@ -82,37 +82,41 @@ static int avail_freq( int cpu, int freq[], int *count )
     return 0;
 }
 
-pwr_dev_t oshw_cpudev_init( const char *initstr )
+plugin_devops_t *oshw_cpudev_init( const char *initstr )
 {
     int i;
 
-    pwr_dev_t *dev = malloc( sizeof(oshw_cpudev_t) );
-    bzero( dev, sizeof(oshw_cpudev_t) );
+    plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
+    bzero( dev, sizeof(plugin_devops_t) );
+
+    dev->private_data = malloc( sizeof(oshw_cpudev_t) );
+    bzero( dev->private_data, sizeof(oshw_cpudev_t) );
 
     if( cpudev_verbose )
         printf( "Info: initializing OSHW CPU device\n" );
 
-    OSHW_CPUDEV(dev)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
-    for( i = 1; i <= OSHW_CPUDEV(dev)->num_cpus -1; i++ ) {
+    OSHW_CPUDEV(dev->private_data)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
+    for( i = 1; i <= OSHW_CPUDEV(dev->private_data)->num_cpus -1; i++ ) {
         online_cpu( i, 1 );
-        OSHW_CPUDEV(dev)->online_cpulist[i] = 1;
+        OSHW_CPUDEV(dev->private_data)->online_cpulist[i] = 1;
     }        
 
-    avail_freq(0, OSHW_CPUDEV(dev)->avail_freqlist, &(OSHW_CPUDEV(dev)->num_freq));
+    avail_freq(0, OSHW_CPUDEV(dev->private_data)->avail_freqlist, &(OSHW_CPUDEV(dev->private_data)->num_freq));
 
     return dev;
 }
 
-int oshw_cpudev_final( pwr_dev_t dev )
+int oshw_cpudev_final( plugin_devops_t *dev )
 {
     if( cpudev_verbose )
         printf( "Info: finaling OSHW CPU device\n" );
 
+    free( dev->private_data );
     free( dev );
     return 0;
 }
 
-pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *openstr )
+pwr_fd_t oshw_cpudev_open( plugin_devops_t *dev, const char *openstr )
 {
     char *token;
 
@@ -122,7 +126,7 @@ pwr_fd_t oshw_cpudev_open( pwr_dev_t dev, const char *openstr )
     if( cpudev_verbose )
         printf( "Info: opening OSHW CPU descriptor\n" );
 
-    OSHW_CPUFD(fd)->dev = OSHW_CPUDEV(dev);
+    OSHW_CPUFD(fd)->dev = OSHW_CPUDEV(dev->private_data);
 
     if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
         printf( "Error: missing CPU separator in initialization string %s\n", openstr );
@@ -302,9 +306,7 @@ int oshw_cpudev_clear( pwr_fd_t fd )
     return 0;
 }
 
-static plugin_dev_t dev = {
-    .init   = oshw_cpudev_init,
-    .final  = oshw_cpudev_final,
+static plugin_devops_t devops = {
     .open   = oshw_cpudev_open,
     .close  = oshw_cpudev_close,
     .read   = oshw_cpudev_read,
@@ -313,6 +315,11 @@ static plugin_dev_t dev = {
     .writev = oshw_cpudev_writev,
     .time   = oshw_cpudev_time,
     .clear  = oshw_cpudev_clear
+};
+
+static plugin_dev_t dev = {
+    .init   = oshw_cpudev_init,
+    .final  = oshw_cpudev_final,
 };
 
 plugin_dev_t* getDev() {

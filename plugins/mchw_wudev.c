@@ -151,13 +151,16 @@ static long long wudev_extract( const char *buf, int pos )
     return atol(token);
 }
 
-pwr_dev_t mchw_wudev_init( const char *initstr )
+plugin_devops_t *mchw_wudev_init( const char *initstr )
 {
     char port[256] = "";
     int baud = 0;
 
-    pwr_dev_t *dev = malloc( sizeof(mchw_wudev_t) );
-    bzero( dev, sizeof(mchw_wudev_t) );
+    plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
+    bzero( dev, sizeof(plugin_devops_t) );
+
+    dev->private_data = malloc( sizeof(mchw_wudev_t) );
+    bzero( dev->private_data, sizeof(mchw_wudev_t) );
 
     if( wudev_verbose )
         printf( "Info: initializing MCHW Wattsup device\n" );
@@ -167,7 +170,7 @@ pwr_dev_t mchw_wudev_init( const char *initstr )
         return 0x0;
     }
 
-    if( (MCHW_WUDEV(dev)->fd = wudev_open( port, baud )) < 0 ) {
+    if( (MCHW_WUDEV(dev->private_data)->fd = wudev_open( port, baud )) < 0 ) {
         printf( "Error: wattsup hardware initialization failed\n" );
         return 0x0;
     }
@@ -175,18 +178,19 @@ pwr_dev_t mchw_wudev_init( const char *initstr )
     return dev;
 }
 
-int mchw_wudev_final( pwr_dev_t dev )
+int mchw_wudev_final( plugin_devops_t *dev )
 {
     if( wudev_verbose )
         printf( "Info: finalizing MCHW Wattsup device\n" );
 
-    close( MCHW_WUDEV(dev)->fd );
+    close( MCHW_WUDEV(dev->private_data)->fd );
+    free( dev->private_data );
     free( dev );
 
     return 0;
 }
 
-pwr_fd_t mchw_wudev_open( pwr_dev_t dev, const char *openstr )
+pwr_fd_t mchw_wudev_open( plugin_devops_t *dev, const char *openstr )
 {
     pwr_fd_t *fd = malloc( sizeof(mchw_wufd_t) );
     bzero( fd, sizeof(mchw_wufd_t) );
@@ -194,10 +198,10 @@ pwr_fd_t mchw_wudev_open( pwr_dev_t dev, const char *openstr )
     if( wudev_verbose )
         printf( "Info: opening MCHW Wattsup descriptor\n" );
 
-    MCHW_WUFD(fd)->dev = MCHW_WUDEV(dev);
+    MCHW_WUFD(fd)->dev = MCHW_WUDEV(dev->private_data);
 
     if( wudev_verbose )
-        printf( "Info: opened file descriptor %d\n", MCHW_WUDEV(dev)->fd );
+        printf( "Info: opened file descriptor %d\n", MCHW_WUDEV(dev->private_data)->fd );
 
     return fd;
 }
@@ -358,9 +362,7 @@ int mchw_wudev_clear( pwr_fd_t fd )
     return 0;
 }
 
-static plugin_dev_t dev = {
-    .init   = mchw_wudev_init,
-    .final  = mchw_wudev_final,
+static plugin_devops_t devops = {
     .open   = mchw_wudev_open,
     .close  = mchw_wudev_close,
     .read   = mchw_wudev_read,
@@ -369,6 +371,11 @@ static plugin_dev_t dev = {
     .writev = mchw_wudev_writev,
     .time   = mchw_wudev_time,
     .clear  = mchw_wudev_clear
+};
+
+static plugin_dev_t dev = {
+    .init   = mchw_wudev_init,
+    .final  = mchw_wudev_final,
 };
 
 plugin_dev_t* getDev() {

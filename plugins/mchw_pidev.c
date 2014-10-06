@@ -84,12 +84,15 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
     return 0;
 }
 
-pwr_dev_t mchw_pidev_init( const char *initstr )
+plugin_devops_t *mchw_pidev_init( const char *initstr )
 {
     unsigned int saddr = 0, sport = 0;
 
-    pwr_dev_t *dev = malloc( sizeof(mchw_pidev_t) );
-    bzero( dev, sizeof(mchw_pidev_t) );
+    plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
+    bzero( dev, sizeof(plugin_devops_t) );
+
+    dev->private_data = malloc( sizeof(mchw_pidev_t) );
+    bzero( dev->private_data, sizeof(mchw_pidev_t) );
 
     if( pidev_verbose )
         printf( "Info: initializing MCHW PowerInsight device\n" );
@@ -99,7 +102,7 @@ pwr_dev_t mchw_pidev_init( const char *initstr )
         return 0x0;
     }
 
-    if( piapi_init( &(MCHW_PIDEV(dev)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport ) < 0 ) {
+    if( piapi_init( &(MCHW_PIDEV(dev->private_data)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport ) < 0 ) {
         printf( "Error: powerinsight hardware initialization failed\n" );
         return 0x0;
     }
@@ -107,22 +110,23 @@ pwr_dev_t mchw_pidev_init( const char *initstr )
     return dev;
 }
 
-int mchw_pidev_final( pwr_dev_t dev )
+int mchw_pidev_final( plugin_devops_t *dev )
 {
     if( pidev_verbose )
         printf( "Info: finaling MCHW PowerInsight device\n" );
 
-    if( piapi_destroy( &(MCHW_PIDEV(dev)->cntx) ) < 0 ) {
+    if( piapi_destroy( &(MCHW_PIDEV(dev->private_data)->cntx) ) < 0 ) {
         printf( "Error: powerinsight hardware finalization failed\n" );
         return -1;
     }
 
+    free( dev->private_data );
     free( dev );
 
     return 0;
 }
 
-pwr_fd_t mchw_pidev_open( pwr_dev_t dev, const char *openstr )
+pwr_fd_t mchw_pidev_open( plugin_devops_t *dev, const char *openstr )
 {
     char *token;
 
@@ -132,7 +136,7 @@ pwr_fd_t mchw_pidev_open( pwr_dev_t dev, const char *openstr )
     if( pidev_verbose )
         printf( "Info: opening MCHW PowerInsight descriptor\n" );
 
-    MCHW_PIFD(fd)->dev = MCHW_PIDEV(dev);
+    MCHW_PIFD(fd)->dev = MCHW_PIDEV(dev->private_data);
 
     if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
         printf( "Error: missing sensor port separator in initialization string %s\n", openstr );
@@ -308,9 +312,7 @@ int mchw_pidev_clear( pwr_fd_t fd )
     return 0;
 } 
 
-static plugin_dev_t dev = {
-    .init   = mchw_pidev_init,
-    .final  = mchw_pidev_final,
+static plugin_devops_t devops = {
     .open   = mchw_pidev_open,
     .close  = mchw_pidev_close,
     .read   = mchw_pidev_read,
@@ -321,6 +323,12 @@ static plugin_dev_t dev = {
     .clear  = mchw_pidev_clear
 };
 
+static plugin_dev_t dev = {
+    .init   = mchw_pidev_init, 
+    .final  = mchw_pidev_final,
+};
+
 plugin_dev_t* getDev() {
     return &dev;
 }
+

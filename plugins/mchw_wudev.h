@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-pwr_dev_t mchw_wudev_init( const char *initstr );
-int mchw_wudev_final( pwr_dev_t dev );
+plugin_devops_t *mchw_wudev_init( const char *initstr );
+int mchw_wudev_final( plugin_devops_t *dev );
 
-pwr_fd_t mchw_wudev_open( pwr_dev_t dev, const char *openstr );
+pwr_fd_t mchw_wudev_open( plugin_devops_t *dev, const char *openstr );
 int mchw_wudev_close( pwr_fd_t fd );
 
 int mchw_wudev_read( pwr_fd_t fd, PWR_AttrName attr,

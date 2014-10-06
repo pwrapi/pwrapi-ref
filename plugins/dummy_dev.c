@@ -135,14 +135,14 @@ static plugin_devops_t* dummy_dev_init( const char *initstr )
 {
 	plugin_devops_t* ops = malloc(sizeof(*ops));
 	*ops = devOps;
-	ops->privateData = malloc( sizeof( dummyDevInfo_t ) );
+	ops->private_data = malloc( sizeof( dummyDevInfo_t ) );
     return ops;
 }
 
 static int dummy_dev_final( plugin_devops_t *ops )
 {
     DBGX("\n");
-	free( ops->privateData );
+	free( ops->private_data );
     free( ops );
     return 0;
 }
