@@ -35,6 +35,7 @@ int main( int argc, char* argv[] )
                         PWR_GrpGetObjByIndx( children, i ) ) );
     }
 
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_VOLTAGE)\n");
     retval = PWR_ObjAttrGetValue( self, PWR_ATTR_VOLTAGE, &value, &ts );
     assert( retval == PWR_RET_INVALID );
 
@@ -42,10 +43,10 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("POWER=%f %s",value,ctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,ctime(&time));
     
     value = 25.812;
-    printf("set value to %f\n",value);
+    printf("PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=%f\n",value);
     retval = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, &value );
     assert( retval == PWR_RET_SUCCESS );
 
@@ -58,9 +59,10 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("POWER=%f %s", value, ctime( &time ) );
+    printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", value, ctime( &time ) );
 
     value = 100.10;
+    printf("PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=%f\n",value);
     retval = PWR_ObjAttrSetValues( self, 1, &name, &value, status );  
     assert( retval == PWR_RET_SUCCESS );
 
@@ -70,13 +72,14 @@ int main( int argc, char* argv[] )
     assert( value == 200.20 );
 
     PWR_TimeConvert( ts, &time );
-    printf("POWER=%f %s",value,ctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,ctime(&time));
 
     grp = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE );
     assert( grp );
 	assert( PWR_GrpGetNumObjs( grp ) );
 
     value = 0.1;
+    printf("PWR_GrpAttrSetValue(PWR_ATTR_POWER) value=%f\n", value);
     retval = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
     assert( retval == PWR_RET_SUCCESS );
 
@@ -86,7 +89,7 @@ int main( int argc, char* argv[] )
     assert( value == 0.2 );
 
     PWR_TimeConvert( ts, &time );
-    printf("POWER=%f %s",value,ctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f tx=`%s`\n",value,ctime(&time));
 
 	PWR_CntxtDestroy( cntxt );
     return 0;

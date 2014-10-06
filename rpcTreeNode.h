@@ -14,7 +14,7 @@ class RpcTreeNode : public ObjTreeNode {
             std::string config, ObjTreeNode* parent = NULL ) 
 	  : ObjTreeNode( ctx, name, type, parent ) 
     {
-        DBGX("%s\n",config.c_str());
+        DBGX("name=`%s` config=`%s`\n",name.c_str(), config.c_str());
 	    m_url = config.substr(0, config.find_first_of( ":") );
 	    m_port = atoi( config.substr( config.find_first_of( ":") + 1, -1 ).c_str() ); 
         DBGX("url=%s %d\n",m_url.c_str(),m_port);

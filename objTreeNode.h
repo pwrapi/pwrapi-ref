@@ -4,6 +4,7 @@
 #include <string>
 #include "treeNode.h"
 #include "cntxt.h"
+#include "debug.h"
 
 namespace PowerAPI {
 
@@ -15,7 +16,10 @@ class ObjTreeNode : public TreeNode {
     ObjTreeNode( Cntxt* ctx, std::string name,
 					PWR_ObjType type, ObjTreeNode* parent = NULL ) 
 	  : TreeNode( ctx ), m_name(name), m_type(type), 
-		m_parent(parent), m_children(NULL) {}
+		m_parent(parent), m_children(NULL) 
+    {
+        DBGX("name=%s\n",name.c_str());
+    }
 
     virtual ~ObjTreeNode() {};
 

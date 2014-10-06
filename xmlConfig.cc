@@ -7,7 +7,7 @@ using namespace PowerAPI;
 
 XmlConfig::XmlConfig( std::string file ) 
 {
-	DBGX("config file `%s`\n",file.c_str());
+	DBGX2(DBG_CONFIG,"config file `%s`\n",file.c_str());
     m_xml = new tinyxml2::XMLDocument();
     m_xml->LoadFile( file.c_str() );
 	m_systemNode = findNode( m_xml->RootElement(), "System" ); 
@@ -50,7 +50,7 @@ void XmlConfig::printTree( std::ostream& out, XMLNode* node )
 
 bool XmlConfig::hasObject( const std::string name ) 
 {
-	DBGX("find %s\n",name.c_str());
+	DBGX2(DBG_CONFIG,"find %s\n",name.c_str());
 	return ( NULL != findObject( name ) );
 }
 
@@ -75,7 +75,7 @@ std::deque< Config::Plugin > XmlConfig::findPlugins( )
 
 		assert( ! strcmp( elm->Name(), "plugin" ) );
 
-		DBGX("name=`%s` lib=`%s`\n",elm->Attribute("name"),
+		DBGX2(DBG_CONFIG,"name=`%s` lib=`%s`\n",elm->Attribute("name"),
 											elm->Attribute("lib"));
 
 		Config::Plugin plugin;
@@ -114,7 +114,7 @@ std::deque< Config::SysDev > XmlConfig::findSysDevs()
 std::deque< Config::ObjDev > 
 			XmlConfig::findObjDevs( std::string name, PWR_AttrName attr )
 {
-	DBGX("%s %s\n",name.c_str(), attrNameToString(attr).c_str());
+	DBGX2(DBG_CONFIG,"%s %s\n",name.c_str(), attrNameToString(attr).c_str());
 
 	std::deque< Config::ObjDev > ret;
 
@@ -130,7 +130,7 @@ std::deque< Config::ObjDev >
 		assert( ! strcmp( elm->Name(), "src" ) );
 
         if ( 0 == strcmp( elm->Attribute("type"), "device") ) {
-			DBGX("%s\n",elm->Attribute("name") );
+			DBGX2(DBG_CONFIG,"%s\n",elm->Attribute("name") );
 			std::string tmp = elm->Attribute("name");
 			XMLElement* devElm = static_cast<XMLElement*>(findDev( obj, tmp ));
 			assert( devElm );
@@ -141,7 +141,7 @@ std::deque< Config::ObjDev >
 			dev.openString = devElm->Attribute("openString");
 			ret.push_back( dev );
 
-			DBGX("%s %s\n", dev.device.c_str(), dev.openString.c_str() );
+			DBGX2(DBG_CONFIG,"%s %s\n", dev.device.c_str(), dev.openString.c_str() );
         }
 
         node = node->NextSibling();
@@ -150,12 +150,12 @@ std::deque< Config::ObjDev >
 	return ret;
 }
 
-std::deque< Config::Child >
+std::deque< std::string >
         XmlConfig::findAttrChildren( std::string name, PWR_AttrName attr )
 {
-	DBGX("%s %s\n",name.c_str(), attrNameToString(attr).c_str());
+	DBGX2(DBG_CONFIG,"%s %s\n",name.c_str(), attrNameToString(attr).c_str());
 
-	std::deque< Config::Child > ret;
+	std::deque< std::string > ret;
 
 	XMLElement* obj = findObject( name );
 	assert( obj );
@@ -170,36 +170,32 @@ std::deque< Config::Child >
 		assert( ! strcmp( elm->Name(), "src" ) );
 
         if ( 0 == strcmp( elm->Attribute("type"), "child") ) {
-            DBGX("%s\n",elm->Attribute("name") );
-            Config::Child child;
-            child.name = elm->Attribute("name");            
-            ret.push_back( child ); 
+            DBGX2(DBG_CONFIG,"%s\n",elm->Attribute("name") );
+            ret.push_back( elm->Attribute("name") );            
 
-            DBGX("%s\n",ret.back().name.c_str());
+            DBGX2(DBG_CONFIG,"%s\n",ret.back().c_str());
         }
 
         node = node->NextSibling();
     }
 
-    std::deque< Config::Child >::iterator iter = ret.begin(); 
+    std::deque< std::string >::iterator iter = ret.begin(); 
 
     for ( ; iter != ret.end(); ++iter ) {
         
-        Config::Child& child = *iter;
-        DBGX("child's name `%s`\n",child.name.c_str());
+        DBGX2(DBG_CONFIG,"child's name `%s`\n",iter->c_str());
 
-       node = findNodes1stChild( obj->FirstChild(), "children" );
+        node = findNodes1stChild( obj->FirstChild(), "children" );
         assert(node);
 
         while ( node ) {
             XMLElement* elm = static_cast<XMLElement*>(node);
 
-            if ( 0 == child.name.compare( elm->Attribute("name") ) ) {
-                DBGX("found `%s` `%s`\n",elm->Attribute("name"),elm->Attribute("location"));
-                child.location = elm->Attribute("location");
+            if ( 0 == iter->compare( elm->Attribute("name") ) ) {
+                DBGX2(DBG_CONFIG,"found `%s`\n",elm->Attribute("name"));
             }
 
-            DBGX("%s\n",child.name.c_str());
+            DBGX2(DBG_CONFIG,"%s\n",iter->c_str());
             
             node = node->NextSibling();
         }
@@ -207,9 +203,8 @@ std::deque< Config::Child >
 
     for ( iter = ret.begin() ; iter != ret.end(); ++iter ) {
         
-        Config::Child& child = *iter;
-        DBGX("child's name `%s`\n",child.name.c_str());
-       child.name = std::string(obj->Attribute("name")) + "." + child.name;
+        DBGX2(DBG_CONFIG,"child's name `%s`\n",iter->c_str());
+        *iter = std::string(obj->Attribute("name")) + "." + *iter;
     }
 
 	return ret;
@@ -217,7 +212,7 @@ std::deque< Config::Child >
 
 std::string XmlConfig::findAttrOp( std::string name, PWR_AttrName attr )
 {
-	DBGX("%s %s\n",name.c_str(), attrNameToString(attr).c_str());
+	DBGX2(DBG_CONFIG,"%s %s\n",name.c_str(), attrNameToString(attr).c_str());
 
 	XMLElement* obj = findObject( name );
 	assert( obj );
@@ -230,11 +225,11 @@ std::string XmlConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	}
 }
 
-std::deque< Config::Child > XmlConfig::findChildren( std::string name )
+std::deque< std::string > XmlConfig::findChildren( std::string name )
 {
-	DBGX("%s\n",name.c_str() );
+	DBGX2(DBG_CONFIG,"%s\n",name.c_str() );
 
-	std::deque< Child > ret;
+	std::deque< std::string > ret;
 
 	XMLElement* obj = findObject( name );
 	assert( obj );
@@ -246,13 +241,11 @@ std::deque< Config::Child > XmlConfig::findChildren( std::string name )
 
 		assert( ! strcmp( elm->Name(), "child" ) );
 
-        Config::Child child;
-        child.location = elm->Attribute("location");
-		child.name = obj->Attribute("name");
-		child.name += ".";
-		child.name += elm->Attribute("name");			
-		ret.push_back( child ); 
-		DBGX("found child %s\n",ret.back().name.c_str());
+		std::string tmp = obj->Attribute("name");
+		tmp += ".";
+		tmp += elm->Attribute("name");			
+		ret.push_back( tmp ); 
+		DBGX2(DBG_CONFIG,"found child %s\n",ret.back().c_str());
 
         node = node->NextSibling();
     }
@@ -272,7 +265,7 @@ std::deque< std::string > XmlConfig::findObjType( PWR_ObjType type )
 
 		assert( ! strcmp( elm->Name(), "obj" ) );
 
-		DBGX("name=`%s` type=`%s`\n",elm->Attribute("name"),
+		DBGX2(DBG_CONFIG,"name=`%s` type=`%s`\n",elm->Attribute("name"),
 											elm->Attribute("type"));
 
 		if ( ! typeStr.compare( elm->Attribute("type") ) ) {
@@ -304,14 +297,13 @@ Config::Location XmlConfig::findLocation( std::string name )
        if ( 0 == name.compare( elm->Attribute("name")) ) {
             location.type = elm->Attribute("type");
             location.config = elm->Attribute("config");
-           DBGX("found %s %s %s\n",elm->Attribute("name"), location.type.c_str(), location.config.c_str());
+           DBGX2(DBG_CONFIG,"found %s %s %s\n",elm->Attribute("name"), location.type.c_str(), location.config.c_str());
             
            break;
        }
 
         node = node->NextSibling();
    } 
-
 
     return location;
 }
@@ -327,7 +319,7 @@ XMLNode* XmlConfig::findNodeWithAttr( XMLElement* elm,
 {
     XMLNode* node = elm->FirstChild();
 
-	DBGX("nodeName=%s attrName=%s attrValue=%s\n",nodeName.c_str(), 
+	DBGX2(DBG_CONFIG,"nodeName=%s attrName=%s attrValue=%s\n",nodeName.c_str(), 
 			attrName.c_str(), attrValue.c_str());
 
     // find the attributes element
@@ -345,7 +337,7 @@ XMLNode* XmlConfig::findNodeWithAttr( XMLElement* elm,
         XMLElement* elm = static_cast<XMLElement*>(node);
 
 		if ( 0 == attrValue.compare( elm->Attribute(attrName.c_str())) ) {
-			DBGX("found %s\n",elm->Attribute(attrName.c_str()));
+			DBGX2(DBG_CONFIG,"found %s\n",elm->Attribute(attrName.c_str()));
 			break;
 		}
 
@@ -364,7 +356,7 @@ XMLNode* XmlConfig::findNodes1stChild( XMLNode* node, const std::string name )
 
 XMLElement* XmlConfig::findObject( const std::string name )
 {
-    DBGX("`%s`\n",name.c_str());
+    DBGX2(DBG_CONFIG,"`%s`\n",name.c_str());
 
 	XMLNode* node = findNodes1stChild( m_systemNode->FirstChild(), "Objects" );
 
@@ -372,7 +364,7 @@ XMLElement* XmlConfig::findObject( const std::string name )
         XMLElement* el = static_cast<XMLElement*>(node);
 
 #if 0 
-        DBGX("%s %s name=`%s`\n",el->Name(),
+        DBGX2(DBG_CONFIG,"%s %s name=`%s`\n",el->Name(),
                 el->Attribute("type"), el->Attribute("name"));
 #endif
 
@@ -385,18 +377,42 @@ XMLElement* XmlConfig::findObject( const std::string name )
     return NULL;
 }
 
+std::string XmlConfig::findParent( std::string name )
+{
+    return name.substr( 0, name.find_last_of( "." ) );
+}
+std::string XmlConfig::findObjLocation( std::string name )
+{
+    XMLElement* elm = findObject( name );
+    assert(elm);
+
+    DBGX2(DBG_CONFIG,"name=%s location=`%s`\n",
+                        elm->Attribute("name"),elm->Attribute("location"));
+
+    while ( ! elm->Attribute("location") && ! name.empty() ) {
+        name = findParent( name );
+        elm = findObject(name);
+        assert(elm);
+    } 
+    if ( elm->Attribute("location") ) {
+        return elm->Attribute("location");
+    } else {
+        return "";
+    }  
+}
+
 XMLNode* XmlConfig::findNode( XMLNode* node, const std::string name )
 {
-	DBGX("root=%s find node named `%s`\n", 
+	DBGX2(DBG_CONFIG,"root=%s find node named `%s`\n", 
 			static_cast<XMLElement*>(node)->Name(), name.c_str());
 
     // find the plugins element
     while ( node ) {
         XMLElement* elm = static_cast<XMLElement*>(node);
 
-		DBGX("current=`%s`\n", elm->Name() );
+		DBGX2(DBG_CONFIG,"current=`%s`\n", elm->Name() );
         if ( 0 == name.compare( elm->Name() ) ) {
-			DBGX("found node named `%s`\n", name.c_str());
+			DBGX2(DBG_CONFIG,"found node named `%s`\n", name.c_str());
             break;
         }
         node = node->NextSibling();

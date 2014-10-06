@@ -1,17 +1,17 @@
-XMLRPC = n
+XMLRPC = y
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml #-DDEBUG_ON
+CPPFLAGS = -Itinyxml -DDEBUG_ON
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 LDLIBS = -ldl
 CC = g++
 
-LIB_SRC= pow.cc cntxt.cc treeNode.cc xmlConfig.cc
+LIB_SRC= debug.c pow.cc cntxt.cc treeNode.cc rpcTreeNode.cc xmlConfig.cc
 
 ifeq ($(XMLRPC),y)
 ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
-LIB_SRC += objectUrl.cc
+#LIB_SRC += objectUrl.cc
 CPPFLAGS += -DUSE_ULXMLRPC -I$(ULXMLRPC)/include
 LDFLAGS += -L$(ULXMLRPC)/lib
 LDLIBS += -lulxmlrpcpp

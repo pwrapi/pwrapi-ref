@@ -17,7 +17,7 @@
 using namespace PowerAPI;
 
 Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
-            m_top( NULL )
+            m_top( NULL ), m_standAlone( true )
 {
     DBGX("enter\n");
     // find data base
@@ -36,6 +36,7 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     }
     DBGX("location=`%s`\n",m_myLocation.c_str());
 
+    _DbgFlags = 0x0;
 	m_config = new XmlConfig( m_configFile );
 	
 #if 0
@@ -49,6 +50,16 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
         selfName = "plat.cab0.board0.node0";
     }
     DBGX("root=`%s`\n",selfName.c_str());
+
+    if ( getenv( "POWERAPI_STANDALONE" ) != NULL ) {
+        if ( ! strcmp( getenv( "POWERAPI_STANDALONE" ), "no" ) ) {
+            m_standAlone = false;
+        }  
+    }
+
+    printf("location=`%s`\n",m_myLocation.c_str());
+    printf("root=`%s`\n",selfName.c_str());
+    printf("standAlone=%s\n", standAlone() ? "yes":"no");
 
 	m_top = findNode( selfName );
 
@@ -79,19 +90,7 @@ ObjTreeNode* Cntxt::getSelf()
 ObjTreeNode* Cntxt::findNode( std::string name ) 
 {
     DBGX("find %s\n",name.c_str());
-	ObjTreeNode* node = NULL; 
-	if ( m_objTreeNodeMap.find( name ) == m_objTreeNodeMap.end()) {
-    	DBGX("not in table %s\n",name.c_str());
-		if ( m_config->hasObject( name ) ) {
-    		DBGX("found in config %s\n",name.c_str());
-			node = new ObjTreeNode( this, name, m_config->objType( name ) );
-			static_cast<ObjTreeNode*>(node)->type();
-			m_objTreeNodeMap[ name ] = node; 
-		}
-	} else {
-		node = static_cast<ObjTreeNode*>( m_objTreeNodeMap[ name ] );
-	}	
-	return node;
+    return findObject( name );
 }
 
 void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr ) 
@@ -99,15 +98,15 @@ void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 	ObjTreeNode* node = static_cast<ObjTreeNode*>(_node);
 	DBGX("%s %s\n",node->name().c_str(), attrNameToString(attr.name()));
 	{
-		std::deque< Config::Child > children =
+		std::deque< std::string > children =
 			m_config->findAttrChildren( node->name(), attr.name() );
 			
-		std::deque< Config::Child >::iterator iter = children.begin();
+		std::deque< std::string >::iterator iter = children.begin();
 
 		for ( ; iter != children.end(); ++iter ) {
 
-			DBGX("%s\n",iter->name.c_str());
-			attr.addSrc( findChild( *iter, node ) );	
+			DBGX("%s\n",iter->c_str());
+			attr.addSrc( findObject( *iter ) );	
 		}
 	}
 
@@ -210,41 +209,46 @@ Grp* Cntxt::findChildren( ObjTreeNode* parent )
 {
     Grp* grp = new Grp( this, "" );
 	
-	std::deque< Config::Child > children =
+	std::deque< std::string > children =
 			m_config->findChildren( parent->name() );
 			
-	std::deque< Config::Child >::iterator iter = children.begin();
+	std::deque< std::string >::iterator iter = children.begin();
 
 	for ( ; iter != children.end(); ++iter ) {
-		grp->add( findChild( *iter, parent ) );	
+		grp->add( findObject( *iter ) );	
 	}
     return grp;
 }
 
-
-ObjTreeNode* Cntxt::findChild( Config::Child& child, ObjTreeNode* parent )
+ObjTreeNode* Cntxt::findObject( std::string name )
 {
-    if ( m_objTreeNodeMap.find( child.name ) == m_objTreeNodeMap.end()) {
+    if ( m_objTreeNodeMap.find( name ) == m_objTreeNodeMap.end()) {
         TreeNode* node;
 
-		DBGX("create %s %s\n",child.name.c_str(),child.location.c_str());
+        std::string location = m_config->findObjLocation( name );
+        std::string parentName = m_config->findParent( name ); 
 
-        if ( 1 || 0 == child.location.compare( m_myLocation ) ) {
-            node = new ObjTreeNode( this, child.name,
-									m_config->objType( child.name ), parent );
+		DBGX("create `%s` location `%s` parent `%s`\n", name.c_str(), 
+                                location.c_str(), parentName.c_str());
 
-        } else {
-            Config::Location location = m_config->findLocation( child.location );
-
-            DBGX("%s %s\n",location.type.c_str(), location.config.c_str());
-
-
-            node = new RpcTreeNode( this, child.name,
-                        m_config->objType( child.name ), location.config.c_str(), parent );
+        ObjTreeNode* parent = NULL;
+        if ( m_objTreeNodeMap.find( parentName ) == m_objTreeNodeMap.end()) {
+            m_objTreeNodeMap[ parentName ]; 
         }
-        m_objTreeNodeMap[ child.name ] = node; 
+
+        if ( standAlone() || 0 == location.compare( m_myLocation ) ) {
+            node = new ObjTreeNode( this, name, m_config->objType( name ), parent );
+        } else {
+            Config::Location tmp = m_config->findLocation( location );
+
+            DBGX("%s %s\n", tmp.type.c_str(), tmp.config.c_str());
+
+            node = new RpcTreeNode( this, name,
+                        m_config->objType( name ), tmp.config.c_str(), parent );
+        }
+        m_objTreeNodeMap[ name ] = node; 
 	}
-    return  static_cast<ObjTreeNode*>(m_objTreeNodeMap[ child.name ]);
+    return  static_cast<ObjTreeNode*>(m_objTreeNodeMap[ name ]);
 }
 
 Grp* Cntxt::initGrp( PWR_ObjType type ) {
@@ -256,17 +260,7 @@ Grp* Cntxt::initGrp( PWR_ObjType type ) {
 	std::deque < std::string >::iterator iter = objs.begin();
 
 	for ( ; iter != objs.end(); ++iter ) {
-
-		if ( m_objTreeNodeMap.find( *iter ) == m_objTreeNodeMap.end()) {
-			DBGX("create %s\n",iter->c_str());
-
-			//
-			// We need to fill in the parent if it's in the map
-			//
-			m_objTreeNodeMap[ *iter ] = new ObjTreeNode( this, *iter,
-									m_config->objType( *iter ), NULL );
-		}
-		grp->add( static_cast<ObjTreeNode*>( m_objTreeNodeMap[ *iter ] ) );	
+		grp->add( findObject( *iter ) );	
 	}	
 
     return grp;

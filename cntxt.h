@@ -56,8 +56,9 @@ class Cntxt {
 	void finiPlugins( );
     void initDevices( Config& );
 	void finiDevices( );
+    bool standAlone() { return m_standAlone; } 
 
-    ObjTreeNode* findChild( Config::Child&, ObjTreeNode* parent = NULL );
+    ObjTreeNode* findObject( std::string name );
     
     Grp* initGrp( PWR_ObjType type );
 	
@@ -65,6 +66,7 @@ class Cntxt {
     std::string 	m_configFile;
     ObjTreeNode*    m_top;
 	Config*			m_config;
+    bool            m_standAlone;
 
     std::map<std::string,TreeNode*>	m_objTreeNodeMap;
 	std::deque< TreeNode* >			m_devTreeNodes;
