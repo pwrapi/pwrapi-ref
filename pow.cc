@@ -1,5 +1,6 @@
 #include <string.h>
 #include <sys/time.h>
+#include <assert.h>
 
 #include "pow.h"
 #include "objTreeNode.h"
@@ -25,7 +26,7 @@ int PWR_CntxtDestroy( PWR_Cntxt ctx )
     return PWR_RET_SUCCESS;
 }
 
-PWR_Obj PWR_CntxtGetSelf( PWR_Cntxt ctx )
+PWR_Obj PWR_CntxtGetEntryPoint( PWR_Cntxt ctx )
 {
     return CNTXT(ctx)->getSelf();
 }
@@ -225,7 +226,7 @@ static int online_cpus(int number_desired)
     return 0;
 }
 
-int PWR_AppHint( PWR_Obj obj, PWR_Hint hint)
+int PWR_AppHint( PWR_Obj obj, PWR_RegionHint hint)
 {
     switch( hint ){
         case PWR_REGION_SERIAL:
@@ -243,6 +244,8 @@ int PWR_AppHint( PWR_Obj obj, PWR_Hint hint)
             return PWR_RET_SUCCESS;
         case PWR_REGION_MEM_BOUND:
             return PWR_RET_SUCCESS;
+		case PWR_REGION_DEFAULT:
+			assert(0);	
     }
 
     return PWR_RET_FAILURE;

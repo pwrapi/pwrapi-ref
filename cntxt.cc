@@ -38,7 +38,7 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     }
     DBGX("location=`%s`\n",m_myLocation.c_str());
 
-    _DbgFlags = 0x0;
+    _DbgFlags = 0x1;
 	m_config = new XmlConfig( m_configFile );
 	
 #if 0

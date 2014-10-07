@@ -20,7 +20,7 @@ int main( int argc, char* argv[] )
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
     assert( cntxt );
-    self = PWR_CntxtGetSelf( cntxt );
+    self = PWR_CntxtGetEntryPoint( cntxt );
     assert( self );
     
     printf("I'm a `%s`\n", PWR_ObjGetTypeString( PWR_ObjGetType( self ) ) ); 

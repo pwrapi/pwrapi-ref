@@ -18,7 +18,7 @@ int PWR_GetMinorVersion();
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType, PWR_Role, const char* name );
 int       PWR_CntxtDestroy( PWR_Cntxt );
-PWR_Obj   PWR_CntxtGetSelf( PWR_Cntxt );
+PWR_Obj   PWR_CntxtGetEntryPoint( PWR_Cntxt );
 PWR_Grp   PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );
 PWR_Grp   PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name );
 
@@ -111,7 +111,7 @@ int PWR_TimeConvert( PWR_Time time, time_t* );
 /*
  * Operating System -> Application Interface
  */
-int PWR_AppHint( PWR_Obj, PWR_Hint );
+int PWR_AppHint( PWR_Obj, PWR_RegionHint );
 #ifdef __cplusplus
 }
 #endif
