@@ -18,7 +18,7 @@ int main( int argc, char* argv[] )
       return -1;
     }
 
-    if( (self=PWR_CntxtGetSelf( cntxt )) == 0x0 ) {
+    if( (self=PWR_CntxtGetEntryPoint( cntxt )) == 0x0 ) {
       printf( "Error: getting self from PowerAPI context failed\n" );
       return -1;
     }
