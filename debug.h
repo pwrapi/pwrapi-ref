@@ -1,15 +1,15 @@
 #ifndef _PWR_DEBUG_H
 #define _PWR_DEBUG_H
 
+extern unsigned int _DbgFlags;
+
+#define DBG_CONFIG (1<<1)
+
 #ifdef DEBUG_ON  
 
 #include <cxxabi.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-extern unsigned int _DbgFlags;
-
-#define DBG_CONFIG (1<<1)
 
 #define DBGX( fmt, ... ) DBGX2( 0x1, fmt, ## __VA_ARGS__ )
 
@@ -30,6 +30,7 @@ extern unsigned int _DbgFlags;
 #else
 
 #define DBGX( fmt, args... )
+#define DBGX2( flag, fmt, ... )
 #define DBG( fmt, args... )
 
 #endif

@@ -13,6 +13,7 @@ namespace PowerAPI {
 class Config {
   public:
 
+	virtual ~Config() {}
 	struct SysDev {
 		std::string name;
 		std::string plugin;

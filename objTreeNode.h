@@ -21,7 +21,7 @@ class ObjTreeNode : public TreeNode {
         DBGX("name=%s\n",name.c_str());
     }
 
-    virtual ~ObjTreeNode() {};
+    virtual ~ObjTreeNode() {}
 
     ObjTreeNode* parent() 				{ return m_parent; }
     virtual std::string& name() 		{ return m_name; }

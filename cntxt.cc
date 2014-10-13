@@ -22,10 +22,11 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
             m_top( NULL ), m_standAlone( true )
 {
     DBGX("enter\n");
-    // find data base
+
+	// Todo
     // verify type
     // verify role
-    // who am I ?
+
     if( getenv( "POWERAPI_CONFIG" ) != NULL ) {
         m_configFile = getenv( "POWERAPI_CONFIG" );
     } else {
@@ -227,7 +228,7 @@ Grp* Cntxt::findChildren( ObjTreeNode* parent )
 ObjTreeNode* Cntxt::findObject( std::string name )
 {
     if ( m_objTreeNodeMap.find( name ) == m_objTreeNodeMap.end()) {
-        TreeNode* node;
+        TreeNode* node = NULL;
 
         std::string location = m_config->findObjLocation( name );
         std::string parentName = m_config->findParent( name ); 
@@ -242,16 +243,17 @@ ObjTreeNode* Cntxt::findObject( std::string name )
 
         if ( standAlone() || 0 == location.compare( m_myLocation ) ) {
             node = new ObjTreeNode( this, name, m_config->objType( name ), parent );
+#ifdef USE_RPC
         } else {
             Config::Location tmp = m_config->findLocation( location );
 
             DBGX("%s %s\n", tmp.type.c_str(), tmp.config.c_str());
 
-#ifdef USE_RPC
             node = new RpcTreeNode( this, name,
                         m_config->objType( name ), tmp.config.c_str(), parent );
 #endif
         }
+		assert(node);
         m_objTreeNodeMap[ name ] = node; 
 	}
     return  static_cast<ObjTreeNode*>(m_objTreeNodeMap[ name ]);

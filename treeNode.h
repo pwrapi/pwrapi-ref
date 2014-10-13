@@ -11,6 +11,7 @@ class Cntxt;
 class TreeNode {
   public:
 	TreeNode( Cntxt* ctx );
+	virtual ~TreeNode() {}
 
     virtual int attrGetValues( const std::vector<PWR_AttrName>& names,
 		void* ptr, std::vector<PWR_Time>& ts, std::vector<int>& status  );

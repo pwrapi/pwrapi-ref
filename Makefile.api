@@ -1,7 +1,7 @@
 XMLRPC = n
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml -DDEBUG_ON
+CPPFLAGS = -Itinyxml # -DDEBUG_ON
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 LDLIBS = -ldl
@@ -40,4 +40,4 @@ clean:
 
 %.o: %.cpp
 	g++ -MM $(CPPFLAGS) $(CXXFLAGS) $*.cpp > $*.d
-	g++  $(CPPFLAGS) $(CXXFLAGS) -c $*.cpp -o $*.o
+	g++ $(CPPFLAGS) $(CXXFLAGS) -c $*.cpp -o $*.o
