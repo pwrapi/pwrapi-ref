@@ -205,6 +205,56 @@ int PWR_StatusClear( PWR_Status status )
     return STATUS(status)->clear();
 }
 
+PWR_Stat PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat stat )
+{
+	return NULL;
+}
+
+PWR_Stat PWR_GrpCreateStat( PWR_Grp grp, PWR_AttrName name, PWR_AttrStat stat )
+{
+	return NULL;
+}
+
+int PWR_StatDestroy( PWR_Stat )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatStartWindow( PWR_Stat, PWR_Time period  )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatStopWindow( PWR_Stat )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatStart( PWR_Stat )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatStop( PWR_Stat )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatClear( PWR_Stat )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatGetValue( PWR_Stat, double* value, PWR_StatTimes* statTimes )
+{
+	return PWR_RET_FAILURE;
+}
+
+int PWR_StatGetValues( PWR_Stat, double values[], PWR_StatTimes statTimes[] )
+{
+	return PWR_RET_FAILURE;
+}
+
 const char* PWR_ObjGetName( PWR_Obj obj )
 {
     return &OBJTREENODE(obj)->name()[0];
