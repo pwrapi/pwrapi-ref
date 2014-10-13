@@ -2,28 +2,28 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "plugins/mchw_pidev.h"
-#include "plugins/mchw_rapldev.h"
-#include "plugins/mchw_xtpmdev.h"
+#include "plugins/pwr_pidev.h"
+#include "plugins/pwr_rapldev.h"
+#include "plugins/pwr_xtpmdev.h"
 
 int main( int argc, char* argv[] )
 {
     plugin_dev_t pwr_dev[] = {
-        { mchw_pidev_init, mchw_pidev_final },
-        { mchw_rapldev_init, mchw_rapldev_final },
-        { mchw_xtpmdev_init, mchw_xtpmdev_final }
+        { pwr_pidev_init, pwr_pidev_final },
+        { pwr_rapldev_init, pwr_rapldev_final },
+        { pwr_xtpmdev_init, pwr_xtpmdev_final }
     };
 
     plugin_devops_t pwr_devops[] = {
-        { mchw_pidev_open, mchw_pidev_close,
-          mchw_pidev_read, mchw_pidev_write, mchw_pidev_readv, mchw_pidev_writev,
-          mchw_pidev_time, mchw_pidev_clear },
-        { mchw_rapldev_open, mchw_rapldev_close,
-          mchw_rapldev_read, mchw_rapldev_write, mchw_rapldev_readv, mchw_rapldev_writev,
-          mchw_rapldev_time, mchw_rapldev_clear },
-        { mchw_xtpmdev_open, mchw_xtpmdev_close,
-          mchw_xtpmdev_read, mchw_xtpmdev_write, mchw_xtpmdev_readv, mchw_xtpmdev_writev,
-          mchw_xtpmdev_time, mchw_xtpmdev_clear }
+        { pwr_pidev_open, pwr_pidev_close,
+          pwr_pidev_read, pwr_pidev_write, pwr_pidev_readv, pwr_pidev_writev,
+          pwr_pidev_time, pwr_pidev_clear },
+        { pwr_rapldev_open, pwr_rapldev_close,
+          pwr_rapldev_read, pwr_rapldev_write, pwr_rapldev_readv, pwr_rapldev_writev,
+          pwr_rapldev_time, pwr_rapldev_clear },
+        { pwr_xtpmdev_open, pwr_xtpmdev_close,
+          pwr_xtpmdev_read, pwr_xtpmdev_write, pwr_xtpmdev_readv, pwr_xtpmdev_writev,
+          pwr_xtpmdev_time, pwr_xtpmdev_clear }
     };
     char initstr[][80] = {
         "10.54.21.97:20201", 

@@ -1,4 +1,4 @@
-#include "oshw_cpudev.h"
+#include "pwr_cpudev.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,14 +14,14 @@ typedef struct {
     int num_cpus;
     int avail_freqlist[100];
     int num_freq;
-} oshw_cpudev_t;
-#define OSHW_CPUDEV(X) ((oshw_cpudev_t *)(X))
+} pwr_cpudev_t;
+#define PWR_CPUDEV(X) ((pwr_cpudev_t *)(X))
 
 typedef struct {
-    oshw_cpudev_t *dev;
+    pwr_cpudev_t *dev;
     int cpu;
-} oshw_cpufd_t;
-#define OSHW_CPUFD(X) ((oshw_cpufd_t *)(X))
+} pwr_cpufd_t;
+#define PWR_CPUFD(X) ((pwr_cpufd_t *)(X))
 
 static int online_cpu( int cpu, int state )
 {
@@ -82,76 +82,76 @@ static int avail_freq( int cpu, int freq[], int *count )
     return 0;
 }
 
-plugin_devops_t *oshw_cpudev_init( const char *initstr )
+plugin_devops_t *pwr_cpudev_init( const char *initstr )
 {
     int i;
 
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
     bzero( dev, sizeof(plugin_devops_t) );
 
-    dev->private_data = malloc( sizeof(oshw_cpudev_t) );
-    bzero( dev->private_data, sizeof(oshw_cpudev_t) );
+    dev->private_data = malloc( sizeof(pwr_cpudev_t) );
+    bzero( dev->private_data, sizeof(pwr_cpudev_t) );
 
     if( cpudev_verbose )
-        printf( "Info: initializing OSHW CPU device\n" );
+        printf( "Info: initializing PWR CPU device\n" );
 
-    OSHW_CPUDEV(dev->private_data)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
-    for( i = 1; i <= OSHW_CPUDEV(dev->private_data)->num_cpus -1; i++ ) {
+    PWR_CPUDEV(dev->private_data)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
+    for( i = 1; i <= PWR_CPUDEV(dev->private_data)->num_cpus -1; i++ ) {
         online_cpu( i, 1 );
-        OSHW_CPUDEV(dev->private_data)->online_cpulist[i] = 1;
+        PWR_CPUDEV(dev->private_data)->online_cpulist[i] = 1;
     }        
 
-    avail_freq(0, OSHW_CPUDEV(dev->private_data)->avail_freqlist, &(OSHW_CPUDEV(dev->private_data)->num_freq));
+    avail_freq(0, PWR_CPUDEV(dev->private_data)->avail_freqlist, &(PWR_CPUDEV(dev->private_data)->num_freq));
 
     return dev;
 }
 
-int oshw_cpudev_final( plugin_devops_t *dev )
+int pwr_cpudev_final( plugin_devops_t *dev )
 {
     if( cpudev_verbose )
-        printf( "Info: finaling OSHW CPU device\n" );
+        printf( "Info: finaling PWR CPU device\n" );
 
     free( dev->private_data );
     free( dev );
     return 0;
 }
 
-pwr_fd_t oshw_cpudev_open( plugin_devops_t *dev, const char *openstr )
+pwr_fd_t pwr_cpudev_open( plugin_devops_t *dev, const char *openstr )
 {
     char *token;
 
-    pwr_fd_t *fd = malloc( sizeof(oshw_cpufd_t) );
-    bzero( fd, sizeof(oshw_cpufd_t) );
+    pwr_fd_t *fd = malloc( sizeof(pwr_cpufd_t) );
+    bzero( fd, sizeof(pwr_cpufd_t) );
 
     if( cpudev_verbose )
-        printf( "Info: opening OSHW CPU descriptor\n" );
+        printf( "Info: opening PWR CPU descriptor\n" );
 
-    OSHW_CPUFD(fd)->dev = OSHW_CPUDEV(dev->private_data);
+    PWR_CPUFD(fd)->dev = PWR_CPUDEV(dev->private_data);
 
     if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
         printf( "Error: missing CPU separator in initialization string %s\n", openstr );
         return 0x0;
     }
-    OSHW_CPUFD(fd)->cpu = atoi(token);
+    PWR_CPUFD(fd)->cpu = atoi(token);
 
     if( cpudev_verbose )
-        printf( "Info: extracted initialization string (CPU=%u)\n", OSHW_CPUFD(fd)->cpu );
+        printf( "Info: extracted initialization string (CPU=%u)\n", PWR_CPUFD(fd)->cpu );
 
     return fd;
 }
 
-int oshw_cpudev_close( pwr_fd_t fd )
+int pwr_cpudev_close( pwr_fd_t fd )
 {
     if( cpudev_verbose )
-        printf( "Info: closing OSHW CPU descriptor\n" );
+        printf( "Info: closing PWR CPU descriptor\n" );
 
-    OSHW_CPUFD(fd)->dev = 0x0;
+    PWR_CPUFD(fd)->dev = 0x0;
     free( fd );
 
     return 0;
 }
 
-int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
+int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     if( len != sizeof(unsigned long long) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
@@ -167,7 +167,7 @@ int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             break;
         case PWR_ATTR_SSTATE:
             *((unsigned long long *)value) =
-                (unsigned long long)OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu];
+                (unsigned long long)PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu];
             break;
         case PWR_ATTR_FREQ:
             *((double *)value) = (double)0;
@@ -176,7 +176,7 @@ int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             *((double *)value) = (double)0;
             break;
         default:
-            printf( "Warning: unknown OSHW reading attr (%u) requested\n", attr );
+            printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
     *timestamp = 0;
@@ -188,7 +188,7 @@ int oshw_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     return 0;
 }
 
-int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
+int pwr_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
     if( len != sizeof(unsigned long long) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
@@ -203,8 +203,8 @@ int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
             *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_SSTATE:
-            if( online_cpu( OSHW_CPUFD(fd)->cpu, *((unsigned long long *)value) ) == 0 )
-                OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu] =
+            if( online_cpu( PWR_CPUFD(fd)->cpu, *((unsigned long long *)value) ) == 0 )
+                PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu] =
                     *((unsigned long long *)value);
             break;
         case PWR_ATTR_FREQ:
@@ -214,7 +214,7 @@ int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
             *((double *)value) = (double)0;
             break;
         default:
-            printf( "Warning: unknown OSHW writing attr (%u) requested\n", attr );
+            printf( "Warning: unknown PWR writing attr (%u) requested\n", attr );
             break;
     }
 
@@ -224,7 +224,7 @@ int oshw_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
     return 0;
 }
 
-int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
+int pwr_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
@@ -239,7 +239,7 @@ int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
                 break;
             case PWR_ATTR_SSTATE:
                 *((unsigned long long *)values+i) =
-                    (unsigned long long)OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu];
+                    (unsigned long long)PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu];
                 break;
             case PWR_ATTR_FREQ:
                 *((double *)values+i) = (double)0;
@@ -248,7 +248,7 @@ int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
                 *((double *)values+i) = (double)0;
                 break;
             default:
-                printf( "Warning: unknown OSHW reading attr (%u) requested at position %u\n", attrs[i], i );
+                printf( "Warning: unknown PWR reading attr (%u) requested at position %u\n", attrs[i], i );
                 break;
         }
         timestamp[i] = 0;
@@ -260,7 +260,7 @@ int oshw_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
     return 0;
 }
 
-int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
+int pwr_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
     unsigned int i;
@@ -274,8 +274,8 @@ int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
                 *((unsigned long long *)values+i) = (unsigned long long)0;
                 break;
             case PWR_ATTR_SSTATE:
-                if( online_cpu( OSHW_CPUFD(fd)->cpu, *((unsigned long long *)values+i) ) == 0 )
-                    OSHW_CPUDEV(OSHW_CPUFD(fd)->dev)->online_cpulist[OSHW_CPUFD(fd)->cpu] =
+                if( online_cpu( PWR_CPUFD(fd)->cpu, *((unsigned long long *)values+i) ) == 0 )
+                    PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu] =
                         *((unsigned long long *)values+i);
                 break;
             case PWR_ATTR_FREQ:
@@ -285,7 +285,7 @@ int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
                 *((double *)values+i) = (double)0;
                 break;
             default:
-                printf( "Warning: unknown OSHW writing attr (%u) requested at position %u\n", attrs[i], i );
+                printf( "Warning: unknown PWR writing attr (%u) requested at position %u\n", attrs[i], i );
                 break;
         }
 
@@ -296,30 +296,30 @@ int oshw_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
     return 0;
 }
 
-int oshw_cpudev_time( pwr_fd_t fd, PWR_Time *timestamp )
+int pwr_cpudev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     return 0;
 }
 
-int oshw_cpudev_clear( pwr_fd_t fd )
+int pwr_cpudev_clear( pwr_fd_t fd )
 {
     return 0;
 }
 
 static plugin_devops_t devops = {
-    .open   = oshw_cpudev_open,
-    .close  = oshw_cpudev_close,
-    .read   = oshw_cpudev_read,
-    .write  = oshw_cpudev_write,
-    .readv  = oshw_cpudev_readv,
-    .writev = oshw_cpudev_writev,
-    .time   = oshw_cpudev_time,
-    .clear  = oshw_cpudev_clear
+    .open   = pwr_cpudev_open,
+    .close  = pwr_cpudev_close,
+    .read   = pwr_cpudev_read,
+    .write  = pwr_cpudev_write,
+    .readv  = pwr_cpudev_readv,
+    .writev = pwr_cpudev_writev,
+    .time   = pwr_cpudev_time,
+    .clear  = pwr_cpudev_clear
 };
 
 static plugin_dev_t dev = {
-    .init   = oshw_cpudev_init,
-    .final  = oshw_cpudev_final,
+    .init   = pwr_cpudev_init,
+    .final  = pwr_cpudev_final,
 };
 
 plugin_dev_t* getDev() {
