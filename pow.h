@@ -84,8 +84,6 @@ PWR_Stat PWR_GrpCreateStat( PWR_Grp, PWR_AttrName name, PWR_AttrStat stat );
 
 int PWR_StatDestroy( PWR_Stat );
 
-int PWR_StatStartWindow( PWR_Stat, PWR_Time period  );
-int PWR_StatStopWindow( PWR_Stat  );
 int PWR_StatStart( PWR_Stat );
 int PWR_StatStop( PWR_Stat );
 int PWR_StatClear( PWR_Stat );

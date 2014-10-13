@@ -7,6 +7,7 @@
 #include "group.h"
 #include "status.h"
 #include "cntxt.h"
+#include "stat.h"
 
 using namespace PowerAPI;
 
@@ -14,6 +15,7 @@ using namespace PowerAPI;
 #define OBJTREENODE(ptr) ((ObjTreeNode*) ptr)
 #define STATUS(ptr)      ((Status*) ptr) 
 #define GRP(ptr) 	     ((Grp*) ptr) 
+#define STAT(ptr) 	     ((Stat*) ptr) 
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
@@ -207,52 +209,45 @@ int PWR_StatusClear( PWR_Status status )
 
 PWR_Stat PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat stat )
 {
-	return NULL;
+	return new Stat( OBJTREENODE(obj), name, stat );
 }
 
 PWR_Stat PWR_GrpCreateStat( PWR_Grp grp, PWR_AttrName name, PWR_AttrStat stat )
 {
-	return NULL;
+	return new Stat( GRP(grp), name, stat );
 }
 
-int PWR_StatDestroy( PWR_Stat )
+int PWR_StatDestroy( PWR_Stat stat )
 {
-	return PWR_RET_FAILURE;
+	delete STAT(stat); 
+	return PWR_RET_SUCCESS;
 }
 
-int PWR_StatStartWindow( PWR_Stat, PWR_Time period  )
+int PWR_StatStart( PWR_Stat stat )
 {
-	return PWR_RET_FAILURE;
+	return STAT(stat)->start();
 }
 
-int PWR_StatStopWindow( PWR_Stat )
+int PWR_StatStop( PWR_Stat stat )
 {
-	return PWR_RET_FAILURE;
+	return STAT(stat)->stop();
 }
 
-int PWR_StatStart( PWR_Stat )
+int PWR_StatClear( PWR_Stat stat )
 {
-	return PWR_RET_FAILURE;
+	return STAT(stat)->stop();
 }
 
-int PWR_StatStop( PWR_Stat )
+int PWR_StatGetValue( PWR_Stat stat, double* value, PWR_StatTimes* statTimes )
 {
-	return PWR_RET_FAILURE;
+
+	return STAT(stat)->getValue( value, statTimes );
 }
 
-int PWR_StatClear( PWR_Stat )
+int PWR_StatGetValues( PWR_Stat stat, double values[],
+												PWR_StatTimes statTimes[] )
 {
-	return PWR_RET_FAILURE;
-}
-
-int PWR_StatGetValue( PWR_Stat, double* value, PWR_StatTimes* statTimes )
-{
-	return PWR_RET_FAILURE;
-}
-
-int PWR_StatGetValues( PWR_Stat, double values[], PWR_StatTimes statTimes[] )
-{
-	return PWR_RET_FAILURE;
+	return STAT(stat)->getValues( values, statTimes );
 }
 
 const char* PWR_ObjGetName( PWR_Obj obj )
