@@ -24,7 +24,16 @@ int DeviceStat::getValue( double* value, PWR_StatTimes* statTimes ) {
 	return m_obj->attrGetStat( m_attrName, m_attrStat, value, statTimes );
 }
 
-int DeviceStat::getValues( double value[], PWR_StatTimes statTimes[] ) {
+int DeviceStat::getValues( double value[], PWR_StatTimes statTimes[] ) 
+{
 	DBGX("%s\n",objTypeToString(m_obj->type()));
-	return m_obj->attrGetStats( m_attrName, m_attrStat, value, statTimes );
+	for ( int i = 0; i < m_grp->size(); i++ ) {
+		TreeNode* obj = m_grp->getObj(i);	
+		int retval = obj->attrGetStats( m_attrName, m_attrStat,
+								&value[i], &statTimes[i] );
+		if ( retval != PWR_RET_SUCCESS ) {
+			return PWR_RET_FAILURE;
+		} 	
+	}
+	return PWR_RET_SUCCESS;
 }
