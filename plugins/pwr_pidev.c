@@ -19,6 +19,18 @@ typedef struct {
 } pwr_pifd_t;
 #define PWR_PIFD(X) ((pwr_pifd_t *)(X))
 
+static plugin_devops_t devops = {
+    .open   = pwr_pidev_open,
+    .close  = pwr_pidev_close,
+    .read   = pwr_pidev_read,
+    .write  = pwr_pidev_write,
+    .readv  = pwr_pidev_readv,
+    .writev = pwr_pidev_writev,
+    .time   = pwr_pidev_time,
+    .clear  = pwr_pidev_clear,
+    .private_data = 0x0
+};
+
 static piapi_sample_t pidev_counter;
 static int pidev_reading;
 
@@ -89,7 +101,7 @@ plugin_devops_t *pwr_pidev_init( const char *initstr )
     unsigned int saddr = 0, sport = 0;
 
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
-    bzero( dev, sizeof(plugin_devops_t) );
+    *dev = devops;
 
     dev->private_data = malloc( sizeof(pwr_pidev_t) );
     bzero( dev->private_data, sizeof(pwr_pidev_t) );
@@ -311,17 +323,6 @@ int pwr_pidev_clear( pwr_fd_t fd )
 
     return 0;
 } 
-
-static plugin_devops_t devops = {
-    .open   = pwr_pidev_open,
-    .close  = pwr_pidev_close,
-    .read   = pwr_pidev_read,
-    .write  = pwr_pidev_write,
-    .readv  = pwr_pidev_readv,
-    .writev = pwr_pidev_writev,
-    .time   = pwr_pidev_time,
-    .clear  = pwr_pidev_clear
-};
 
 static plugin_dev_t dev = {
     .init   = pwr_pidev_init, 

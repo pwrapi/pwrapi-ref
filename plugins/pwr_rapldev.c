@@ -126,6 +126,18 @@ typedef struct {
 } pwr_raplfd_t;
 #define PWR_RAPLFD(X) ((pwr_raplfd_t *)(X))
 
+static plugin_devops_t devops = {
+    .open   = pwr_rapldev_open,
+    .close  = pwr_rapldev_close,
+    .read   = pwr_rapldev_read,
+    .write  = pwr_rapldev_write,
+    .readv  = pwr_rapldev_readv,
+    .writev = pwr_rapldev_writev,
+    .time   = pwr_rapldev_time,
+    .clear  = pwr_rapldev_clear,
+    .private_data = 0x0
+};
+
 static int rapldev_parse( const char *initstr, int *core, int *layer )
 {
     char *token;
@@ -295,7 +307,7 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     int core = 0;
     long long msr;
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
-    bzero( dev, sizeof(plugin_devops_t) );
+    *dev = devops;
 
     dev->private_data = malloc( sizeof(pwr_rapldev_t) );
     bzero( dev->private_data, sizeof(pwr_rapldev_t) );
@@ -520,17 +532,6 @@ int pwr_rapldev_clear( pwr_fd_t fd )
 {
     return 0;
 }
-
-static plugin_devops_t devops = {
-    .open   = pwr_rapldev_open,
-    .close  = pwr_rapldev_close,
-    .read   = pwr_rapldev_read,
-    .write  = pwr_rapldev_write,
-    .readv  = pwr_rapldev_readv,
-    .writev = pwr_rapldev_writev,
-    .time   = pwr_rapldev_time,
-    .clear  = pwr_rapldev_clear
-};
 
 static plugin_dev_t dev = {
     .init   = pwr_rapldev_init,

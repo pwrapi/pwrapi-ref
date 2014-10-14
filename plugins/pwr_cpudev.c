@@ -23,6 +23,18 @@ typedef struct {
 } pwr_cpufd_t;
 #define PWR_CPUFD(X) ((pwr_cpufd_t *)(X))
 
+static plugin_devops_t devops = {
+    .open   = pwr_cpudev_open,
+    .close  = pwr_cpudev_close,
+    .read   = pwr_cpudev_read,
+    .write  = pwr_cpudev_write,
+    .readv  = pwr_cpudev_readv,
+    .writev = pwr_cpudev_writev,
+    .time   = pwr_cpudev_time,
+    .clear  = pwr_cpudev_clear,
+    .private_data = 0x0
+};
+
 static int online_cpu( int cpu, int state )
 {
     int fd;
@@ -87,7 +99,7 @@ plugin_devops_t *pwr_cpudev_init( const char *initstr )
     int i;
 
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
-    bzero( dev, sizeof(plugin_devops_t) );
+    *dev = devops;
 
     dev->private_data = malloc( sizeof(pwr_cpudev_t) );
     bzero( dev->private_data, sizeof(pwr_cpudev_t) );
@@ -305,17 +317,6 @@ int pwr_cpudev_clear( pwr_fd_t fd )
 {
     return 0;
 }
-
-static plugin_devops_t devops = {
-    .open   = pwr_cpudev_open,
-    .close  = pwr_cpudev_close,
-    .read   = pwr_cpudev_read,
-    .write  = pwr_cpudev_write,
-    .readv  = pwr_cpudev_readv,
-    .writev = pwr_cpudev_writev,
-    .time   = pwr_cpudev_time,
-    .clear  = pwr_cpudev_clear
-};
 
 static plugin_dev_t dev = {
     .init   = pwr_cpudev_init,

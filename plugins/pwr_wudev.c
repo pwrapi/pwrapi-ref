@@ -20,6 +20,18 @@ typedef struct {
 } pwr_wufd_t;
 #define PWR_WUFD(X) ((pwr_wufd_t *)(X))
 
+static plugin_devops_t devops = {
+    .open   = pwr_wudev_open,
+    .close  = pwr_wudev_close,
+    .read   = pwr_wudev_read,
+    .write  = pwr_wudev_write,
+    .readv  = pwr_wudev_readv,
+    .writev = pwr_wudev_writev,
+    .time   = pwr_wudev_time,
+    .clear  = pwr_wudev_clear,
+    .private_data = 0x0
+};
+
 static int wudev_parse( const char *initstr, char *port, int *baud )
 {
     char *token;
@@ -157,7 +169,7 @@ plugin_devops_t *pwr_wudev_init( const char *initstr )
     int baud = 0;
 
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
-    bzero( dev, sizeof(plugin_devops_t) );
+    *dev = devops;
 
     dev->private_data = malloc( sizeof(pwr_wudev_t) );
     bzero( dev->private_data, sizeof(pwr_wudev_t) );
@@ -361,17 +373,6 @@ int pwr_wudev_clear( pwr_fd_t fd )
 
     return 0;
 }
-
-static plugin_devops_t devops = {
-    .open   = pwr_wudev_open,
-    .close  = pwr_wudev_close,
-    .read   = pwr_wudev_read,
-    .write  = pwr_wudev_write,
-    .readv  = pwr_wudev_readv,
-    .writev = pwr_wudev_writev,
-    .time   = pwr_wudev_time,
-    .clear  = pwr_wudev_clear
-};
 
 static plugin_dev_t dev = {
     .init   = pwr_wudev_init,

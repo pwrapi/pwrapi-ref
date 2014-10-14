@@ -16,6 +16,18 @@ typedef struct {
 } pwr_wufd_t;
 #define PWR_XTPMFD(X) ((pwr_xtpmfd_t *)(X))
 
+static plugin_devops_t devops = {
+    .open   = pwr_xtpmdev_open,
+    .close  = pwr_xtpmdev_close,
+    .read   = pwr_xtpmdev_read,
+    .write  = pwr_xtpmdev_write,
+    .readv  = pwr_xtpmdev_readv,
+    .writev = pwr_xtpmdev_writev,
+    .time   = pwr_xtpmdev_time,
+    .clear  = pwr_xtpmdev_clear,
+    .private_data = 0x0
+};
+
 static int xtpmdev_parse( const char *initstr )
 {
     char *token;
@@ -124,17 +136,6 @@ int pwr_xtpmdev_clear( pwr_fd_t fd )
 {
     return 0;
 }
-
-static plugin_devops_t devops = {
-    .open   = pwr_xtpmdev_open,
-    .close  = pwr_xtpmdev_close,
-    .read   = pwr_xtpmdev_read,
-    .write  = pwr_xtpmdev_write,
-    .readv  = pwr_xtpmdev_readv,
-    .writev = pwr_xtpmdev_writev,
-    .time   = pwr_xtpmdev_time,
-    .clear  = pwr_xtpmdev_clear
-};
 
 static plugin_dev_t dev = {
     .init   = pwr_xtpmdev_init,
