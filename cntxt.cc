@@ -14,7 +14,6 @@
 #include "cntxt.h"
 #include "debug.h"
 #include "stat.h"
-#include "threadStat.h"
 #include "deviceStat.h"
 
 #include "ops.h"
