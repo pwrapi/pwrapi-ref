@@ -18,6 +18,7 @@ static inline int opAvg( int num, double input[], double* result, PWR_Time* ts)
 		total += input[i]; 	
 	}
 	*result = total/num;
+	*ts = 0;
 	return PWR_RET_SUCCESS;
 }
 
@@ -55,10 +56,37 @@ class DevTreeNode : public TreeNode {
         return m_ops->write( m_fd, name, ptr, len );
     }
 
-	int getStat( PWR_AttrName name, PWR_AttrStat stat, double* result, PWR_StatTimes* ts) {
+	int attrStartStat( PWR_AttrName name, PWR_AttrStat stat) {
         DBGX("\n");
-		if ( m_ops->get_stat ) {
-			return m_ops->get_stat( m_fd, name, opAvg, result, ts );
+		if ( m_ops->stat_start ) {
+			return m_ops->stat_start( m_fd, name );
+		} else {
+			return PWR_RET_FAILURE;
+		}
+	} 
+
+	int attrStopStat( PWR_AttrName name, PWR_AttrStat stat) {
+        DBGX("\n");
+		if ( m_ops->stat_stop ) {
+			return m_ops->stat_stop( m_fd, name );
+		} else {
+			return PWR_RET_FAILURE;
+		}
+	} 
+
+	int attrClearStat( PWR_AttrName name, PWR_AttrStat stat) {
+        DBGX("\n");
+		if ( m_ops->stat_clear ) {
+			return m_ops->stat_clear( m_fd, name );
+		} else {
+			return PWR_RET_FAILURE;
+		}
+	} 
+
+	int attrGetStat( PWR_AttrName name, PWR_AttrStat stat, double* result, PWR_StatTimes* ts) {
+        DBGX("\n");
+		if ( m_ops->stat_get ) {
+			return m_ops->stat_get( m_fd, name, opAvg, result, ts );
 		} else {
 			return PWR_RET_FAILURE;
 		}

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <pow.h> 
 
@@ -102,10 +103,21 @@ int main( int argc, char* argv[] )
 	retval = PWR_StatStart( coreStat );
     assert( retval == PWR_RET_SUCCESS );
 
+	usleep(10);
 	PWR_StatTimes statTimes;
 	retval = PWR_StatGetValue( coreStat, &value, &statTimes);
     assert( retval == PWR_RET_SUCCESS );
-    printf("PWR_StatGetValue(PWR_ATTR_POWER) value=%f\n",value);
+
+
+    printf("PWR_StatGetValue(PWR_ATTR_POWER) value=%f\n", value );
+    printf("PWR_StatGetValue(PWR_ATTR_POWER) start=%llu\n", statTimes.start );
+
+   	printf("PWR_StatGetValue(PWR_ATTR_POWER) stop=%llu\n", statTimes.stop );
+
+	if ( statTimes.instant != PWR_TIME_NOT_SET ) {
+    	printf("PWR_StatGetValue(PWR_ATTR_POWER) instant=%llu\n",
+													statTimes.instant );
+	}
 
 	PWR_StatDestroy( coreStat );
 

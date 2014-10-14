@@ -21,9 +21,13 @@ class TreeNode {
     virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* );
     virtual int attrSetValue( PWR_AttrName, void*, size_t );
 	virtual int attrIsValid( PWR_AttrName );
-	virtual int getStat( PWR_AttrName, PWR_AttrStat, 
+
+	virtual int attrStartStat( PWR_AttrName, PWR_AttrStat ); 
+	virtual int attrStopStat( PWR_AttrName, PWR_AttrStat);
+	virtual int attrClearStat( PWR_AttrName, PWR_AttrStat);
+	virtual int attrGetStat( PWR_AttrName, PWR_AttrStat, 
 				double* value, PWR_StatTimes* statTimes );
-	virtual int getStats( PWR_AttrName, PWR_AttrStat, 
+	virtual int attrGetStats( PWR_AttrName, PWR_AttrStat, 
 				double* value, PWR_StatTimes* statTimes );
 	
 	Cntxt* getCtx() { return m_ctx; }

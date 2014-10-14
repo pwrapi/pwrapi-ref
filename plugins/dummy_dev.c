@@ -36,6 +36,15 @@ typedef struct {
 typedef struct {
 	buffer_t buffers[PWR_ATTR_INVALID];
 } dummyFdInfo_t;
+
+static double getTime() {
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+	double value; 
+    value = tv.tv_sec * 1000000000;
+    value += tv.tv_usec * 1000;
+	return value;
+}
   
 static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
@@ -60,12 +69,9 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
 
     DBGX("type=%s %f\n", attrNameToString(type),*(double*)ptr);
 
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
 
     if ( ts ) {
-        *ts = tv.tv_sec * 1000000000;
-        *ts += tv.tv_usec * 1000;
+		*ts = getTime();
     }
 
     return PWR_RET_SUCCESS;
@@ -89,11 +95,7 @@ static int dummy_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrN
 
         DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
-        struct timeval tv;
-        gettimeofday(&tv,NULL);
-
-        ts[i] = tv.tv_sec * 1000000000;
-        ts[i] += tv.tv_usec * 1000;
+        ts[i] = getTime();
 
         status[i] = PWR_RET_SUCCESS;
     }
@@ -128,11 +130,31 @@ static int dummy_dev_clear( pwr_fd_t fd )
     return 0;
 }
 
-static int dummy_dev_get_stat( pwr_fd_t fd, PWR_AttrName name, statOp_t op,
+static int dummy_dev_stat_start( pwr_fd_t fd, PWR_AttrName name )
+{
+    buffer_t* ptr = &((dummyFdInfo_t*) fd)->buffers[name];
+    DBGX("\n");
+	ptr->timeStamps[0] = getTime();
+	return PWR_RET_SUCCESS;
+}
+
+static int dummy_dev_stat_stop( pwr_fd_t fd, PWR_AttrName name )
+{
+	return PWR_RET_SUCCESS;
+}
+
+static int dummy_dev_stat_clear( pwr_fd_t fd, PWR_AttrName name )
+{
+	return PWR_RET_SUCCESS;
+}
+
+static int dummy_dev_stat_get( pwr_fd_t fd, PWR_AttrName name, statOp_t op,
                                     void* result, PWR_StatTimes* ts )
 {
     buffer_t* ptr = &((dummyFdInfo_t*) fd)->buffers[name];
     DBGX("\n");
+	ts->start = ptr->timeStamps[0]; 
+	ts->stop = getTime();
 	return  op(BUFFER_LEN, ptr->values,result,&ts->instant);
 }
 
@@ -145,7 +167,10 @@ static plugin_devops_t devOps = {
     .writev = dummy_dev_writev,
     .time   = dummy_dev_time,
     .clear  = dummy_dev_clear,
-	.get_stat = dummy_dev_get_stat,
+	.stat_get = dummy_dev_stat_get,
+	.stat_start = dummy_dev_stat_start,
+	.stat_stop = dummy_dev_stat_stop,
+	.stat_clear = dummy_dev_stat_clear,
 };
 
 static plugin_devops_t* dummy_dev_init( const char *initstr )

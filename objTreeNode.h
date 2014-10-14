@@ -28,10 +28,39 @@ class ObjTreeNode : public TreeNode {
     void setParent( ObjTreeNode* obj )  { m_parent = obj; }
     virtual PWR_ObjType type() 			{ return m_type; }
 
-    virtual int getStat( PWR_AttrName, PWR_AttrStat,
-                double* value, PWR_StatTimes* statTimes );
-    virtual int getStats( PWR_AttrName, PWR_AttrStat,
-                double* value, PWR_StatTimes* statTimes );
+	virtual int attrStartStat( PWR_AttrName attr, PWR_AttrStat stat) {
+		DBGX("%s\n",objTypeToString(m_type));
+	    assert(!m_children);
+		return TreeNode::attrStartStat(attr,stat); 
+	}
+
+	virtual int attrStopStat( PWR_AttrName attr, PWR_AttrStat stat) {
+		DBGX("%s\n",objTypeToString(m_type));
+	    assert(!m_children);
+		return TreeNode::attrStopStat(attr,stat); 
+	}
+
+	virtual int attrClearStat( PWR_AttrName attr, PWR_AttrStat stat) {
+		DBGX("%s\n",objTypeToString(m_type));
+	    assert(!m_children);
+		return TreeNode::attrClearStat(attr,stat); 
+	}
+
+    virtual int attrGetStat( PWR_AttrName attr, PWR_AttrStat stat,
+                double* value, PWR_StatTimes* statTimes )
+	{
+		DBGX("%s\n",objTypeToString(m_type));
+    	assert(!m_children);
+    	return TreeNode::attrGetStat( attr, stat, value, statTimes );
+	}
+
+    virtual int attrGetStats( PWR_AttrName attr, PWR_AttrStat stat,
+                double* value, PWR_StatTimes* statTimes )
+	{
+	    DBGX("%s\n",objTypeToString(m_type));
+    	assert(!m_children);
+    	return TreeNode::attrGetStats( attr, stat, value, statTimes );
+	}
 
     virtual Grp* children() {
     	if ( m_children ) return m_children;
