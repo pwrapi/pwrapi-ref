@@ -2,6 +2,7 @@
 #define _PWR_TREENODE_H
 
 #include <vector>
+#include <assert.h>
 #include "types.h"
 
 namespace PowerAPI {
@@ -20,6 +21,10 @@ class TreeNode {
     virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* );
     virtual int attrSetValue( PWR_AttrName, void*, size_t );
 	virtual int attrIsValid( PWR_AttrName );
+	virtual int getStat( PWR_AttrName, PWR_AttrStat, 
+				double* value, PWR_StatTimes* statTimes );
+	virtual int getStats( PWR_AttrName, PWR_AttrStat, 
+				double* value, PWR_StatTimes* statTimes );
 	
 	Cntxt* getCtx() { return m_ctx; }
 

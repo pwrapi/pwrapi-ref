@@ -34,6 +34,7 @@ int TreeNode::attrIsValid( PWR_AttrName attr )
 int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr,
 											size_t len, PWR_Time* ts )
 {
+	DBGX("%p\n",this);
     DBGX("%s\n", attrNameToString(attr));
 
 	AttrEntry& entry = m_attrMap[attr];
@@ -66,6 +67,7 @@ int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr,
 int TreeNode::attrSetValue( PWR_AttrName attr, void* valuePtr, size_t len )
 {
     DBGX("%s\n", attrNameToString(attr));
+	DBGX("%p\n",this);
 
 	AttrEntry& entry = m_attrMap[attr];
 	std::vector<TreeNode*>&  nodes = entry.nodes(); 
@@ -216,4 +218,38 @@ int TreeNode::attrSetValues( const std::vector<PWR_AttrName>& attrs,
     }
 
     return retval;
+}
+
+int TreeNode::getStat( PWR_AttrName attr, PWR_AttrStat stat,
+                double* value, PWR_StatTimes* statTimes )
+{
+	AttrEntry& entry = m_attrMap[attr];
+	std::vector<TreeNode*>&  nodes = entry.nodes(); 
+	DBGX("%s %s\n",attrNameToString(attr),attrStatToString(stat));
+
+	if ( ! entry.inited() ) {
+		entry.init( attr );
+	}
+	
+	if ( nodes.size() != 1 ) {
+		return PWR_RET_INVALID;
+	}
+
+	return nodes[0]->getStat( attr, stat, value, statTimes );
+}
+int TreeNode::getStats( PWR_AttrName attr, PWR_AttrStat stat,
+                double* value, PWR_StatTimes* statTimes )
+{
+	AttrEntry& entry = m_attrMap[attr];
+	std::vector<TreeNode*>&  nodes = entry.nodes(); 
+	DBGX("%s %s\n",attrNameToString(attr),attrStatToString(stat));
+
+	if ( ! entry.inited() ) {
+		entry.init( attr );
+	}
+	
+	if ( nodes.size() != 1 ) {
+		return PWR_RET_INVALID;
+	}
+	return nodes[0]->getStats( attr, stat, value, statTimes );
 }

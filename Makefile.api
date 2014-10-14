@@ -1,13 +1,13 @@
 XMLRPC = n
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml # -DDEBUG_ON
+CPPFLAGS = -Itinyxml #-DDEBUG_ON
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 LDLIBS = -ldl
 CC = g++
 
-LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
+LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc objTreeNode.cc deviceStat.cc xmlConfig.cc
 
 ifeq ($(XMLRPC),y)
 LIB_SRC += rpcTreeNode.cc

@@ -9,6 +9,18 @@
 
 namespace PowerAPI {
 
+static inline int opAvg( int num, double input[], double* result, PWR_Time* ts)
+{
+	DBG("\n");
+	double total = 0;
+	for ( int i = 0; i < num; i++ ) {
+		DBG("%f\n",input[i]);
+		total += input[i]; 	
+	}
+	*result = total/num;
+	return PWR_RET_SUCCESS;
+}
+
 class DevTreeNode : public TreeNode {
   public:
 
@@ -43,9 +55,13 @@ class DevTreeNode : public TreeNode {
         return m_ops->write( m_fd, name, ptr, len );
     }
 
-	int getStat( int num, void* ptr, void* result, PWR_Time* ts) {
+	int getStat( PWR_AttrName name, PWR_AttrStat stat, double* result, PWR_StatTimes* ts) {
         DBGX("\n");
-		return m_ops->get_stat( m_fd, num, ptr, result, ts );
+		if ( m_ops->get_stat ) {
+			return m_ops->get_stat( m_fd, name, opAvg, result, ts );
+		} else {
+			return PWR_RET_FAILURE;
+		}
 	} 
 
     ~DevTreeNode() {

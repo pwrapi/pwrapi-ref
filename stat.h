@@ -34,7 +34,7 @@ class Stat {
 		return m_ctx;
 	}
 
-  private:
+  protected:
 	Cntxt*			m_ctx;
 	ObjTreeNode*	m_obj;
 	Grp*			m_grp;

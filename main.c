@@ -95,7 +95,7 @@ int main( int argc, char* argv[] )
 	PWR_Obj* core = PWR_GrpGetObjByIndx( grp, 0 );
 	assert( core );
 
-	PWR_Stat coreStat = PWR_ObjCreateStat( core, PWR_ATTR_CURRENT,
+	PWR_Stat coreStat = PWR_ObjCreateStat( core, PWR_ATTR_POWER,
 				PWR_ATTR_STAT_AVG );
 	assert( coreStat );
 
@@ -105,6 +105,7 @@ int main( int argc, char* argv[] )
 	PWR_StatTimes statTimes;
 	retval = PWR_StatGetValue( coreStat, &value, &statTimes);
     assert( retval == PWR_RET_SUCCESS );
+    printf("PWR_StatGetValue(PWR_ATTR_POWER) value=%f\n",value);
 
 	PWR_StatDestroy( coreStat );
 

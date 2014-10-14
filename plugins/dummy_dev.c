@@ -1,4 +1,5 @@
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -25,15 +26,22 @@ typedef struct {
     char config[100];
 } dummyDevInfo_t;
 
+#define BUFFER_LEN 10
+
 typedef struct {
-    double value[PWR_ATTR_INVALID];
+	double values[BUFFER_LEN];
+	PWR_Time timeStamps[BUFFER_LEN];
+} buffer_t;
+
+typedef struct {
+	buffer_t buffers[PWR_ATTR_INVALID];
 } dummyFdInfo_t;
   
 static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
     DBGX("`%s`\n",openstr);
     dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
-    tmp->value[PWR_ATTR_POWER] = 10.1234;
+    tmp->buffers[PWR_ATTR_POWER].values[0] = 10.1234;
     return tmp;
 }
 
@@ -48,7 +56,7 @@ static int dummy_dev_close( pwr_fd_t fd )
 static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
 
-    *(double*)ptr = ((dummyFdInfo_t*) fd)->value[type];
+    *(double*)ptr = ((dummyFdInfo_t*) fd)->buffers[type].values[0];
 
     DBGX("type=%s %f\n", attrNameToString(type),*(double*)ptr);
 
@@ -67,7 +75,7 @@ static int dummy_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned 
 {
     DBGX("type=%s %f\n",attrNameToString(type), *(double*)ptr);
 
-    ((dummyFdInfo_t*) fd)->value[type] = *(double*)ptr;
+    ((dummyFdInfo_t*) fd)->buffers[type].values[0] = *(double*)ptr;
     return PWR_RET_SUCCESS;
 }
 
@@ -77,7 +85,7 @@ static int dummy_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrN
     int i;
     for ( i = 0; i < arraysize; i++ ) {
 
-        ((double*)buf)[i] = ((dummyFdInfo_t*) fd)->value[attrs[i]];
+        ((double*)buf)[i] = ((dummyFdInfo_t*) fd)->buffers[attrs[i]].values[0];
 
         DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
@@ -99,7 +107,7 @@ static int dummy_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_Attr
     for ( i = 0; i < arraysize; i++ ) {
         DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
-        ((dummyFdInfo_t*) fd)->value[attrs[i]] = ((double*)buf)[i];
+        ((dummyFdInfo_t*) fd)->buffers[attrs[i]].values[0] = ((double*)buf)[i];
 
         status[i] = PWR_RET_SUCCESS;
     }
@@ -120,6 +128,14 @@ static int dummy_dev_clear( pwr_fd_t fd )
     return 0;
 }
 
+static int dummy_dev_get_stat( pwr_fd_t fd, PWR_AttrName name, statOp_t op,
+                                    void* result, PWR_StatTimes* ts )
+{
+    buffer_t* ptr = &((dummyFdInfo_t*) fd)->buffers[name];
+    DBGX("\n");
+	return  op(BUFFER_LEN, ptr->values,result,&ts->instant);
+}
+
 static plugin_devops_t devOps = {
     .open   = dummy_dev_open, 
     .close  = dummy_dev_close,
@@ -128,7 +144,8 @@ static plugin_devops_t devOps = {
     .readv  = dummy_dev_readv,
     .writev = dummy_dev_writev,
     .time   = dummy_dev_time,
-    .clear  = dummy_dev_clear
+    .clear  = dummy_dev_clear,
+	.get_stat = dummy_dev_get_stat,
 };
 
 static plugin_devops_t* dummy_dev_init( const char *initstr )

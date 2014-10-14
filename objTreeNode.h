@@ -28,6 +28,11 @@ class ObjTreeNode : public TreeNode {
     void setParent( ObjTreeNode* obj )  { m_parent = obj; }
     virtual PWR_ObjType type() 			{ return m_type; }
 
+    virtual int getStat( PWR_AttrName, PWR_AttrStat,
+                double* value, PWR_StatTimes* statTimes );
+    virtual int getStats( PWR_AttrName, PWR_AttrStat,
+                double* value, PWR_StatTimes* statTimes );
+
     virtual Grp* children() {
     	if ( m_children ) return m_children;
 

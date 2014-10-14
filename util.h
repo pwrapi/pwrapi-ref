@@ -39,4 +39,18 @@ static inline const char* attrNameToString( PWR_AttrName name )
     return NULL;
 }
 
+static inline const char* attrStatToString( PWR_AttrStat stat )
+{
+	switch( stat ) {
+    case PWR_ATTR_STAT_MIN: return "Min";
+    case PWR_ATTR_STAT_MAX: return "Max";
+    case PWR_ATTR_STAT_AVG: return "Avg"; 
+    case PWR_ATTR_STAT_STDEV: return "Stdev";
+    case PWR_ATTR_STAT_MEAN: return "Mean";
+    case PWR_ATTR_STAT_CV: return "CV";
+    default: return "????";
+	}
+	return NULL;
+}
+
 #endif
