@@ -1,4 +1,4 @@
-#include "DeviceStat.h"
+#include "deviceStat.h"
 
 using namespace PowerAPI;
 
