@@ -26,6 +26,8 @@ typedef int (*pwr_writev_t)( pwr_fd_t fd, unsigned int arraysize,
 
 typedef int (*pwr_time_t)( pwr_fd_t fd, PWR_Time *time );
 typedef int (*pwr_clear_t)( pwr_fd_t fd );
+typedef int (*pwr_get_stat_t)( pwr_fd_t fd, int numItems, void* ptr,
+					void* result, PWR_Time* ts );
 
 typedef struct plugin_devops_t {
     pwr_open_t  open;
@@ -39,6 +41,7 @@ typedef struct plugin_devops_t {
 
     pwr_time_t  time;
     pwr_clear_t clear;
+	pwr_get_stat_t get_stat;
 
     void *private_data;
 

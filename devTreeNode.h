@@ -42,6 +42,12 @@ class DevTreeNode : public TreeNode {
         DBGX("\n");
         return m_ops->write( m_fd, name, ptr, len );
     }
+
+	int getStat( int num, void* ptr, void* result, PWR_Time* ts) {
+        DBGX("\n");
+		return m_ops->get_stat( m_fd, num, ptr, result, ts );
+	} 
+
     ~DevTreeNode() {
         m_ops->close( m_fd );
     }

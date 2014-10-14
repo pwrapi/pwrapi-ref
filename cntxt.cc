@@ -13,6 +13,9 @@
 #include "xmlConfig.h"
 #include "cntxt.h"
 #include "debug.h"
+#include "stat.h"
+#include "threadStat.h"
+#include "deviceStat.h"
 
 #include "ops.h"
 
@@ -295,4 +298,19 @@ int Cntxt::groupDestroy( Grp* grp ) {
         }
     }
     return retval;
+}
+
+Stat* Cntxt::createStat(ObjTreeNode* obj, PWR_AttrName name, PWR_AttrStat stat)
+{
+	return new DeviceStat( this, obj, name, stat );   
+}
+
+Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
+{
+	return new DeviceStat( this, grp, name, stat );   
+}
+int Cntxt::destroyStat( Stat* stat )
+{
+	delete stat;
+	return PWR_RET_SUCCESS;
 }

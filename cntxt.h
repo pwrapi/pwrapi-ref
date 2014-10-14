@@ -15,6 +15,7 @@ namespace PowerAPI {
 
 class Grp;
 class ObjTreeNode;
+class Stat;
 
 class Cntxt {
 
@@ -47,6 +48,10 @@ class Cntxt {
 
     Grp* groupCreate( std::string name );
     int groupDestroy( Grp* grp );
+
+	Stat* createStat( ObjTreeNode*, PWR_AttrName, PWR_AttrStat );
+	Stat* createStat( Grp*, PWR_AttrName, PWR_AttrStat );
+	int destroyStat( Stat* );
 
 	Config* config() { return m_config; }
 

@@ -92,6 +92,22 @@ int main( int argc, char* argv[] )
     PWR_TimeConvert( ts, &time );
     printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
 
+	PWR_Obj* core = PWR_GrpGetObjByIndx( grp, 0 );
+	assert( core );
+
+	PWR_Stat coreStat = PWR_ObjCreateStat( core, PWR_ATTR_CURRENT,
+				PWR_ATTR_STAT_AVG );
+	assert( coreStat );
+
+	retval = PWR_StatStart( coreStat );
+    assert( retval == PWR_RET_SUCCESS );
+
+	PWR_StatTimes statTimes;
+	retval = PWR_StatGetValue( coreStat, &value, &statTimes);
+    assert( retval == PWR_RET_SUCCESS );
+
+	PWR_StatDestroy( coreStat );
+
 	PWR_CntxtDestroy( cntxt );
     return 0;
 }

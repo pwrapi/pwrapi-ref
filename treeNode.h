@@ -20,6 +20,8 @@ class TreeNode {
     virtual int attrGetValue( PWR_AttrName, void*, size_t, PWR_Time* );
     virtual int attrSetValue( PWR_AttrName, void*, size_t );
 	virtual int attrIsValid( PWR_AttrName );
+	
+	Cntxt* getCtx() { return m_ctx; }
 
 	class AttrEntry  {
       public:

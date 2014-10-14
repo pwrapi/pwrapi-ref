@@ -1,44 +1,41 @@
 #ifndef _PWR_STAT_H
 #define _PWR_STAT_H
 
+#include <assert.h>
+
 #include "pow.h"
+#include "group.h"
+#include "objTreeNode.h"
 
 namespace PowerAPI {
 
 class Grp;
 class ObjTreeNode;
+class Cntxt;
 
 class Stat {
   public:
-	Stat( ObjTreeNode* obj, PWR_AttrName name, PWR_AttrStat stat ) 
-	  : m_obj(obj), m_grp(NULL), m_attrName( name ), m_attrStat( stat ) {
- 	}
+	Stat( Cntxt* ctx, ObjTreeNode* obj, PWR_AttrName name, PWR_AttrStat stat ) 
+	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), 
+			m_attrName( name ), m_attrStat( stat ) { }
 
-	Stat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat ) 
-	  : m_obj(NULL), m_grp(grp), m_attrName( name ), m_attrStat( stat ) {
- 	}
+	Stat( Cntxt* ctx, Grp* grp, PWR_AttrName name, PWR_AttrStat stat ) 
+	  : m_ctx( ctx), m_obj(NULL), m_grp(grp), 
+			m_attrName( name ), m_attrStat( stat ) { }
+	virtual ~Stat() {}
 
-	int start( ) {
-		return PWR_RET_FAILURE;
-	}
+	virtual int start() = 0;
+	virtual int stop() = 0; 
+	virtual int clear() = 0;
+	virtual int getValue( double* value, PWR_StatTimes* statTimes ) = 0;
+	virtual int getValues( double value[], PWR_StatTimes statTimes[] ) = 0;
 
-	int stop( ) {
-		return PWR_RET_FAILURE;
-	}
-
-	int clear( ) {
-		return PWR_RET_FAILURE;
-	}
-
-	int getValue( double* value, PWR_StatTimes* statTimes ) {
-		return PWR_RET_FAILURE;
-	}
-
-	int getValues( double value[], PWR_StatTimes statTimes[] ) {
-		return PWR_RET_FAILURE;
+	Cntxt* getCtx() {
+		return m_ctx;
 	}
 
   private:
+	Cntxt*			m_ctx;
 	ObjTreeNode*	m_obj;
 	Grp*			m_grp;
 	PWR_AttrName	m_attrName;

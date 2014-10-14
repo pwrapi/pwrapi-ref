@@ -191,6 +191,7 @@ PWR_Status PWR_StatusCreate()
 {
     return new Status;
 }
+
 int PWR_StatusDestroy(PWR_Status status )
 {
     delete STATUS(status);
@@ -209,18 +210,17 @@ int PWR_StatusClear( PWR_Status status )
 
 PWR_Stat PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat stat )
 {
-	return new Stat( OBJTREENODE(obj), name, stat );
+	return OBJTREENODE(obj)->getCtx()->createStat(OBJTREENODE(obj),name,stat);
 }
 
 PWR_Stat PWR_GrpCreateStat( PWR_Grp grp, PWR_AttrName name, PWR_AttrStat stat )
 {
-	return new Stat( GRP(grp), name, stat );
+	return GRP(grp)->getCtx()->createStat(GRP(grp),name,stat);
 }
 
 int PWR_StatDestroy( PWR_Stat stat )
 {
-	delete STAT(stat); 
-	return PWR_RET_SUCCESS;
+	return STAT(stat)->getCtx()->destroyStat( STAT(stat) );
 }
 
 int PWR_StatStart( PWR_Stat stat )
@@ -245,7 +245,7 @@ int PWR_StatGetValue( PWR_Stat stat, double* value, PWR_StatTimes* statTimes )
 }
 
 int PWR_StatGetValues( PWR_Stat stat, double values[],
-												PWR_StatTimes statTimes[] )
+										PWR_StatTimes statTimes[] )
 {
 	return STAT(stat)->getValues( values, statTimes );
 }
