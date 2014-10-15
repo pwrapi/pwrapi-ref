@@ -476,7 +476,7 @@ std::string XmlConfig::attrNameToString( PWR_AttrName name )
     case PWR_ATTR_POWER: return "POWER";
     case PWR_ATTR_VOLTAGE: return "VOLTAGE";
     case PWR_ATTR_CURRENT: return "CURRENT";
-    case PWR_ATTR_ENERGY: return "Energy";
+    case PWR_ATTR_ENERGY: return "ENERGY";
     case PWR_ATTR_INVALID: return "Invalid";
     default: return "????";
     }
