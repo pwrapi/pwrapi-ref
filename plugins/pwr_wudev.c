@@ -1,4 +1,5 @@
 #include "pwr_wudev.h"
+#include "pwr_dev.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -21,14 +22,18 @@ typedef struct {
 #define PWR_WUFD(X) ((pwr_wufd_t *)(X))
 
 static plugin_devops_t devops = {
-    .open   = pwr_wudev_open,
-    .close  = pwr_wudev_close,
-    .read   = pwr_wudev_read,
-    .write  = pwr_wudev_write,
-    .readv  = pwr_wudev_readv,
-    .writev = pwr_wudev_writev,
-    .time   = pwr_wudev_time,
-    .clear  = pwr_wudev_clear,
+    .open         = pwr_wudev_open,
+    .close        = pwr_wudev_close,
+    .read         = pwr_wudev_read,
+    .write        = pwr_wudev_write,
+    .readv        = pwr_wudev_readv,
+    .writev       = pwr_wudev_writev,
+    .time         = pwr_wudev_time,
+    .clear        = pwr_wudev_clear,
+	.stat_get     = pwr_dev_stat_get,
+	.stat_start   = pwr_dev_stat_start,
+	.stat_stop    = pwr_dev_stat_stop,
+	.stat_clear   = pwr_dev_stat_clear,
     .private_data = 0x0
 };
 

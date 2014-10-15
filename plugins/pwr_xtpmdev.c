@@ -1,4 +1,5 @@
 #include "pwr_xtpmdev.h"
+#include "pwr_dev.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,14 +18,18 @@ typedef struct {
 #define PWR_XTPMFD(X) ((pwr_xtpmfd_t *)(X))
 
 static plugin_devops_t devops = {
-    .open   = pwr_xtpmdev_open,
-    .close  = pwr_xtpmdev_close,
-    .read   = pwr_xtpmdev_read,
-    .write  = pwr_xtpmdev_write,
-    .readv  = pwr_xtpmdev_readv,
-    .writev = pwr_xtpmdev_writev,
-    .time   = pwr_xtpmdev_time,
-    .clear  = pwr_xtpmdev_clear,
+    .open         = pwr_xtpmdev_open,
+    .close        = pwr_xtpmdev_close,
+    .read         = pwr_xtpmdev_read,
+    .write        = pwr_xtpmdev_write,
+    .readv        = pwr_xtpmdev_readv,
+    .writev       = pwr_xtpmdev_writev,
+    .time         = pwr_xtpmdev_time,
+    .clear        = pwr_xtpmdev_clear,
+	.stat_get     = pwr_dev_stat_get,
+	.stat_start   = pwr_dev_stat_start,
+	.stat_stop    = pwr_dev_stat_stop,
+	.stat_clear   = pwr_dev_stat_clear,
     .private_data = 0x0
 };
 

@@ -1,4 +1,5 @@
 #include "pwr_pidev.h"
+#include "pwr_dev.h"
 #include "piapi.h"
 
 #include <stdlib.h>
@@ -20,14 +21,18 @@ typedef struct {
 #define PWR_PIFD(X) ((pwr_pifd_t *)(X))
 
 static plugin_devops_t devops = {
-    .open   = pwr_pidev_open,
-    .close  = pwr_pidev_close,
-    .read   = pwr_pidev_read,
-    .write  = pwr_pidev_write,
-    .readv  = pwr_pidev_readv,
-    .writev = pwr_pidev_writev,
-    .time   = pwr_pidev_time,
-    .clear  = pwr_pidev_clear,
+    .open         = pwr_pidev_open,
+    .close        = pwr_pidev_close,
+    .read         = pwr_pidev_read,
+    .write        = pwr_pidev_write,
+    .readv        = pwr_pidev_readv,
+    .writev       = pwr_pidev_writev,
+    .time         = pwr_pidev_time,
+    .clear        = pwr_pidev_clear,
+	.stat_get     = pwr_dev_stat_get,
+	.stat_start   = pwr_dev_stat_start,
+	.stat_stop    = pwr_dev_stat_stop,
+	.stat_clear   = pwr_dev_stat_clear,
     .private_data = 0x0
 };
 

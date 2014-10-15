@@ -1,4 +1,5 @@
 #include "pwr_rapldev.h"
+#include "pwr_dev.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -127,14 +128,18 @@ typedef struct {
 #define PWR_RAPLFD(X) ((pwr_raplfd_t *)(X))
 
 static plugin_devops_t devops = {
-    .open   = pwr_rapldev_open,
-    .close  = pwr_rapldev_close,
-    .read   = pwr_rapldev_read,
-    .write  = pwr_rapldev_write,
-    .readv  = pwr_rapldev_readv,
-    .writev = pwr_rapldev_writev,
-    .time   = pwr_rapldev_time,
-    .clear  = pwr_rapldev_clear,
+    .open         = pwr_rapldev_open,
+    .close        = pwr_rapldev_close,
+    .read         = pwr_rapldev_read,
+    .write        = pwr_rapldev_write,
+    .readv        = pwr_rapldev_readv,
+    .writev       = pwr_rapldev_writev,
+    .time         = pwr_rapldev_time,
+    .clear        = pwr_rapldev_clear,
+	.stat_get     = pwr_dev_stat_get,
+	.stat_start   = pwr_dev_stat_start,
+	.stat_stop    = pwr_dev_stat_stop,
+	.stat_clear   = pwr_dev_stat_clear,
     .private_data = 0x0
 };
 
