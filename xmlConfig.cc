@@ -379,7 +379,13 @@ XMLElement* XmlConfig::findObject( const std::string name )
 
 std::string XmlConfig::findParent( std::string name )
 {
-    return name.substr( 0, name.find_last_of( "." ) );
+	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
+	size_t pos= name.find_last_of( "." );
+	if ( pos != std::string::npos ) { 
+		return name.substr( 0, pos ); 
+	} else {
+    	return "";
+	}
 }
 std::string XmlConfig::findObjLocation( std::string name )
 {
@@ -389,8 +395,12 @@ std::string XmlConfig::findObjLocation( std::string name )
     DBGX2(DBG_CONFIG,"name=%s location=`%s`\n",
                         elm->Attribute("name"),elm->Attribute("location"));
 
-    while ( ! elm->Attribute("location") && ! name.empty() ) {
+    while ( ! elm->Attribute("location") ) {
         name = findParent( name );
+		if (  name.empty() ) {
+			break;
+		} 
+		DBGX2(DBG_CONFIG,"%s\n",name.c_str());
         elm = findObject(name);
         assert(elm);
     } 
