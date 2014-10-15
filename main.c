@@ -110,13 +110,15 @@ int main( int argc, char* argv[] )
 
 
     printf("PWR_StatGetValue(PWR_ATTR_POWER) value=%f\n", value );
-    printf("PWR_StatGetValue(PWR_ATTR_POWER) start=%llu\n", statTimes.start );
+    printf("PWR_StatGetValue(PWR_ATTR_POWER) start=%llu\n", 
+                                    (long long)statTimes.start );
 
-   	printf("PWR_StatGetValue(PWR_ATTR_POWER) stop=%llu\n", statTimes.stop );
+   	printf("PWR_StatGetValue(PWR_ATTR_POWER) stop=%llu\n",
+                                    (long long) statTimes.stop );
 
 	if ( statTimes.instant != PWR_TIME_NOT_SET ) {
     	printf("PWR_StatGetValue(PWR_ATTR_POWER) instant=%llu\n",
-													statTimes.instant );
+									(long long )statTimes.instant );
 	}
 
 	PWR_StatDestroy( coreStat );
