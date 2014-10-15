@@ -114,8 +114,10 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
 int pwr_xtpmdev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: reading from PWR XTPM device\n" );
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_xtpmdev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
 
     return 0;
 }
@@ -123,8 +125,10 @@ int pwr_xtpmdev_readv( pwr_fd_t fd, unsigned int arraysize,
 int pwr_xtpmdev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: writing to PWR XTPM device\n" );
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_xtpmdev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
 
     return 0;
 }

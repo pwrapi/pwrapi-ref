@@ -246,33 +246,8 @@ int pwr_cpudev_readv( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            case PWR_ATTR_PSTATE:
-                *((unsigned long long *)values+i) = (unsigned long long)0;
-                break;
-            case PWR_ATTR_CSTATE:
-                *((unsigned long long *)values+i) = (unsigned long long)0;
-                break;
-            case PWR_ATTR_SSTATE:
-                *((unsigned long long *)values+i) =
-                    (unsigned long long)PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu];
-                break;
-            case PWR_ATTR_FREQ:
-                *((double *)values+i) = (double)0;
-                break;
-            case PWR_ATTR_TEMP:
-                *((double *)values+i) = (double)0;
-                break;
-            default:
-                printf( "Warning: unknown PWR reading attr (%u) requested at position %u\n", attrs[i], i );
-                break;
-        }
-        timestamp[i] = 0;
-
-        if( cpudev_verbose )
-            printf( "Info: reading of type %u with value %lf\n", attrs[i], *((double *)(values+i)) );
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_cpudev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
 
     return 0;
 }
@@ -282,33 +257,8 @@ int pwr_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            case PWR_ATTR_PSTATE:
-                *((unsigned long long *)values+i) = (unsigned long long)0;
-                break;
-            case PWR_ATTR_CSTATE:
-                *((unsigned long long *)values+i) = (unsigned long long)0;
-                break;
-            case PWR_ATTR_SSTATE:
-                if( online_cpu( PWR_CPUFD(fd)->cpu, *((unsigned long long *)values+i) ) == 0 )
-                    PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu] =
-                        *((unsigned long long *)values+i);
-                break;
-            case PWR_ATTR_FREQ:
-                *((double *)values+i) = (double)0;
-                break;
-            case PWR_ATTR_TEMP:
-                *((double *)values+i) = (double)0;
-                break;
-            default:
-                printf( "Warning: unknown PWR writing attr (%u) requested at position %u\n", attrs[i], i );
-                break;
-        }
-
-        if( cpudev_verbose )
-            printf( "Info: writing of type %u with value %lf\n", attrs[i], *((double *)(values+i)) );
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_cpudev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
 
     return 0;
 }

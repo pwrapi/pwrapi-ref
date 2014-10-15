@@ -171,7 +171,7 @@ int pwr_pgdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 int pwr_pgdev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
-    int i;
+    unsigned int i;
 
     if( pgdev_verbose )
         printf( "Info: reading from PWR PowerGadget device\n" );
@@ -185,7 +185,7 @@ int pwr_pgdev_readv( pwr_fd_t fd, unsigned int arraysize,
 int pwr_pgdev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
-    int i;
+    unsigned int i;
 
     if( pgdev_verbose )
         printf( "Info: writing to PWR PowerGadget device\n" );

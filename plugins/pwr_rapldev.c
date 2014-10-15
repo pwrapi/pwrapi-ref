@@ -482,34 +482,9 @@ int pwr_rapldev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
-    double time = 0.0;
-    double energy = 0.0;
-    int policy = 0;
 
-    if( rapldev_verbose ) 
-        printf( "Info: PWR RAPL device read\n" );
-
-    if( rapldev_gather( PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->fd,
-                        PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->cpu_model,
-                        PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->layer,
-                        PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->units,
-                        &energy, &time, &policy ) < 0 ) {
-        printf( "Error: PWR RAPL device gather failed\n" );
-        return -1;
-    }
-
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            case PWR_ATTR_ENERGY:
-                *((double *)values+i) = energy;
-                break;
-            default:
-                printf( "Warning: unknown PWR reading attr requested\n" );
-                return 1;
-        }
-        *timestamp = (unsigned int)time*1000000000ULL + 
-                     (time-(unsigned int)time)*1000000000ULL;
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_rapldev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
 
     return 0;
 }
@@ -517,8 +492,10 @@ int pwr_rapldev_readv( pwr_fd_t fd, unsigned int arraysize,
 int pwr_rapldev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] )
 {
-    if( rapldev_verbose ) 
-        printf( "Info: PWR RAPL device write\n" );
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_rapldev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
 
     return 0;
 }

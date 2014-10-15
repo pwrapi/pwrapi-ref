@@ -248,45 +248,8 @@ int pwr_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    while( pidev_reading ) sched_yield();
-    pidev_reading = 1;
-    if( piapi_counter( PWR_PIDEV(PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
-        printf( "Error: powerinsight hardware read failed\n" );
-        return -1;
-    }
-    while( pidev_reading ) sched_yield();
-
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            case PWR_ATTR_VOLTAGE:
-                *((double *)values+i) = (double)pidev_counter.raw.volts;
-                break;
-            case PWR_ATTR_CURRENT:
-                *((double *)values+i) = (double)pidev_counter.raw.amps;
-                break;
-            case PWR_ATTR_POWER:
-                *((double *)values+i) = (double)pidev_counter.raw.watts;
-                break;
-            case PWR_ATTR_MIN_POWER:
-                *((double *)values+i) = (double)pidev_counter.min.watts;
-                break;
-            case PWR_ATTR_MAX_POWER:
-                *((double *)values+i) = (double)pidev_counter.max.watts;
-                break;
-            case PWR_ATTR_ENERGY:
-                *((double *)values+i) = (double)pidev_counter.energy;
-                break;
-            default:
-                printf( "Warning: unknown PWR reading attr (%u) requested at position %u\n", attrs[i], i );
-                break;
-        }
-        timestamp[i] = pidev_counter.time_sec*1000000000ULL + 
-                       pidev_counter.time_usec*1000;
-
-        if( pidev_verbose )
-            printf( "Info: reading of type %u at time %llu with value %lf\n",
-                    attrs[i], *(unsigned long long *)timestamp[i], *((double *)(values+i)) );
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_pidev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
 
     return 0;
 }
@@ -296,17 +259,8 @@ int pwr_pidev_writev( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            default:
-                printf( "Warning: unknown PWR writing attr (%u) requested at position %u\n", attrs[i], i );
-                break;
-        }
-
-        if( pidev_verbose )
-            printf( "Info: setting of type %u with value %lf\n",
-                    attrs[i], *((double *)(values+i)) );
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_pidev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
 
     return 0;
 }

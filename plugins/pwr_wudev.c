@@ -297,47 +297,9 @@ int pwr_wudev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] )
 {
     unsigned int i;
-    char buf[256] = "";
 
-    if( wudev_verbose )
-        printf( "Info: reading from PWR Wattsup device\n" );
- 
-    if( wudev_write( PWR_WUDEV(PWR_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
-        printf( "Error: command write to Wattsup device failed\n" );
-        return -1;
-    }
-
-    if( wudev_read( PWR_WUDEV(PWR_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
-        printf( "Error: reading from Wattsup device failed\n" );
-        return -1;
-    }
-
-    if( strlen( buf ) > 0 ) {
-        if( wudev_verbose )
-            printf( "Info: read buffer is %s\n", buf );
-
-        for( i = 0; i < arraysize; i++ ) {
-            switch( attrs[i] ) {
-                case PWR_ATTR_VOLTAGE:
-                    *((double *)values+i) = (double)wudev_extract( buf, 6 ) / 10; 
-                    break;
-                case PWR_ATTR_CURRENT:
-                    *((double *)values+i) = (double)wudev_extract( buf, 7 ) / 1000; 
-                    break;
-                case PWR_ATTR_POWER:
-                    *((double *)values+i) = (double)wudev_extract( buf, 5 ) / 10; 
-                    break;
-                default:
-                    printf( "Warning: unknown PWR reading attr (%u) requested at position %u\n", attrs[i], i );
-                    break;
-            }
-            timestamp[i] = wudev_extract( buf, 1 );
-
-            if( wudev_verbose )
-                printf( "Info: reading of type %u at time %llu with value %lf\n",
-                        attrs[i], *(unsigned long long *)timestamp[i], *((double *)(values+i)) );
-        }
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_wudev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
     
     return 0;
 }
@@ -347,16 +309,8 @@ int pwr_wudev_writev( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            default:
-                printf( "Warning: unknown PWR writing attr (%u) requested at position %u\n", attrs[i], i );
-
-        if( wudev_verbose )
-            printf( "Info: setting of type %u with value %lf\n",
-                    attrs[i], *((double *)(values+i)) );
-        }
-    }
+    for( i = 0; i < arraysize; i++ )
+        status[i] = pwr_wudev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
 
     return 0;
 }
