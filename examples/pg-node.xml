@@ -18,6 +18,15 @@
         <attr name="ENERGY" op="SUM">
             <src type="child" name="cab0" />
         </attr>
+        <attr name="POWER" op="SUM">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="FREQ" op="SUM">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="TEMP" op="SUM">
+            <src type="child" name="cab0" />
+        </attr>
     </attributes>
 
     <children>
@@ -30,6 +39,15 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM" >
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="TEMP" op="SUM" >
             <src type="child" name="board0" />
         </attr>
     </attributes>
@@ -46,6 +64,15 @@
         <attr name="ENERGY" op="SUM" >
             <src type="child" name="node0" />
         </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="TEMP" op="SUM" >
+            <src type="child" name="node0" />
+        </attr>
     </attributes>
 
     <children>
@@ -58,6 +85,15 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="TEMP" op="SUM" >
             <src type="child" name="socket0" />
         </attr>
     </attributes>
@@ -76,6 +112,15 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+        <attr name="POWER" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+        <attr name="FREQ" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+        <attr name="TEMP" op="SUM">
             <src type="device" name="pgdev1" />
         </attr>
     </attributes>
