@@ -3,6 +3,15 @@ PWD=`pwd`
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$PWD/..:$PWD/../plugins"
 export POWERAPI_CONFIG="$PWD/pg-node.xml"
-export POWERAPI_ROOT="plat.cab0.board0.node0"
+export POWERAPI_ROOT="plat.node0"
 
-./example -s 100 -f 10 -a E
+SAMPLES=100
+FREQ=10
+
+for ATTR in E P F T
+do
+    echo "-----------------------------------------------"
+    echo "Collecting ${SAMPLES} at ${FREQ} Hz for ${ATTR}"
+    echo "-----------------------------------------------"
+    ./example -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
+done
