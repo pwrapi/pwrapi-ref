@@ -43,7 +43,7 @@
 <obj name="plat.node0.socket0" type="Socket" >
 
     <devices>
-        <dev name="pgdev1" device="PG-node1" openString="" /> 
+        <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
     </devices>
 
     <attributes>
@@ -51,9 +51,6 @@
             <src type="device" name="pgdev1" />
         </attr>
         <attr name="POWER" op="SUM">
-            <src type="device" name="pgdev1" />
-        </attr>
-        <attr name="FREQ" op="SUM">
             <src type="device" name="pgdev1" />
         </attr>
         <attr name="TEMP" op="SUM">
@@ -64,18 +61,63 @@
 </obj>
 
 <obj name="plat.node0.socket0.core0" type="Core" >
+    <devices>
+        <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="FREQ" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+    </attributes>
 </obj>
 
 <obj name="plat.node0.socket0.core1" type="Core" >
+    <devices>
+        <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="FREQ" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+    </attributes>
 </obj>
 
 <obj name="plat.node0.socket0.core2" type="Core" >
+    <devices>
+        <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="FREQ" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+    </attributes>
 </obj>
 
 <obj name="plat.node0.socket0.core3" type="Core" >
+    <devices>
+        <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="FREQ" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+    </attributes>
 </obj>
 
 <obj name="plat.node0.socket0.gpu" type="Core" >
+    <devices>
+        <dev name="pgdev1" device="PG-node1" openString="0:1" /> 
+    </devices>
+
+    <attributes>
+        <attr name="FREQ" op="SUM">
+            <src type="device" name="pgdev1" />
+        </attr>
+    </attributes>
 </obj>
 
 </Objects>
