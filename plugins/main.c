@@ -2,22 +2,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "plugins/pwr_pidev.h"
 #include "plugins/pwr_rapldev.h"
 #include "plugins/pwr_xtpmdev.h"
 
 int main( int argc, char* argv[] )
 {
     plugin_dev_t pwr_dev[] = {
-        { pwr_pidev_init, pwr_pidev_final },
         { pwr_rapldev_init, pwr_rapldev_final },
         { pwr_xtpmdev_init, pwr_xtpmdev_final }
     };
 
     plugin_devops_t pwr_devops[] = {
-        { pwr_pidev_open, pwr_pidev_close,
-          pwr_pidev_read, pwr_pidev_write, pwr_pidev_readv, pwr_pidev_writev,
-          pwr_pidev_time, pwr_pidev_clear },
         { pwr_rapldev_open, pwr_rapldev_close,
           pwr_rapldev_read, pwr_rapldev_write, pwr_rapldev_readv, pwr_rapldev_writev,
           pwr_rapldev_time, pwr_rapldev_clear },
@@ -26,7 +21,6 @@ int main( int argc, char* argv[] )
           pwr_xtpmdev_time, pwr_xtpmdev_clear }
     };
     char initstr[][80] = {
-        "10.54.21.97:20201", 
         "0:0",
         ""
     };

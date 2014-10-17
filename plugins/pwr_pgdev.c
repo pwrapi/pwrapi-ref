@@ -10,7 +10,7 @@
 
 #include <IntelPowerGadget/EnergyLib.h>
 
-static int pgdev_verbose = 0;
+static int pgdev_verbose = 1;
 
 typedef struct {
     int num_nodes;

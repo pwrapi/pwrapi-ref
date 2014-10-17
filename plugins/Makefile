@@ -1,4 +1,5 @@
 MACOS=
+PI=
 
 CC=gcc
 CFLAGS=-Wall -I.. -fPIC
@@ -9,7 +10,7 @@ LDFLAGS=${CFLAGS} -L. -lpiapi -lm -pthread
 all:  test
 
 test: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr_wudev.so libpwr_pgdev.so libpwr_cpudev.so main.c
-	$(CC) ${LDFLAGS} main.c -lpwr_pidev -lpwr_rapldev -lpwr_xtpmdev -lpwr_wudev -lpwr_cpudev -o test
+	$(CC) ${LDFLAGS} main.c -lpwr_rapldev -lpwr_xtpmdev -lpwr_wudev -lpwr_cpudev -o test
 
 libdummy_dev.so: pwr_dev.o dummy_dev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o dummy_dev.o
@@ -21,8 +22,12 @@ else
 libpwr_pgdev.so:
 endif
 
+ifeq ($(PI),y)
 libpwr_pidev.so: pwr_dev.o pwr_pidev.o
 	$(CC) -shared $(CFLAGS) -lpiapi -o $@ pwr_dev.o pwr_pidev.o
+else
+libpwr_pidev.so:
+endif
 
 libpwr_rapldev.so: pwr_dev.o pwr_rapldev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o pwr_rapldev.o
