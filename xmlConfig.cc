@@ -468,7 +468,8 @@ std::string XmlConfig::attrNameToString( PWR_AttrName name )
 {
     switch( name ){
     case PWR_ATTR_NAME: return "Name";
-    case PWR_ATTR_FREQ: return "Freq";
+    case PWR_ATTR_FREQ: return "FREQ";
+    case PWR_ATTR_TEMP: return "TEMP";
     case PWR_ATTR_PSTATE: return "Pstate";
     case PWR_ATTR_MAX_POWER: return "Max Power";
     case PWR_ATTR_MIN_POWER: return "Min Power";
