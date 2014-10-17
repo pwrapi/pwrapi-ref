@@ -64,6 +64,14 @@
         <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
     </devices>
 
+    <children>
+        <child name="core0" />
+        <child name="core1" />
+        <child name="core2" />
+        <child name="core3" />
+        <child name="gpu" />
+    </children>
+
     <attributes>
         <attr name="ENERGY" op="SUM">
             <src type="device" name="pgdev1" />
