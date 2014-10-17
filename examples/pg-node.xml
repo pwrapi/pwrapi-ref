@@ -18,6 +18,15 @@
         <attr name="ENERGY" op="SUM">
             <src type="child" name="node0" />
         </attr>
+        <attr name="POWER" op="SUM">
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="TEMP" op="SUM">
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="FREQ" op="SUM">
+            <src type="child" name="node0" />
+        </attr>
     </attributes>
 
     <children>
@@ -30,6 +39,15 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="TEMP" op="SUM" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
             <src type="child" name="socket0" />
         </attr>
     </attributes>
@@ -55,6 +73,21 @@
         </attr>
         <attr name="TEMP" op="SUM">
             <src type="device" name="pgdev1" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="core0" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="core1" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="core2" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="core3" />
+        </attr>
+        <attr name="FREQ" op="SUM" >
+            <src type="child" name="gpu" />
         </attr>
     </attributes>
 
