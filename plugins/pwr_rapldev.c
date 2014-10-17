@@ -77,7 +77,7 @@
 #define MSR(X,Y,Z) (X>>Y&Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
-static int rapldev_verbose = 0;
+static int rapldev_verbose = 1;
 
 typedef enum {
     INTEL_LAYER_PKG,
@@ -425,7 +425,7 @@ pwr_fd_t pwr_rapldev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_raplfd_t) );
     PWR_RAPLFD(fd)->dev = PWR_RAPLDEV(dev->private_data);
 
-    return 0;
+    return fd;
 }
 
 int pwr_rapldev_close( pwr_fd_t fd )
