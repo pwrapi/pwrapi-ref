@@ -9,8 +9,8 @@ LDFLAGS=${CFLAGS} -L. -lpiapi -lm -pthread
 
 all:  test
 
-test: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr_wudev.so libpwr_pgdev.so libpwr_cpudev.so main.c
-	$(CC) ${LDFLAGS} main.c -lpwr_rapldev -lpwr_xtpmdev -lpwr_wudev -lpwr_cpudev -o test
+test: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr_wudev.so libpwr_pgdev.so libpwr_cpudev.so test.c
+	$(CC) ${LDFLAGS} test.c -lpwr_rapldev -lpwr_xtpmdev -lpwr_wudev -lpwr_cpudev -o test
 
 libdummy_dev.so: pwr_dev.o dummy_dev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o dummy_dev.o
