@@ -1,4 +1,4 @@
-MACOS=y
+MACOS=
 
 CC=gcc
 CFLAGS=-Wall -I.. -fPIC
