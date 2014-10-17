@@ -13,5 +13,5 @@ do
     echo "-----------------------------------------------"
     echo "Collecting ${SAMPLES} at ${FREQ} Hz for ${ATTR}"
     echo "-----------------------------------------------"
-    ./example -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
+    ./powerapi -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
 done
