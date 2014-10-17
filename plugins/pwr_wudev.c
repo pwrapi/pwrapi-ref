@@ -217,9 +217,6 @@ pwr_fd_t pwr_wudev_open( plugin_devops_t *dev, const char *openstr )
 
     PWR_WUFD(fd)->dev = PWR_WUDEV(dev->private_data);
 
-    if( wudev_verbose )
-        printf( "Info: opened file descriptor %d\n", PWR_WUDEV(dev->private_data)->fd );
-
     return fd;
 }
 
@@ -241,12 +238,12 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     if( wudev_verbose )
         printf( "Info: reading from PWR Wattsup device\n" );
  
-    if( wudev_write( PWR_WUDEV(PWR_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
+    if( wudev_write( (PWR_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
         printf( "Error: command write to Wattsup device failed\n" );
         return -1;
     }
 
-    if( wudev_read( PWR_WUDEV(PWR_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
+    if( wudev_read( (PWR_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
         printf( "Error: reading from Wattsup device failed\n" );
         return -1;
     }

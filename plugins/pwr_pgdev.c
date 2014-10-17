@@ -77,7 +77,7 @@ plugin_devops_t *pwr_pgdev_init( const char *initstr )
     bzero( dev->private_data, sizeof(pwr_pgdev_t) );
 
     if( pgdev_verbose )
-        printf( "Info: initializing PWR PowerG device\n" );
+        printf( "Info: initializing PWR PowerGadget device\n" );
 
     IntelEnergyLibInitialize();
     StartLog("/tmp/PowerGadgetLog.csv");
@@ -145,7 +145,6 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     if( pgdev_verbose )
         printf( "Info: reading from PWR PowerGadget device\n" );
 
-    ReadSample();
 #ifndef USE_SYSTIME
     gettimeofday( &tv, NULL );
 #else
@@ -153,25 +152,8 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
 #endif
 
     switch( attr ) {
-        case PWR_ATTR_FREQ:
-            if( !PWR_PGFD(fd)->gpu ) {
-                if( GetIAFrequency( PWR_PGFD(fd)->node, &val ) < 0 )
-                    printf( "Warning: reading node %d frequency\n", PWR_PGFD(fd)->node );
-            } else if( GetGTFrequency( &val ) )
-                printf( "Warning: reading gpu frequency\n" );
-            *((double *)value) = val * 10000000.0;
-            break;
-        case PWR_ATTR_POWER:
-            for( i = 0; i < (PWR_PGFD(fd)->dev)->num_msrs; i++ ) {
-                GetMsrFunc( i, &func );
-                if( func == MSR_FUNC_POWER ) {
-                    GetPowerData( 0, i, data, &n );
-                    *((double *)value) = data[0];
-                    break;
-                }
-            }
-            break;
         case PWR_ATTR_ENERGY:
+            ReadSample();
             for( i = 0; i < (PWR_PGFD(fd)->dev)->num_msrs; i++ ) {
                 if( GetMsrFunc( i, &func ) < 0 )
                     printf( "Warning: reading msr %d function %d\n", i, func );
@@ -182,6 +164,25 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
                         break;
                 }
             }
+            break;
+        case PWR_ATTR_POWER:
+            ReadSample();
+            for( i = 0; i < (PWR_PGFD(fd)->dev)->num_msrs; i++ ) {
+                GetMsrFunc( i, &func );
+                if( func == MSR_FUNC_POWER ) {
+                    GetPowerData( 0, i, data, &n );
+                    *((double *)value) = data[0];
+                    break;
+                }
+            }
+            break;
+        case PWR_ATTR_FREQ:
+            if( !PWR_PGFD(fd)->gpu ) {
+                if( GetIAFrequency( PWR_PGFD(fd)->node, &val ) < 0 )
+                    printf( "Warning: reading node %d frequency\n", PWR_PGFD(fd)->node );
+            } else if( GetGTFrequency( &val ) )
+                printf( "Warning: reading gpu frequency\n" );
+            *((double *)value) = val * 10000000.0;
             break;
         case PWR_ATTR_TEMP:
             GetTemperature( PWR_PGFD(fd)->node, &val );

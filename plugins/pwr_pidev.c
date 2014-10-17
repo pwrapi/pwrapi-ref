@@ -184,7 +184,7 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     pidev_reading = 1;
     if( pidev_verbose )
         printf( "Info: reading counter for port %d\n", PWR_PIFD(fd)->port );
-    if( piapi_counter( PWR_PIDEV(PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
+    if( piapi_counter( (PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
         printf( "Error: powerinsight hardware read failed\n" );
         return -1;
     }

@@ -184,7 +184,7 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
             break;
         case PWR_ATTR_SSTATE:
             *((unsigned long long *)value) =
-                (unsigned long long)PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu];
+                (unsigned long long)((PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu]);
             break;
         case PWR_ATTR_FREQ:
             *((double *)value) = (double)0;
@@ -221,7 +221,7 @@ int pwr_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             break;
         case PWR_ATTR_SSTATE:
             if( online_cpu( PWR_CPUFD(fd)->cpu, *((unsigned long long *)value) ) == 0 )
-                PWR_CPUDEV(PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu] =
+                (PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu] =
                     *((unsigned long long *)value);
             break;
         case PWR_ATTR_FREQ:

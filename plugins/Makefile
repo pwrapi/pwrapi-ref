@@ -1,8 +1,10 @@
-CC = gcc
-CFLAGS = -Wall -I.. -fPIC
-CXXFLAGS = ${CFLAGS}
-LDFLAGS = ${CFLAGS} -L. -lpiapi -lm -pthread
-#OPSYS=Darwin
+MACOS=y
+
+CC=gcc
+CFLAGS=-Wall -I.. -fPIC
+
+CXXFLAGS=${CFLAGS}
+LDFLAGS=${CFLAGS} -L. -lpiapi -lm -pthread
 
 all:  test
 
@@ -12,7 +14,7 @@ test: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr
 libdummy_dev.so: pwr_dev.o dummy_dev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o dummy_dev.o
 
-ifeq ($(OPSYS), Darwin)
+ifeq ($(MACOS),y)
 libpwr_pgdev.so: pwr_dev.o pwr_pgdev.o
 	$(CC) -shared $(CFLAGS) -framework IntelPowerGadget -o $@ pwr_dev.o pwr_pgdev.o
 else

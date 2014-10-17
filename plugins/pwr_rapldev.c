@@ -450,10 +450,10 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
         return -1;
     }
 
-    if( rapldev_gather( PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->fd,
-                        PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->cpu_model,
-                        PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->layer,
-                        PWR_RAPLDEV(PWR_RAPLFD(fd)->dev)->units,
+    if( rapldev_gather( (PWR_RAPLFD(fd)->dev)->fd,
+                        (PWR_RAPLFD(fd)->dev)->cpu_model,
+                        (PWR_RAPLFD(fd)->dev)->layer,
+                        (PWR_RAPLFD(fd)->dev)->units,
                         &energy, &time, &policy ) < 0 ) {
         printf( "Error: PWR RAPL device gather failed\n" );
         return -1;
