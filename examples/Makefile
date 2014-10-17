@@ -2,11 +2,11 @@ CFLAGS = -Wall -I.. -fPIC
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L.. -L../plugins -lpow -lm -ldl -pthread
 
-all:  example
+all:  powerapi
 
-example: main.c
-	$(CC) ${LDFLAGS} main.c -o example
+powerapi: powerapi.c
+	$(CC) ${LDFLAGS} powerapi.c -o powerapi
 
 clean:
-	rm -f example
+	rm -f powerapi
 
