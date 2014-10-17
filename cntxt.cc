@@ -148,6 +148,11 @@ void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 		if ( ! op.compare( "SUM" ) ) {
 			attr.setOp(fpSum);
 			attr.setOp(fpSum2);
+		} else if ( ! op.compare( "AVG" ) ) {
+			attr.setOp(fpAvg);
+			attr.setOp(fpAvg2);
+		} else {
+			assert(0);
 		}
 	}
 }

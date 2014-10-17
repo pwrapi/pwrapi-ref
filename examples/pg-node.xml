@@ -18,13 +18,13 @@
         <attr name="ENERGY" op="SUM">
             <src type="child" name="node0" />
         </attr>
-        <attr name="POWER" op="SUM">
+        <attr name="POWER" op="AVG">
             <src type="child" name="node0" />
         </attr>
-        <attr name="TEMP" op="SUM">
+        <attr name="TEMP" op="AVG">
             <src type="child" name="node0" />
         </attr>
-        <attr name="FREQ" op="SUM">
+        <attr name="FREQ" op="AVG">
             <src type="child" name="node0" />
         </attr>
     </attributes>
@@ -41,13 +41,13 @@
         <attr name="ENERGY" op="SUM" >
             <src type="child" name="socket0" />
         </attr>
-        <attr name="POWER" op="SUM" >
+        <attr name="POWER" op="AVG" >
             <src type="child" name="socket0" />
         </attr>
-        <attr name="TEMP" op="SUM" >
+        <attr name="TEMP" op="AVG" >
             <src type="child" name="socket0" />
         </attr>
-        <attr name="FREQ" op="SUM" >
+        <attr name="FREQ" op="AVG" >
             <src type="child" name="socket0" />
         </attr>
     </attributes>
@@ -76,25 +76,25 @@
         <attr name="ENERGY" op="SUM">
             <src type="device" name="pgdev1" />
         </attr>
-        <attr name="POWER" op="SUM">
+        <attr name="POWER" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
-        <attr name="TEMP" op="SUM">
+        <attr name="TEMP" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
-        <attr name="FREQ" op="SUM" >
+        <attr name="FREQ" op="AVG" >
             <src type="child" name="core0" />
         </attr>
-        <attr name="FREQ" op="SUM" >
+        <attr name="FREQ" op="AVG" >
             <src type="child" name="core1" />
         </attr>
-        <attr name="FREQ" op="SUM" >
+        <attr name="FREQ" op="AVG" >
             <src type="child" name="core2" />
         </attr>
-        <attr name="FREQ" op="SUM" >
+        <attr name="FREQ" op="AVG" >
             <src type="child" name="core3" />
         </attr>
-        <attr name="FREQ" op="SUM" >
+        <attr name="FREQ" op="AVG" >
             <src type="child" name="gpu" />
         </attr>
     </attributes>
@@ -107,7 +107,7 @@
     </devices>
 
     <attributes>
-        <attr name="FREQ" op="SUM">
+        <attr name="FREQ" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
     </attributes>
@@ -119,7 +119,7 @@
     </devices>
 
     <attributes>
-        <attr name="FREQ" op="SUM">
+        <attr name="FREQ" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
     </attributes>
@@ -131,7 +131,7 @@
     </devices>
 
     <attributes>
-        <attr name="FREQ" op="SUM">
+        <attr name="FREQ" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
     </attributes>
@@ -143,7 +143,7 @@
     </devices>
 
     <attributes>
-        <attr name="FREQ" op="SUM">
+        <attr name="FREQ" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
     </attributes>
@@ -155,7 +155,7 @@
     </devices>
 
     <attributes>
-        <attr name="FREQ" op="SUM">
+        <attr name="FREQ" op="AVG">
             <src type="device" name="pgdev1" />
         </attr>
     </attributes>
