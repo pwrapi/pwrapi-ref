@@ -1,7 +1,7 @@
 XMLRPC = n
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml #-DDEBUG_ON
+CPPFLAGS = -I../tinyxml #-DDEBUG_ON
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 LDLIBS = -ldl
@@ -22,7 +22,7 @@ LIB_OBJS = ${LIB_SRC:.cc=.o}
 
 LIB = libpow.so
 
-XML_OBJS=tinyxml/tinyxml2.o
+XML_OBJS=../tinyxml/tinyxml2.o
 
 DEPS = $(LIB_OBJS:.o=.d) 
 

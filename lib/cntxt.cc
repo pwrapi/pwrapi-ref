@@ -32,7 +32,7 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     if( getenv( "POWERAPI_CONFIG" ) != NULL ) {
         m_configFile = getenv( "POWERAPI_CONFIG" );
     } else {
-        m_configFile = "systemX.xml";
+        m_configFile = "system.xml";
     }
     DBGX("configFile=`%s`\n",m_configFile.c_str());
 

@@ -1,12 +1,15 @@
-CFLAGS = -Wall -I.. -fPIC
+CFLAGS = -Wall -I../lib -fPIC
 CXXFLAGS = ${CFLAGS}
-LDFLAGS = ${CFLAGS} -L.. -L../plugins -lpow -lm -ldl -pthread
+LDFLAGS = ${CFLAGS} -L../lib -L../plugins -lpow -lm -ldl -pthread
 
-all:  powerapi
+EXES=powerapi dummyTest
+all:  ${EXES}
 
 powerapi: powerapi.c
-	$(CC) ${LDFLAGS} powerapi.c -o powerapi
+	$(CC) ${LDFLAGS} powerapi.c -o $@ 
+
+dummyTest: dummyTest.c
+	$(CC) ${LDFLAGS} dummyTest.c -o $@ 
 
 clean:
-	rm -f powerapi
-
+	rm -f  ${EXES}
