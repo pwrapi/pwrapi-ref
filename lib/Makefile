@@ -26,6 +26,8 @@ XML_OBJS=../tinyxml/tinyxml2.o
 
 DEPS = $(LIB_OBJS:.o=.d) 
 
+all: ${LIB}
+
 ${LIB}: ${LIB_OBJS} ${XML_OBJS}
 	$(CC) $(LDFLAGS) $(CFLAGS) $(LDLIBS) -o $@ ${LIB_OBJS} ${XML_OBJS}
 
