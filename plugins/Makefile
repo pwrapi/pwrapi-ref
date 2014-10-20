@@ -2,7 +2,7 @@ MACOS=
 PI=
 
 CC=gcc
-CFLAGS=-Wall -I../lib -fPIC
+CFLAGS=-Wall -I../pow -fPIC
 
 CXXFLAGS=${CFLAGS}
 LDFLAGS=${CFLAGS} -L. -lm -pthread

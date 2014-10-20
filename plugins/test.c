@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "plugins/pwr_rapldev.h"
-#include "plugins/pwr_xtpmdev.h"
+#include "pwr_rapldev.h"
+#include "pwr_xtpmdev.h"
 
 int main( int argc, char* argv[] )
 {
