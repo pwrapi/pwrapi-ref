@@ -1,6 +1,6 @@
-CFLAGS = -Wall -I../lib -fPIC
+CFLAGS = -Wall -I../pow -fPIC
 CXXFLAGS = ${CFLAGS}
-LDFLAGS = ${CFLAGS} -L../lib -L../plugins -lpow -lm -ldl -pthread
+LDFLAGS = ${CFLAGS} -L../pow -L../plugins -lpow -lm -ldl -pthread
 
 EXES=powerapi dummyTest
 all:  ${EXES}
