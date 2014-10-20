@@ -17,7 +17,7 @@ typedef struct {
 
 typedef struct {
     pwr_xtpmdev_t *dev;
-    unsigned long long generation;
+    double generation;
 } pwr_xtpmfd_t;
 #define PWR_XTPMFD(X) ((pwr_xtpmfd_t *)(X))
 
@@ -37,7 +37,7 @@ static plugin_devops_t devops = {
     .private_data = 0x0
 };
 
-static int xtpmdev_read( const char *name, unsigned long long *val )
+static int xtpmdev_read( const char *name, double *val )
 {
     char path[256] = "", strval[20] = "";
     int offset = 0;
@@ -52,7 +52,7 @@ static int xtpmdev_read( const char *name, unsigned long long *val )
 
     while( read( fd, strval+offset, 1 ) != EOF ) {
         if( strval[offset] == ' ' ) {
-            *val = atoi(strval);
+            *val = atof(strval);
             return 0;
         }
         offset++;
@@ -62,7 +62,7 @@ static int xtpmdev_read( const char *name, unsigned long long *val )
     return -1;
 }
 
-static int xtpmdev_write( const char *name, unsigned long long val )
+static int xtpmdev_write( const char *name, double val )
 {
     char path[256] = "", strval[20] = "";
     int fd;
@@ -74,7 +74,7 @@ static int xtpmdev_write( const char *name, unsigned long long val )
         return -1;
     }
 
-    sprintf( strval, "%llu", val ); 
+    sprintf( strval, "%lf", val ); 
     if( write( fd, strval, strlen(strval) ) < 0 ) {
         printf( "Error: unable to write PM counter\n" );
         close( fd );
@@ -145,26 +145,26 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     if( xtpmdev_verbose )
         printf( "Info: reading from PWR XTPM device\n" );
 
-    if( len != sizeof(unsigned long long) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
+    if( len != sizeof(double) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_ENERGY:
-            if( xtpmdev_read( "energy", (unsigned long long *)value) < 0 ) {
+            if( xtpmdev_read( "energy", (double *)value) < 0 ) {
                 printf( "Error: unable to read energy counter\n" );
                 return -1;
             }
             break;
         case PWR_ATTR_POWER:
-            if( xtpmdev_read( "power", (unsigned long long *)value) < 0 ) {
+            if( xtpmdev_read( "power", (double *)value) < 0 ) {
                 printf( "Error: unable to read power counter\n" );
                 return -1;
             }
             break;
         case PWR_ATTR_MAX_POWER:
-            if( xtpmdev_read( "power_cap", (unsigned long long *)value) < 0 ) {
+            if( xtpmdev_read( "power_cap", (double *)value) < 0 ) {
                 printf( "Error: unable to read power_cap counter\n" );
                 return -1;
             }
@@ -187,14 +187,14 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
     if( xtpmdev_verbose )
         printf( "Info: writing to PWR XTPM device\n" );
 
-    if( len != sizeof(unsigned long long) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
+    if( len != sizeof(double) ) {
+        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_MAX_POWER:
-            if( xtpmdev_write( "power_cap", *((unsigned long long *)value) ) < 0 ) {
+            if( xtpmdev_write( "power_cap", *((double *)value) ) < 0 ) {
                 printf( "Error: unable to write power_cap counter\n" );
                 return -1;
             }
