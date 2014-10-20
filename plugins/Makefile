@@ -5,7 +5,7 @@ CC=gcc
 CFLAGS=-Wall -I.. -fPIC
 
 CXXFLAGS=${CFLAGS}
-LDFLAGS=${CFLAGS} -L. -lpiapi -lm -pthread
+LDFLAGS=${CFLAGS} -L. -lm -pthread
 
 all:  test
 
