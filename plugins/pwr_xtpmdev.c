@@ -55,6 +55,7 @@ static int xtpmdev_read( const char *name, unsigned long long *val )
             *val = atoi(strval);
             return 0;
         }
+        offset++;
     }
 
     printf( "Error: unable to parse PM counter value\n" );
