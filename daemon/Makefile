@@ -1,5 +1,4 @@
-
-LIB = ../libpow.so
+ROOT=${PWD}/..
 
 ULXMLRCP= /home/mjleven/ulxmlrpcpp-1.7.5/install
 
@@ -9,10 +8,12 @@ ULXMLRCP= /home/mjleven/ulxmlrpcpp-1.7.5/install
 LDLIBS = -lpow -ldl -lulxmlrpcpp
 CPPFLAGS = -I ${ULXMLRCP}/include 
 CFLAGS = -Wall 
-LDFLAGS = -L..  -L ${ULXMLRCP}/lib
+LDFLAGS = -L${ROOT}/pow  -L ${ULXMLRCP}/lib
 CXXFLAGS = -Wall -I
 
-test: ${LIB} server.cpp
+all: test
+
+test: server.cpp
 	$(CXX) -Wall $(CPPFLAGS) $(LDFLAGS) server.cpp $(LDLIBS)  -o server 
 
 clean:
