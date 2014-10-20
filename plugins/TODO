@@ -1,7 +1,0 @@
-- cleanup and test deliverable plugins
-  - rename based on function rather than role
-  - focus on powerinsight, rapl, and cpu
-- instrument miniMD / miniFE on cluster
-- instrument miniMD on local Mac with RAPL
-- finish slides to present next Thursday 10/23
-
