@@ -1,3 +1,4 @@
+CC=gcc
 CFLAGS = -Wall -I../pow -fPIC
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L../pow -L../plugins -lpow -lm -ldl -pthread
