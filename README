@@ -1,0 +1,6 @@
+The Power API prototype is a work in progress. It is being used to test
+concepts and it: 
+1) does not provide complete coverage of the Power API, 
+2) has not been tested beyond the examples,
+3) has been compiled/tested on a limited number of Operating Systems, and
+4) takes liberties with respect to coding. 
