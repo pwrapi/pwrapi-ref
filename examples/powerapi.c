@@ -40,8 +40,11 @@ int main( int argc, char* argv[] )
                     case 'T':
                         attr = PWR_ATTR_TEMP;
                         break;
+                    case 'M':
+                        attr = PWR_ATTR_MAX_POWER;
+                        break;
                     default:
-                        printf( "Error: unsupported attribute type (try E P F or T)\n" );
+                        printf( "Error: unsupported attribute type (try E P F T or M)\n" );
                         return -1;
                 } 
                 break;

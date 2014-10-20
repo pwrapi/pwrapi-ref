@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="CrayXTPM" lib="libpwr_xtpmdev.so"/>
+</Plugins>
+
+<Devices>
+    <device name="XTPM-cab" plugin="CrayXTPM" initString=""/>
+</Devices>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="child" name="cab0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <devices>
+        <dev name="xtpmdev" device="XTPM-cab" openString="" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="xtpmdev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="xtpmdev" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="device" name="xtpmdev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+</Objects>
+</System>

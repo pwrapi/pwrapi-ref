@@ -7,7 +7,7 @@
 </Plugins>
 
 <Devices>
-    <device name="PowerInsight-node1" plugin="PowerInsight" initString="10.54.21.80:20201"/>
+    <device name="PowerInsight-socket" plugin="PowerInsight" initString="10.54.21.80:20201"/>
 </Devices>
 
 <Objects>
@@ -15,6 +15,21 @@
 <obj name="plat" type="Platform">
 
     <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="MIN_POWER" op="AVG">
+            <src type="child" name="node0" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="child" name="node0" />
+        </attr>
         <attr name="ENERGY" op="SUM">
             <src type="child" name="node0" />
         </attr>
@@ -29,6 +44,21 @@
 <obj name="plat.node0" type="Node" >
 
     <attributes>
+        <attr name="VOLTAGE" op="AVG" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="CURRENT" op="AVG" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="MIN_POWER" op="AVG" >
+            <src type="child" name="socket0" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG" >
+            <src type="child" name="socket0" />
+        </attr>
         <attr name="ENERGY" op="SUM" >
             <src type="child" name="socket0" />
         </attr>
@@ -43,27 +73,30 @@
 <obj name="plat.node0.socket0" type="Socket" >
 
     <devices>
-        <dev name="pidev1" device="PowerInsight-node1" openString="1" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
     </devices>
 
     <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="MIN_POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
         <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev1" />
+            <src type="device" name="pidev" />
         </attr>
     </attributes>
 
-</obj>
-
-<obj name="plat.node0.socket0.core0" type="Core" >
-</obj>
-
-<obj name="plat.node0.socket0.core1" type="Core" >
-</obj>
-
-<obj name="plat.node0.socket0.core2" type="Core" >
-</obj>
-
-<obj name="plat.node0.socket0.core3" type="Core" >
 </obj>
 
 </Objects>
