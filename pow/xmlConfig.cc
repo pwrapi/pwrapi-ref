@@ -470,10 +470,10 @@ std::string XmlConfig::attrNameToString( PWR_AttrName name )
     case PWR_ATTR_NAME: return "Name";
     case PWR_ATTR_FREQ: return "FREQ";
     case PWR_ATTR_TEMP: return "TEMP";
-    case PWR_ATTR_PSTATE: return "Pstate";
-    case PWR_ATTR_MAX_POWER: return "Max Power";
-    case PWR_ATTR_MIN_POWER: return "Min Power";
-    case PWR_ATTR_AVG_POWER: return "Avg Power";
+    case PWR_ATTR_PSTATE: return "PSTATE";
+    case PWR_ATTR_MAX_POWER: return "MAX_POWER";
+    case PWR_ATTR_MIN_POWER: return "MIN_POWER";
+    case PWR_ATTR_AVG_POWER: return "AVG_POWER";
     case PWR_ATTR_POWER: return "POWER";
     case PWR_ATTR_VOLTAGE: return "VOLTAGE";
     case PWR_ATTR_CURRENT: return "CURRENT";
