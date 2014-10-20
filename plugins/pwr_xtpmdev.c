@@ -140,6 +140,7 @@ int pwr_xtpmdev_close( pwr_fd_t fd )
 
 int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
+    double generation;
     struct timeval tv;
 
     if( xtpmdev_verbose )
@@ -175,6 +176,15 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     }
     gettimeofday( &tv, NULL );
     *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
+
+    if( xtpmdev_read( "generation", &generation) < 0 ) {
+        printf( "Error: unable to open generation counter\n" );
+        return 0x0;
+    }
+    if( PWR_XTPMFD(fd)->generation != generation ) {
+        printf( "Warning: generation counter rolled over" );
+        PWR_XTPMFD(fd)->generation = generation;
+    }
 
     if( xtpmdev_verbose )
         printf( "Info: reading of type %u at time %llu with value %lf\n",
