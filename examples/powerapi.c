@@ -7,6 +7,8 @@
 
 int main( int argc, char* argv[] )
 {
+    volatile unsigned long test = 0;
+
     PWR_Obj self;
     PWR_Cntxt cntxt;
     time_t time;
@@ -14,11 +16,11 @@ int main( int argc, char* argv[] )
     PWR_Time start_ts = 0, val_ts = 0;
     PWR_AttrName attr = PWR_ATTR_ENERGY;
 
-    unsigned int i, option, verbose = 0, samples = 1, freq = 1;
+    unsigned int i, j, option, verbose = 0, samples = 1, freq = 1, busy = 0;
     static char usage[] =
         "usage: %s [-s samples] [-f freq] [-a attr] [-v] [-h]\n";
 
-    while( (option=getopt( argc, argv, "s:f:a:vh" )) != -1 )
+    while( (option=getopt( argc, argv, "s:f:a:bvh" )) != -1 )
         switch( option ) {
             case 's':
                 samples = atoi(optarg);
@@ -47,6 +49,9 @@ int main( int argc, char* argv[] )
                         printf( "Error: unsupported attribute type (try E P F T or M)\n" );
                         return -1;
                 } 
+                break;
+            case 'b':
+                busy = 1;
                 break;
             case 'v':
                 verbose = 1;
@@ -86,7 +91,10 @@ int main( int argc, char* argv[] )
         PWR_TimeConvert( val_ts, &time );
         printf( "Value is %lf at time %s", val, ctime(&time) );
 
-        usleep( 1000000.0 / freq);
+	if( busy )
+		for( j = 0; j < 40000000; j++ ) test = 2*j;
+        else
+		usleep( 1000000.0 / freq);
     }
 
     if( attr == PWR_ATTR_ENERGY )
