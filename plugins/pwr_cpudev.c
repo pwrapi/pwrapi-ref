@@ -6,15 +6,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/time.h>
 
 static int cpudev_verbose = 0;
 
 typedef struct {
-    int online_cpulist[1000];
-    int freq_cpulist[1000];
     int num_cpus;
-    int avail_freqlist[100];
     int num_freq;
+    int avail_freqlist[100];
 } pwr_cpudev_t;
 #define PWR_CPUDEV(X) ((pwr_cpudev_t *)(X))
 
@@ -40,41 +39,55 @@ static plugin_devops_t devops = {
     .private_data = 0x0
 };
 
-static int online_cpu( int cpu, int state )
+static int cpudev_read( int cpu, const char *name, double *val )
 {
+    char path[256] = "", strval[20] = "";
+    int offset = 0;
     int fd;
-    char onoff;
-    char cpupath[100] = "";
 
-    sprintf( cpupath, "/sys/devices/system/cpu/cpu%i/online", cpu );
-    fd = open( cpupath, O_WRONLY );
+    sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+    fd = open( path, O_RDONLY );
+    if( fd < 0 ) {
+        printf( "Error: unable to open CPU file at %s\n", path );
+        return -1;
+    }
 
-    onoff = (state ? '1' : '0');
-    write( fd, &onoff, 1 );
+    while( read( fd, strval+offset, 1 ) != EOF ) {
+        if( strval[offset] == ' ' ) {
+            *val = atof(strval);
+            return 0;
+        }
+        offset++;
+    }
+
+    printf( "Error: unable to parse PM counter value\n" );
+    return -1;
+}
+
+static int cpudev_write( int cpu, const char *name, double val )
+{
+    char path[256] = "", strval[20] = "";
+    int fd;
+
+    sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+    fd = open( path, O_WRONLY );
+    if( fd < 0 ) {
+        printf( "Error: unable to open CPU file at %s\n", path );
+        return -1;
+    }
+
+    sprintf( strval, "%lf", val );
+    if( write( fd, strval, strlen(strval) ) < 0 ) {
+        printf( "Error: unable to write PM counter\n" );
+        close( fd );
+        return -1;
+    }
 
     close( fd );
-
     return 0;
 }
 
-static int change_freq( int cpu, int freq )
-{
-    int fd;
-    char val[20] = "";
-    char freqpath[100] = "";
-
-    sprintf( freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq", cpu );
-    fd = open( freqpath, O_WRONLY );
-
-    sprintf( val, "%d", freq );
-    write( fd, val, strlen(val) );
-
-    close( fd );
-
-    return 0;
-}
-
-static int avail_freq( int cpu, int freq[], int *count )
+static int cpudev_avail_freq( int cpu, int freq[], int *count )
 {
     int fd;
     char freqpath[100] = "";
@@ -101,8 +114,6 @@ static int avail_freq( int cpu, int freq[], int *count )
 
 plugin_devops_t *pwr_cpudev_init( const char *initstr )
 {
-    int i;
-
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
     *dev = devops;
 
@@ -113,12 +124,7 @@ plugin_devops_t *pwr_cpudev_init( const char *initstr )
         printf( "Info: initializing PWR CPU device\n" );
 
     PWR_CPUDEV(dev->private_data)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
-    for( i = 1; i <= PWR_CPUDEV(dev->private_data)->num_cpus -1; i++ ) {
-        online_cpu( i, 1 );
-        PWR_CPUDEV(dev->private_data)->online_cpulist[i] = 1;
-    }        
-
-    avail_freq(0, PWR_CPUDEV(dev->private_data)->avail_freqlist, &(PWR_CPUDEV(dev->private_data)->num_freq));
+    cpudev_avail_freq(0, PWR_CPUDEV(dev->private_data)->avail_freqlist, &(PWR_CPUDEV(dev->private_data)->num_freq));
 
     return dev;
 }
@@ -170,6 +176,8 @@ int pwr_cpudev_close( pwr_fd_t fd )
 
 int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
+    struct timeval tv;
+
     if( len != sizeof(unsigned long long) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
         return -1;
@@ -183,11 +191,16 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
             *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_SSTATE:
-            *((unsigned long long *)value) =
-                (unsigned long long)((PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu]);
+            if( cpudev_read( PWR_CPUFD(fd)->cpu, "online", (double *)value) < 0 ) {
+                printf( "Error: unable to read cpu %d sleep state\n", PWR_CPUFD(fd)->cpu );
+                return -1;
+            }
             break;
         case PWR_ATTR_FREQ:
-            *((double *)value) = (double)0;
+            if( cpudev_read( PWR_CPUFD(fd)->cpu, "cpufreq", (double *)value) < 0 ) {
+                printf( "Error: unable to read cpu %d frequency\n", PWR_CPUFD(fd)->cpu );
+                return -1;
+            }
             break;
         case PWR_ATTR_TEMP:
             *((double *)value) = (double)0;
@@ -196,7 +209,8 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
             printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
-    *timestamp = 0;
+    gettimeofday( &tv, NULL );
+    *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
     if( cpudev_verbose )
         printf( "Info: reading of type %u at time %llu with value %lf\n",
@@ -220,12 +234,16 @@ int pwr_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             *((unsigned long long *)value) = (unsigned long long)0;
             break;
         case PWR_ATTR_SSTATE:
-            if( online_cpu( PWR_CPUFD(fd)->cpu, *((unsigned long long *)value) ) == 0 )
-                (PWR_CPUFD(fd)->dev)->online_cpulist[PWR_CPUFD(fd)->cpu] =
-                    *((unsigned long long *)value);
+            if( cpudev_write( PWR_CPUFD(fd)->cpu, "online", *((double *)value)) < 0 ) {
+                printf( "Error: unable to write cpu %d sleep state\n", PWR_CPUFD(fd)->cpu );
+                return -1;
+            }
             break;
         case PWR_ATTR_FREQ:
-            *((double *)value) = (double)0;
+            if( cpudev_write( PWR_CPUFD(fd)->cpu, "cpufreq", *((double *)value)) < 0 ) {
+                printf( "Error: unable to write cpu %d frequency\n", PWR_CPUFD(fd)->cpu );
+                return -1;
+            }
             break;
         case PWR_ATTR_TEMP:
             *((double *)value) = (double)0;
@@ -265,7 +283,12 @@ int pwr_cpudev_writev( pwr_fd_t fd, unsigned int arraysize,
 
 int pwr_cpudev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
-    return 0;
+    double value;
+
+    if( cpudev_verbose )
+        printf( "Info: reading time from CPU device\n" );
+
+    return pwr_cpudev_read( fd, PWR_ATTR_FREQ, &value, sizeof(double), timestamp );;
 }
 
 int pwr_cpudev_clear( pwr_fd_t fd )
