@@ -35,7 +35,7 @@
 <obj name="plat.node0" type="Node" >
 
     <devices>
-        <dev name="xtpmdev" device="XTPM-cab" openString="" /> 
+        <dev name="xtpmdev" device="XTPM-node" openString="" /> 
     </devices>
 
     <attributes>
