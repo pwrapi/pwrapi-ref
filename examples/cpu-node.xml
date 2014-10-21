@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="CPU" lib="libpwr_cpudev.so"/>
+</Plugins>
+
+<Devices>
+    <device name="CPU-core" plugin="CPU" initString=""/>
+</Devices>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="SSTATE" op="AVG">
+            <src type="child" name="node" />
+        </attr>
+        <attr name="FREQ" op="AVG">
+            <src type="child" name="node" />
+        </attr>
+        <attr name="TEMP" op="AVG">
+            <src type="child" name="node" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node" />
+    </children>
+
+</obj>
+
+<obj name="plat.node" type="Node" >
+
+    <attributes>
+        <attr name="SSTATE" op="AVG" >
+            <src type="child" name="core0" />
+        </attr>
+        <attr name="FREQ" op="AVG" >
+            <src type="child" name="core0" />
+        </attr>
+        <attr name="TEMP" op="AVG" >
+            <src type="child" name="core0" />
+        </attr>
+        <attr name="SSTATE" op="AVG" >
+            <src type="child" name="core1" />
+        </attr>
+        <attr name="FREQ" op="AVG" >
+            <src type="child" name="core1" />
+        </attr>
+        <attr name="TEMP" op="AVG" >
+            <src type="child" name="core1" />
+        </attr>
+        <attr name="SSTATE" op="AVG" >
+            <src type="child" name="core2" />
+        </attr>
+        <attr name="FREQ" op="AVG" >
+            <src type="child" name="core2" />
+        </attr>
+        <attr name="TEMP" op="AVG" >
+            <src type="child" name="core2" />
+        </attr>
+        <attr name="SSTATE" op="AVG" >
+            <src type="child" name="core3" />
+        </attr>
+        <attr name="FREQ" op="AVG" >
+            <src type="child" name="core3" />
+        </attr>
+        <attr name="TEMP" op="AVG" >
+            <src type="child" name="core3" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="core0" />
+        <child name="core1" />
+        <child name="core2" />
+        <child name="core3" />
+    </children>
+</obj>
+
+<obj name="plat.node.core0" type="Core" >
+
+    <devices>
+        <dev name="cpudev" device="CPU-core" openString="0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="VOLTAGE" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="CURRENT" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.node.core1" type="Core" >
+
+    <devices>
+        <dev name="cpudev" device="CPU-core" openString="1" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="VOLTAGE" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="CURRENT" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.node.core2" type="Core" >
+
+    <devices>
+        <dev name="cpudev" device="CPU-core" openString="2" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="VOLTAGE" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="CURRENT" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.node.core3" type="Core" >
+
+    <devices>
+        <dev name="cpudev" device="CPU-core" openString="3" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="VOLTAGE" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+        <attr name="CURRENT" op="AVG" >
+            <src type="device" name="cpudev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+</Objects>
+</System>
