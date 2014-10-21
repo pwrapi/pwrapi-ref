@@ -16,49 +16,49 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="POWER" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="TEMP" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="FREQ" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
     </attributes>
 
     <children>
-        <child name="node0" />
+        <child name="node" />
     </children>
 
 </obj>
 
-<obj name="plat.node0" type="Node" >
+<obj name="plat.node" type="Node" >
 
     <attributes>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="TEMP" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="FREQ" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket0" />
+        <child name="socket" />
     </children>
 
 </obj>
 
-<obj name="plat.node0.socket0" type="Socket" >
+<obj name="plat.node.socket" type="Socket" >
 
     <devices>
         <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
@@ -101,7 +101,7 @@
 
 </obj>
 
-<obj name="plat.node0.socket0.core0" type="Core" >
+<obj name="plat.node.socket.core0" type="Core" >
     <devices>
         <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
     </devices>
@@ -113,7 +113,7 @@
     </attributes>
 </obj>
 
-<obj name="plat.node0.socket0.core1" type="Core" >
+<obj name="plat.node.socket.core1" type="Core" >
     <devices>
         <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
     </devices>
@@ -125,7 +125,7 @@
     </attributes>
 </obj>
 
-<obj name="plat.node0.socket0.core2" type="Core" >
+<obj name="plat.node.socket.core2" type="Core" >
     <devices>
         <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
     </devices>
@@ -137,7 +137,7 @@
     </attributes>
 </obj>
 
-<obj name="plat.node0.socket0.core3" type="Core" >
+<obj name="plat.node.socket.core3" type="Core" >
     <devices>
         <dev name="pgdev1" device="PG-node1" openString="0:0" /> 
     </devices>
@@ -149,14 +149,14 @@
     </attributes>
 </obj>
 
-<obj name="plat.node0.socket0.gpu" type="Core" >
+<obj name="plat.node.socket.gpu" type="Core" >
     <devices>
-        <dev name="pgdev1" device="PG-node1" openString="0:1" /> 
+        <dev name="pgdev" device="PG-node1" openString="0:1" /> 
     </devices>
 
     <attributes>
         <attr name="FREQ" op="AVG">
-            <src type="device" name="pgdev1" />
+            <src type="device" name="pgdev" />
         </attr>
     </attributes>
 </obj>

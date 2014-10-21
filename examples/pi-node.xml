@@ -16,61 +16,61 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="CURRENT" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="POWER" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="MIN_POWER" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="MAX_POWER" op="AVG">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
         <attr name="ENERGY" op="SUM">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
     </attributes>
 
     <children>
-        <child name="node0" />
+        <child name="node" />
     </children>
 
 </obj>
 
-<obj name="plat.node0" type="Node" >
+<obj name="plat.node" type="Node" >
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="MIN_POWER" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="MAX_POWER" op="AVG" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket0" />
+        <child name="socket" />
     </children>
 
 </obj>
 
-<obj name="plat.node0.socket0" type="Socket" >
+<obj name="plat.node.socket" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="1" /> 

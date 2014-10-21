@@ -7,7 +7,7 @@
 </Plugins>
 
 <Devices>
-    <device name="RAPL-node1" plugin="RAPL" initString="0:0"/>
+    <device name="RAPL-node" plugin="RAPL" initString="0:0"/>
 </Devices>
 
 <Objects>
@@ -16,54 +16,42 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM">
-            <src type="child" name="node0" />
+            <src type="child" name="node" />
         </attr>
     </attributes>
 
     <children>
-        <child name="node0" />
+        <child name="node" />
     </children>
 
 </obj>
 
-<obj name="plat.node0" type="Node" >
+<obj name="plat.node" type="Node" >
 
     <attributes>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket0" />
+            <src type="child" name="socket" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket0" />
+        <child name="socket" />
     </children>
 
 </obj>
 
-<obj name="plat.node0.socket0" type="Socket" >
+<obj name="plat.node.socket" type="Socket" >
 
     <devices>
-        <dev name="rapldev1" device="RAPL-node1" openString="1" /> 
+        <dev name="rapldev" device="RAPL-node" openString="1" /> 
     </devices>
 
     <attributes>
         <attr name="ENERGY" op="SUM">
-            <src type="device" name="rapldev1" />
+            <src type="device" name="rapldev" />
         </attr>
     </attributes>
 
-</obj>
-
-<obj name="plat.node0.socket0.core0" type="Core" >
-</obj>
-
-<obj name="plat.node0.socket0.core1" type="Core" >
-</obj>
-
-<obj name="plat.node0.socket0.core2" type="Core" >
-</obj>
-
-<obj name="plat.node0.socket0.core3" type="Core" >
 </obj>
 
 </Objects>
