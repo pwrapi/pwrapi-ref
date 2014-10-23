@@ -26,9 +26,6 @@ int main( int argc, char* argv[] )
     PWR_Time ts;
 	PWR_Status  status;
 
-	setenv( "POWERAPI_CONFIG", "dummySystem.xml", 1 );
-	setenv( "POWERAPI_ROOT", "plat.cab0.board0.node0", 1 );
-
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
     assert( cntxt );
