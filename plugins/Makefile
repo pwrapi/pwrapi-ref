@@ -1,5 +1,5 @@
-MACOS=
-PI=
+MACOS=y
+PI=y
 
 CC=gcc
 CFLAGS=-Wall -I../pow -fPIC
