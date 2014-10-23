@@ -38,7 +38,8 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     if( getenv( "POWERAPI_CONFIG" ) != NULL ) {
         m_configFile = getenv( "POWERAPI_CONFIG" );
     } else {
-        m_configFile = "system.xml";
+		printf("error: environment variable `POWERAPI_CONFIG` must be set\n");
+		exit(-1);
     }
     DBGX("configFile=`%s`\n",m_configFile.c_str());
 
@@ -58,8 +59,10 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     if( getenv( "POWERAPI_ROOT" ) != NULL ) {
         selfName = getenv( "POWERAPI_ROOT" );
     } else {
-        selfName = "plat.cab0.board0.node0";
+		printf("error: environment variable `POWERAPI_ROOT` must be set\n");
+		exit(-1);
     }
+
     DBGX("root=`%s`\n",selfName.c_str());
 
     if ( getenv( "POWERAPI_STANDALONE" ) != NULL ) {
@@ -177,7 +180,11 @@ void Cntxt::initPlugins( Config& cfg )
 										plugin.lib.c_str() );
 
         void* ptr = dlopen( plugin.lib.c_str(), RTLD_LAZY);
-        assert(ptr);
+		if ( NULL == ptr ) {
+			printf("error: can't find plugin library `%s`\n",
+												plugin.lib.c_str());
+			exit(-1);
+		}
 
         getDevFuncPtr_t funcPtr = (getDevFuncPtr_t) dlsym(ptr,GETDEVFUNC);
         assert(funcPtr);
