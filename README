@@ -4,3 +4,63 @@ concepts and it:
 2) has not been tested beyond the examples,
 3) has been compiled/tested on a limited number of Operating Systems, and
 4) takes liberties with respect to coding. 
+
+
+Sorce code directory structure:
+  pow      - contains the Power API library
+  plugins  - contains plugins used by the Power API library, these plugins
+		     access devices on the platfrom 
+  examples - contains applications that execise the Power API
+  daemon   - contains a server used for remote access of Power API
+
+Building:
+The Power API library uses an XML file to contain the system description and it
+uses TinyXml to parse the XML file. You will need to download TinyXml and place
+it in a top level directory 'tinyxml'. Next run 'make' in the plugins, pow and
+the examples directory.
+
+Running:
+You need to add the plugins and pow directory to your [DY]LD_LIBRARY_PATH.
+Now you can run dummyTest in the examples directory. dummyTest exercises the
+dummy_dev plugin. The output should look like:
+
+s971371:examples mjleven$ ./dummyTest 
+location=``
+root=`plat.cab0.board0.node0`
+standAlone=yes
+I'm a `Node`
+child plat.cab0.board0.node0.socket0
+DummyDev:dummy_dev_open():57: `core0`
+DummyDev:dummy_dev_read():76: type=Power 10.123400
+DummyDev:dummy_dev_open():57: `core1`
+DummyDev:dummy_dev_read():76: type=Power 10.123400
+PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=20.246800 ts=`Thu Oct 23 08:59:29 2014`
+PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=25.812000
+DummyDev:dummy_dev_write():88: type=Power 25.812000
+DummyDev:dummy_dev_write():88: type=Power 25.812000
+DummyDev:dummy_dev_readv():102: type=Power 25.812000
+DummyDev:dummy_dev_readv():102: type=Power 25.812000
+PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=51.624000 ts=`Thu Oct 23 08:59:29 2014`
+PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=100.100000
+DummyDev:dummy_dev_writev():114: num attributes 1
+DummyDev:dummy_dev_writev():116: type=Power 100.100000
+DummyDev:dummy_dev_writev():114: num attributes 1
+DummyDev:dummy_dev_writev():116: type=Power 100.100000
+DummyDev:dummy_dev_read():76: type=Power 100.100000
+DummyDev:dummy_dev_read():76: type=Power 100.100000
+PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=200.200000 ts=`Thu Oct 23 08:59:29 2014`
+PWR_GrpAttrSetValue(PWR_ATTR_POWER) value=0.100000
+DummyDev:dummy_dev_write():88: type=Power 0.100000
+DummyDev:dummy_dev_write():88: type=Power 0.100000
+DummyDev:dummy_dev_read():76: type=Power 0.100000
+DummyDev:dummy_dev_read():76: type=Power 0.100000
+PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=0.200000 ts=`Thu Oct 23 08:59:29 2014`
+DummyDev:dummy_dev_stat_start():142: 
+DummyDev:dummy_dev_stat_get():161: 
+PWR_StatGetValue(PWR_ATTR_POWER) value=0.010000
+PWR_StatGetValue(PWR_ATTR_POWER) start=1414076369913586944
+PWR_StatGetValue(PWR_ATTR_POWER) stop=1414076369913623040
+DummyDev:dummy_dev_final():192: 
+DummyDev:dummy_dev_final():192: 
+s971371:examples mjleven$ 
+ 
