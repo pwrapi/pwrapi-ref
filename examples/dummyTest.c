@@ -5,6 +5,7 @@
  * a license from the United States Government.
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
@@ -24,6 +25,9 @@ int main( int argc, char* argv[] )
     double       value;
     PWR_Time ts;
 	PWR_Status  status;
+
+	setenv( "POWERAPI_CONFIG", "dummySystem.xml", 1 );
+	setenv( "POWERAPI_ROOT", "plat.cab0.board0.node0", 1 );
 
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
@@ -52,7 +56,8 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
+													value,myctime(&time));
     
     value = 25.812;
     printf("PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=%f\n",value);
@@ -68,7 +73,8 @@ int main( int argc, char* argv[] )
     assert( retval == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", value, myctime( &time ) );
+    printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", 
+													value, myctime( &time ) );
 
     value = 100.10;
     printf("PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=%f\n",value);
@@ -81,7 +87,8 @@ int main( int argc, char* argv[] )
     assert( value == 200.20 );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
+													value,myctime(&time));
 
     grp = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE );
     assert( grp );
@@ -98,7 +105,8 @@ int main( int argc, char* argv[] )
     assert( value == 0.2 );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",value,myctime(&time));
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
+													value,myctime(&time));
 
 	PWR_Obj* core = PWR_GrpGetObjByIndx( grp, 0 );
 	assert( core );
