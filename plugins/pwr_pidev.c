@@ -126,7 +126,7 @@ plugin_devops_t *pwr_pidev_init( const char *initstr )
         return 0x0;
     }
 
-    if( piapi_init( &(PWR_PIDEV(dev->private_data)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport ) < 0 ) {
+    if( piapi_init( &(PWR_PIDEV(dev->private_data)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport, 0 ) < 0 ) {
         printf( "Error: powerinsight hardware initialization failed\n" );
         return 0x0;
     }
