@@ -20,6 +20,7 @@
 using namespace PowerAPI;
 
 static const char* copyright = "\n"
+"Power API library produced at Sandia National Laboratory\n"
 "  Copyright 2014 Sandia Corporation. Under the terms of Contract\n"
 "  DE-AC04-94AL85000, there is a non-exclusive license for use of this work\n"
 "  by or on behalf of the U.S. Government. Export of this program may require\n"

@@ -71,9 +71,9 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
         }  
     }
 
-    printf("location=`%s`\n",m_myLocation.c_str());
-    printf("root=`%s`\n",selfName.c_str());
-    printf("standAlone=%s\n", standAlone() ? "yes":"no");
+    DBGX("location=`%s`\n",m_myLocation.c_str());
+    DBGX("root=`%s`\n",selfName.c_str());
+    DBGX("standAlone=%s\n", standAlone() ? "yes":"no");
 
 	m_top = findNode( selfName );
     assert(m_top);
