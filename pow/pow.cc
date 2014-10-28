@@ -5,6 +5,7 @@
  * a license from the United States Government.
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <sys/time.h>
 #include <assert.h>
