@@ -29,10 +29,6 @@ PWR_Obj   PWR_CntxtGetEntryPoint( PWR_Cntxt );
 PWR_Grp   PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );
 PWR_Grp   PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name );
 
-PWR_CntxtState PWR_CntxtSave( PWR_Cntxt );
-int            PWR_CntxtRestore( PWR_Cntxt, PWR_CntxtState );
-
-
 PWR_Obj PWR_CntxtGetObjByName( PWR_Cntxt, const char* name );
 
 /*
@@ -51,9 +47,6 @@ int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, void* buf );
 
 int PWR_ObjAttrGetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status  );
 int PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Status );
-
-int PWR_ObjGetAvgPower( PWR_Obj, PWR_Time* from, PWR_Time* to );
-int PWR_ObjGetEnergy( PWR_Obj, PWR_Time* from, PWR_Time* to );
 
 /*
 * Subset of API that works on Grp 

@@ -40,19 +40,33 @@ static void con()
 #define GRP(ptr) 	     ((Grp*) ptr) 
 #define STAT(ptr) 	     ((Stat*) ptr) 
 
+int PWR_GetMajorVersion()
+{
+	assert(0);
+}
+
+int PWR_GetMinorVersion()
+{
+	assert(0);
+}
+
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
-	return new Cntxt( type, role, name );
+	PWR_Cntxt tmp = new Cntxt( type, role, name );
+	printf("%s() %p\n",__func__,tmp);
+	return tmp;
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
 {
+	printf("%s() %p\n",__func__,ctx);
 	delete CNTXT(ctx);
     return PWR_RET_SUCCESS;
 }
 
 PWR_Obj PWR_CntxtGetEntryPoint( PWR_Cntxt ctx )
 {
+	printf("%s() %p\n",__func__,ctx);
     return CNTXT(ctx)->getSelf();
 }
 
@@ -66,12 +80,18 @@ PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name )
     return CNTXT(ctx)->getGrpByName( name );
 }
 
+PWR_Obj PWR_CntxtGetObjByName( PWR_Cntxt, const char* name )
+{
+	assert(0);
+}
+
 /*
 * Subset of API that works on Obj
 */
 
 PWR_ObjType PWR_ObjGetType( PWR_Obj obj )
 {
+	printf("%s() %p\n",__func__,obj);
     return OBJTREENODE(obj)->type();
 }
 
@@ -177,7 +197,7 @@ int PWR_GrpAddObj( PWR_Grp group, PWR_Obj obj )
     return GRP(group)->add( OBJTREENODE(obj) );
 }
 
-int PWR_GrpObjRemove( PWR_Grp group, PWR_Obj obj )
+int PWR_GrpRemoveObj( PWR_Grp group, PWR_Obj obj )
 {
     return GRP(group)->remove( OBJTREENODE(obj) );
 }
@@ -196,6 +216,12 @@ int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrName type, void* ptr,
                                         PWR_Status status )
 {
     return GRP(grp)->attrSetValue( type, ptr, 8, STATUS(status) );
+}
+
+int PWR_GrpAttrGetValue( PWR_Grp grp, PWR_AttrName name, void* buf,
+				PWR_Time ts[], PWR_Status )
+{
+	assert(0);
 }
 
 int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf, PWR_Status status )
