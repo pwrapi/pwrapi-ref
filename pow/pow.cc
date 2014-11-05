@@ -52,21 +52,17 @@ int PWR_GetMinorVersion()
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
-	PWR_Cntxt tmp = new Cntxt( type, role, name );
-	printf("%s() %p\n",__func__,tmp);
-	return tmp;
+	return new Cntxt( type, role, name );
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
 {
-	printf("%s() %p\n",__func__,ctx);
 	delete CNTXT(ctx);
     return PWR_RET_SUCCESS;
 }
 
 PWR_Obj PWR_CntxtGetEntryPoint( PWR_Cntxt ctx )
 {
-	printf("%s() %p\n",__func__,ctx);
     return CNTXT(ctx)->getSelf();
 }
 
@@ -91,7 +87,6 @@ PWR_Obj PWR_CntxtGetObjByName( PWR_Cntxt, const char* name )
 
 PWR_ObjType PWR_ObjGetType( PWR_Obj obj )
 {
-	printf("%s() %p\n",__func__,obj);
     return OBJTREENODE(obj)->type();
 }
 
