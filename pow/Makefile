@@ -1,14 +1,18 @@
 XMLRPC = n
-SWIG = n
+DEBUG = n
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -I../tinyxml #-DDEBUG_ON
-CPPFLAGS += -I/usr/include/python2.7
+CPPFLAGS = -I../tinyxml
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
-LDFLAGS += $(shell python-config --ldflags)
 LDLIBS = -ldl
-CC = g++
+LD = g++
+
+ifeq ($(DEBUG),y)
+CPPFLAGS += -DDEBUG_ON
+endif
+
+LIB = libpow.so
 
 LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
 
@@ -23,27 +27,17 @@ endif
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 
-LIB = libpow.so
-
 XML_OBJS=../tinyxml/tinyxml2.o
 
 DEPS = $(LIB_OBJS:.o=.d) 
 
 all: ${LIB}
 
-ifeq ($(SWIG),y)
-LIB_OBJS += pow_wrap.o
-
-pow_wrap.c: pow.i
-	swig -classic -python pow.i
-
-endif
-
 ${LIB}: ${LIB_OBJS} ${XML_OBJS}
-	$(CC) $(LDFLAGS) $(CFLAGS) $(LDLIBS) -o $@ ${LIB_OBJS} ${XML_OBJS}
+	$(LD) $(LDFLAGS) $(LDLIBS) -o $@ ${LIB_OBJS} ${XML_OBJS}
 
 clean:
-	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} $(DEPS) pow_wrap.c pow.py pow.pyc
+	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} $(DEPS)
 
 -include $(DEPS) 
 
