@@ -4,7 +4,6 @@ import pow
 import time
 
 print "hello"
-#print pow.CNTXT_DEFAULT
 
 cntxt = pow.CntxtInit( pow.CNTXT_DEFAULT, pow.ROLE_APP, "App" )
 assert( cntxt )
@@ -91,32 +90,17 @@ assert( retval == pow.RET_SUCCESS )
 
 time.sleep( 0.00001 ) 
 
-#retval, value, statTimes = pow.StatGetValue( coreStat )
-#assert( retval == pow.RET_SUCCESS )
+retval, value, statTimes = pow.StatGetValue( coreStat )
+assert( retval == pow.RET_SUCCESS )
 
-statTimes = pow.StatTimes()
-#print statTimes
+print "StatGetValue(ATTR_POWER) value={}".format( value )
+print "StatGetValue(ATTR_POWER) start={}".format( statTimes.start )
 
-statTimes.foo = 1000
-print statTimes.foo
-statTimes.start = long(200)
+print "StatGetValue(ATTR_POWER) stop={}".format( statTimes.stop )
 
+if ( statTimes.instant != pow.TIME_NOT_SET ):
+    print "StatGetValue(ATTR_POWER) instant={}".format( statTimes.instant )
 
-#xxx = pow.Time(10) 
-#print xxx
-#statTimes.start = 0
-#statTimes.stop = 1 
-#statTimes.instant = 2
-#print statTimes
-
-#print "StatGetValue(ATTR_POWER) value={}".format( value )
-#print "StatGetValue(ATTR_POWER) start={}".format( statTimes.start )
-
-#print "StatGetValue(ATTR_POWER) stop={}".format( statTimes.stop )
-
-#if ( statTimes.instant != pow.TIME_NOT_SET ):
-#    print "StatGetValue(ATTR_POWER) instant={}".format( statTimes.instant )
-
-#pow.StatDestroy( coreStat )
+pow.StatDestroy( coreStat )
 
 pow.CntxtDestroy( cntxt )
