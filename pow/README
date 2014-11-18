@@ -1,0 +1,7 @@
+This directory contains the code for libpow. It has compile dependencies on
+TimyXML-2 and ULXMLRPC, which are not included in this distribution.
+ULXMLRPC is optional and is only needed if exercising the RPC functionality
+of the prototype.
+
+The Makefile is simple and is considered the reference on how to integrate
+TinyXML-2 and ULXMLRPC into the build process.
