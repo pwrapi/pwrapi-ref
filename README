@@ -1,75 +1,37 @@
-The Power API prototype is a work in progress. It is being used to test
-concepts and it: 
-1) does not provide complete coverage of the Power API, 
-2) has not been tested beyond the examples,
-3) has been compiled/tested on a limited number of Operating Systems, and
-4) takes liberties with respect to coding. 
+This software is a prototype implementation of the PowerAPI. The main purpose 
+for the creation of the prototype was to test the viability of API function 
+during the design of the API specification. The prototype is also being used
+to test implementation details such as how to interface with different types
+of hardware and communication between agents. The prototype is a work in
+progress and only a set of the functions listed in the specification have been 
+implemented.
 
+The main component of this software is libpow (located in directory pow). 
+It implements the API and is designed as a hardware neutral framework. The
+framework accesses platform specific power measurement and control via plugins.
+The plugins are implemented as dynamic libraries (located in directory plugins).
+There are currently plugins for several platforms as well as a dummy plugin
+used for development. The dummy plugin is trivial and a good place to look when
+implementing a plugin for a new platform. 
 
-Sorce code directory structure:
-  pow      - contains the Power API library
-  plugins  - contains plugins used by the Power API library, these plugins
-		     access devices on the platfrom 
-  examples - contains applications that execise the Power API
-  daemon   - contains a server used for remote access of Power API
+libpow is configured via an XML file describing the hardware it is interacting 
+with. XML was chosen for expedient development not performance. libpow has an
+object that interfaces with the XML file via TinyXML-2. TinyXML-2 is not
+include with this distribution. See the README in "pow" for instructions on
+integrating TinyXML-2 into this software package. 
 
-Building:
-The Power API library uses an XML file to contain the system description and it
-uses TinyXml to parse the XML file. You will need to download TinyXml and place
-it in a top level directory 'tinyxml'. Next run 'make' in the plugins, pow and
-the examples directory.
+The prototype also explores accessing the API via a scripting language such as
+Python and remote PowerAPI calls. The Python binding is done via Swig and is
+located in directory swig. The remote API calls are supported via a daemon 
+and ULXMLRPC. The daemon is located in directory daemon. ULXMLRPC was chosen
+for expedient development and is not a good choice for large scale. The
+intent is that ULXMLRPC could be easily replaced with another IPC  mechanism.  
 
-Running:
-The example directory contains applications that use the Power API and run 
-scripts that configure enviroment variables and launch the corresponding app.
+The examples directory contains simple “C” and Python programs that can be 
+examined to get a feeling for how one would use the Power API.
 
-The dummyTest exercises the dummmy_dev plugin.  It should run on any platform
-given it does not access hardware.
- 
-s971371:prototype mjleven$ cd examples/
-s971371:examples mjleven$ ./run_dummy.sh 
+This software has been compiled on:
+	Mac OSX 10.9.5 / gcc version 4.6.4 (MacPorts gcc46 4.6.4_3)
+	Linux X / compiler X 
 
-  Copyright 2014 Sandia Corporation. Under the terms of Contract
-  DE-AC04-94AL85000, there is a non-exclusive license for use of this work
-  by or on behalf of the U.S. Government. Export of this program may require
-  a license from the United States Government.
-
-location=``
-root=`plat.cab0.board0.node0`
-standAlone=yes
-I'm a `Node`
-child plat.cab0.board0.node0.socket0
-DummyDev:dummy_dev_open():57: `core0`
-DummyDev:dummy_dev_read():76: type=Power 10.123400
-DummyDev:dummy_dev_open():57: `core1`
-DummyDev:dummy_dev_read():76: type=Power 10.123400
-PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=20.246800 ts=`Thu Oct 23 12:14:12 2014`
-PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=25.812000
-DummyDev:dummy_dev_write():88: type=Power 25.812000
-DummyDev:dummy_dev_write():88: type=Power 25.812000
-DummyDev:dummy_dev_readv():102: type=Power 25.812000
-DummyDev:dummy_dev_readv():102: type=Power 25.812000
-PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=51.624000 ts=`Thu Oct 23 12:14:12 2014`
-PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=100.100000
-DummyDev:dummy_dev_writev():114: num attributes 1
-DummyDev:dummy_dev_writev():116: type=Power 100.100000
-DummyDev:dummy_dev_writev():114: num attributes 1
-DummyDev:dummy_dev_writev():116: type=Power 100.100000
-DummyDev:dummy_dev_read():76: type=Power 100.100000
-DummyDev:dummy_dev_read():76: type=Power 100.100000
-PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=200.200000 ts=`Thu Oct 23 12:14:12 2014`
-PWR_GrpAttrSetValue(PWR_ATTR_POWER) value=0.100000
-DummyDev:dummy_dev_write():88: type=Power 0.100000
-DummyDev:dummy_dev_write():88: type=Power 0.100000
-DummyDev:dummy_dev_read():76: type=Power 0.100000
-DummyDev:dummy_dev_read():76: type=Power 0.100000
-PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=0.200000 ts=`Thu Oct 23 12:14:12 2014`
-DummyDev:dummy_dev_stat_start():142: 
-DummyDev:dummy_dev_stat_get():161: 
-PWR_StatGetValue(PWR_ATTR_POWER) value=0.010000
-PWR_StatGetValue(PWR_ATTR_POWER) start=1414088052516238080
-PWR_StatGetValue(PWR_ATTR_POWER) stop=1414088052516261120
-DummyDev:dummy_dev_final():192: 
-DummyDev:dummy_dev_final():192: 
-s971371:examples mjleven$ 
-
+If you have questions or comments email xxx@sandia.gov.
