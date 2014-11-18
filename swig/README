@@ -1,0 +1,7 @@
+This directory contains a Python wrapper for the PowerAPI. The build is 
+dependent on libpow and produces _pow.so and pow.py.  
+
+To use the Python wrapper, the environment variable PYTHONPATH must be set to 
+this directory.
+
+The Python wrapper is not fully implemented. 
