@@ -7,6 +7,7 @@ progress and only a subset of the functions listed in the specification have
 been implemented.
 
 The main component of this software is libpow (located in directory pow). 
+Any application that use the PowerAPI must link against libpow.so. 
 It implements the API and is designed as a hardware neutral framework. The
 framework accesses platform specific power measurement and control via plugins.
 The plugins are implemented as dynamic libraries (located in directory plugins).
