@@ -41,7 +41,6 @@ int TreeNode::attrIsValid( PWR_AttrName attr )
 int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr,
 											size_t len, PWR_Time* ts )
 {
-	DBGX("%p\n",this);
     DBGX("%s\n", attrNameToString(attr));
 
 	AttrEntry& entry = m_attrMap[attr];
@@ -59,7 +58,6 @@ int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr,
 
     for ( unsigned int i = 0; i < nodes.size();  i++ ) {
 
-		DBGX("\n");
         PWR_Time _ts;
         nodes[i]->attrGetValue( attr, buf + len * i, len, &_ts );
         *ts = _ts;
@@ -74,7 +72,6 @@ int TreeNode::attrGetValue( PWR_AttrName attr, void* valuePtr,
 int TreeNode::attrSetValue( PWR_AttrName attr, void* valuePtr, size_t len )
 {
     DBGX("%s\n", attrNameToString(attr));
-	DBGX("%p\n",this);
 
 	AttrEntry& entry = m_attrMap[attr];
 	std::vector<TreeNode*>&  nodes = entry.nodes(); 
