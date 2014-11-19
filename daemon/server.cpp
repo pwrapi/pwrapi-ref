@@ -52,7 +52,7 @@ class StringToNum {
 
 PWR_Obj findObj( PWR_Obj obj, std::string name )
 {
-	std::cout << __func__ << "() " << name << "\n";
+	std::cout << __func__ << "():" << __LINE__ << " " << name << "\n";
 	if ( name.compare( PWR_ObjGetName( obj ) ) ) {
 		return obj;
 	}
@@ -61,6 +61,7 @@ PWR_Obj findObj( PWR_Obj obj, std::string name )
 
 PWR_Obj findObj( int pid, std::string name )
 {
+	std::cout << __func__ << "():" << __LINE__ << " "<< name << "\n";
 	if ( _objMap.find( pid ) == _objMap.end() ) {
 		PWR_Cntxt ctx;
 		ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN, "Daemon" );		
@@ -89,6 +90,7 @@ MethodResponse attrGetValue(const MethodCall &calldata)
 				attrNameToString( name ) << "\n"; 
 
 	PWR_Obj obj = findObj( pid, objName );
+	assert(obj);
 
 	uint64_t v;
 	PWR_Time ts;
