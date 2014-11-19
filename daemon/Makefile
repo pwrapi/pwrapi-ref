@@ -6,7 +6,7 @@ ULXMLRCP= /home/mjleven/ulxmlrpcpp-1.7.5/install
 #-l ulxmlrpcpp
 
 LDLIBS = -lpow -ldl -lulxmlrpcpp
-CPPFLAGS = -I ${ULXMLRCP}/include 
+CPPFLAGS = -I ${ULXMLRCP}/include  -I../pow
 CFLAGS = -Wall 
 LDFLAGS = -L${ROOT}/pow  -L ${ULXMLRCP}/lib
 CXXFLAGS = -Wall -I

@@ -21,8 +21,8 @@
 #include <ulxmlrpcpp/ulxr_http_protocol.h>
 #include <ulxmlrpcpp/ulxr_tcpip_connection.h>
 
-#include "../util.h"
-#include "../pow.h"
+#include "util.h"
+#include "pow.h"
 
 using namespace ulxr;
 
@@ -66,7 +66,7 @@ PWR_Obj findObj( int pid, std::string name )
 		ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN, "Daemon" );		
 		assert(ctx);
 
-		_objMap[pid] = PWR_CntxtGetSelf( ctx );
+		_objMap[pid] = PWR_CntxtGetEntryPoint( ctx );
 		assert( _objMap[pid] );
 	}
 
