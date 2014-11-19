@@ -1,0 +1,20 @@
+This directory contains simple programs that use the PowerAPI library. 
+These programs are written in both C and python.
+
+The PowerAPI library depends on environment variables and a system 
+configuration file. 
+
+There are two environment variables that need to be set for non-RPC 
+execution of a PowerAPI application, POWERAPI_LOCATION and POWERAPI_ROOT.
+POWERAPI_LOCATION tells the PowerAPI library what system configuration file
+to use.  POWERAPI_ROOT tells the PowerAPI library its entry point.        
+
+The PowerAPI library and the plugins are implemented as dynamic libraries and 
+in order for the libraries to be found during execution either LD_LIBRARY_PATH
+or DYLD_LIBRARY_PATH must be set.
+ 
+"run_dummy.sh" sets the appropriate environment variables and runs dummyTest.
+"run_dummy.sh" is the reference for how to configure the environment. 
+
+"dummyTest" exercises the dummy plugin and is not reliant on specific hardware
+or system software as other plugins. It should run on any platform.
