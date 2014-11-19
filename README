@@ -1,10 +1,10 @@
 This software is a prototype implementation of the PowerAPI. The main purpose 
-for the creation of the prototype was to test the viability of API function 
+for the creation of the prototype was to test the viability of API functions
 during the design of the API specification. The prototype is also being used
 to test implementation details such as how to interface with different types
 of hardware and communication between agents. The prototype is a work in
-progress and only a set of the functions listed in the specification have been 
-implemented.
+progress and only a subset of the functions listed in the specification have
+been implemented.
 
 The main component of this software is libpow (located in directory pow). 
 It implements the API and is designed as a hardware neutral framework. The
