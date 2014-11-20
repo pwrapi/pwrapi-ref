@@ -1,20 +1,54 @@
-This directory contains simple programs that use the PowerAPI library. 
+This directory contains simple programs that use the PowerAPI library (libpow). 
 These programs are written in both C and python.
 
-The PowerAPI library depends on environment variables and a system 
-configuration file. 
+dummyTest.c was used for the development of libpow. It excersises some of the
+core functionality of the API. It is a fairly simple program and a good reference
+for learning how to write code that uses the API. 
 
-There are two environment variables that need to be set for non-RPC 
-execution of a PowerAPI application, POWERAPI_LOCATION and POWERAPI_ROOT.
-POWERAPI_LOCATION tells the PowerAPI library what system configuration file
-to use.  POWERAPI_ROOT tells the PowerAPI library its entry point.        
+dummyTest should run on any system given it is not dependent on hardware. It 
+uses a dummy device plugin. To run dummyTest execute run_dummy.sh. 
+run_dummy.sh sets up the environment needed by libpow and runs the binary 
+dummyTest.  
+
+dummyTest.py was used for the development of the swig python wrapper. It makes
+the same API calls as dummyTest.c but in python. To run dummyTest.py execute
+run_dummy_python.sh.
+
+The above mentioned shell scripts set environment variables needed by libpow. 
+The environment variables are POWERAPI_CONFIG and POWERAPI_ROOT. 
+POWERAPI_CONFIG tells the PowerAPI library what system configuration file to use.
+POWERAPI_ROOT tells the PowerAPI library its entry point.        
 
 The PowerAPI library and the plugins are implemented as dynamic libraries and 
 in order for the libraries to be found during execution either LD_LIBRARY_PATH
 or DYLD_LIBRARY_PATH must be set.
- 
-"run_dummy.sh" sets the appropriate environment variables and runs dummyTest.
-"run_dummy.sh" is the reference for how to configure the environment. 
 
-"dummyTest" exercises the dummy plugin and is not reliant on specific hardware
-or system software as other plugins. It should run on any platform.
+The PowerAPI library uses XML to describe the hardware it is acting on. 
+
+The root XML element is System and it has 4 sub elements: Objects, Plugins,
+Devices, and Locations.
+
+** Objects **
+The role of the "Objects" element is to declare all the "things" in the system
+that can be measured/controlled (e.g. Node, Socket, Core, etc). These things 
+map directly to the "Objects" that are defined in the Power API Spec. An "obj" 
+element can have three sub elements: children, attributes and devices. The 
+children element declare the parent child relationship of objects, again
+as defined in the Power API spec. The "attributes" element declare the source
+for an action on an attribute. The source can either be a device or another
+object. The "device" element declares what device should be used and how it 
+should be configured. 
+
+** Plugins **
+The role of the "Plugins" element is to declare all the available plugins for
+the system and what dynamic library should be used to access the hardware. 
+
+** Devices **
+The "Devices" element declares how a plugin should be configured. Note that
+a system might have one plugin (e.g. PowerInsight) but it needs to be configured 
+differently to access different parts of the system.  
+
+** Locations **
+The "Locations" element is used for client/server operation of the PowerAPI 
+library. It it used to redirect a measurement or control call to the appropriate  
+server.
