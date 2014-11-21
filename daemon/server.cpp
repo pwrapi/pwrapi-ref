@@ -243,10 +243,32 @@ MethodResponse attrSetValues(const MethodCall &calldata)
   	return MethodResponse (resp);;
 }
 
-
 int main( int argc, char* argv[] )
 {
-	TcpIpConnection conn (true, 0x7f000001, 32000); 
+    #define BUF_LEN 1000
+    char nameBuf[BUF_LEN];
+    char* name; 
+    if ( argc == 1 ) {
+        int ret = gethostname( nameBuf, BUF_LEN );
+        assert( 0 == ret );
+        name = nameBuf;
+    } else if ( argc == 2 ) {
+        name = argv[1];
+    } else {
+        assert(0);
+    }
+
+    struct hostent* phostent = gethostbyname( name );
+    assert( phostent );
+
+    unsigned int addr;
+    addr =  (unsigned char) phostent->h_addr_list[0][0] << 24;
+    addr |= (unsigned char) phostent->h_addr_list[0][1] << 16;
+    addr |= (unsigned char) phostent->h_addr_list[0][2] << 8;
+    addr |= (unsigned char) phostent->h_addr_list[0][3];
+    printf("host=%s addr=%x\n", name, addr );
+    
+	TcpIpConnection conn (true, addr, 32000); 
   	HttpProtocol prot(&conn);
   	Dispatcher server(&prot);
 

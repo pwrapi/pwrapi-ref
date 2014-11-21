@@ -7,4 +7,4 @@ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins:${ULX
 export POWERAPI_CONFIG="${ROOT}/examples/dummySystem.xml"
 export POWERAPI_ROOT="plat.cab0"
 
-./server
+./server $1
