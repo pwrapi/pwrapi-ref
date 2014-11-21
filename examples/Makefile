@@ -9,10 +9,22 @@
 # distribution.
 #
 
+XMLRPC =
+
 CC=gcc
 CFLAGS = -Wall -I../pow -fPIC
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L../pow -lpow -lm -ldl -pthread
+
+ifeq ($(XMLRPC),y)
+LIB_SRC += rpcTreeNode.cc
+ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
+CPPFLAGS += -DUSE_ULXMLRPC -I$(ULXMLRPC)/include
+CPPFLAGS += -DUSE_RPC
+LDFLAGS += -L$(ULXMLRPC)/lib
+LDFLAGS += -lulxmlrpcpp
+endif
+
 
 EXES=powerapi snippet dummyTest
 all:  ${EXES}
