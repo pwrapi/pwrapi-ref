@@ -9,17 +9,21 @@
 # distribution.
 #
 
+DEBUG =
 
 ROOT=${PWD}/..
 
 ULXMLRCP= ${HOME}/ulxmlrpcpp-1.7.5/install
-
 
 LDLIBS = -lpow -ldl -lulxmlrpcpp
 CPPFLAGS = -I ${ULXMLRCP}/include  -I../pow
 CFLAGS = -Wall 
 LDFLAGS = -L${ROOT}/pow  -L ${ULXMLRCP}/lib
 CXXFLAGS = -Wall -I
+
+ifeq ($(DEBUG),y)
+CPPFLAGS += -DDEBUG_ON
+endif
 
 all: test
 

@@ -27,6 +27,7 @@
 
 #include "util.h"
 #include "pow.h"
+#include "./debug.h"
 
 using namespace ulxr;
 
@@ -56,8 +57,8 @@ class StringToNum {
 
 PWR_Obj findObj( PWR_Obj obj, std::string name )
 {
-	std::cout << __func__ << "():" << __LINE__ << " " << name << "\n";
-	if ( name.compare( PWR_ObjGetName( obj ) ) ) {
+    DBG("name=`%s`\n",name.c_str());
+	if ( 0 ==  name.compare( PWR_ObjGetName( obj ) ) ) {
 		return obj;
 	}
 	return NULL;
@@ -65,8 +66,9 @@ PWR_Obj findObj( PWR_Obj obj, std::string name )
 
 PWR_Obj findObj( int pid, std::string name )
 {
-	std::cout << __func__ << "():" << __LINE__ << " "<< name << "\n";
+    DBG("pid=%d `%s`\n",pid,name.c_str());
 	if ( _objMap.find( pid ) == _objMap.end() ) {
+        DBG("new\n");
 		PWR_Cntxt ctx;
 		ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN, "Daemon" );		
 		assert(ctx);
@@ -90,8 +92,7 @@ MethodResponse attrGetValue(const MethodCall &calldata)
 	PWR_AttrName name = 
 				(PWR_AttrName)Integer( calldata.getParam(2) ).getInteger(); 
 
-	std::cout << __func__ << "() pid=" << pid << " " << 
-				attrNameToString( name ) << "\n"; 
+    DBG("pid=%d `%s`\n",pid,attrNameToString( name ));
 
 	PWR_Obj obj = findObj( pid, objName );
 	assert(obj);
@@ -120,8 +121,7 @@ MethodResponse attrSetValue(const MethodCall &calldata)
 	PWR_AttrName name = 
 				(PWR_AttrName)Integer( calldata.getParam(2) ).getInteger(); 
 
-	std::cout << __func__ << "() pid=" << pid << " " << 
-				attrNameToString( name ) << "\n"; 
+    DBG("pid=%d `%s`\n",pid,attrNameToString( name ));
 
 	PWR_Obj obj = findObj( pid, objName );
 
@@ -148,8 +148,7 @@ MethodResponse attrGetValues(const MethodCall &calldata)
 
 	for ( unsigned int i = 0; i < names.size(); i++ ) { 
 		names2[i] = (PWR_AttrName)Integer( names.getItem(i) ).getInteger(); 
-		std::cout << __func__ << "() pid=" << pid << " " << 
-				attrNameToString( names2[i] ) << "\n"; 
+        DBG("pid=%d `%s`\n",pid, attrNameToString( names2[i] )); 
 	}
 
 	PWR_Obj obj = findObj( pid, objName );
@@ -210,8 +209,7 @@ MethodResponse attrSetValues(const MethodCall &calldata)
 		names2[i] = (PWR_AttrName)Integer( names.getItem(i) ).getInteger(); 
 		values2[i] =  StringToNum(
            RpcString( values.getItem(i)).getString()).uint64();
-		std::cout << __func__ << "() pid=" << pid << " " << 
-				attrNameToString( names2[i] ) << "\n"; 
+        DBG("pid=%d `%s`\n",pid, attrNameToString( names2[i] )); 
 	}
 
 	PWR_Obj obj = findObj( pid, objName );
