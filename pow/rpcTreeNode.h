@@ -40,6 +40,24 @@ class RpcTreeNode : public ObjTreeNode {
     int attrSetValues( const std::vector<PWR_AttrName>& attrs, void* buf,
                                             std::vector<int>& status  );
 
+    int attrStartStat( PWR_AttrName, PWR_AttrStat ) {
+        return PWR_RET_FAILURE; 
+    }
+    int attrStopStat( PWR_AttrName, PWR_AttrStat) {
+        return PWR_RET_FAILURE; 
+    }
+    int attrClearStat( PWR_AttrName, PWR_AttrStat) {
+        return PWR_RET_FAILURE; 
+    }
+    int attrGetStat( PWR_AttrName, PWR_AttrStat,
+                double* value, PWR_StatTimes* statTimes ) {
+        return PWR_RET_FAILURE; 
+    }
+    int attrGetStats( PWR_AttrName, PWR_AttrStat,
+                double* value, PWR_StatTimes* statTimes ) {
+        return PWR_RET_FAILURE; 
+    }
+
   private:
     std::string m_url;
     int         m_port;
