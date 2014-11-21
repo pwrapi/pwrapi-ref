@@ -266,7 +266,8 @@ ObjTreeNode* Cntxt::findObject( std::string name )
         }
 
         if ( standAlone() || 0 == location.compare( m_myLocation ) ) {
-            node = new ObjTreeNode( this, name, m_config->objType( name ), parent );
+            node = new ObjTreeNode( this, name, 
+                                    m_config->objType( name ), parent );
 #ifdef USE_RPC
         } else {
             Config::Location tmp = m_config->findLocation( location );
