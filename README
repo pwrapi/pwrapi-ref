@@ -33,6 +33,7 @@ examined to get a feeling for how one would use the Power API.
 
 This software has been compiled on:
 	Mac OSX 10.9.5 / gcc version 4.6.4 (MacPorts gcc46 4.6.4_3)
-	Linux X / compiler X 
+	Linux 2.6.32 / gcc version 4.4.6 (Red Hat 4.4.6-3) 
+    Linux 3.0.101 / gcc version 4.3.4 (SUSE Linux)
 
 If you have questions or comments email xxx@sandia.gov.
