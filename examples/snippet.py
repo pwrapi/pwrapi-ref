@@ -21,12 +21,14 @@ freq = 1
 opts, args = getopt.getopt( "s:f:h", [] )
 for opt, arg in opts:
     if opt == "-h":
-        print "usage: snippet [-s samples] [-f freq]"
+        print "usage: snippet.py [-s samples] [-f freq]"
         sys.exit()
     elif opt == "-s":
         samples = arg
     elif opt == "-f":
         freq = arg
+    else:
+        assert False, "unhandled option"
 
 cntxt = pow.CntxtInit( pow.CNTXT_DEFAULT, pow.ROLE_APP, "App" )
 self = pow.CntxtGetEntryPoint( cntxt )
