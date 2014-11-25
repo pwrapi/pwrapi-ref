@@ -44,7 +44,7 @@ int main( int argc, char** argv )
 
     for( sample = 0; sample < samples; sample++ ) {
         PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &power, &timestamp );
-        if(sample) printf( "%lg %lu\n", power, timestamp );
+        if(sample) printf( "%lg %lld\n", power, timestamp );
 
         usleep( MICROSECONDS / freq );
     }
