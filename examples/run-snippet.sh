@@ -15,6 +15,7 @@
 ROOT=${PWD}/..
 
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
 export POWERAPI_CONFIG="${ROOT}/examples/pg-node.xml"
 export POWERAPI_ROOT="plat.node"
 
