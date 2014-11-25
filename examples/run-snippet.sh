@@ -21,10 +21,7 @@ export POWERAPI_ROOT="plat.node"
 SAMPLES=100
 FREQ=10
 
-for ATTR in P
-do
-    echo "-----------------------------------------------"
-    echo "Collecting ${SAMPLES} at ${FREQ} Hz for ${ATTR}"
-    echo "-----------------------------------------------"
-    ./snippet -s ${SAMPLES} -f ${FREQ}
-done
+echo "-----------------------------------------------"
+echo "Collecting ${SAMPLES} at ${FREQ} Hz"
+echo "-----------------------------------------------"
+./snippet -s ${SAMPLES} -f ${FREQ}

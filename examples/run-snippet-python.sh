@@ -20,4 +20,11 @@ export POWERAPI_CONFIG="${ROOT}/examples/pg-node.xml"
 export POWERAPI_ROOT="plat.node"
 export PYTHONPATH="${ROOT}/swig"
 
-./snippet.py
+SAMPLES=100
+FREQ=10
+
+echo "-----------------------------------------------"
+echo "Collecting ${SAMPLES} at ${FREQ} Hz"
+echo "-----------------------------------------------"
+#./snippet.py -s ${SAMPLES} -f ${FREQ}
+./snippet.py -h
