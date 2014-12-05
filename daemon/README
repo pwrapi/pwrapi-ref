@@ -1,6 +1,6 @@
 This directory contains the code for a daemon that executes PowerAPI calls on 
 behalf of a client. The daemon was created as a proof of concept of how a
-distributed PowerAPI might work. There are only a handful of PowerAPI call 
+distributed PowerAPI might work. There are only a handful of PowerAPI calls
 implemented.
 
 The IPC mechanism is ULXMLRPC. ULXMLRPC is not included in this package. To 

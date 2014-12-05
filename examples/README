@@ -1,7 +1,7 @@
 This directory contains simple programs that use the PowerAPI library (libpow). 
 These programs are written in both C and python.
 
-dummyTest.c was used for the development of libpow. It excersises some of the
+dummyTest.c was used for the development of libpow. It exercises some of the
 core functionality of the API. It is a fairly simple program and a good reference
 for learning how to write code that uses the API. 
 
