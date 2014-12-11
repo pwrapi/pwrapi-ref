@@ -18,15 +18,19 @@ implementing a plugin for a new platform.
 libpow is configured via an XML file describing the hardware it is interacting 
 with. XML was chosen for expedient development not performance. libpow has an
 object that interfaces with the XML file via TinyXML-2. TinyXML-2 is not
-included with this distribution. See the README in "pow" for instructions on
-integrating TinyXML-2 into this software package. 
+included with this distribution and can be found at 
+"http://www.grinninglizard.com/tinyxml". See the README in "pow" for
+instructions on integrating TinyXML-2 into this software package.
 
 The prototype also explores accessing the API via a scripting language such as
 Python and remote PowerAPI calls. The Python binding is done via Swig and is
-located in directory swig. The remote API calls are supported via a daemon 
-and ULXMLRPC. The daemon is located in directory daemon. ULXMLRPC was chosen
-for expedient development and is not a good choice for large scale. The
-intent is that ULXMLRPC could be easily replaced with another IPC  mechanism.  
+located in directory swig. The remote API calls are supported via a daemon and
+ULXMLRPCPP. The daemon is located in directory daemon. ULXMLRPCPP was chosen
+for expedient development and is not a good choice for large scale. The intent
+is that ULXMLRPCPP could be easily replaced with another IPC  mechanism.
+ULXMLRCPPP is not included with this distribution and can be found at
+"http://ulxmlrpcpp.sourceforge.net". ULXMLRCPPP version 1.7.5 is currently
+being used.
 
 The examples directory contains simple “C” and Python programs that can be 
 examined to get a feeling for how one would use the Power API. Note that the
