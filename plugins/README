@@ -1,6 +1,20 @@
 Plugins
 -------
 
+Plugins provide common POSIX-like abstraction to underlying
+resource capabilities which include drivers, system mechanisms,
+and even simulated or modeled attribute values.  To create a
+new plugin, simply register the devOps functors to a function
+to provide a wrapper or adapter to the underlying specific
+calls.  A number of provided plugins illustrate this capability
+and should be used as a point of reference.
+
+Obviously, there will be system and device dependencies for
+building some of the plugins (i.e. PowerInsight and PowerGadget)
+where you will need to download a separte library for linking
+against.  However, the majority of the plugins should be at least
+compilable on most linux based systems.
+
 Currently supported:
   libpwr_pidev		Penguin PowerInsight
   libpwr_rapldev	Intel Running Average Power Limit (RAPL)
@@ -11,14 +25,15 @@ Currently supported:
 
 Attributes	PI	RAPL	WU	XTPM	CPU
 ----------	--	----	--	----	---
-  power		G	G	    G	G	
-  energy	G	G	    G	G
-  voltage	G		    G
-  current	G		    G
-  min_power		            G/S		G/S
-  max_power		            G/S		G/S
-  freq						        G/S
-  temp						        G
-  pstate					        G/S
-  cstate					        G/S
-  sstate					        G/S
+  power     G   G       G   G	
+  energy    G   G       G   G
+  voltage   G           G
+  current   G           G
+  min_power                 G/S     G/S
+  max_power                 G/S     G/S
+  freq                              G/S
+  temp                              G
+  pstate                            G/S
+  cstate                            G/S
+  sstate                            G/S
+

@@ -19,10 +19,7 @@ CFLAGS=-Wall -I../pow -fPIC
 CXXFLAGS=${CFLAGS}
 LDFLAGS=${CFLAGS} -L. -lm -pthread
 
-all:  test
-
-test: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr_wudev.so libpwr_pgdev.so libpwr_cpudev.so test.c
-	$(CC) ${LDFLAGS} test.c -lpwr_rapldev -lpwr_xtpmdev -lpwr_wudev -lpwr_cpudev -o test
+all: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr_wudev.so libpwr_pgdev.so libpwr_cpudev.so
 
 libdummy_dev.so: pwr_dev.o dummy_dev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o dummy_dev.o
@@ -54,5 +51,5 @@ libpwr_cpudev.so: pwr_dev.o pwr_cpudev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o pwr_cpudev.o
 
 clean:
-	rm -f *_*dev.o lib*_*dev.so test
+	rm -f *_*dev.o lib*_*dev.so
 
