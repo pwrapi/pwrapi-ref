@@ -7,8 +7,14 @@
 </Plugins>
 
 <Devices>
-    <device name="XTPM-cab" plugin="CrayXTPM" initString=""/>
+    <device name="XTPM-node" plugin="CrayXTPM" initString=""/>
 </Devices>
+
+<Locations>
+    <location name="daemon-node0" type="rpc" config="nid00060:32000" />
+    <location name="daemon-node1" type="rpc" config="nid00061:32000" />
+</Locations>
+
 
 <Objects>
 
@@ -16,26 +22,93 @@
 
     <attributes>
         <attr name="ENERGY" op="SUM">
-            <src type="child" name="cab0" />
+            <src type="child" name="cab" />
         </attr>
         <attr name="POWER" op="AVG">
-            <src type="child" name="cab0" />
+            <src type="child" name="cab" />
         </attr>
         <attr name="MAX_POWER" op="AVG">
-            <src type="child" name="cab0" />
+            <src type="child" name="cab" />
         </attr>
     </attributes>
 
     <children>
-        <child name="cab0" />
+        <child name="cab" />
     </children>
 
 </obj>
 
-<obj name="plat.cab0" type="Cabinet" >
+
+<obj name="plat.cab" type="Cabinet"  >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="child" name="board0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab.board0" type="Board"  >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+    </children>
+
+</obj>
+
+
+
+<obj name="plat.cab.board0.node0" type="Node" location="daemon-node0" >
 
     <devices>
-        <dev name="xtpmdev" device="XTPM-cab" openString="" /> 
+        <dev name="xtpmdev" device="XTPM-node" openString="" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="xtpmdev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="xtpmdev" />
+        </attr>
+        <attr name="MAX_POWER" op="AVG">
+            <src type="device" name="xtpmdev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.cab.board0.node1" type="Node" location="daemon-node1" >
+
+    <devices>
+        <dev name="xtpmdev" device="XTPM-node" openString="" /> 
     </devices>
 
     <attributes>
