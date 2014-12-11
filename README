@@ -7,7 +7,7 @@ progress and only a subset of the functions listed in the specification have
 been implemented.
 
 The main component of this software is libpow (located in directory pow). 
-Any application that use the PowerAPI must link against libpow.so. 
+Any application that uses the PowerAPI must link against libpow.so. 
 It implements the API and is designed as a hardware neutral framework. The
 framework accesses platform specific power measurement and control via plugins.
 The plugins are implemented as dynamic libraries (located in directory plugins).
@@ -29,7 +29,13 @@ for expedient development and is not a good choice for large scale. The
 intent is that ULXMLRPC could be easily replaced with another IPC  mechanism.  
 
 The examples directory contains simple “C” and Python programs that can be 
-examined to get a feeling for how one would use the Power API.
+examined to get a feeling for how one would use the Power API. Note that the
+execution of example programs rely on environment variables POWERAPI_CONFIG and
+POWERAPI_ROOT. POWERAPI_CONFIG tells the PowerAPI library what system
+configuration file to use. POWERAPI_ROOT tells the PowerAPI library its entry
+point. Consult the run scripts in examples on how to set these variables.
+Debug printouts are part of libpow and can be enabled by 1) enabling DEBUG in
+pow/Makefile and setting _DbgFlag in pow/cntxt.cc. 
 
 This software has been compiled on:
 	Mac OSX 10.9.5 / gcc version 4.6.4 (MacPorts gcc46 4.6.4_3)
