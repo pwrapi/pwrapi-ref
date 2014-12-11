@@ -23,17 +23,17 @@ Currently supported:
   libpwr_xtpmdev	Cray XC30 Power Manager
   libpwr_cpudev	    System level CPU adjustments
 
-Attributes	PI	RAPL	WU	XTPM	CPU
-----------	--	----	--	----	---
-  power     G   G       G   G	
-  energy    G   G       G   G
-  voltage   G           G
-  current   G           G
-  min_power                 G/S     G/S
-  max_power                 G/S     G/S
-  freq                              G/S
-  temp                              G
-  pstate                            G/S
-  cstate                            G/S
-  sstate                            G/S
+Attributes  PI  RAPL  WU  XTPM  CPU
+----------  --  ----  --  ----  ---
+  power     G   G     G   G	
+  energy    G   G     G   G
+  voltage   G         G
+  current   G         G
+  min_power               G/S    G/S
+  max_power               G/S    G/S
+  freq                           G/S
+  temp                           G
+  pstate                         G/S
+  cstate                         G/S
+  sstate                         G/S
 
