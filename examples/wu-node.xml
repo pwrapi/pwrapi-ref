@@ -7,7 +7,7 @@
 </Plugins>
 
 <Devices>
-    <device name="WU-node" plugin="WU" initString=""/>
+    <device name="WU-node" plugin="WU" initString="/dev/tty.usbserial-A6007Gep:115200" />
 </Devices>
 
 <Objects>
@@ -38,7 +38,7 @@
 <obj name="plat.node" type="Node" >
 
     <devices>
-        <dev name="wudev" device="WU-node" openString="/dev/tty.usbserial-A6007Gep:115200" /> 
+        <dev name="wudev" device="WU-node" openString="" />
     </devices>
 
     <attributes>
