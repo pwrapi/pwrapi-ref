@@ -273,6 +273,9 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
             case PWR_ATTR_POWER:
                 *((double *)value) = wudev_extract( buf, 4 ) / 10.0;
                 break;
+            case PWR_ATTR_ENERGY:
+                *((double *)value) = wudev_extract( buf, 7 ) / 10.0 * 3600;
+                break;
             default:
                 printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
                 break;
