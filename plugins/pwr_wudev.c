@@ -18,7 +18,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <termios.h>
-#include <time.h>
+#include <sys/time.h>
 
 static int wudev_verbose = 0;
 
@@ -245,6 +245,7 @@ int pwr_wudev_close( pwr_fd_t fd )
 int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     char buf[256] = "";
+    struct timeval tv;
 
     if( wudev_verbose )
         printf( "Info: reading from PWR Wattsup device\n" );
@@ -280,7 +281,8 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
                 printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
                 break;
         }
-        *timestamp = wudev_extract( buf, 1 );
+        gettimeofday( &tv, NULL );
+        *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
     }
     
     return 0;
