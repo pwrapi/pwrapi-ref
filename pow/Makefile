@@ -13,7 +13,7 @@ XMLRPC = n
 DEBUG = n
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -I../../tinyxml
+CPPFLAGS = -Itinyxml
 CXXFLAGS = -Wall -fPIC
 LDFLAGS = -shared
 LDLIBS = -ldl
@@ -38,7 +38,7 @@ endif
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 
-XML_OBJS=../../tinyxml/tinyxml2.o
+XML_OBJS=tinyxml/tinyxml2.o
 
 DEPS = $(LIB_OBJS:.o=.d) 
 
