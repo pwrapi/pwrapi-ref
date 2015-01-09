@@ -59,7 +59,7 @@ int translate( XMLDocument* doc, XMLElement* e, XMLElement* parent, int index )
 }
 
 // Flattens the XML objects so that children are not XML children :(
-void flatten(XMLDocument* doc, XMLElement* e, XMLElement* objs, char* prefix)
+void flatten( XMLDocument* doc, XMLElement* e, XMLElement* objs, char* prefix )
 {
     XMLElement * children = doc->NewElement( "children" );
     XMLElement * child = e->FirstChildElement( "obj" );
