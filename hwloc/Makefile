@@ -16,7 +16,7 @@ XML_OBJS=tinyxml/tinyxml2.o
 
 all:  hwloc-pow
 
-hwloc-pow: hwloc.cpp ${XML_OBJS}
+hwloc-pow: hwloc.cc ${XML_OBJS}
 	$(CXX) ${CXXFLAGS} $^ -o $@
 
 clean:
