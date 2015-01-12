@@ -82,18 +82,22 @@ void flatten( XMLDocument* doc, XMLElement* e, XMLElement* objs, char* prefix )
 
 int main( int argc, char** argv )
 {
-    const char USAGE[] = "usage: %s [-f filename]\n";
+    const char USAGE[] = "usage: %s [-f filename] [-n nodecount] [-h]\n";
     const char FILENAME[] = "hwloc.xml";
 
     char syscall[256];
     char *filename = (char *)FILENAME;
-    int option;
+    int option, nodecount = 0;
 
-    while( (option=getopt( argc, argv, "f:h" )) != -1 )
+    while( (option=getopt( argc, argv, "f:n:h" )) != -1 )
         switch( option ) {
             case 'f':
                 filename = optarg;
                 break;
+            case 'n':
+                nodecount = atoi( optarg );
+                break;
+            case 'h':
             default:
                 fprintf( stderr, USAGE, argv[0] );
                 return -1;
@@ -133,7 +137,7 @@ int main( int argc, char** argv )
     objects->InsertEndChild( obj );
   
     // Iterate through hwloc xml, translating to powerapi topology
-    translate( &newdoc, doc.FirstChildElement(), obj, 0 );
+    translate( &newdoc, doc.FirstChildElement(), obj, nodecount );
     flatten( &newdoc, obj, objects, (char*)"plat" );
 
     // Save output
