@@ -11,52 +11,50 @@
 
 /* Simple utility for generating a topology for use with the powerapi prototype 
  * Creates a file hwloc.xml formatted appropriately.
+ * Each object gets a "<name><id>" where id is a unique identifier accross 
+ * all object types.
  */
 
 #include "tinyxml2.h"
-#include <unistd.h>
 #include <string>
+#include <stdlib.h>
+#include <unistd.h>
 
 using namespace tinyxml2;
 
 // Translates the hwloc XML to powerapi terminology.
 int translate( XMLDocument* doc, XMLElement* e, XMLElement* parent, int index )
 {
-    int initial = index;
     XMLElement * hwloc_object = e->FirstChildElement( "object" );
-
     while( hwloc_object != NULL ) {
-        char name[256];
-
         if( hwloc_object->Attribute( "type", "Machine" ) ) {
             XMLElement * child = doc->NewElement( "obj" );
-            snprintf( name, 256, "node%d", index++ );
-            child->SetAttribute( "name", name ); 
+            child->SetAttribute( "name", "node" ); 
             child->SetAttribute( "type", "Node" ); 
+            child->SetAttribute( "index", index++ );
             parent->InsertEndChild( child );
             translate( doc, hwloc_object, child, 0 );
         } else if( hwloc_object->Attribute( "type", "Socket" ) ) {
             XMLElement * child = doc->NewElement( "obj" );
-            snprintf( name, 256, "socket%d", index++ );
-            child->SetAttribute( "name", name ); 
+            child->SetAttribute( "name", "socket" ); 
             child->SetAttribute( "type", "Socket" ); 
+            child->SetAttribute( "index", index++ );
             parent->InsertEndChild( child );
             translate( doc, hwloc_object, child, 0 );
         } else if( hwloc_object->Attribute( "type", "Core" ) ) {
             XMLElement * child = doc->NewElement( "obj" );
-            snprintf( name, 256, "core%d", index++ );
-            child->SetAttribute( "name", name ); 
+            child->SetAttribute( "name", "core" ); 
             child->SetAttribute( "type", "Core" ); 
+            child->SetAttribute( "index", index++ );
             parent->InsertEndChild( child );
             translate( doc, hwloc_object, child, 0 );
         } else {
-            index += translate( doc, hwloc_object, parent, index );
+            index = translate( doc, hwloc_object, parent, index );
         }
 
         hwloc_object = hwloc_object->NextSiblingElement( "object" );
     }
-
-    return index - initial;
+    return index;
 }
 
 // Flattens the XML objects so that children are not XML children :(
@@ -68,10 +66,12 @@ void flatten( XMLDocument* doc, XMLElement* e, XMLElement* objs, char* prefix )
 
     while( child != NULL ) {
         XMLElement * c = doc->NewElement( "child" );
-        c->SetAttribute( "name", child->Attribute( "name" ) );
+        snprintf( name, 256, "%s%d", child->Attribute( "name" ), atoi(child->Attribute( "index" )));
+        c->SetAttribute( "name", name );
         children->InsertEndChild( c );
-        snprintf( name, 256, "%s.%s", prefix, child->Attribute( "name" ) );
+        snprintf( name, 256, "%s.%s%d", prefix, child->Attribute( "name" ), atoi(child->Attribute( "index" )) );
         child->SetAttribute( "name", name );
+        child->DeleteAttribute( "index" );
         XMLElement * newchild = child->NextSiblingElement( "obj" );
         objs->InsertEndChild( child );
         flatten( doc, child, objs, name );
@@ -80,6 +80,29 @@ void flatten( XMLDocument* doc, XMLElement* e, XMLElement* objs, char* prefix )
 
     e->InsertEndChild( children );
 }
+
+
+XMLElement* DeepClone( XMLNode* input, XMLDocument* document ) 
+{
+    XMLElement* output = input->ShallowClone( document )->ToElement();
+    XMLElement* child = input->FirstChildElement();
+    while( child != NULL ){
+        output->InsertEndChild( DeepClone( child, document ) );
+        child = child->NextSiblingElement( );
+    }
+    return output;
+}
+
+// Duplicate the nodes, adds unique index to each object
+void duplicate( XMLDocument* doc, XMLElement* plat, int nodecount )
+{
+    XMLElement * node = plat->FirstChildElement( "obj" );
+    for( int i = 1; i < nodecount; i++ ){
+        XMLElement * newdup = DeepClone( node, doc );
+        newdup->SetAttribute( "index", i ); 
+        plat->InsertEndChild( newdup );
+    }
+} 
 
 int main( int argc, char** argv )
 {
@@ -138,7 +161,8 @@ int main( int argc, char** argv )
     objects->InsertEndChild( obj );
   
     // Iterate through hwloc xml, translating to powerapi topology
-    translate( &newdoc, doc.FirstChildElement(), obj, nodecount );
+    translate( &newdoc, doc.FirstChildElement(), obj , 0 );
+    duplicate( &newdoc, obj, nodecount );
     flatten( &newdoc, obj, objects, (char*)"plat" );
 
     // Save output
