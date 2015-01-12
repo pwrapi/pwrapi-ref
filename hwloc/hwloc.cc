@@ -14,6 +14,7 @@
  */
 
 #include "tinyxml2.h"
+#include <unistd.h>
 #include <string>
 
 using namespace tinyxml2;
