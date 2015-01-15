@@ -64,7 +64,7 @@ int PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, P
 
 PWR_Grp     PWR_GrpCreate( PWR_Cntxt, const char* name );
 int         PWR_GrpDestroy( PWR_Grp );
-PWR_Grp     PWR_GrpDuplicate( PWR_Grp );
+PWR_Grp     PWR_GrpDuplicate( PWR_Grp, const char* name );
 
 PWR_Grp     PWR_GrpUnion( PWR_Grp, PWR_Grp );
 PWR_Grp     PWR_GrpIntersection( PWR_Grp, PWR_Grp );
