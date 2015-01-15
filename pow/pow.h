@@ -44,6 +44,9 @@ const char* PWR_ObjGetName( PWR_Obj );
 PWR_Obj     PWR_ObjGetParent( PWR_Obj );
 PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 
+PWR_Grp     PWR_ObjGetDescendantsByType( PWR_Obj, PWR_ObjType )
+PWR_Obj     PWR_ObjGetAncestorByType( PWR_Obj, PWR_ObjType )
+
 int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName name );
 
 int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrName name, void* buf, PWR_Time * );
@@ -61,6 +64,15 @@ int PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, P
 
 PWR_Grp     PWR_GrpCreate( PWR_Cntxt, const char* name );
 int         PWR_GrpDestroy( PWR_Grp );
+PWR_Grp     PWR_GrpDuplicate( PWR_Grp );
+
+PWR_Grp     PWR_GrpUnion( PWR_Grp, PWR_Grp );
+PWR_Grp     PWR_GrpIntersection( PWR_Grp, PWR_Grp );
+PWR_Grp     PWR_GrpDifference( PWR_Grp, PWR_Grp );
+
+PWR_Grp     PWR_GrpFilterByAttrName( PWR_Grp, PWR_AttrName )
+PWR_Grp     PWR_GrpFilterByObjType( PWR_Grp, PWR_ObjType )
+
 const char* PWR_GrpGetName( PWR_Grp );
 int         PWR_GrpGetNumObjs( PWR_Grp );
 PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
