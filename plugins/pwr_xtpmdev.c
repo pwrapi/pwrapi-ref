@@ -64,12 +64,14 @@ static int xtpmdev_read( const char *name, double *val )
     while( read( fd, strval+offset, 1 ) != EOF ) {
         if( strval[offset] == ' ' ) {
             *val = atof(strval);
+            close( fd );
             return 0;
         }
         offset++;
     }
 
     printf( "Error: unable to parse PM counter value\n" );
+    close( fd );
     return -1;
 }
 
