@@ -47,7 +47,7 @@
 #define MSR_DRAM_PERF_STATUS   0x61b
 #define MSR_DRAM_POWER_INFO    0x61c
 
-#define POWER_UNITS_SHIFT    1
+#define POWER_UNITS_SHIFT    0
 #define ENERGY_UNITS_SHIFT   8
 #define TIME_UNITS_SHIFT    16
 
@@ -85,7 +85,7 @@
 #define PP0_POLICY_MASK        0x001f
 #define PP1_POLICY_MASK        0x001f
 
-#define MSR(X,Y,Z) (X>>Y&Z)
+#define MSR(X,Y,Z) ((X>>Y)&Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
 static int rapldev_verbose = 0;
@@ -237,7 +237,7 @@ static int rapldev_read( int fd, int offset, long long *msr )
     uint64_t value;
     int size = sizeof(uint64_t);
 
-    if( read( fd, &value, size ) != size ) {
+    if( pread( fd, &value, size, offset ) != size ) {
         printf( "Error: RAPL read failed\n" );
         return -1;
     }
@@ -369,13 +369,13 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
         return 0x0;
     }
     PWR_RAPLDEV(dev->private_data)->power.thermal =
-        (double)(MSR(msr, THERMAL_POWER_SHIFT, THERMAL_POWER_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, THERMAL_POWER_SHIFT, THERMAL_POWER_MASK));
     PWR_RAPLDEV(dev->private_data)->power.minimum =
-        (double)(MSR(msr, MINIMUM_POWER_SHIFT, MINIMUM_POWER_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, MINIMUM_POWER_SHIFT, MINIMUM_POWER_MASK));
     PWR_RAPLDEV(dev->private_data)->power.maximum =
-        (double)(MSR(msr, MAXIMUM_POWER_SHIFT, MAXIMUM_POWER_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, MAXIMUM_POWER_SHIFT, MAXIMUM_POWER_MASK));
     PWR_RAPLDEV(dev->private_data)->power.window =
-        (double)(MSR(msr, WINDOW_POWER_SHIFT, WINDOW_POWER_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW_POWER_SHIFT, WINDOW_POWER_MASK));
 
     if( rapldev_verbose ) {
         printf( "Info: power.thermal  - %g\n", PWR_RAPLDEV(dev->private_data)->power.thermal );
@@ -389,17 +389,17 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
         return 0x0;
     }
     PWR_RAPLDEV(dev->private_data)->limit.power1 =
-        (double)(MSR(msr, POWER1_LIMIT_SHIFT, POWER1_LIMIT_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, POWER1_LIMIT_SHIFT, POWER1_LIMIT_MASK));
     PWR_RAPLDEV(dev->private_data)->limit.window1 =
-        (double)(MSR(msr, WINDOW1_LIMIT_SHIFT, WINDOW1_LIMIT_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW1_LIMIT_SHIFT, WINDOW1_LIMIT_MASK));
     PWR_RAPLDEV(dev->private_data)->limit.enabled1 =
         (unsigned short)(MSR_BIT(msr, ENABLED1_LIMIT_BIT));
     PWR_RAPLDEV(dev->private_data)->limit.clamped1 =
         (unsigned short)(MSR_BIT(msr, CLAMPED1_LIMIT_BIT));
     PWR_RAPLDEV(dev->private_data)->limit.power2 =
-        (double)(MSR(msr, POWER2_LIMIT_SHIFT, POWER2_LIMIT_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, POWER2_LIMIT_SHIFT, POWER2_LIMIT_MASK));
     PWR_RAPLDEV(dev->private_data)->limit.window2 =
-        (double)(MSR(msr, WINDOW2_LIMIT_SHIFT, WINDOW2_LIMIT_MASK));
+        PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW2_LIMIT_SHIFT, WINDOW2_LIMIT_MASK));
     PWR_RAPLDEV(dev->private_data)->limit.enabled2 =
         (unsigned short)(MSR_BIT(msr, ENABLED2_LIMIT_BIT));
     PWR_RAPLDEV(dev->private_data)->limit.clamped2 =
