@@ -60,11 +60,11 @@ int main( int argc, char* argv[] )
                     case 'V':
                         attr = PWR_ATTR_VOLTAGE;
                         break;
-                    case 'A':
+                    case 'C':
                         attr = PWR_ATTR_CURRENT;
                         break;
                     default:
-                        printf( "Error: unsupported attribute type (try E P F T M V A)\n" );
+                        printf( "Error: unsupported attribute type (try E P F T M V C)\n" );
                         return -1;
                 } 
                 break;
