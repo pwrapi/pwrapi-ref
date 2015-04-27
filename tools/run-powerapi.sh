@@ -22,6 +22,8 @@ export POWERAPI_ROOT="plat.node"
 SAMPLES=100
 FREQ=10
 
+./powerapi -s ${SAMPLES} -f ${FREQ} -l
+
 for ATTR in V C P E
 do
     echo "-----------------------------------------------"

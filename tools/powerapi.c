@@ -17,6 +17,8 @@
 
 #include "pow.h"
 
+#define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
+
 int main( int argc, char* argv[] )
 {
     volatile unsigned long test = 0;
@@ -28,11 +30,16 @@ int main( int argc, char* argv[] )
     PWR_Time start_ts = 0, val_ts = 0;
     PWR_AttrName attr = PWR_ATTR_ENERGY;
 
-    unsigned int i, j, option, verbose = 0, samples = 1, freq = 1, busy = 0;
-    static char usage[] =
-        "usage: %s [-s samples] [-f freq] [-a attr] [-v] [-h]\n";
+    PWR_AttrName attrs[] = { PWR_ATTR_VOLTAGE, PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
+    PWR_Time vals_ts[NUM_ATTR(attrs)];
+    double vals[NUM_ATTR(attrs)];
+    int stats[NUM_ATTR(attrs)];
 
-    while( (option=getopt( argc, argv, "s:f:a:bvh" )) != -1 )
+    unsigned int i, j, option, verbose = 0, samples = 1, freq = 1, logger = 0, busy = 0;
+    static char usage[] =
+        "usage: %s [-s samples] [-f freq] [-a attr] [-l] [-v] [-h]\n";
+
+    while( (option=getopt( argc, argv, "s:f:a:lbvh" )) != -1 )
         switch( option ) {
             case 's':
                 samples = atoi(optarg);
@@ -68,6 +75,9 @@ int main( int argc, char* argv[] )
                         return -1;
                 } 
                 break;
+            case 'l':
+                logger = 1;
+                break;
             case 'b':
                 busy = 1;
                 break;
@@ -96,26 +106,48 @@ int main( int argc, char* argv[] )
         printf( "Profiling `%s`\n", PWR_ObjGetTypeString( PWR_ObjGetType( self ) ) ); 
 
     for( i = 0; i < samples; i++ ) {
-        if( PWR_ObjAttrGetValue( self, attr, &val, &val_ts ) == PWR_RET_INVALID ) {
-            printf( "Error: reading of PowerAPI attribute failed\n" );
-            return -1;
+        if( logger ) {
+            if( PWR_ObjAttrGetValues( self, NUM_ATTR(attrs), attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
+                printf( "Error: reading of PowerAPI attributes failed\n" );
+                return -1;
+            }
+            for( j = 0; j < NUM_ATTR(attrs); j++ ) {
+                if( !i && attrs[j] == PWR_ATTR_ENERGY ) {
+                    start = vals[j];
+                    start_ts = vals_ts[j];
+                }
+                if( !j ) PWR_TimeConvert( vals_ts[j], &time );
+                printf( "%lf ", vals[j] );
+            }
+            printf( "at time %s", ctime(&time) );
+
+            if( busy )
+                for( j = 0; j < 40000000; j++ ) test = 2*j;
+            else
+                usleep( 1000000.0 / freq);
+
+        } else {
+            if( PWR_ObjAttrGetValue( self, attr, &val, &val_ts ) == PWR_RET_INVALID ) {
+                printf( "Error: reading of PowerAPI attribute failed\n" );
+                return -1;
+            }
+
+            if( !i && attr == PWR_ATTR_ENERGY ) {
+                start = val;
+                start_ts = val_ts;
+            }
+
+            PWR_TimeConvert( val_ts, &time );
+            printf( "Value is %lf at time %s", val, ctime(&time) );
+
+            if( busy )
+                for( j = 0; j < 40000000; j++ ) test = 2*j;
+            else
+                usleep( 1000000.0 / freq);
         }
-
-        if( !i && attr == PWR_ATTR_ENERGY ) {
-            start = val;
-            start_ts = val_ts;
-        }
-
-        PWR_TimeConvert( val_ts, &time );
-        printf( "Value is %lf at time %s", val, ctime(&time) );
-
-	if( busy )
-		for( j = 0; j < 40000000; j++ ) test = 2*j;
-        else
-		usleep( 1000000.0 / freq);
     }
 
-    if( attr == PWR_ATTR_ENERGY )
+    if( !logger && attr == PWR_ATTR_ENERGY )
         printf( "Total energy is %lf Joules over %f seconds\n", val - start,
                 (unsigned long long)(val_ts - start_ts)/1000000000.0 );
 
