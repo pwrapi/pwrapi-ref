@@ -26,11 +26,8 @@ LDFLAGS += -lulxmlrpcpp
 endif
 
 
-EXES=powerapi snippet dummyTest
+EXES=snippet dummyTest
 all:  ${EXES}
-
-powerapi: powerapi.c
-	$(CC) ${LDFLAGS} powerapi.c -o $@ 
 
 snippet: snippet.c
 	$(CC) ${LDFLAGS} snippet.c -o $@ 
