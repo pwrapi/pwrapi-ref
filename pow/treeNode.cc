@@ -105,6 +105,11 @@ struct Tmp {
     std::vector<int>          attrPos;
 };
 
+struct BufPtrs {
+    void* dest;
+    std::vector<void*> src;
+};
+
 int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
 		void* valuePtr, std::vector<PWR_Time>& ts, std::vector<int>& status )
 {
@@ -112,7 +117,7 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
 
     std::map< TreeNode*, Tmp > tmpMap;
 
-    std::map< PWR_AttrName, std::vector<void*> > opInput;
+    std::map< PWR_AttrName, BufPtrs > opInput;
 
     DBGX("enter\n");
 
@@ -125,7 +130,8 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
 			entry.init( attrs[i] );
 		}
 
-		opInput[ attrs[i] ].resize( nodes.size() );
+		opInput[ attrs[i] ].src.resize( nodes.size() );
+		opInput[ attrs[i] ].dest = (void*) ((uint64_t*)valuePtr + i);
 
         for ( unsigned int j = 0; j < nodes.size(); j++ ) {
 
@@ -152,12 +158,11 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
                 retval = PWR_RET_FAILURE;
             }
 
-            opInput[ tmp.attrs[i] ][ tmp.attrPos[i] ] = &tmp.data[i];
+            opInput[ tmp.attrs[i] ].src[ tmp.attrPos[i] ] = &tmp.data[i];
         }
     }
 
-	std::map< PWR_AttrName, std::vector<void*> >::
-										iterator iter2 = opInput.begin();
+	std::map< PWR_AttrName, BufPtrs >:: iterator iter2 = opInput.begin();
 
     for ( int pos = 0; iter2 != opInput.end(); ++iter2, pos++ ) {
 
@@ -167,7 +172,7 @@ int TreeNode::attrGetValues( const std::vector<PWR_AttrName>& attrs,
 
         DBGX("call op2 \n");
 
-    	entry.op2( (void*) &((uint64_t*)valuePtr)[pos], iter2->second  );
+    	entry.op2( iter2->second.dest, iter2->second.src  );
 
         // Should the calculation of the timestamp be moved to the "op"? 
         struct timeval tv;
