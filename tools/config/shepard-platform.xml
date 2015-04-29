@@ -6,13 +6,13 @@
     <plugin name="PowerInsight" lib="libpwr_pidev.so"/>
 </Plugins>
 
+<Objects>
+
+<obj name="shepard" type="Platform">
+
 <Devices>
     <device name="PowerInsight-socket" plugin="PowerInsight" initString="10.101.12.140:20201"/>
 </Devices>
-
-<Objects>
-
-<obj name="plat" type="Platform">
 
     <attributes>
         <attr name="VOLTAGE" op="AVG">
@@ -22,12 +22,6 @@
             <src type="child" name="node" />
         </attr>
         <attr name="POWER" op="AVG">
-            <src type="child" name="node" />
-        </attr>
-        <attr name="MIN_POWER" op="AVG">
-            <src type="child" name="node" />
-        </attr>
-        <attr name="MAX_POWER" op="AVG">
             <src type="child" name="node" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -41,7 +35,7 @@
 
 </obj>
 
-<obj name="plat.node" type="Node" >
+<obj name="shepard.node1" type="Node" >
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
@@ -51,12 +45,6 @@
             <src type="child" name="socket" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
-        </attr>
-        <attr name="MIN_POWER" op="AVG" >
-            <src type="child" name="socket" />
-        </attr>
-        <attr name="MAX_POWER" op="AVG" >
             <src type="child" name="socket" />
         </attr>
         <attr name="ENERGY" op="SUM" >
@@ -70,7 +58,7 @@
 
 </obj>
 
-<obj name="plat.node.socket" type="Socket" >
+<obj name="shepard.node1.cpu1" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
@@ -86,10 +74,211 @@
         <attr name="POWER" op="AVG">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="MIN_POWER" op="AVG">
+        <attr name="ENERGY" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="MAX_POWER" op="AVG">
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.mem1" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="2" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.cpu2" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="3" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.mem2" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="4" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.atx12" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="5" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.atx5" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="6" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.atx5sb" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="7" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.atx3_3" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="8" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.hdd12" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="9" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="shepard.node1.hdd5" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="PowerInsight-socket" openString="10" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
