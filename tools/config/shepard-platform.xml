@@ -279,21 +279,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -532,21 +577,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -785,21 +875,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -1038,21 +1173,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -1291,21 +1471,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -1544,21 +1769,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -1797,21 +2067,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -2050,21 +2365,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -2303,21 +2663,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -2556,21 +2961,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -2809,21 +3259,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -3062,21 +3557,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -3315,21 +3855,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -3568,21 +4153,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -3821,21 +4451,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -4074,21 +4749,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -4327,21 +5047,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -4580,21 +5345,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -4833,21 +5643,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -5086,21 +5941,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -5339,21 +6239,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -5592,21 +6537,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -5845,21 +6835,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -6098,21 +7133,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -6351,21 +7431,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -6604,21 +7729,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -6857,21 +8027,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -7110,21 +8325,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -7363,21 +8623,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -7616,21 +8921,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -7869,21 +9219,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -8122,21 +9517,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -8375,21 +9815,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -8628,21 +10113,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -8881,21 +10411,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
