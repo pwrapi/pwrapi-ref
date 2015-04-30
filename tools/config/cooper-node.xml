@@ -61,7 +61,7 @@
 <obj name="cooper.node.cpu1" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="5" /> 
     </devices>
 
     <attributes>
@@ -104,56 +104,10 @@
 
 </obj>
 
-<obj name="cooper.node.cpu2" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="3" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="cooper.node.mem2" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="4" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="cooper.node.atx12" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="5" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
     </devices>
 
     <attributes>
@@ -176,7 +130,7 @@
 <obj name="cooper.node.atx5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="6" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="2" /> 
     </devices>
 
     <attributes>
@@ -199,7 +153,7 @@
 <obj name="cooper.node.atx5sb" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="7" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="3" /> 
     </devices>
 
     <attributes>
@@ -222,7 +176,7 @@
 <obj name="cooper.node.atx3_3" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="8" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="4" /> 
     </devices>
 
     <attributes>
@@ -245,7 +199,7 @@
 <obj name="cooper.node.hdd12" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="9" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="6" /> 
     </devices>
 
     <attributes>
@@ -268,7 +222,7 @@
 <obj name="cooper.node.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="10" /> 
+        <dev name="pidev" device="PowerInsight-socket" openString="7" /> 
     </devices>
 
     <attributes>
