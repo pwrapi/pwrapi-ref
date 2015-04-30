@@ -4,15 +4,16 @@
 
 <Plugins>
     <plugin name="PowerInsight" lib="libpwr_pidev.so"/>
+    <plugin name="Dummy" lib="libdummy_dev.so"/>
 </Plugins>
+
+<Devices>
+    <device name="pi-node" plugin="PowerInsight" initString="10.101.12.172:20201"/>
+</Devices>
 
 <Objects>
 
 <obj name="shepard" type="Platform">
-
-<Devices>
-    <device name="PowerInsight-socket" plugin="PowerInsight" initString="10.101.12.140:20201"/>
-</Devices>
 
     <attributes>
         <attr name="VOLTAGE" op="AVG">
@@ -39,21 +40,66 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu1" />
+            <src type="child" name="mem1" />
+            <src type="child" name="cpu2" />
+            <src type="child" name="mem2" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu1" />
+        <child name="mem1" />
+        <child name="cpu2" />
+        <child name="mem2" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
@@ -61,7 +107,7 @@
 <obj name="shepard.node.cpu1" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
+        <dev name="pidev" device="pi-node" openString="1" /> 
     </devices>
 
     <attributes>
@@ -84,7 +130,7 @@
 <obj name="shepard.node.mem1" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="2" /> 
+        <dev name="pidev" device="pi-node" openString="2" /> 
     </devices>
 
     <attributes>
@@ -107,7 +153,7 @@
 <obj name="shepard.node.cpu2" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="3" /> 
+        <dev name="pidev" device="pi-node" openString="3" /> 
     </devices>
 
     <attributes>
@@ -130,7 +176,7 @@
 <obj name="shepard.node.mem2" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="4" /> 
+        <dev name="pidev" device="pi-node" openString="4" /> 
     </devices>
 
     <attributes>
@@ -153,7 +199,7 @@
 <obj name="shepard.node.atx12" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="5" /> 
+        <dev name="pidev" device="pi-node" openString="5" /> 
     </devices>
 
     <attributes>
@@ -176,7 +222,7 @@
 <obj name="shepard.node.atx5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="6" /> 
+        <dev name="pidev" device="pi-node" openString="6" /> 
     </devices>
 
     <attributes>
@@ -199,7 +245,7 @@
 <obj name="shepard.node.atx5sb" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="7" /> 
+        <dev name="pidev" device="pi-node" openString="7" /> 
     </devices>
 
     <attributes>
@@ -222,7 +268,7 @@
 <obj name="shepard.node.atx3_3" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="8" /> 
+        <dev name="pidev" device="pi-node" openString="8" /> 
     </devices>
 
     <attributes>
@@ -245,7 +291,7 @@
 <obj name="shepard.node.hdd12" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="9" /> 
+        <dev name="pidev" device="pi-node" openString="9" /> 
     </devices>
 
     <attributes>
@@ -268,7 +314,7 @@
 <obj name="shepard.node.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="10" /> 
+        <dev name="pidev" device="pi-node" openString="10" /> 
     </devices>
 
     <attributes>
