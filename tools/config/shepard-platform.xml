@@ -160,42 +160,6 @@
             <src type="child" name="node71" />
             <src type="child" name="node72" />
         </attr>
-            <src type="child" name="node38" />
-            <src type="child" name="node39" />
-            <src type="child" name="node40" />
-            <src type="child" name="node41" />
-            <src type="child" name="node42" />
-            <src type="child" name="node43" />
-            <src type="child" name="node44" />
-            <src type="child" name="node45" />
-            <src type="child" name="node46" />
-            <src type="child" name="node47" />
-            <src type="child" name="node48" />
-            <src type="child" name="node49" />
-            <src type="child" name="node50" />
-            <src type="child" name="node51" />
-            <src type="child" name="node52" />
-            <src type="child" name="node53" />
-            <src type="child" name="node54" />
-            <src type="child" name="node55" />
-            <src type="child" name="node56" />
-            <src type="child" name="node57" />
-            <src type="child" name="node58" />
-            <src type="child" name="node59" />
-            <src type="child" name="node60" />
-            <src type="child" name="node61" />
-            <src type="child" name="node62" />
-            <src type="child" name="node63" />
-            <src type="child" name="node64" />
-            <src type="child" name="node65" />
-            <src type="child" name="node66" />
-            <src type="child" name="node67" />
-            <src type="child" name="node68" />
-            <src type="child" name="node69" />
-            <src type="child" name="node70" />
-            <src type="child" name="node71" />
-            <src type="child" name="node72" />
-        </attr>
         <attr name="ENERGY" op="SUM">
             <src type="child" name="node38" />
             <src type="child" name="node39" />
