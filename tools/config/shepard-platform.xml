@@ -4,43 +4,44 @@
 
 <Plugins>
     <plugin name="PowerInsight" lib="libpwr_pidev.so"/>
+    <plugin name="Dummy" lib="libdummy_dev.so"/>
 </Plugins>
 
 <Devices>
-    <device name="pi-node38" plugin="PowerInsight" initString="10.101.12.138:20201"/>
-    <device name="pi-node39" plugin="PowerInsight" initString="10.101.12.139:20201"/>
+    <device name="pi-node38" plugin="Dummy" initString="10.101.12.138:20201"/>
+    <device name="pi-node39" plugin="Dummy" initString="10.101.12.139:20201"/>
     <device name="pi-node40" plugin="PowerInsight" initString="10.101.12.140:20201"/>
-    <device name="pi-node41" plugin="PowerInsight" initString="10.101.12.141:20201"/>
+    <device name="pi-node41" plugin="Dummy" initString="10.101.12.141:20201"/>
     <device name="pi-node42" plugin="PowerInsight" initString="10.101.12.142:20201"/>
-    <device name="pi-node43" plugin="PowerInsight" initString="10.101.12.143:20201"/>
-    <device name="pi-node44" plugin="PowerInsight" initString="10.101.12.144:20201"/>
+    <device name="pi-node43" plugin="Dummy" initString="10.101.12.143:20201"/>
+    <device name="pi-node44" plugin="Dummy" initString="10.101.12.144:20201"/>
     <device name="pi-node45" plugin="PowerInsight" initString="10.101.12.145:20201"/>
-    <device name="pi-node46" plugin="PowerInsight" initString="10.101.12.146:20201"/>
+    <device name="pi-node46" plugin="Dummy" initString="10.101.12.146:20201"/>
     <device name="pi-node47" plugin="PowerInsight" initString="10.101.12.147:20201"/>
     <device name="pi-node48" plugin="PowerInsight" initString="10.101.12.148:20201"/>
-    <device name="pi-node49" plugin="PowerInsight" initString="10.101.12.149:20201"/>
-    <device name="pi-node50" plugin="PowerInsight" initString="10.101.12.150:20201"/>
-    <device name="pi-node51" plugin="PowerInsight" initString="10.101.12.151:20201"/>
-    <device name="pi-node52" plugin="PowerInsight" initString="10.101.12.152:20201"/>
-    <device name="pi-node53" plugin="PowerInsight" initString="10.101.12.153:20201"/>
+    <device name="pi-node49" plugin="Dummy" initString="10.101.12.149:20201"/>
+    <device name="pi-node50" plugin="Dummy" initString="10.101.12.150:20201"/>
+    <device name="pi-node51" plugin="Dummy" initString="10.101.12.151:20201"/>
+    <device name="pi-node52" plugin="Dummy" initString="10.101.12.152:20201"/>
+    <device name="pi-node53" plugin="Dummy" initString="10.101.12.153:20201"/>
     <device name="pi-node54" plugin="PowerInsight" initString="10.101.12.154:20201"/>
     <device name="pi-node55" plugin="PowerInsight" initString="10.101.12.155:20201"/>
-    <device name="pi-node56" plugin="PowerInsight" initString="10.101.12.156:20201"/>
+    <device name="pi-node56" plugin="Dummy" initString="10.101.12.156:20201"/>
     <device name="pi-node57" plugin="PowerInsight" initString="10.101.12.157:20201"/>
-    <device name="pi-node58" plugin="PowerInsight" initString="10.101.12.158:20201"/>
-    <device name="pi-node59" plugin="PowerInsight" initString="10.101.12.159:20201"/>
-    <device name="pi-node60" plugin="PowerInsight" initString="10.101.12.160:20201"/>
+    <device name="pi-node58" plugin="Dummy" initString="10.101.12.158:20201"/>
+    <device name="pi-node59" plugin="Dummy" initString="10.101.12.159:20201"/>
+    <device name="pi-node60" plugin="Dummy" initString="10.101.12.160:20201"/>
     <device name="pi-node61" plugin="PowerInsight" initString="10.101.12.161:20201"/>
-    <device name="pi-node62" plugin="PowerInsight" initString="10.101.12.162:20201"/>
+    <device name="pi-node62" plugin="Dummy" initString="10.101.12.162:20201"/>
     <device name="pi-node63" plugin="PowerInsight" initString="10.101.12.163:20201"/>
     <device name="pi-node64" plugin="PowerInsight" initString="10.101.12.164:20201"/>
-    <device name="pi-node65" plugin="PowerInsight" initString="10.101.12.165:20201"/>
+    <device name="pi-node65" plugin="Dummy" initString="10.101.12.165:20201"/>
     <device name="pi-node66" plugin="PowerInsight" initString="10.101.12.166:20201"/>
     <device name="pi-node67" plugin="PowerInsight" initString="10.101.12.167:20201"/>
     <device name="pi-node68" plugin="PowerInsight" initString="10.101.12.168:20201"/>
     <device name="pi-node69" plugin="PowerInsight" initString="10.101.12.169:20201"/>
     <device name="pi-node70" plugin="PowerInsight" initString="10.101.12.170:20201"/>
-    <device name="pi-node71" plugin="PowerInsight" initString="10.101.12.171:20201"/>
+    <device name="pi-node71" plugin="Dummy" initString="10.101.12.171:20201"/>
     <device name="pi-node72" plugin="PowerInsight" initString="10.101.12.172:20201"/>
 </Devices>
 

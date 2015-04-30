@@ -17,7 +17,7 @@ ROOT=${PWD}/..
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
 export POWERAPI_CONFIG="${ROOT}/tools/config/shepard-platform.xml"
-export POWERAPI_ROOT="shepard.node40"
+export POWERAPI_ROOT="shepard.node40.cpu1"
 
 SAMPLES=100
 FREQ=10
