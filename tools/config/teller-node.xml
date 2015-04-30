@@ -7,12 +7,12 @@
 </Plugins>
 
 <Devices>
-    <device name="PowerInsight-socket" plugin="PowerInsight" initString="10.54.21.13:20201"/>
+    <device name="pi-node" plugin="PowerInsight" initString="10.54.21.98:20201"/>
 </Devices>
 
 <Objects>
 
-<obj name="plat" type="Platform">
+<obj name="teller" type="Platform">
 
     <attributes>
         <attr name="VOLTAGE" op="AVG">
@@ -22,12 +22,6 @@
             <src type="child" name="node" />
         </attr>
         <attr name="POWER" op="AVG">
-            <src type="child" name="node" />
-        </attr>
-        <attr name="MIN_POWER" op="AVG">
-            <src type="child" name="node" />
-        </attr>
-        <attr name="MAX_POWER" op="AVG">
             <src type="child" name="node" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -41,39 +35,63 @@
 
 </obj>
 
-<obj name="plat.node" type="Node" >
+<obj name="teller.node" type="Node" >
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="socket" />
-        </attr>
-        <attr name="MIN_POWER" op="AVG" >
-            <src type="child" name="socket" />
-        </attr>
-        <attr name="MAX_POWER" op="AVG" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="socket" />
+            <src type="child" name="cpu" />
+            <src type="child" name="atx12" />
+            <src type="child" name="atx5" />
+            <src type="child" name="atx5sb" />
+            <src type="child" name="atx3_3" />
+            <src type="child" name="hdd12" />
+            <src type="child" name="hdd5" />
         </attr>
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="cpu" />
+        <child name="atx12" />
+        <child name="atx5" />
+        <child name="atx5sb" />
+        <child name="atx3_3" />
+        <child name="hdd12" />
+        <child name="hdd5" />
     </children>
 
 </obj>
 
-<obj name="plat.node.socket" type="Socket" >
+<obj name="teller.node.cpu" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
+        <dev name="pidev" device="pi-node" openString="1" /> 
     </devices>
 
     <attributes>
@@ -86,10 +104,142 @@
         <attr name="POWER" op="AVG">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="MIN_POWER" op="AVG">
+        <attr name="ENERGY" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="MAX_POWER" op="AVG">
+    </attributes>
+
+</obj>
+
+<obj name="teller.node.atx12" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="pi-node" openString="2" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="teller.node.atx5" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="pi-node" openString="3" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="teller.node.atx5sb" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="pi-node" openString="4" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="teller.node.atx3_3" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="pi-node" openString="5" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="teller.node.hdd12" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="pi-node" openString="6" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="pidev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="teller.node.hdd5" type="Socket" >
+
+    <devices>
+        <dev name="pidev" device="pi-node" openString="7" /> 
+    </devices>
+
+    <attributes>
+        <attr name="VOLTAGE" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="CURRENT" op="AVG">
+            <src type="device" name="pidev" />
+        </attr>
+        <attr name="POWER" op="AVG">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
