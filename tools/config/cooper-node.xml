@@ -8,10 +8,10 @@
 
 <Objects>
 
-<obj name="shepard" type="Platform">
+<obj name="cooper" type="Platform">
 
 <Devices>
-    <device name="PowerInsight-socket" plugin="PowerInsight" initString="10.101.12.140:20201"/>
+    <device name="PowerInsight-socket" plugin="PowerInsight" initString="10.101.12.101:20201"/>
 </Devices>
 
     <attributes>
@@ -35,7 +35,7 @@
 
 </obj>
 
-<obj name="shepard.node" type="Node" >
+<obj name="cooper.node" type="Node" >
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
@@ -58,7 +58,7 @@
 
 </obj>
 
-<obj name="shepard.node.cpu1" type="Socket" >
+<obj name="cooper.node.cpu1" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
@@ -81,7 +81,7 @@
 
 </obj>
 
-<obj name="shepard.node.mem1" type="Socket" >
+<obj name="cooper.node.mem1" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="2" /> 
@@ -104,7 +104,7 @@
 
 </obj>
 
-<obj name="shepard.node.cpu2" type="Socket" >
+<obj name="cooper.node.cpu2" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="3" /> 
@@ -127,7 +127,7 @@
 
 </obj>
 
-<obj name="shepard.node.mem2" type="Socket" >
+<obj name="cooper.node.mem2" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="4" /> 
@@ -150,7 +150,7 @@
 
 </obj>
 
-<obj name="shepard.node.atx12" type="Socket" >
+<obj name="cooper.node.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="5" /> 
@@ -173,7 +173,7 @@
 
 </obj>
 
-<obj name="shepard.node.atx5" type="Socket" >
+<obj name="cooper.node.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="6" /> 
@@ -196,7 +196,7 @@
 
 </obj>
 
-<obj name="shepard.node.atx5sb" type="Socket" >
+<obj name="cooper.node.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="7" /> 
@@ -219,7 +219,7 @@
 
 </obj>
 
-<obj name="shepard.node.atx3_3" type="Socket" >
+<obj name="cooper.node.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="8" /> 
@@ -242,7 +242,7 @@
 
 </obj>
 
-<obj name="shepard.node.hdd12" type="Socket" >
+<obj name="cooper.node.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="9" /> 
@@ -265,7 +265,7 @@
 
 </obj>
 
-<obj name="shepard.node.hdd5" type="Socket" >
+<obj name="cooper.node.hdd5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="PowerInsight-socket" openString="10" /> 
