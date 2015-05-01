@@ -22,8 +22,6 @@ export POWERAPI_ROOT="teller.node40"
 SAMPLES=100
 FREQ=10
 
-./powerapi -s ${SAMPLES} -f ${FREQ} -l
-
 for ATTR in C P E
 do
     echo "-----------------------------------------------"
