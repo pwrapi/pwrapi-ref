@@ -50,7 +50,7 @@
 <obj name="cooper" type="Platform">
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="child" name="node1" />
             <src type="child" name="node2" />
             <src type="child" name="node3" />
@@ -87,44 +87,7 @@
             <src type="child" name="node34" />
             <src type="child" name="node35" />
         </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="child" name="node1" />
-            <src type="child" name="node2" />
-            <src type="child" name="node3" />
-            <src type="child" name="node4" />
-            <src type="child" name="node5" />
-            <src type="child" name="node6" />
-            <src type="child" name="node7" />
-            <src type="child" name="node8" />
-            <src type="child" name="node9" />
-            <src type="child" name="node10" />
-            <src type="child" name="node11" />
-            <src type="child" name="node12" />
-            <src type="child" name="node13" />
-            <src type="child" name="node14" />
-            <src type="child" name="node15" />
-            <src type="child" name="node16" />
-            <src type="child" name="node17" />
-            <src type="child" name="node18" />
-            <src type="child" name="node19" />
-            <src type="child" name="node20" />
-            <src type="child" name="node21" />
-            <src type="child" name="node22" />
-            <src type="child" name="node23" />
-            <src type="child" name="node24" />
-            <src type="child" name="node25" />
-            <src type="child" name="node26" />
-            <src type="child" name="node27" />
-            <src type="child" name="node28" />
-            <src type="child" name="node29" />
-            <src type="child" name="node30" />
-            <src type="child" name="node31" />
-            <src type="child" name="node32" />
-            <src type="child" name="node33" />
-            <src type="child" name="node34" />
-            <src type="child" name="node35" />
-        </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="child" name="node1" />
             <src type="child" name="node2" />
             <src type="child" name="node3" />
@@ -243,7 +206,7 @@
 <obj name="cooper.node1" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -252,16 +215,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -300,13 +254,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -323,13 +277,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -346,13 +300,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -369,13 +323,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -392,13 +346,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -415,13 +369,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -438,13 +392,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -457,7 +411,7 @@
 <obj name="cooper.node2" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -466,16 +420,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -514,13 +459,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -537,13 +482,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -560,13 +505,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -583,13 +528,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -606,13 +551,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -629,13 +574,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -652,13 +597,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -671,7 +616,7 @@
 <obj name="cooper.node3" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -680,16 +625,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -728,13 +664,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -751,13 +687,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -774,13 +710,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -797,13 +733,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -820,13 +756,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -843,13 +779,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -866,13 +802,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -885,7 +821,7 @@
 <obj name="cooper.node4" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -894,16 +830,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -942,13 +869,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -965,13 +892,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -988,13 +915,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1011,13 +938,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1034,13 +961,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1057,13 +984,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1080,13 +1007,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1099,7 +1026,7 @@
 <obj name="cooper.node5" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1108,16 +1035,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1156,13 +1074,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1179,13 +1097,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1202,13 +1120,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1225,13 +1143,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1248,13 +1166,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1271,13 +1189,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1294,13 +1212,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1313,7 +1231,7 @@
 <obj name="cooper.node6" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1322,16 +1240,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1370,13 +1279,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1393,13 +1302,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1416,13 +1325,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1439,13 +1348,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1462,13 +1371,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1485,13 +1394,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1508,13 +1417,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1527,7 +1436,7 @@
 <obj name="cooper.node7" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1536,16 +1445,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1584,13 +1484,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1607,13 +1507,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1630,13 +1530,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1653,13 +1553,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1676,13 +1576,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1699,13 +1599,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1722,13 +1622,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1741,7 +1641,7 @@
 <obj name="cooper.node8" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1750,16 +1650,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1798,13 +1689,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1821,13 +1712,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1844,13 +1735,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1867,13 +1758,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1890,13 +1781,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1913,13 +1804,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1936,13 +1827,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -1955,7 +1846,7 @@
 <obj name="cooper.node9" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -1964,16 +1855,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2012,13 +1894,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2035,13 +1917,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2058,13 +1940,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2081,13 +1963,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2104,13 +1986,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2127,13 +2009,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2150,13 +2032,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2169,7 +2051,7 @@
 <obj name="cooper.node10" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2178,16 +2060,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2226,13 +2099,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2249,13 +2122,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2272,13 +2145,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2295,13 +2168,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2318,13 +2191,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2341,13 +2214,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2364,13 +2237,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2383,7 +2256,7 @@
 <obj name="cooper.node11" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2392,16 +2265,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2440,13 +2304,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2463,13 +2327,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2486,13 +2350,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2509,13 +2373,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2532,13 +2396,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2555,13 +2419,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2578,13 +2442,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2597,7 +2461,7 @@
 <obj name="cooper.node12" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2606,16 +2470,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2654,13 +2509,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2677,13 +2532,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2700,13 +2555,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2723,13 +2578,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2746,13 +2601,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2769,13 +2624,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2792,13 +2647,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2811,7 +2666,7 @@
 <obj name="cooper.node13" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2820,16 +2675,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -2868,13 +2714,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2891,13 +2737,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2914,13 +2760,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2937,13 +2783,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2960,13 +2806,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -2983,13 +2829,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3006,13 +2852,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3025,7 +2871,7 @@
 <obj name="cooper.node14" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3034,16 +2880,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3082,13 +2919,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3105,13 +2942,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3128,13 +2965,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3151,13 +2988,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3174,13 +3011,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3197,13 +3034,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3220,13 +3057,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3239,7 +3076,7 @@
 <obj name="cooper.node15" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3248,16 +3085,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3296,13 +3124,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3319,13 +3147,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3342,13 +3170,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3365,13 +3193,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3388,13 +3216,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3411,13 +3239,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3434,13 +3262,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3453,7 +3281,7 @@
 <obj name="cooper.node16" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3462,16 +3290,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3510,13 +3329,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3533,13 +3352,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3556,13 +3375,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3579,13 +3398,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3602,13 +3421,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3625,13 +3444,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3648,13 +3467,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3667,7 +3486,7 @@
 <obj name="cooper.node17" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3676,16 +3495,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3724,13 +3534,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3747,13 +3557,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3770,13 +3580,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3793,13 +3603,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3816,13 +3626,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3839,13 +3649,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3862,13 +3672,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3881,7 +3691,7 @@
 <obj name="cooper.node18" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3890,16 +3700,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -3938,13 +3739,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3961,13 +3762,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -3984,13 +3785,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4007,13 +3808,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4030,13 +3831,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4053,13 +3854,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4076,13 +3877,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4095,7 +3896,7 @@
 <obj name="cooper.node19" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4104,16 +3905,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4152,13 +3944,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4175,13 +3967,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4198,13 +3990,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4221,13 +4013,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4244,13 +4036,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4267,13 +4059,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4290,13 +4082,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4309,7 +4101,7 @@
 <obj name="cooper.node20" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4318,16 +4110,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4366,13 +4149,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4389,13 +4172,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4412,13 +4195,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4435,13 +4218,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4458,13 +4241,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4481,13 +4264,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4504,13 +4287,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4523,7 +4306,7 @@
 <obj name="cooper.node21" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4532,16 +4315,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4580,13 +4354,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4603,13 +4377,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4626,13 +4400,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4649,13 +4423,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4672,13 +4446,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4695,13 +4469,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4718,13 +4492,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4737,7 +4511,7 @@
 <obj name="cooper.node22" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4746,16 +4520,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4794,13 +4559,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4817,13 +4582,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4840,13 +4605,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4863,13 +4628,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4886,13 +4651,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4909,13 +4674,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4932,13 +4697,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -4951,7 +4716,7 @@
 <obj name="cooper.node23" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -4960,16 +4725,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5008,13 +4764,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5031,13 +4787,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5054,13 +4810,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5077,13 +4833,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5100,13 +4856,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5123,13 +4879,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5146,13 +4902,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5165,7 +4921,7 @@
 <obj name="cooper.node24" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5174,16 +4930,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5222,13 +4969,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5245,13 +4992,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5268,13 +5015,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5291,13 +5038,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5314,13 +5061,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5337,13 +5084,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5360,13 +5107,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5379,7 +5126,7 @@
 <obj name="cooper.node25" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5388,16 +5135,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5436,13 +5174,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5459,13 +5197,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5482,13 +5220,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5505,13 +5243,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5528,13 +5266,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5551,13 +5289,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5574,13 +5312,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5593,7 +5331,7 @@
 <obj name="cooper.node26" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5602,16 +5340,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5650,13 +5379,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5673,13 +5402,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5696,13 +5425,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5719,13 +5448,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5742,13 +5471,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5765,13 +5494,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5788,13 +5517,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5807,7 +5536,7 @@
 <obj name="cooper.node27" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5816,16 +5545,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -5864,13 +5584,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5887,13 +5607,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5910,13 +5630,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5933,13 +5653,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5956,13 +5676,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -5979,13 +5699,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6002,13 +5722,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6021,7 +5741,7 @@
 <obj name="cooper.node28" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6030,16 +5750,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6078,13 +5789,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6101,13 +5812,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6124,13 +5835,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6147,13 +5858,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6170,13 +5881,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6193,13 +5904,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6216,13 +5927,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6235,7 +5946,7 @@
 <obj name="cooper.node29" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6244,16 +5955,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6292,13 +5994,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6315,13 +6017,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6338,13 +6040,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6361,13 +6063,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6384,13 +6086,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6407,13 +6109,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6430,13 +6132,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6449,7 +6151,7 @@
 <obj name="cooper.node30" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6458,16 +6160,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6506,13 +6199,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6529,13 +6222,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6552,13 +6245,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6575,13 +6268,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6598,13 +6291,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6621,13 +6314,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6644,13 +6337,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6663,7 +6356,7 @@
 <obj name="cooper.node31" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6672,16 +6365,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6720,13 +6404,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6743,13 +6427,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6766,13 +6450,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6789,13 +6473,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6812,13 +6496,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6835,13 +6519,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6858,13 +6542,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6877,7 +6561,7 @@
 <obj name="cooper.node32" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6886,16 +6570,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -6934,13 +6609,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6957,13 +6632,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -6980,13 +6655,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7003,13 +6678,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7026,13 +6701,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7049,13 +6724,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7072,13 +6747,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7091,7 +6766,7 @@
 <obj name="cooper.node33" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -7100,16 +6775,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -7148,13 +6814,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7171,13 +6837,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7194,13 +6860,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7217,13 +6883,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7240,13 +6906,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7263,13 +6929,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7286,13 +6952,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7305,7 +6971,7 @@
 <obj name="cooper.node34" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -7314,16 +6980,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -7362,13 +7019,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7385,13 +7042,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7408,13 +7065,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7431,13 +7088,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7454,13 +7111,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7477,13 +7134,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7500,13 +7157,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7519,7 +7176,7 @@
 <obj name="cooper.node35" type="Node" >
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG" >
+        <attr name="CURRENT" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -7528,16 +7185,7 @@
             <src type="child" name="hdd12" />
             <src type="child" name="hdd5" />
         </attr>
-        <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu" />
-            <src type="child" name="atx12" />
-            <src type="child" name="atx5" />
-            <src type="child" name="atx5sb" />
-            <src type="child" name="atx3_3" />
-            <src type="child" name="hdd12" />
-            <src type="child" name="hdd5" />
-        </attr>
-        <attr name="POWER" op="AVG" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
@@ -7576,13 +7224,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7599,13 +7247,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7622,13 +7270,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7645,13 +7293,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7668,13 +7316,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7691,13 +7339,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
@@ -7714,13 +7362,13 @@
     </devices>
 
     <attributes>
-        <attr name="VOLTAGE" op="AVG">
+        <attr name="VOLTAGE" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="CURRENT" op="AVG">
+        <attr name="CURRENT" op="SUM">
             <src type="device" name="pidev" />
         </attr>
-        <attr name="POWER" op="AVG">
+        <attr name="POWER" op="SUM">
             <src type="device" name="pidev" />
         </attr>
         <attr name="ENERGY" op="SUM">

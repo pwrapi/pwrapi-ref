@@ -17,14 +17,13 @@ ROOT=${PWD}/..
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
 export POWERAPI_CONFIG="${ROOT}/tools/config/teller-platform.xml"
-export POWERAPI_ROOT="teller.node40.cpu"
+export POWERAPI_ROOT="teller.node40"
 
 SAMPLES=100
 FREQ=10
 
-./powerapi -s ${SAMPLES} -f ${FREQ} -l
 
-for ATTR in V C P E
+for ATTR in C P E
 do
     echo "-----------------------------------------------"
     echo "Collecting ${ATTR} ${SAMPLES} at ${FREQ} Hz"
