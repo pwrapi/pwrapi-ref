@@ -19,7 +19,11 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
+#ifdef VERBOSE
+static int xtpmdev_verbose = 1;
+#else
 static int xtpmdev_verbose = 0;
+#endif
 
 typedef struct {
     int fd;

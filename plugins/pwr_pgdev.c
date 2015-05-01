@@ -21,7 +21,11 @@
 
 #include <IntelPowerGadget/EnergyLib.h>
 
+#ifdef VERBOSE
+static int pgdev_verbose = 1;
+#else
 static int pgdev_verbose = 0;
+#endif
 
 typedef struct {
     int num_nodes;

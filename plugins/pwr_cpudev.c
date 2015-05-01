@@ -19,7 +19,11 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
+#ifdef VERBOSE
+static int cpudev_verbose = 1;
+#else
 static int cpudev_verbose = 0;
+#endif
 
 typedef struct {
     int num_cpus;

@@ -18,7 +18,11 @@
 #include <string.h>
 #include <sched.h>
 
+#ifdef VERBOSE
+static int pidev_verbose = 1;
+#else
 static int pidev_verbose = 0;
+#endif
 
 typedef struct {
     void *cntx;

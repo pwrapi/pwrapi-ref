@@ -12,9 +12,14 @@
 
 MACOS=
 PI=
+DEBUG=
 
 CC=gcc
 CFLAGS=-Wall -I../pow -fPIC
+
+ifeq ($(DEBUG),y)
+CFLAGS+=-DVERBOSE
+endif
 
 CXXFLAGS=${CFLAGS}
 LDFLAGS=${CFLAGS} -L. -lm -pthread
