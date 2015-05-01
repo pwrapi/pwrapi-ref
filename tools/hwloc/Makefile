@@ -9,10 +9,10 @@
 # distribution.
 #
 
-CXXFLAGS = -Wall -I../pow -I../tinyxml -fPIC
+CXXFLAGS = -Wall -I../../pow -I../../tinyxml -fPIC
 
 CXX = g++
-XML_OBJS=../tinyxml/tinyxml2.o
+XML_OBJS=../../tinyxml/tinyxml2.o
 
 all:  hwloc-pow
 
