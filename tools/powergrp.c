@@ -67,7 +67,6 @@ int main( int argc, char* argv[] )
         return -1;
     }
 */
-    printf("GETTING CHILDREN\n");
     if( (grp=PWR_ObjGetChildren( self )) == 0x0 ) {
         printf( "Error: getting object by name from PowerAPI context failed\n" );
         return -1;
@@ -75,15 +74,15 @@ int main( int argc, char* argv[] )
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( grp, i );
-        if( !(strcmp( PWR_ObjGetName( obj ), "teller.node40" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node41" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node42" )) ||
+        if( // !(strcmp( PWR_ObjGetName( obj ), "teller.node40" )) ||
+//            !(strcmp( PWR_ObjGetName( obj ), "teller.node41" )) ||
+//            !(strcmp( PWR_ObjGetName( obj ), "teller.node42" )) ||
             !(strcmp( PWR_ObjGetName( obj ), "teller.node43" )) )
             PWR_GrpAddObj( grp, obj );
     }
 
     for( i = 0; i < samples; i++ ) {
-        if( PWR_ObjAttrGetValues( obj, NUM_ATTR(attrs), attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
+        if( PWR_GrpAttrGetValues( grp, NUM_ATTR(attrs), attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
             printf( "Error: reading of PowerAPI attributes failed\n" );
             return -1;
         }
@@ -97,7 +96,7 @@ int main( int argc, char* argv[] )
                 printf( "%lf ", vals[j] - start );
             printf( "%lf ", vals[j] );
         }
-        printf( "%lf", time/1000000000.0 );
+        printf( "%lf\n", time/1000000000.0 );
 
         usleep( 1000000.0 / freq);
     }
