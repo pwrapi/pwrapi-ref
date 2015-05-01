@@ -93,7 +93,7 @@ int main( int argc, char* argv[] )
     if( verbose )
         printf( "samples=%d, freq=%d, attr=%d\n", samples, freq, attr );
 
-    if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "MiniMD" )) == 0x0 ) {
+    if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application" )) == 0x0 ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
     }
