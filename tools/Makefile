@@ -26,8 +26,11 @@ LDFLAGS += -lulxmlrpcpp
 endif
 
 
-EXES=powerapi
+EXES=powerapi powergrp
 all:  ${EXES}
+
+powergrp: powergrp.c
+	$(CC) ${LDFLAGS} powergrp.c -o $@ 
 
 powerapi: powerapi.c
 	$(CC) ${LDFLAGS} powerapi.c -o $@ 
