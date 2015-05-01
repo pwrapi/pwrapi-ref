@@ -11,19 +11,26 @@
 
 XMLRPC = n
 DEBUG = n
+SHARED = y
 
 CFLAGS = -Wall -fPIC
 CPPFLAGS = -Itinyxml
-CXXFLAGS = -Wall -fPIC
-LDFLAGS = -shared
-LDLIBS = -ldl
+CXXFLAGS = -Wall
+
+ifeq ($(SHARED),y)
+CXXFLAGS += -fPIC
+LDFLAGS += -shared
+LDLIBS += -ldl
+LIB = libpow.so
+else
+LIB = libpow.a
+endif
 LD = g++
 
 ifeq ($(DEBUG),y)
 CPPFLAGS += -DDEBUG_ON
 endif
 
-LIB = libpow.so
 
 LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
 
@@ -45,7 +52,11 @@ DEPS = $(LIB_OBJS:.o=.d)
 all: ${LIB}
 
 ${LIB}: ${LIB_OBJS} ${XML_OBJS}
+ifeq ($(SHARED),y)
 	$(LD) $(LDFLAGS) $(LDLIBS) -o $@ ${LIB_OBJS} ${XML_OBJS}
+else
+	ar rcs $@ ${LIB_OBJS} ${XML_OBJS}
+endif
 
 clean:
 	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} $(DEPS)
