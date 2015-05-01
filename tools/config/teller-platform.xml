@@ -81,7 +81,7 @@
     <device name="teller-pm72" plugin="PowerInsight" initString="10.54.21.72:20201"/>
     <device name="teller-pm73" plugin="PowerInsight" initString="10.54.21.73:20201"/>
     <device name="teller-pm74" plugin="PowerInsight" initString="10.54.21.74:20201"/>
-    <device name="teller-pm75" plugin="PowerInsight" initString="10.54.21.75:20201"/>
+    <device name="teller-pm75" plugin="Dummy" initString="10.54.21.75:20201"/>
     <device name="teller-pm76" plugin="PowerInsight" initString="10.54.21.76:20201"/>
     <device name="teller-pm77" plugin="PowerInsight" initString="10.54.21.77:20201"/>
     <device name="teller-pm78" plugin="PowerInsight" initString="10.54.21.78:20201"/>
@@ -104,8 +104,8 @@
     <device name="teller-pm95" plugin="PowerInsight" initString="10.54.21.95:20201"/>
     <device name="teller-pm96" plugin="PowerInsight" initString="10.54.21.96:20201"/>
     <device name="teller-pm97" plugin="PowerInsight" initString="10.54.21.97:20201"/>
-    <device name="teller-pm98" plugin="PowerInsight" initString="10.54.21.98:20201"/>
-    <device name="teller-pm99" plugin="PowerInsight" initString="10.54.21.99:20201"/>
+    <device name="teller-pm98" plugin="Dummy" initString="10.54.21.98:20201"/>
+    <device name="teller-pm99" plugin="Dummy" initString="10.54.21.99:20201"/>
     <device name="teller-pm100" plugin="PowerInsight" initString="10.54.21.100:20201"/>
     <device name="teller-pm101" plugin="PowerInsight" initString="10.54.21.101:20201"/>
     <device name="teller-pm102" plugin="PowerInsight" initString="10.54.21.102:20201"/>
