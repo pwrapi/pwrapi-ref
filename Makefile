@@ -1,36 +1,53 @@
 
-all: powDir pluginsDir toolsDir examplesDir swigDir
+SWIG=
+DAEMON=
 
-clean: powDirClean pluginsDirClean toolsDirClean  examplesDirClean swigDirClean
+DIRS = pow plugins tools examples 
 
+ifeq ($(SWIG),y)
+DIRS += swig
+endif
+
+ifeq ($(DAEMON),y)
+DIRS += daemon 
+endif
+
+all: $(DIRS:=Dir)
+
+clean: $(DIRS:=DirClean) 
 
 powDir :
-	cd pow ; ${MAKE} 
+	cd $(subst Dir,,$@) ; ${MAKE}
 
 pluginsDir : 
-	cd plugins ; ${MAKE}
+	cd $(subst Dir,,$@) ; ${MAKE}
 
 toolsDir :
-	cd tools; ${MAKE}
+	cd $(subst Dir,,$@) ; ${MAKE}
 
 examplesDir :
-	cd examples; ${MAKE}
+	cd $(subst Dir,,$@) ; ${MAKE}
 
 swigDir :
-	cd swig; ${MAKE}
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+daemonDir :
+	cd $(subst Dir,,$@) ; ${MAKE}
 
 powDirClean :
-	cd pow ; ${MAKE} clean
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
 
 pluginsDirClean : 
-	cd plugins ; ${MAKE} clean
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
 
 toolsDirClean :
-	cd tools; ${MAKE} clean
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
 
 examplesDirClean :
-	cd examples; ${MAKE} clean
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
 
 swigDirClean :
-	cd swig; ${MAKE} clean
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
 
+daemonDirClean :
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
