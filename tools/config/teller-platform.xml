@@ -645,10 +645,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -657,10 +654,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -669,10 +663,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -681,10 +672,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -695,10 +683,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -709,7 +694,7 @@
 
 </obj>
 
-<obj name="teller.node38.cpu1" type="Socket" >
+<obj name="teller.node38.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm38" openString="1" /> 
@@ -732,7 +717,7 @@
 
 </obj>
 
-<obj name="teller.node38.mem1" type="Socket" >
+<obj name="teller.node38.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm38" openString="2" /> 
@@ -755,7 +740,7 @@
 
 </obj>
 
-<obj name="teller.node38.cpu2" type="Socket" >
+<obj name="teller.node38.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm38" openString="3" /> 
@@ -778,7 +763,7 @@
 
 </obj>
 
-<obj name="teller.node38.mem2" type="Socket" >
+<obj name="teller.node38.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm38" openString="4" /> 
@@ -801,7 +786,7 @@
 
 </obj>
 
-<obj name="teller.node38.atx12" type="Socket" >
+<obj name="teller.node38.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm38" openString="5" /> 
@@ -824,7 +809,7 @@
 
 </obj>
 
-<obj name="teller.node38.atx5" type="Socket" >
+<obj name="teller.node38.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm38" openString="6" /> 
@@ -847,79 +832,10 @@
 
 </obj>
 
-<obj name="teller.node38.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm38" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node38.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm38" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node38.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm38" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node38.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm38" openString="10" /> 
+        <dev name="pidev" device="teller-pm38" openString="7" /> 
     </devices>
 
     <attributes>
@@ -943,10 +859,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -955,10 +868,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -967,10 +877,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -979,10 +886,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -993,10 +897,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -1007,7 +908,7 @@
 
 </obj>
 
-<obj name="teller.node39.cpu1" type="Socket" >
+<obj name="teller.node39.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm39" openString="1" /> 
@@ -1030,7 +931,7 @@
 
 </obj>
 
-<obj name="teller.node39.mem1" type="Socket" >
+<obj name="teller.node39.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm39" openString="2" /> 
@@ -1053,7 +954,7 @@
 
 </obj>
 
-<obj name="teller.node39.cpu2" type="Socket" >
+<obj name="teller.node39.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm39" openString="3" /> 
@@ -1076,7 +977,7 @@
 
 </obj>
 
-<obj name="teller.node39.mem2" type="Socket" >
+<obj name="teller.node39.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm39" openString="4" /> 
@@ -1099,7 +1000,7 @@
 
 </obj>
 
-<obj name="teller.node39.atx12" type="Socket" >
+<obj name="teller.node39.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm39" openString="5" /> 
@@ -1122,7 +1023,7 @@
 
 </obj>
 
-<obj name="teller.node39.atx5" type="Socket" >
+<obj name="teller.node39.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm39" openString="6" /> 
@@ -1145,79 +1046,10 @@
 
 </obj>
 
-<obj name="teller.node39.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm39" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node39.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm39" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node39.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm39" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node39.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm39" openString="10" /> 
+        <dev name="pidev" device="teller-pm39" openString="7" /> 
     </devices>
 
     <attributes>
@@ -1241,10 +1073,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1253,10 +1082,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1265,10 +1091,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1277,10 +1100,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1291,10 +1111,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -1305,7 +1122,7 @@
 
 </obj>
 
-<obj name="teller.node40.cpu1" type="Socket" >
+<obj name="teller.node40.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm40" openString="1" /> 
@@ -1328,7 +1145,7 @@
 
 </obj>
 
-<obj name="teller.node40.mem1" type="Socket" >
+<obj name="teller.node40.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm40" openString="2" /> 
@@ -1351,7 +1168,7 @@
 
 </obj>
 
-<obj name="teller.node40.cpu2" type="Socket" >
+<obj name="teller.node40.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm40" openString="3" /> 
@@ -1374,7 +1191,7 @@
 
 </obj>
 
-<obj name="teller.node40.mem2" type="Socket" >
+<obj name="teller.node40.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm40" openString="4" /> 
@@ -1397,7 +1214,7 @@
 
 </obj>
 
-<obj name="teller.node40.atx12" type="Socket" >
+<obj name="teller.node40.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm40" openString="5" /> 
@@ -1420,7 +1237,7 @@
 
 </obj>
 
-<obj name="teller.node40.atx5" type="Socket" >
+<obj name="teller.node40.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm40" openString="6" /> 
@@ -1443,79 +1260,10 @@
 
 </obj>
 
-<obj name="teller.node40.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm40" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node40.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm40" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node40.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm40" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node40.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm40" openString="10" /> 
+        <dev name="pidev" device="teller-pm40" openString="7" /> 
     </devices>
 
     <attributes>
@@ -1539,10 +1287,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1551,10 +1296,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1563,10 +1305,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1575,10 +1314,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1589,10 +1325,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -1603,7 +1336,7 @@
 
 </obj>
 
-<obj name="teller.node41.cpu1" type="Socket" >
+<obj name="teller.node41.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm41" openString="1" /> 
@@ -1626,7 +1359,7 @@
 
 </obj>
 
-<obj name="teller.node41.mem1" type="Socket" >
+<obj name="teller.node41.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm41" openString="2" /> 
@@ -1649,7 +1382,7 @@
 
 </obj>
 
-<obj name="teller.node41.cpu2" type="Socket" >
+<obj name="teller.node41.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm41" openString="3" /> 
@@ -1672,7 +1405,7 @@
 
 </obj>
 
-<obj name="teller.node41.mem2" type="Socket" >
+<obj name="teller.node41.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm41" openString="4" /> 
@@ -1695,7 +1428,7 @@
 
 </obj>
 
-<obj name="teller.node41.atx12" type="Socket" >
+<obj name="teller.node41.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm41" openString="5" /> 
@@ -1718,7 +1451,7 @@
 
 </obj>
 
-<obj name="teller.node41.atx5" type="Socket" >
+<obj name="teller.node41.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm41" openString="6" /> 
@@ -1741,79 +1474,10 @@
 
 </obj>
 
-<obj name="teller.node41.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm41" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node41.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm41" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node41.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm41" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node41.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm41" openString="10" /> 
+        <dev name="pidev" device="teller-pm41" openString="7" /> 
     </devices>
 
     <attributes>
@@ -1837,10 +1501,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1849,10 +1510,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1861,10 +1519,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1873,10 +1528,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -1887,10 +1539,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -1901,7 +1550,7 @@
 
 </obj>
 
-<obj name="teller.node42.cpu1" type="Socket" >
+<obj name="teller.node42.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm42" openString="1" /> 
@@ -1924,7 +1573,7 @@
 
 </obj>
 
-<obj name="teller.node42.mem1" type="Socket" >
+<obj name="teller.node42.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm42" openString="2" /> 
@@ -1947,7 +1596,7 @@
 
 </obj>
 
-<obj name="teller.node42.cpu2" type="Socket" >
+<obj name="teller.node42.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm42" openString="3" /> 
@@ -1970,7 +1619,7 @@
 
 </obj>
 
-<obj name="teller.node42.mem2" type="Socket" >
+<obj name="teller.node42.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm42" openString="4" /> 
@@ -1993,7 +1642,7 @@
 
 </obj>
 
-<obj name="teller.node42.atx12" type="Socket" >
+<obj name="teller.node42.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm42" openString="5" /> 
@@ -2016,7 +1665,7 @@
 
 </obj>
 
-<obj name="teller.node42.atx5" type="Socket" >
+<obj name="teller.node42.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm42" openString="6" /> 
@@ -2039,79 +1688,10 @@
 
 </obj>
 
-<obj name="teller.node42.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm42" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node42.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm42" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node42.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm42" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node42.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm42" openString="10" /> 
+        <dev name="pidev" device="teller-pm42" openString="7" /> 
     </devices>
 
     <attributes>
@@ -2135,10 +1715,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2147,10 +1724,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2159,10 +1733,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2171,10 +1742,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2185,10 +1753,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -2199,7 +1764,7 @@
 
 </obj>
 
-<obj name="teller.node43.cpu1" type="Socket" >
+<obj name="teller.node43.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm43" openString="1" /> 
@@ -2222,7 +1787,7 @@
 
 </obj>
 
-<obj name="teller.node43.mem1" type="Socket" >
+<obj name="teller.node43.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm43" openString="2" /> 
@@ -2245,7 +1810,7 @@
 
 </obj>
 
-<obj name="teller.node43.cpu2" type="Socket" >
+<obj name="teller.node43.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm43" openString="3" /> 
@@ -2268,7 +1833,7 @@
 
 </obj>
 
-<obj name="teller.node43.mem2" type="Socket" >
+<obj name="teller.node43.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm43" openString="4" /> 
@@ -2291,7 +1856,7 @@
 
 </obj>
 
-<obj name="teller.node43.atx12" type="Socket" >
+<obj name="teller.node43.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm43" openString="5" /> 
@@ -2314,7 +1879,7 @@
 
 </obj>
 
-<obj name="teller.node43.atx5" type="Socket" >
+<obj name="teller.node43.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm43" openString="6" /> 
@@ -2337,79 +1902,10 @@
 
 </obj>
 
-<obj name="teller.node43.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm43" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node43.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm43" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node43.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm43" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node43.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm43" openString="10" /> 
+        <dev name="pidev" device="teller-pm43" openString="7" /> 
     </devices>
 
     <attributes>
@@ -2433,10 +1929,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2445,10 +1938,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2457,10 +1947,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2469,10 +1956,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2483,10 +1967,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -2497,7 +1978,7 @@
 
 </obj>
 
-<obj name="teller.node44.cpu1" type="Socket" >
+<obj name="teller.node44.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm44" openString="1" /> 
@@ -2520,7 +2001,7 @@
 
 </obj>
 
-<obj name="teller.node44.mem1" type="Socket" >
+<obj name="teller.node44.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm44" openString="2" /> 
@@ -2543,7 +2024,7 @@
 
 </obj>
 
-<obj name="teller.node44.cpu2" type="Socket" >
+<obj name="teller.node44.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm44" openString="3" /> 
@@ -2566,7 +2047,7 @@
 
 </obj>
 
-<obj name="teller.node44.mem2" type="Socket" >
+<obj name="teller.node44.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm44" openString="4" /> 
@@ -2589,7 +2070,7 @@
 
 </obj>
 
-<obj name="teller.node44.atx12" type="Socket" >
+<obj name="teller.node44.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm44" openString="5" /> 
@@ -2612,7 +2093,7 @@
 
 </obj>
 
-<obj name="teller.node44.atx5" type="Socket" >
+<obj name="teller.node44.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm44" openString="6" /> 
@@ -2635,79 +2116,10 @@
 
 </obj>
 
-<obj name="teller.node44.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm44" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node44.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm44" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node44.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm44" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node44.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm44" openString="10" /> 
+        <dev name="pidev" device="teller-pm44" openString="7" /> 
     </devices>
 
     <attributes>
@@ -2731,10 +2143,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2743,10 +2152,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2755,10 +2161,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2767,10 +2170,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -2781,10 +2181,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -2795,7 +2192,7 @@
 
 </obj>
 
-<obj name="teller.node45.cpu1" type="Socket" >
+<obj name="teller.node45.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm45" openString="1" /> 
@@ -2818,7 +2215,7 @@
 
 </obj>
 
-<obj name="teller.node45.mem1" type="Socket" >
+<obj name="teller.node45.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm45" openString="2" /> 
@@ -2841,7 +2238,7 @@
 
 </obj>
 
-<obj name="teller.node45.cpu2" type="Socket" >
+<obj name="teller.node45.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm45" openString="3" /> 
@@ -2864,7 +2261,7 @@
 
 </obj>
 
-<obj name="teller.node45.mem2" type="Socket" >
+<obj name="teller.node45.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm45" openString="4" /> 
@@ -2887,7 +2284,7 @@
 
 </obj>
 
-<obj name="teller.node45.atx12" type="Socket" >
+<obj name="teller.node45.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm45" openString="5" /> 
@@ -2910,7 +2307,7 @@
 
 </obj>
 
-<obj name="teller.node45.atx5" type="Socket" >
+<obj name="teller.node45.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm45" openString="6" /> 
@@ -2933,79 +2330,10 @@
 
 </obj>
 
-<obj name="teller.node45.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm45" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node45.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm45" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node45.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm45" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node45.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm45" openString="10" /> 
+        <dev name="pidev" device="teller-pm45" openString="7" /> 
     </devices>
 
     <attributes>
@@ -3029,10 +2357,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3041,10 +2366,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3053,10 +2375,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3065,10 +2384,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3079,10 +2395,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -3093,7 +2406,7 @@
 
 </obj>
 
-<obj name="teller.node46.cpu1" type="Socket" >
+<obj name="teller.node46.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm46" openString="1" /> 
@@ -3116,7 +2429,7 @@
 
 </obj>
 
-<obj name="teller.node46.mem1" type="Socket" >
+<obj name="teller.node46.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm46" openString="2" /> 
@@ -3139,7 +2452,7 @@
 
 </obj>
 
-<obj name="teller.node46.cpu2" type="Socket" >
+<obj name="teller.node46.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm46" openString="3" /> 
@@ -3162,7 +2475,7 @@
 
 </obj>
 
-<obj name="teller.node46.mem2" type="Socket" >
+<obj name="teller.node46.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm46" openString="4" /> 
@@ -3185,7 +2498,7 @@
 
 </obj>
 
-<obj name="teller.node46.atx12" type="Socket" >
+<obj name="teller.node46.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm46" openString="5" /> 
@@ -3208,7 +2521,7 @@
 
 </obj>
 
-<obj name="teller.node46.atx5" type="Socket" >
+<obj name="teller.node46.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm46" openString="6" /> 
@@ -3231,79 +2544,10 @@
 
 </obj>
 
-<obj name="teller.node46.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm46" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node46.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm46" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node46.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm46" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node46.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm46" openString="10" /> 
+        <dev name="pidev" device="teller-pm46" openString="7" /> 
     </devices>
 
     <attributes>
@@ -3327,10 +2571,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3339,10 +2580,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3351,10 +2589,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3363,10 +2598,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3377,10 +2609,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -3391,7 +2620,7 @@
 
 </obj>
 
-<obj name="teller.node47.cpu1" type="Socket" >
+<obj name="teller.node47.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm47" openString="1" /> 
@@ -3414,7 +2643,7 @@
 
 </obj>
 
-<obj name="teller.node47.mem1" type="Socket" >
+<obj name="teller.node47.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm47" openString="2" /> 
@@ -3437,7 +2666,7 @@
 
 </obj>
 
-<obj name="teller.node47.cpu2" type="Socket" >
+<obj name="teller.node47.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm47" openString="3" /> 
@@ -3460,7 +2689,7 @@
 
 </obj>
 
-<obj name="teller.node47.mem2" type="Socket" >
+<obj name="teller.node47.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm47" openString="4" /> 
@@ -3483,7 +2712,7 @@
 
 </obj>
 
-<obj name="teller.node47.atx12" type="Socket" >
+<obj name="teller.node47.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm47" openString="5" /> 
@@ -3506,7 +2735,7 @@
 
 </obj>
 
-<obj name="teller.node47.atx5" type="Socket" >
+<obj name="teller.node47.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm47" openString="6" /> 
@@ -3529,79 +2758,10 @@
 
 </obj>
 
-<obj name="teller.node47.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm47" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node47.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm47" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node47.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm47" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node47.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm47" openString="10" /> 
+        <dev name="pidev" device="teller-pm47" openString="7" /> 
     </devices>
 
     <attributes>
@@ -3625,10 +2785,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3637,10 +2794,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3649,10 +2803,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3661,10 +2812,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3675,10 +2823,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -3689,7 +2834,7 @@
 
 </obj>
 
-<obj name="teller.node48.cpu1" type="Socket" >
+<obj name="teller.node48.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm48" openString="1" /> 
@@ -3712,7 +2857,7 @@
 
 </obj>
 
-<obj name="teller.node48.mem1" type="Socket" >
+<obj name="teller.node48.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm48" openString="2" /> 
@@ -3735,7 +2880,7 @@
 
 </obj>
 
-<obj name="teller.node48.cpu2" type="Socket" >
+<obj name="teller.node48.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm48" openString="3" /> 
@@ -3758,7 +2903,7 @@
 
 </obj>
 
-<obj name="teller.node48.mem2" type="Socket" >
+<obj name="teller.node48.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm48" openString="4" /> 
@@ -3781,7 +2926,7 @@
 
 </obj>
 
-<obj name="teller.node48.atx12" type="Socket" >
+<obj name="teller.node48.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm48" openString="5" /> 
@@ -3804,7 +2949,7 @@
 
 </obj>
 
-<obj name="teller.node48.atx5" type="Socket" >
+<obj name="teller.node48.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm48" openString="6" /> 
@@ -3827,79 +2972,10 @@
 
 </obj>
 
-<obj name="teller.node48.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm48" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node48.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm48" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node48.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm48" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node48.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm48" openString="10" /> 
+        <dev name="pidev" device="teller-pm48" openString="7" /> 
     </devices>
 
     <attributes>
@@ -3923,10 +2999,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3935,10 +3008,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3947,10 +3017,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3959,10 +3026,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -3973,10 +3037,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -3987,7 +3048,7 @@
 
 </obj>
 
-<obj name="teller.node49.cpu1" type="Socket" >
+<obj name="teller.node49.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm49" openString="1" /> 
@@ -4010,7 +3071,7 @@
 
 </obj>
 
-<obj name="teller.node49.mem1" type="Socket" >
+<obj name="teller.node49.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm49" openString="2" /> 
@@ -4033,7 +3094,7 @@
 
 </obj>
 
-<obj name="teller.node49.cpu2" type="Socket" >
+<obj name="teller.node49.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm49" openString="3" /> 
@@ -4056,7 +3117,7 @@
 
 </obj>
 
-<obj name="teller.node49.mem2" type="Socket" >
+<obj name="teller.node49.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm49" openString="4" /> 
@@ -4079,7 +3140,7 @@
 
 </obj>
 
-<obj name="teller.node49.atx12" type="Socket" >
+<obj name="teller.node49.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm49" openString="5" /> 
@@ -4102,7 +3163,7 @@
 
 </obj>
 
-<obj name="teller.node49.atx5" type="Socket" >
+<obj name="teller.node49.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm49" openString="6" /> 
@@ -4125,79 +3186,10 @@
 
 </obj>
 
-<obj name="teller.node49.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm49" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node49.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm49" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node49.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm49" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node49.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm49" openString="10" /> 
+        <dev name="pidev" device="teller-pm49" openString="7" /> 
     </devices>
 
     <attributes>
@@ -4221,10 +3213,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4233,10 +3222,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4245,10 +3231,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4257,10 +3240,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4271,10 +3251,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -4285,7 +3262,7 @@
 
 </obj>
 
-<obj name="teller.node50.cpu1" type="Socket" >
+<obj name="teller.node50.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm50" openString="1" /> 
@@ -4308,7 +3285,7 @@
 
 </obj>
 
-<obj name="teller.node50.mem1" type="Socket" >
+<obj name="teller.node50.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm50" openString="2" /> 
@@ -4331,7 +3308,7 @@
 
 </obj>
 
-<obj name="teller.node50.cpu2" type="Socket" >
+<obj name="teller.node50.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm50" openString="3" /> 
@@ -4354,7 +3331,7 @@
 
 </obj>
 
-<obj name="teller.node50.mem2" type="Socket" >
+<obj name="teller.node50.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm50" openString="4" /> 
@@ -4377,7 +3354,7 @@
 
 </obj>
 
-<obj name="teller.node50.atx12" type="Socket" >
+<obj name="teller.node50.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm50" openString="5" /> 
@@ -4400,7 +3377,7 @@
 
 </obj>
 
-<obj name="teller.node50.atx5" type="Socket" >
+<obj name="teller.node50.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm50" openString="6" /> 
@@ -4423,79 +3400,10 @@
 
 </obj>
 
-<obj name="teller.node50.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm50" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node50.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm50" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node50.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm50" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node50.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm50" openString="10" /> 
+        <dev name="pidev" device="teller-pm50" openString="7" /> 
     </devices>
 
     <attributes>
@@ -4519,10 +3427,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4531,10 +3436,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4543,10 +3445,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4555,10 +3454,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4569,10 +3465,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -4583,7 +3476,7 @@
 
 </obj>
 
-<obj name="teller.node51.cpu1" type="Socket" >
+<obj name="teller.node51.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm51" openString="1" /> 
@@ -4606,7 +3499,7 @@
 
 </obj>
 
-<obj name="teller.node51.mem1" type="Socket" >
+<obj name="teller.node51.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm51" openString="2" /> 
@@ -4629,7 +3522,7 @@
 
 </obj>
 
-<obj name="teller.node51.cpu2" type="Socket" >
+<obj name="teller.node51.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm51" openString="3" /> 
@@ -4652,7 +3545,7 @@
 
 </obj>
 
-<obj name="teller.node51.mem2" type="Socket" >
+<obj name="teller.node51.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm51" openString="4" /> 
@@ -4675,7 +3568,7 @@
 
 </obj>
 
-<obj name="teller.node51.atx12" type="Socket" >
+<obj name="teller.node51.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm51" openString="5" /> 
@@ -4698,7 +3591,7 @@
 
 </obj>
 
-<obj name="teller.node51.atx5" type="Socket" >
+<obj name="teller.node51.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm51" openString="6" /> 
@@ -4721,79 +3614,10 @@
 
 </obj>
 
-<obj name="teller.node51.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm51" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node51.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm51" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node51.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm51" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node51.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm51" openString="10" /> 
+        <dev name="pidev" device="teller-pm51" openString="7" /> 
     </devices>
 
     <attributes>
@@ -4817,10 +3641,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4829,10 +3650,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4841,10 +3659,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4853,10 +3668,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -4867,10 +3679,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -4881,7 +3690,7 @@
 
 </obj>
 
-<obj name="teller.node52.cpu1" type="Socket" >
+<obj name="teller.node52.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm52" openString="1" /> 
@@ -4904,7 +3713,7 @@
 
 </obj>
 
-<obj name="teller.node52.mem1" type="Socket" >
+<obj name="teller.node52.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm52" openString="2" /> 
@@ -4927,7 +3736,7 @@
 
 </obj>
 
-<obj name="teller.node52.cpu2" type="Socket" >
+<obj name="teller.node52.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm52" openString="3" /> 
@@ -4950,7 +3759,7 @@
 
 </obj>
 
-<obj name="teller.node52.mem2" type="Socket" >
+<obj name="teller.node52.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm52" openString="4" /> 
@@ -4973,7 +3782,7 @@
 
 </obj>
 
-<obj name="teller.node52.atx12" type="Socket" >
+<obj name="teller.node52.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm52" openString="5" /> 
@@ -4996,7 +3805,7 @@
 
 </obj>
 
-<obj name="teller.node52.atx5" type="Socket" >
+<obj name="teller.node52.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm52" openString="6" /> 
@@ -5019,79 +3828,10 @@
 
 </obj>
 
-<obj name="teller.node52.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm52" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node52.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm52" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node52.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm52" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node52.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm52" openString="10" /> 
+        <dev name="pidev" device="teller-pm52" openString="7" /> 
     </devices>
 
     <attributes>
@@ -5115,10 +3855,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5127,10 +3864,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5139,10 +3873,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5151,10 +3882,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5165,10 +3893,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -5179,7 +3904,7 @@
 
 </obj>
 
-<obj name="teller.node53.cpu1" type="Socket" >
+<obj name="teller.node53.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm53" openString="1" /> 
@@ -5202,7 +3927,7 @@
 
 </obj>
 
-<obj name="teller.node53.mem1" type="Socket" >
+<obj name="teller.node53.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm53" openString="2" /> 
@@ -5225,7 +3950,7 @@
 
 </obj>
 
-<obj name="teller.node53.cpu2" type="Socket" >
+<obj name="teller.node53.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm53" openString="3" /> 
@@ -5248,7 +3973,7 @@
 
 </obj>
 
-<obj name="teller.node53.mem2" type="Socket" >
+<obj name="teller.node53.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm53" openString="4" /> 
@@ -5271,7 +3996,7 @@
 
 </obj>
 
-<obj name="teller.node53.atx12" type="Socket" >
+<obj name="teller.node53.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm53" openString="5" /> 
@@ -5294,7 +4019,7 @@
 
 </obj>
 
-<obj name="teller.node53.atx5" type="Socket" >
+<obj name="teller.node53.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm53" openString="6" /> 
@@ -5317,79 +4042,10 @@
 
 </obj>
 
-<obj name="teller.node53.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm53" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node53.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm53" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node53.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm53" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node53.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm53" openString="10" /> 
+        <dev name="pidev" device="teller-pm53" openString="7" /> 
     </devices>
 
     <attributes>
@@ -5413,10 +4069,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5425,10 +4078,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5437,10 +4087,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5449,10 +4096,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5463,10 +4107,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -5477,7 +4118,7 @@
 
 </obj>
 
-<obj name="teller.node54.cpu1" type="Socket" >
+<obj name="teller.node54.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm54" openString="1" /> 
@@ -5500,7 +4141,7 @@
 
 </obj>
 
-<obj name="teller.node54.mem1" type="Socket" >
+<obj name="teller.node54.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm54" openString="2" /> 
@@ -5523,7 +4164,7 @@
 
 </obj>
 
-<obj name="teller.node54.cpu2" type="Socket" >
+<obj name="teller.node54.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm54" openString="3" /> 
@@ -5546,7 +4187,7 @@
 
 </obj>
 
-<obj name="teller.node54.mem2" type="Socket" >
+<obj name="teller.node54.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm54" openString="4" /> 
@@ -5569,7 +4210,7 @@
 
 </obj>
 
-<obj name="teller.node54.atx12" type="Socket" >
+<obj name="teller.node54.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm54" openString="5" /> 
@@ -5592,7 +4233,7 @@
 
 </obj>
 
-<obj name="teller.node54.atx5" type="Socket" >
+<obj name="teller.node54.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm54" openString="6" /> 
@@ -5615,79 +4256,10 @@
 
 </obj>
 
-<obj name="teller.node54.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm54" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node54.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm54" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node54.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm54" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node54.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm54" openString="10" /> 
+        <dev name="pidev" device="teller-pm54" openString="7" /> 
     </devices>
 
     <attributes>
@@ -5711,10 +4283,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5723,10 +4292,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5735,10 +4301,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5747,10 +4310,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -5761,10 +4321,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -5775,7 +4332,7 @@
 
 </obj>
 
-<obj name="teller.node55.cpu1" type="Socket" >
+<obj name="teller.node55.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm55" openString="1" /> 
@@ -5798,7 +4355,7 @@
 
 </obj>
 
-<obj name="teller.node55.mem1" type="Socket" >
+<obj name="teller.node55.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm55" openString="2" /> 
@@ -5821,7 +4378,7 @@
 
 </obj>
 
-<obj name="teller.node55.cpu2" type="Socket" >
+<obj name="teller.node55.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm55" openString="3" /> 
@@ -5844,7 +4401,7 @@
 
 </obj>
 
-<obj name="teller.node55.mem2" type="Socket" >
+<obj name="teller.node55.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm55" openString="4" /> 
@@ -5867,7 +4424,7 @@
 
 </obj>
 
-<obj name="teller.node55.atx12" type="Socket" >
+<obj name="teller.node55.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm55" openString="5" /> 
@@ -5890,7 +4447,7 @@
 
 </obj>
 
-<obj name="teller.node55.atx5" type="Socket" >
+<obj name="teller.node55.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm55" openString="6" /> 
@@ -5913,79 +4470,10 @@
 
 </obj>
 
-<obj name="teller.node55.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm55" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node55.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm55" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node55.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm55" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node55.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm55" openString="10" /> 
+        <dev name="pidev" device="teller-pm55" openString="7" /> 
     </devices>
 
     <attributes>
@@ -6009,10 +4497,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6021,10 +4506,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6033,10 +4515,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6045,10 +4524,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6059,10 +4535,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -6073,7 +4546,7 @@
 
 </obj>
 
-<obj name="teller.node56.cpu1" type="Socket" >
+<obj name="teller.node56.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm56" openString="1" /> 
@@ -6096,7 +4569,7 @@
 
 </obj>
 
-<obj name="teller.node56.mem1" type="Socket" >
+<obj name="teller.node56.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm56" openString="2" /> 
@@ -6119,7 +4592,7 @@
 
 </obj>
 
-<obj name="teller.node56.cpu2" type="Socket" >
+<obj name="teller.node56.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm56" openString="3" /> 
@@ -6142,7 +4615,7 @@
 
 </obj>
 
-<obj name="teller.node56.mem2" type="Socket" >
+<obj name="teller.node56.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm56" openString="4" /> 
@@ -6165,7 +4638,7 @@
 
 </obj>
 
-<obj name="teller.node56.atx12" type="Socket" >
+<obj name="teller.node56.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm56" openString="5" /> 
@@ -6188,7 +4661,7 @@
 
 </obj>
 
-<obj name="teller.node56.atx5" type="Socket" >
+<obj name="teller.node56.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm56" openString="6" /> 
@@ -6211,79 +4684,10 @@
 
 </obj>
 
-<obj name="teller.node56.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm56" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node56.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm56" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node56.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm56" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node56.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm56" openString="10" /> 
+        <dev name="pidev" device="teller-pm56" openString="7" /> 
     </devices>
 
     <attributes>
@@ -6307,10 +4711,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6319,10 +4720,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6331,10 +4729,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6343,10 +4738,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6357,10 +4749,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -6371,7 +4760,7 @@
 
 </obj>
 
-<obj name="teller.node57.cpu1" type="Socket" >
+<obj name="teller.node57.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm57" openString="1" /> 
@@ -6394,7 +4783,7 @@
 
 </obj>
 
-<obj name="teller.node57.mem1" type="Socket" >
+<obj name="teller.node57.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm57" openString="2" /> 
@@ -6417,7 +4806,7 @@
 
 </obj>
 
-<obj name="teller.node57.cpu2" type="Socket" >
+<obj name="teller.node57.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm57" openString="3" /> 
@@ -6440,7 +4829,7 @@
 
 </obj>
 
-<obj name="teller.node57.mem2" type="Socket" >
+<obj name="teller.node57.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm57" openString="4" /> 
@@ -6463,7 +4852,7 @@
 
 </obj>
 
-<obj name="teller.node57.atx12" type="Socket" >
+<obj name="teller.node57.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm57" openString="5" /> 
@@ -6486,7 +4875,7 @@
 
 </obj>
 
-<obj name="teller.node57.atx5" type="Socket" >
+<obj name="teller.node57.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm57" openString="6" /> 
@@ -6509,79 +4898,10 @@
 
 </obj>
 
-<obj name="teller.node57.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm57" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node57.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm57" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node57.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm57" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node57.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm57" openString="10" /> 
+        <dev name="pidev" device="teller-pm57" openString="7" /> 
     </devices>
 
     <attributes>
@@ -6605,10 +4925,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6617,10 +4934,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6629,10 +4943,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6641,10 +4952,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6655,10 +4963,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -6669,7 +4974,7 @@
 
 </obj>
 
-<obj name="teller.node58.cpu1" type="Socket" >
+<obj name="teller.node58.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm58" openString="1" /> 
@@ -6692,7 +4997,7 @@
 
 </obj>
 
-<obj name="teller.node58.mem1" type="Socket" >
+<obj name="teller.node58.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm58" openString="2" /> 
@@ -6715,7 +5020,7 @@
 
 </obj>
 
-<obj name="teller.node58.cpu2" type="Socket" >
+<obj name="teller.node58.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm58" openString="3" /> 
@@ -6738,7 +5043,7 @@
 
 </obj>
 
-<obj name="teller.node58.mem2" type="Socket" >
+<obj name="teller.node58.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm58" openString="4" /> 
@@ -6761,7 +5066,7 @@
 
 </obj>
 
-<obj name="teller.node58.atx12" type="Socket" >
+<obj name="teller.node58.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm58" openString="5" /> 
@@ -6784,7 +5089,7 @@
 
 </obj>
 
-<obj name="teller.node58.atx5" type="Socket" >
+<obj name="teller.node58.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm58" openString="6" /> 
@@ -6807,79 +5112,10 @@
 
 </obj>
 
-<obj name="teller.node58.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm58" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node58.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm58" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node58.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm58" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node58.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm58" openString="10" /> 
+        <dev name="pidev" device="teller-pm58" openString="7" /> 
     </devices>
 
     <attributes>
@@ -6903,10 +5139,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6915,10 +5148,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6927,10 +5157,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6939,10 +5166,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -6953,10 +5177,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -6967,7 +5188,7 @@
 
 </obj>
 
-<obj name="teller.node59.cpu1" type="Socket" >
+<obj name="teller.node59.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm59" openString="1" /> 
@@ -6990,7 +5211,7 @@
 
 </obj>
 
-<obj name="teller.node59.mem1" type="Socket" >
+<obj name="teller.node59.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm59" openString="2" /> 
@@ -7013,7 +5234,7 @@
 
 </obj>
 
-<obj name="teller.node59.cpu2" type="Socket" >
+<obj name="teller.node59.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm59" openString="3" /> 
@@ -7036,7 +5257,7 @@
 
 </obj>
 
-<obj name="teller.node59.mem2" type="Socket" >
+<obj name="teller.node59.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm59" openString="4" /> 
@@ -7059,7 +5280,7 @@
 
 </obj>
 
-<obj name="teller.node59.atx12" type="Socket" >
+<obj name="teller.node59.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm59" openString="5" /> 
@@ -7082,7 +5303,7 @@
 
 </obj>
 
-<obj name="teller.node59.atx5" type="Socket" >
+<obj name="teller.node59.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm59" openString="6" /> 
@@ -7105,79 +5326,10 @@
 
 </obj>
 
-<obj name="teller.node59.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm59" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node59.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm59" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node59.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm59" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node59.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm59" openString="10" /> 
+        <dev name="pidev" device="teller-pm59" openString="7" /> 
     </devices>
 
     <attributes>
@@ -7201,10 +5353,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7213,10 +5362,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7225,10 +5371,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7237,10 +5380,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7251,10 +5391,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -7265,7 +5402,7 @@
 
 </obj>
 
-<obj name="teller.node60.cpu1" type="Socket" >
+<obj name="teller.node60.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm60" openString="1" /> 
@@ -7288,7 +5425,7 @@
 
 </obj>
 
-<obj name="teller.node60.mem1" type="Socket" >
+<obj name="teller.node60.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm60" openString="2" /> 
@@ -7311,7 +5448,7 @@
 
 </obj>
 
-<obj name="teller.node60.cpu2" type="Socket" >
+<obj name="teller.node60.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm60" openString="3" /> 
@@ -7334,7 +5471,7 @@
 
 </obj>
 
-<obj name="teller.node60.mem2" type="Socket" >
+<obj name="teller.node60.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm60" openString="4" /> 
@@ -7357,7 +5494,7 @@
 
 </obj>
 
-<obj name="teller.node60.atx12" type="Socket" >
+<obj name="teller.node60.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm60" openString="5" /> 
@@ -7380,7 +5517,7 @@
 
 </obj>
 
-<obj name="teller.node60.atx5" type="Socket" >
+<obj name="teller.node60.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm60" openString="6" /> 
@@ -7403,79 +5540,10 @@
 
 </obj>
 
-<obj name="teller.node60.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm60" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node60.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm60" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node60.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm60" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node60.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm60" openString="10" /> 
+        <dev name="pidev" device="teller-pm60" openString="7" /> 
     </devices>
 
     <attributes>
@@ -7499,10 +5567,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7511,10 +5576,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7523,10 +5585,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7535,10 +5594,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7549,10 +5605,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -7563,7 +5616,7 @@
 
 </obj>
 
-<obj name="teller.node61.cpu1" type="Socket" >
+<obj name="teller.node61.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm61" openString="1" /> 
@@ -7586,7 +5639,7 @@
 
 </obj>
 
-<obj name="teller.node61.mem1" type="Socket" >
+<obj name="teller.node61.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm61" openString="2" /> 
@@ -7609,7 +5662,7 @@
 
 </obj>
 
-<obj name="teller.node61.cpu2" type="Socket" >
+<obj name="teller.node61.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm61" openString="3" /> 
@@ -7632,7 +5685,7 @@
 
 </obj>
 
-<obj name="teller.node61.mem2" type="Socket" >
+<obj name="teller.node61.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm61" openString="4" /> 
@@ -7655,7 +5708,7 @@
 
 </obj>
 
-<obj name="teller.node61.atx12" type="Socket" >
+<obj name="teller.node61.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm61" openString="5" /> 
@@ -7678,7 +5731,7 @@
 
 </obj>
 
-<obj name="teller.node61.atx5" type="Socket" >
+<obj name="teller.node61.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm61" openString="6" /> 
@@ -7701,79 +5754,10 @@
 
 </obj>
 
-<obj name="teller.node61.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm61" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node61.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm61" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node61.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm61" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node61.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm61" openString="10" /> 
+        <dev name="pidev" device="teller-pm61" openString="7" /> 
     </devices>
 
     <attributes>
@@ -7797,10 +5781,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7809,10 +5790,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7821,10 +5799,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7833,10 +5808,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -7847,10 +5819,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -7861,7 +5830,7 @@
 
 </obj>
 
-<obj name="teller.node62.cpu1" type="Socket" >
+<obj name="teller.node62.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm62" openString="1" /> 
@@ -7884,7 +5853,7 @@
 
 </obj>
 
-<obj name="teller.node62.mem1" type="Socket" >
+<obj name="teller.node62.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm62" openString="2" /> 
@@ -7907,7 +5876,7 @@
 
 </obj>
 
-<obj name="teller.node62.cpu2" type="Socket" >
+<obj name="teller.node62.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm62" openString="3" /> 
@@ -7930,7 +5899,7 @@
 
 </obj>
 
-<obj name="teller.node62.mem2" type="Socket" >
+<obj name="teller.node62.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm62" openString="4" /> 
@@ -7953,7 +5922,7 @@
 
 </obj>
 
-<obj name="teller.node62.atx12" type="Socket" >
+<obj name="teller.node62.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm62" openString="5" /> 
@@ -7976,7 +5945,7 @@
 
 </obj>
 
-<obj name="teller.node62.atx5" type="Socket" >
+<obj name="teller.node62.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm62" openString="6" /> 
@@ -7999,79 +5968,10 @@
 
 </obj>
 
-<obj name="teller.node62.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm62" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node62.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm62" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node62.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm62" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node62.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm62" openString="10" /> 
+        <dev name="pidev" device="teller-pm62" openString="7" /> 
     </devices>
 
     <attributes>
@@ -8095,10 +5995,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8107,10 +6004,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8119,10 +6013,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8131,10 +6022,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8145,10 +6033,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -8159,7 +6044,7 @@
 
 </obj>
 
-<obj name="teller.node63.cpu1" type="Socket" >
+<obj name="teller.node63.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm63" openString="1" /> 
@@ -8182,7 +6067,7 @@
 
 </obj>
 
-<obj name="teller.node63.mem1" type="Socket" >
+<obj name="teller.node63.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm63" openString="2" /> 
@@ -8205,7 +6090,7 @@
 
 </obj>
 
-<obj name="teller.node63.cpu2" type="Socket" >
+<obj name="teller.node63.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm63" openString="3" /> 
@@ -8228,7 +6113,7 @@
 
 </obj>
 
-<obj name="teller.node63.mem2" type="Socket" >
+<obj name="teller.node63.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm63" openString="4" /> 
@@ -8251,7 +6136,7 @@
 
 </obj>
 
-<obj name="teller.node63.atx12" type="Socket" >
+<obj name="teller.node63.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm63" openString="5" /> 
@@ -8274,7 +6159,7 @@
 
 </obj>
 
-<obj name="teller.node63.atx5" type="Socket" >
+<obj name="teller.node63.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm63" openString="6" /> 
@@ -8297,79 +6182,10 @@
 
 </obj>
 
-<obj name="teller.node63.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm63" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node63.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm63" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node63.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm63" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node63.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm63" openString="10" /> 
+        <dev name="pidev" device="teller-pm63" openString="7" /> 
     </devices>
 
     <attributes>
@@ -8393,10 +6209,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8405,10 +6218,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8417,10 +6227,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8429,10 +6236,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8443,10 +6247,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -8457,7 +6258,7 @@
 
 </obj>
 
-<obj name="teller.node64.cpu1" type="Socket" >
+<obj name="teller.node64.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm64" openString="1" /> 
@@ -8480,7 +6281,7 @@
 
 </obj>
 
-<obj name="teller.node64.mem1" type="Socket" >
+<obj name="teller.node64.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm64" openString="2" /> 
@@ -8503,7 +6304,7 @@
 
 </obj>
 
-<obj name="teller.node64.cpu2" type="Socket" >
+<obj name="teller.node64.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm64" openString="3" /> 
@@ -8526,7 +6327,7 @@
 
 </obj>
 
-<obj name="teller.node64.mem2" type="Socket" >
+<obj name="teller.node64.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm64" openString="4" /> 
@@ -8549,7 +6350,7 @@
 
 </obj>
 
-<obj name="teller.node64.atx12" type="Socket" >
+<obj name="teller.node64.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm64" openString="5" /> 
@@ -8572,7 +6373,7 @@
 
 </obj>
 
-<obj name="teller.node64.atx5" type="Socket" >
+<obj name="teller.node64.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm64" openString="6" /> 
@@ -8595,79 +6396,10 @@
 
 </obj>
 
-<obj name="teller.node64.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm64" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node64.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm64" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node64.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm64" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node64.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm64" openString="10" /> 
+        <dev name="pidev" device="teller-pm64" openString="7" /> 
     </devices>
 
     <attributes>
@@ -8691,10 +6423,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8703,10 +6432,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8715,10 +6441,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8727,10 +6450,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -8741,10 +6461,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -8755,7 +6472,7 @@
 
 </obj>
 
-<obj name="teller.node65.cpu1" type="Socket" >
+<obj name="teller.node65.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm65" openString="1" /> 
@@ -8778,7 +6495,7 @@
 
 </obj>
 
-<obj name="teller.node65.mem1" type="Socket" >
+<obj name="teller.node65.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm65" openString="2" /> 
@@ -8801,7 +6518,7 @@
 
 </obj>
 
-<obj name="teller.node65.cpu2" type="Socket" >
+<obj name="teller.node65.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm65" openString="3" /> 
@@ -8824,7 +6541,7 @@
 
 </obj>
 
-<obj name="teller.node65.mem2" type="Socket" >
+<obj name="teller.node65.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm65" openString="4" /> 
@@ -8847,7 +6564,7 @@
 
 </obj>
 
-<obj name="teller.node65.atx12" type="Socket" >
+<obj name="teller.node65.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm65" openString="5" /> 
@@ -8870,7 +6587,7 @@
 
 </obj>
 
-<obj name="teller.node65.atx5" type="Socket" >
+<obj name="teller.node65.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm65" openString="6" /> 
@@ -8893,79 +6610,10 @@
 
 </obj>
 
-<obj name="teller.node65.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm65" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node65.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm65" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node65.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm65" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node65.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm65" openString="10" /> 
+        <dev name="pidev" device="teller-pm65" openString="7" /> 
     </devices>
 
     <attributes>
@@ -8989,10 +6637,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9001,10 +6646,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9013,10 +6655,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9025,10 +6664,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9039,10 +6675,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -9053,7 +6686,7 @@
 
 </obj>
 
-<obj name="teller.node66.cpu1" type="Socket" >
+<obj name="teller.node66.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm66" openString="1" /> 
@@ -9076,7 +6709,7 @@
 
 </obj>
 
-<obj name="teller.node66.mem1" type="Socket" >
+<obj name="teller.node66.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm66" openString="2" /> 
@@ -9099,7 +6732,7 @@
 
 </obj>
 
-<obj name="teller.node66.cpu2" type="Socket" >
+<obj name="teller.node66.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm66" openString="3" /> 
@@ -9122,7 +6755,7 @@
 
 </obj>
 
-<obj name="teller.node66.mem2" type="Socket" >
+<obj name="teller.node66.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm66" openString="4" /> 
@@ -9145,7 +6778,7 @@
 
 </obj>
 
-<obj name="teller.node66.atx12" type="Socket" >
+<obj name="teller.node66.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm66" openString="5" /> 
@@ -9168,7 +6801,7 @@
 
 </obj>
 
-<obj name="teller.node66.atx5" type="Socket" >
+<obj name="teller.node66.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm66" openString="6" /> 
@@ -9191,79 +6824,10 @@
 
 </obj>
 
-<obj name="teller.node66.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm66" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node66.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm66" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node66.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm66" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node66.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm66" openString="10" /> 
+        <dev name="pidev" device="teller-pm66" openString="7" /> 
     </devices>
 
     <attributes>
@@ -9287,10 +6851,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9299,10 +6860,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9311,10 +6869,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9323,10 +6878,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9337,10 +6889,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -9351,7 +6900,7 @@
 
 </obj>
 
-<obj name="teller.node67.cpu1" type="Socket" >
+<obj name="teller.node67.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm67" openString="1" /> 
@@ -9374,7 +6923,7 @@
 
 </obj>
 
-<obj name="teller.node67.mem1" type="Socket" >
+<obj name="teller.node67.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm67" openString="2" /> 
@@ -9397,7 +6946,7 @@
 
 </obj>
 
-<obj name="teller.node67.cpu2" type="Socket" >
+<obj name="teller.node67.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm67" openString="3" /> 
@@ -9420,7 +6969,7 @@
 
 </obj>
 
-<obj name="teller.node67.mem2" type="Socket" >
+<obj name="teller.node67.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm67" openString="4" /> 
@@ -9443,7 +6992,7 @@
 
 </obj>
 
-<obj name="teller.node67.atx12" type="Socket" >
+<obj name="teller.node67.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm67" openString="5" /> 
@@ -9466,7 +7015,7 @@
 
 </obj>
 
-<obj name="teller.node67.atx5" type="Socket" >
+<obj name="teller.node67.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm67" openString="6" /> 
@@ -9489,79 +7038,10 @@
 
 </obj>
 
-<obj name="teller.node67.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm67" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node67.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm67" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node67.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm67" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node67.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm67" openString="10" /> 
+        <dev name="pidev" device="teller-pm67" openString="7" /> 
     </devices>
 
     <attributes>
@@ -9585,10 +7065,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9597,10 +7074,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9609,10 +7083,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9621,10 +7092,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9635,10 +7103,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -9649,7 +7114,7 @@
 
 </obj>
 
-<obj name="teller.node68.cpu1" type="Socket" >
+<obj name="teller.node68.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm68" openString="1" /> 
@@ -9672,7 +7137,7 @@
 
 </obj>
 
-<obj name="teller.node68.mem1" type="Socket" >
+<obj name="teller.node68.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm68" openString="2" /> 
@@ -9695,7 +7160,7 @@
 
 </obj>
 
-<obj name="teller.node68.cpu2" type="Socket" >
+<obj name="teller.node68.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm68" openString="3" /> 
@@ -9718,7 +7183,7 @@
 
 </obj>
 
-<obj name="teller.node68.mem2" type="Socket" >
+<obj name="teller.node68.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm68" openString="4" /> 
@@ -9741,7 +7206,7 @@
 
 </obj>
 
-<obj name="teller.node68.atx12" type="Socket" >
+<obj name="teller.node68.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm68" openString="5" /> 
@@ -9764,7 +7229,7 @@
 
 </obj>
 
-<obj name="teller.node68.atx5" type="Socket" >
+<obj name="teller.node68.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm68" openString="6" /> 
@@ -9787,79 +7252,10 @@
 
 </obj>
 
-<obj name="teller.node68.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm68" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node68.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm68" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node68.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm68" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node68.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm68" openString="10" /> 
+        <dev name="pidev" device="teller-pm68" openString="7" /> 
     </devices>
 
     <attributes>
@@ -9883,10 +7279,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9895,10 +7288,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9907,10 +7297,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9919,10 +7306,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -9933,10 +7317,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -9947,7 +7328,7 @@
 
 </obj>
 
-<obj name="teller.node69.cpu1" type="Socket" >
+<obj name="teller.node69.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm69" openString="1" /> 
@@ -9970,7 +7351,7 @@
 
 </obj>
 
-<obj name="teller.node69.mem1" type="Socket" >
+<obj name="teller.node69.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm69" openString="2" /> 
@@ -9993,7 +7374,7 @@
 
 </obj>
 
-<obj name="teller.node69.cpu2" type="Socket" >
+<obj name="teller.node69.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm69" openString="3" /> 
@@ -10016,7 +7397,7 @@
 
 </obj>
 
-<obj name="teller.node69.mem2" type="Socket" >
+<obj name="teller.node69.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm69" openString="4" /> 
@@ -10039,7 +7420,7 @@
 
 </obj>
 
-<obj name="teller.node69.atx12" type="Socket" >
+<obj name="teller.node69.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm69" openString="5" /> 
@@ -10062,7 +7443,7 @@
 
 </obj>
 
-<obj name="teller.node69.atx5" type="Socket" >
+<obj name="teller.node69.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm69" openString="6" /> 
@@ -10085,79 +7466,10 @@
 
 </obj>
 
-<obj name="teller.node69.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm69" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node69.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm69" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node69.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm69" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node69.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm69" openString="10" /> 
+        <dev name="pidev" device="teller-pm69" openString="7" /> 
     </devices>
 
     <attributes>
@@ -10181,10 +7493,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10193,10 +7502,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10205,10 +7511,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10217,10 +7520,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10231,10 +7531,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -10245,7 +7542,7 @@
 
 </obj>
 
-<obj name="teller.node70.cpu1" type="Socket" >
+<obj name="teller.node70.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm70" openString="1" /> 
@@ -10268,7 +7565,7 @@
 
 </obj>
 
-<obj name="teller.node70.mem1" type="Socket" >
+<obj name="teller.node70.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm70" openString="2" /> 
@@ -10291,7 +7588,7 @@
 
 </obj>
 
-<obj name="teller.node70.cpu2" type="Socket" >
+<obj name="teller.node70.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm70" openString="3" /> 
@@ -10314,7 +7611,7 @@
 
 </obj>
 
-<obj name="teller.node70.mem2" type="Socket" >
+<obj name="teller.node70.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm70" openString="4" /> 
@@ -10337,7 +7634,7 @@
 
 </obj>
 
-<obj name="teller.node70.atx12" type="Socket" >
+<obj name="teller.node70.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm70" openString="5" /> 
@@ -10360,7 +7657,7 @@
 
 </obj>
 
-<obj name="teller.node70.atx5" type="Socket" >
+<obj name="teller.node70.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm70" openString="6" /> 
@@ -10383,79 +7680,10 @@
 
 </obj>
 
-<obj name="teller.node70.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm70" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node70.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm70" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node70.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm70" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node70.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm70" openString="10" /> 
+        <dev name="pidev" device="teller-pm70" openString="7" /> 
     </devices>
 
     <attributes>
@@ -10479,10 +7707,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10491,10 +7716,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10503,10 +7725,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10515,10 +7734,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10529,10 +7745,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -10543,7 +7756,7 @@
 
 </obj>
 
-<obj name="teller.node71.cpu1" type="Socket" >
+<obj name="teller.node71.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm71" openString="1" /> 
@@ -10566,7 +7779,7 @@
 
 </obj>
 
-<obj name="teller.node71.mem1" type="Socket" >
+<obj name="teller.node71.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm71" openString="2" /> 
@@ -10589,7 +7802,7 @@
 
 </obj>
 
-<obj name="teller.node71.cpu2" type="Socket" >
+<obj name="teller.node71.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm71" openString="3" /> 
@@ -10612,7 +7825,7 @@
 
 </obj>
 
-<obj name="teller.node71.mem2" type="Socket" >
+<obj name="teller.node71.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm71" openString="4" /> 
@@ -10635,7 +7848,7 @@
 
 </obj>
 
-<obj name="teller.node71.atx12" type="Socket" >
+<obj name="teller.node71.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm71" openString="5" /> 
@@ -10658,7 +7871,7 @@
 
 </obj>
 
-<obj name="teller.node71.atx5" type="Socket" >
+<obj name="teller.node71.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm71" openString="6" /> 
@@ -10681,79 +7894,10 @@
 
 </obj>
 
-<obj name="teller.node71.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm71" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node71.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm71" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node71.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm71" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node71.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm71" openString="10" /> 
+        <dev name="pidev" device="teller-pm71" openString="7" /> 
     </devices>
 
     <attributes>
@@ -10777,10 +7921,7 @@
 
     <attributes>
         <attr name="VOLTAGE" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10789,10 +7930,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="CURRENT" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10801,10 +7939,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="POWER" op="AVG" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10813,10 +7948,7 @@
             <src type="child" name="hdd5" />
         </attr>
         <attr name="ENERGY" op="SUM" >
-            <src type="child" name="cpu1" />
-            <src type="child" name="mem1" />
-            <src type="child" name="cpu2" />
-            <src type="child" name="mem2" />
+            <src type="child" name="cpu" />
             <src type="child" name="atx12" />
             <src type="child" name="atx5" />
             <src type="child" name="atx5sb" />
@@ -10827,10 +7959,7 @@
     </attributes>
 
     <children>
-        <child name="cpu1" />
-        <child name="mem1" />
-        <child name="cpu2" />
-        <child name="mem2" />
+        <child name="cpu" />
         <child name="atx12" />
         <child name="atx5" />
         <child name="atx5sb" />
@@ -10841,7 +7970,7 @@
 
 </obj>
 
-<obj name="teller.node72.cpu1" type="Socket" >
+<obj name="teller.node72.cpu" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm72" openString="1" /> 
@@ -10864,7 +7993,7 @@
 
 </obj>
 
-<obj name="teller.node72.mem1" type="Socket" >
+<obj name="teller.node72.atx12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm72" openString="2" /> 
@@ -10887,7 +8016,7 @@
 
 </obj>
 
-<obj name="teller.node72.cpu2" type="Socket" >
+<obj name="teller.node72.atx5" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm72" openString="3" /> 
@@ -10910,7 +8039,7 @@
 
 </obj>
 
-<obj name="teller.node72.mem2" type="Socket" >
+<obj name="teller.node72.atx5sb" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm72" openString="4" /> 
@@ -10933,7 +8062,7 @@
 
 </obj>
 
-<obj name="teller.node72.atx12" type="Socket" >
+<obj name="teller.node72.atx3_3" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm72" openString="5" /> 
@@ -10956,7 +8085,7 @@
 
 </obj>
 
-<obj name="teller.node72.atx5" type="Socket" >
+<obj name="teller.node72.hdd12" type="Socket" >
 
     <devices>
         <dev name="pidev" device="teller-pm72" openString="6" /> 
@@ -10979,79 +8108,10 @@
 
 </obj>
 
-<obj name="teller.node72.atx5sb" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm72" openString="7" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node72.atx3_3" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm72" openString="8" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
-<obj name="teller.node72.hdd12" type="Socket" >
-
-    <devices>
-        <dev name="pidev" device="teller-pm72" openString="9" /> 
-    </devices>
-
-    <attributes>
-        <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
-        </attr>
-        <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
-        </attr>
-    </attributes>
-
-</obj>
-
 <obj name="teller.node72.hdd5" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="teller-pm72" openString="10" /> 
+        <dev name="pidev" device="teller-pm72" openString="7" /> 
     </devices>
 
     <attributes>
