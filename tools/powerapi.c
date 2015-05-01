@@ -30,7 +30,7 @@ int main( int argc, char* argv[] )
     PWR_Time start_ts = 0, val_ts = 0;
     PWR_AttrName attr = PWR_ATTR_ENERGY;
 
-    PWR_AttrName attrs[] = { PWR_ATTR_VOLTAGE, PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
+    PWR_AttrName attrs[] = { PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
     PWR_Time vals_ts[NUM_ATTR(attrs)];
     double vals[NUM_ATTR(attrs)];
     int stats[NUM_ATTR(attrs)];
