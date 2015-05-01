@@ -9,37 +9,32 @@
  * distribution.
 */
 
+#include "pow.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "pow.h"
+#include <sys/time.h>
 
 #define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
 int main( int argc, char* argv[] )
 {
-    volatile unsigned long test = 0;
-
     PWR_Obj self;
     PWR_Cntxt cntxt;
     time_t time;
     double start = 0.0, val = 0.0;
     PWR_Time start_ts = 0, val_ts = 0;
     PWR_AttrName attr = PWR_ATTR_ENERGY;
+    struct timeval t0, t1;
+    unsigned long tdiff;
 
-    PWR_AttrName attrs[] = { PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
-    PWR_Time vals_ts[NUM_ATTR(attrs)];
-    double vals[NUM_ATTR(attrs)];
-    int stats[NUM_ATTR(attrs)];
-
-    unsigned int i, j, option, verbose = 0, samples = 1, freq = 1, logger = 0, busy = 0;
+    unsigned int i, option, samples = 1, freq = 1;
     static char usage[] =
-        "usage: %s [-s samples] [-f freq] [-a attr] [-l] [-v] [-h]\n";
+        "usage: %s [-s samples] [-f freq] [-a attr] [-h]\n";
 
-    while( (option=getopt( argc, argv, "s:f:a:lbvh" )) != -1 )
+    while( (option=getopt( argc, argv, "s:f:a:h" )) != -1 )
         switch( option ) {
             case 's':
                 samples = atoi(optarg);
@@ -75,23 +70,11 @@ int main( int argc, char* argv[] )
                         return -1;
                 } 
                 break;
-            case 'l':
-                logger = 1;
-                break;
-            case 'b':
-                busy = 1;
-                break;
-            case 'v':
-                verbose = 1;
-                break;
             case 'h':
             case '?':
                 fprintf( stderr, usage, argv[0] );
                 exit( 1 );
         }
-
-    if( verbose )
-        printf( "samples=%d, freq=%d, attr=%d\n", samples, freq, attr );
 
     if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application" )) == 0x0 ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
@@ -102,52 +85,32 @@ int main( int argc, char* argv[] )
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }
-    if( verbose )
-        printf( "Profiling `%s`\n", PWR_ObjGetTypeString( PWR_ObjGetType( self ) ) ); 
 
     for( i = 0; i < samples; i++ ) {
-        if( logger ) {
-            if( PWR_ObjAttrGetValues( self, NUM_ATTR(attrs), attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
-                printf( "Error: reading of PowerAPI attributes failed\n" );
-                return -1;
-            }
-            for( j = 0; j < NUM_ATTR(attrs); j++ ) {
-                if( !i && attrs[j] == PWR_ATTR_ENERGY ) {
-                    start = vals[j];
-                    start_ts = vals_ts[j];
-                }
-                if( !j ) PWR_TimeConvert( vals_ts[j], &time );
-                printf( "%lf ", vals[j] );
-            }
-            printf( "at time %s", ctime(&time) );
+        gettimeofday( &t0, 0x0 );
 
-            if( busy )
-                for( j = 0; j < 40000000; j++ ) test = 2*j;
-            else
-                usleep( 1000000.0 / freq);
-
-        } else {
-            if( PWR_ObjAttrGetValue( self, attr, &val, &val_ts ) == PWR_RET_INVALID ) {
-                printf( "Error: reading of PowerAPI attribute failed\n" );
-                return -1;
-            }
-
-            if( !i && attr == PWR_ATTR_ENERGY ) {
-                start = val;
-                start_ts = val_ts;
-            }
-
-            PWR_TimeConvert( val_ts, &time );
-            printf( "Value is %lf at time %s", val, ctime(&time) );
-
-            if( busy )
-                for( j = 0; j < 40000000; j++ ) test = 2*j;
-            else
-                usleep( 1000000.0 / freq);
+        if( PWR_ObjAttrGetValue( self, attr, &val, &val_ts ) == PWR_RET_INVALID ) {
+            printf( "Error: reading of PowerAPI attribute failed\n" );
+            return -1;
         }
+
+        if( !i && attr == PWR_ATTR_ENERGY ) {
+            start = val;
+            start_ts = val_ts;
+        }
+
+        PWR_TimeConvert( val_ts, &time );
+        printf( "Value is %lf at time %s", val, ctime(&time) );
+
+        gettimeofday( &t1, 0x0 );
+        tdiff = t1.tv_sec - t0.tv_sec +
+            (t1.tv_usec - t0.tv_usec) / 1000000.0;
+
+        if( tdiff < 1000000.0 / freq )
+            usleep( 1000000.0 / freq - tdiff );
     }
 
-    if( !logger && attr == PWR_ATTR_ENERGY )
+    if( attr == PWR_ATTR_ENERGY )
         printf( "Total energy is %lf Joules over %f seconds\n", val - start,
                 (unsigned long long)(val_ts - start_ts)/1000000000.0 );
 

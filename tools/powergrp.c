@@ -9,13 +9,13 @@
  * distribution.
 */
 
+#include "pow.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "pow.h"
+#include <sys/time.h>
 
 #define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
@@ -28,6 +28,8 @@ int main( int argc, char* argv[] )
     unsigned long long time;
     double start = 0.0;
     PWR_Time start_ts = 0;
+    struct timeval t0, t1;
+    unsigned long tdiff;
 
     PWR_AttrName attrs[] = { PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
     PWR_Time vals_ts[NUM_ATTR(attrs)];
@@ -74,14 +76,16 @@ int main( int argc, char* argv[] )
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( grp, i );
-        if( // !(strcmp( PWR_ObjGetName( obj ), "teller.node40" )) ||
-//            !(strcmp( PWR_ObjGetName( obj ), "teller.node41" )) ||
-//            !(strcmp( PWR_ObjGetName( obj ), "teller.node42" )) ||
+        if( !(strcmp( PWR_ObjGetName( obj ), "teller.node40" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node41" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node42" )) ||
             !(strcmp( PWR_ObjGetName( obj ), "teller.node43" )) )
             PWR_GrpAddObj( grp, obj );
     }
 
     for( i = 0; i < samples; i++ ) {
+        gettimeofday( &t0, 0x0 );
+
         if( PWR_GrpAttrGetValues( grp, NUM_ATTR(attrs), attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
             printf( "Error: reading of PowerAPI attributes failed\n" );
             return -1;
@@ -98,7 +102,12 @@ int main( int argc, char* argv[] )
         }
         printf( "%lf\n", time/1000000000.0 );
 
-        usleep( 1000000.0 / freq);
+        gettimeofday( &t1, 0x0 );
+        tdiff = t1.tv_sec - t0.tv_sec +
+            (t1.tv_usec - t0.tv_usec) / 1000000.0;
+
+        if( tdiff < 1000000.0 / freq )
+            usleep( 1000000.0 / freq - tdiff );
     }
 
     return 0;
