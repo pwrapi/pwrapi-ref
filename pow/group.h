@@ -85,16 +85,18 @@ class Grp {
     int attrGetValues( int num, PWR_AttrName attr[], void* buf,
                                    		PWR_Time ts[], Status* status)
     {
+        DBGX("num=%d size=%lu\n",num,m_list.size());
         uint64_t* ptr = (uint64_t*) buf;
+        std::vector<PWR_AttrName>   attrsV(num);
+        std::vector<PWR_Time>       tsV(num);
+        std::vector<int>            statusV(num);
+
+        for ( int j = 0; j < num; j++ ) {
+            attrsV[j] =  attr[ j ];
+            DBGX("%s\n",attrNameToString(attrsV[j]));
+        }
+
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
-
-            std::vector<PWR_AttrName> attrsV(num);
-            std::vector<PWR_Time> tsV(num);
-            std::vector<int>          statusV(num);
-
-            for ( int j = 0; j < num; j++ ) {
-                attrsV[j] =  attr[ i * num + j ];
-            }
 
             if ( PWR_RET_SUCCESS != m_list[i]->attrGetValues( attrsV, 
                         				ptr + i * num, tsV, statusV ) ) 
