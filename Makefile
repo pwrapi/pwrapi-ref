@@ -1,4 +1,7 @@
 
+export SHARED=y
+export DEBUG=n
+
 SWIG=
 DAEMON=
 
