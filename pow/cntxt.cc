@@ -10,7 +10,6 @@
 */
 
 #include <iostream>
-#include <dlfcn.h>
 #include <assert.h>
 
 #include "devTreeNode.h"
@@ -183,17 +182,8 @@ void Cntxt::initPlugins( Config& cfg )
         DBGX("plugin name=`%s` lib=`%s`\n", plugin.name.c_str(),
 										plugin.lib.c_str() );
 
-        void* ptr = dlopen( plugin.lib.c_str(), RTLD_LAZY);
-		if ( NULL == ptr ) {
-			printf("error: can't find plugin library `%s`\n",
-												plugin.lib.c_str());
-			exit(-1);
-		}
+        m_pluginLibMap[ plugin.name ] = getDev( plugin.lib, plugin.name );
 
-        getDevFuncPtr_t funcPtr = (getDevFuncPtr_t) dlsym(ptr,GETDEVFUNC);
-        assert(funcPtr);
-
-        m_pluginLibMap[ plugin.name ] = funcPtr();
         assert( m_pluginLibMap[ plugin.name ] );
     }
 }

@@ -10,29 +10,33 @@
 #
 
 XMLRPC = n
-DEBUG = n
-SHARED = y
+DEBUG ?= y
+SHARED ?= y
 
-CFLAGS = -Wall -fPIC
-CPPFLAGS = -Itinyxml
+LD = g++
 CXXFLAGS = -Wall
+CPPFLAGS = -Itinyxml
+
+LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
 
 ifeq ($(SHARED),y)
 CXXFLAGS += -fPIC
 LDFLAGS += -shared
 LDLIBS += -ldl
 LIB = libpow.so
+LIB_SRC += dynamic.cc
 else
 LIB = libpow.a
+CPPFLAGS += -DHAVE_POWER_INSIGHT
+LIB_SRC += static.cc
 endif
-LD = g++
+
 
 ifeq ($(DEBUG),y)
 CPPFLAGS += -DDEBUG_ON
 endif
 
 
-LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
 
 ifeq ($(XMLRPC),y)
 LIB_SRC += rpcTreeNode.cc

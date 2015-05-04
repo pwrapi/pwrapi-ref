@@ -50,6 +50,8 @@ class Cntxt {
         return grp; 
     }
 
+    plugin_dev_t* getDev( std::string lib, std::string name );
+
     Grp* getGrpByName( std::string name ) {
         if ( m_groupMap.find( name ) == m_groupMap.end() ) {
             return NULL;
