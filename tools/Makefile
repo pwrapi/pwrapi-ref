@@ -10,11 +10,19 @@
 #
 
 XMLRPC =
+SHARED ?= y
 
-CC=gcc
-CFLAGS = -Wall -I../pow -fPIC
-CXXFLAGS = ${CFLAGS}
-LDFLAGS = ${CFLAGS} -L../pow -lpow -lm -ldl -pthread
+CXXFLAGS = -Wall -I../pow
+LDFLAGS = -L../pow -lpow -lm -pthread
+
+ifeq ($(SHARED),y)
+CC=g++
+CXXFLAGS += -fPIC
+LDFLAGS += -ldl
+else
+CC=g++ -static
+LDFLAGS += -L../plugins -lpwr_pidev -L$(HOME) -lpiapi
+endif
 
 ifeq ($(XMLRPC),y)
 LIB_SRC += rpcTreeNode.cc
@@ -30,10 +38,10 @@ EXES=powerapi powergrp
 all:  ${EXES}
 
 powergrp: powergrp.c
-	$(CC) ${LDFLAGS} powergrp.c -o $@ 
+	$(CC) ${CXXFLAGS} powergrp.c -o $@  ${LDFLAGS}
 
 powerapi: powerapi.c
-	$(CC) ${LDFLAGS} powerapi.c -o $@ 
+	$(CC) ${CXXFLAGS} powerapi.c -o $@  ${LDFLAGS}
 
 clean:
 	rm -f  ${EXES}
