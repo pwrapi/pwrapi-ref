@@ -1,24 +1,78 @@
 AUTOMAKE_OPTIONS = foreign subdir-objects
-
 VERSION_INFO = 1:0:0
 
-#include src/Makefile.am
-#include test/Makefile.am
+include pwr/Makefile.am
+#include plugins/Makefile.am
+#include tools/Makefile.am
+#include examples/Makefile.am
 
-DIST_SUBDIRS = src test
+DIST_SUBDIRS = pwr plugins tools examples
 
-SUBDIRS = src
+SUBDIRS = pwr plugins tools examples
 
-EXTRA_DIST = LICENSE Changes powapi.m4 autogen.sh  
+EXTRA_DIST = LICENSE Changes pwr.m4 autogen.sh  
 
-include_HEADERS = pow.h
+include_HEADERS = pwr.h
 
-lib_LTLIBRARIES = libpowapi.la
+lib_LTLIBRARIES = libpwr.la
 
-libpowapi_la_SOURCES = src/pow.cc src/init.cc src/app_hint.c
-libpowapi_la_LDFLAGS = -version-info $(VERSION_INFO)
+libpwr_la_SOURCES = src/pwr.cc src/init.cc src/app_hint.c
+libpwr_la_LDFLAGS = -version-info $(VERSION_INFO)
 
 ACLOCAL_AMFLAGS = -I m4
 
-#test_init_SOURCES = test/test_init.c 
-#test_app_hint_SOURCES = test/test_app_hint.c
+export SHARED=y
+export DEBUG=n
+
+SWIG=
+DAEMON=
+
+DIRS = pwr plugins tools examples 
+
+ifeq ($(SWIG),y)
+DIRS += swig
+endif
+
+ifeq ($(DAEMON),y)
+DIRS += daemon 
+endif
+
+all: $(DIRS:=Dir)
+
+clean: $(DIRS:=DirClean) 
+
+pwrDir :
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+pluginsDir : 
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+toolsDir :
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+examplesDir :
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+swigDir :
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+daemonDir :
+	cd $(subst Dir,,$@) ; ${MAKE}
+
+pwrDirClean :
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
+
+pluginsDirClean : 
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
+
+toolsDirClean :
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
+
+examplesDirClean :
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
+
+swigDirClean :
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
+
+daemonDirClean :
+	cd $(subst DirClean,,$@) ; ${MAKE} clean
