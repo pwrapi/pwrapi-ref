@@ -9,7 +9,7 @@
  * distribution.
 */
 
-#include "pow.h"
+#include "pwr.h"
 
 #include <stdlib.h>
 #include <stdio.h>
