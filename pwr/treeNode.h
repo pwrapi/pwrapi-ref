@@ -14,7 +14,7 @@
 
 #include <vector>
 #include <assert.h>
-#include "types.h"
+#include "pwrtypes.h"
 
 namespace PowerAPI {
 

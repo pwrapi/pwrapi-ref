@@ -14,7 +14,7 @@
 #include <sys/time.h>
 #include <assert.h>
 
-#include "pow.h"
+#include "pwr.h"
 #include "objTreeNode.h"
 #include "group.h"
 #include "status.h"

@@ -16,7 +16,7 @@
 #include <string>
 #include <iostream>
 
-#include "types.h"
+#include "pwrtypes.h"
 
 namespace PowerAPI {
 

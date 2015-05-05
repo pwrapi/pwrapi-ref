@@ -12,7 +12,7 @@
 #ifndef _PWR_UTIL_H
 #define _PWR_UTIL_H
 
-#include "types.h"
+#include "pwrtypes.h"
 
 static inline const char* objTypeToString( PWR_ObjType type )
 {

@@ -18,7 +18,7 @@
 
 #include "treeNode.h"
 #include "util.h"
-#include "types.h"
+#include "pwrtypes.h"
 #include "dev.h"
 #include "config.h"
 

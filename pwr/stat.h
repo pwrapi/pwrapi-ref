@@ -14,7 +14,7 @@
 
 #include <assert.h>
 
-#include "pow.h"
+#include "pwr.h"
 #include "group.h"
 #include "objTreeNode.h"
 

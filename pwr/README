@@ -6,8 +6,8 @@ functionality of the prototype.
 The Makefile is simple and is considered the reference on how to integrate
 TinyXML-2 and ULXMLRPC into the build process.
 
-When inspecting the code in this directory the place to start is pow.h and 
-types.h. These two files should mirror what is defined in the Power API 
+When inspecting the code in this directory the place to start is pwr.h and 
+pwrtypes.h. These two files should mirror what is defined in the Power API 
 specifaction document.
 
 This code is written in C++ with C bindings located in pow.cc.

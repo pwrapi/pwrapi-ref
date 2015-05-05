@@ -16,7 +16,7 @@
 #include <string>
 
 #include "status.h"
-#include "types.h"
+#include "pwrtypes.h"
 #include "debug.h"
 #include "objTreeNode.h"
 

@@ -14,7 +14,7 @@
 
 #include <time.h>
 
-#include "types.h"
+#include "pwrtypes.h"
 
 #ifdef __cplusplus
 extern "C" {

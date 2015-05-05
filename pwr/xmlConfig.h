@@ -12,7 +12,7 @@
 #ifndef _PWR_XMLCONFIG_H
 #define _PWR_XMLCONFIG_H
 
-#include "types.h"
+#include "pwrtypes.h"
 #include "config.h"
 #include "tinyxml2.h"
 

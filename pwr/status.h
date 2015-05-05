@@ -14,7 +14,7 @@
 
 #include <deque>
 
-#include "types.h"
+#include "pwrtypes.h"
 
 namespace PowerAPI {
 
