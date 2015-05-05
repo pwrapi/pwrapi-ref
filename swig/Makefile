@@ -20,7 +20,7 @@ all: _pwr.so
 _pwr.so: pwr_wrap.o
 	$(CC) $(LDFLAGS) -L. -lpwr $< -o $@  
 
-pwr_wrap.c: pwr.i ../pwr/pwr.h ../pwr/types.h
+pwr_wrap.c: pwr.i ../pwr/pwr.h ../pwr/pwrtypes.h
 	swig -I../pwr -classic -python pwr.i
 
 clean:

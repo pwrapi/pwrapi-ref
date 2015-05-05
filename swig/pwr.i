@@ -10,7 +10,7 @@
 #
 
 
-%module pow
+%module pwr
 
 %include "typemaps.i"
 
@@ -26,11 +26,11 @@
 
 
 %{
-#include "pow.h"
-#include "types.h"
+#include "pwr.h"
+#include "pwrtypes.h"
 %}
 
-%include "types.h"
+%include "pwrtypes.h"
 
 typedef unsigned long long int64_t;
 
