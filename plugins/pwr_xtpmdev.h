@@ -12,7 +12,7 @@
 #ifndef PWR_XTPMDEV_H 
 #define PWR_XTPMDEV_H 
 
-#include "dev.h"
+#include "pwrdev.h"
 
 #ifdef __cplusplus
 extern "C" {

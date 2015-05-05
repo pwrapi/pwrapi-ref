@@ -12,7 +12,7 @@
 #ifndef PWR_DEV_H 
 #define PWR_DEV_H 
 
-#include "dev.h"
+#include "pwrdev.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -15,7 +15,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#include "dev.h"
+#include "pwrdev.h"
 #include "util.h"
 
 #if 1

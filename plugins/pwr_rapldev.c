@@ -17,7 +17,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include <types.h>
 #include <math.h>
 
 #define CPU_MODEL_SANDY    42
