@@ -16,7 +16,7 @@ LDADD = $(top_builddir)/libpwr.la
 
 
 MACOS=
-PI=y
+PI=
 DEBUG=
 
 CFLAGS=-Wall -I../pwr -fPIC

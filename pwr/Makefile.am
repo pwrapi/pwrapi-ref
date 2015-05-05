@@ -20,7 +20,7 @@ SHARED ?= y
 
 LD = g++
 CXXFLAGS = -Wall
-CPPFLAGS = -I../tinyxml
+CPPFLAGS = -I../../tinyxml
 
 LIB_SRC= debug.cc pwr.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
 LDLIBS =
@@ -52,7 +52,7 @@ endif
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 
-XML_OBJS=../tinyxml/tinyxml2.o
+XML_OBJS=../../tinyxml/tinyxml2.o
 
 DEPS = $(LIB_OBJS:.o=.d) 
 
