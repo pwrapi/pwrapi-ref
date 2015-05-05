@@ -10,7 +10,7 @@
 <Devices>
     <device name="teller-pm01" plugin="PowerInsight" initString="10.54.21.1:20201"/>
     <device name="teller-pm02" plugin="PowerInsight" initString="10.54.21.2:20201"/>
-    <device name="teller-pm03" plugin="PowerInsight" initString="10.54.21.3:20201"/>
+    <device name="teller-pm03" plugin="Dummy" initString="10.54.21.3:20201"/>
     <device name="teller-pm04" plugin="PowerInsight" initString="10.54.21.4:20201"/>
     <device name="teller-pm05" plugin="PowerInsight" initString="10.54.21.5:20201"/>
     <device name="teller-pm06" plugin="PowerInsight" initString="10.54.21.6:20201"/>

@@ -32,11 +32,12 @@ int main( int argc, char* argv[] )
     unsigned long tdiff;
 
     PWR_AttrName attrs[] = { PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
-    PWR_Time vals_ts[NUM_ATTR(attrs)];
-    double vals[NUM_ATTR(attrs)];
+    PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
+    double vals[NUM_ATTR(attrs)*1000];
     int stats[NUM_ATTR(attrs)];
 
-    unsigned int i, j, option, samples = 1, freq = 1;
+    int option;
+    unsigned int i, j, samples = 1, freq = 1;
     static char usage[] =
         "usage: %s [-s samples] [-f freq] [-h]\n";
 
@@ -79,7 +80,13 @@ int main( int argc, char* argv[] )
         if( !(strcmp( PWR_ObjGetName( obj ), "teller.node40" )) ||
             !(strcmp( PWR_ObjGetName( obj ), "teller.node41" )) ||
             !(strcmp( PWR_ObjGetName( obj ), "teller.node42" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node43" )) )
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node43" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node44" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node45" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node46" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node47" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node48" )) ||
+            !(strcmp( PWR_ObjGetName( obj ), "teller.node49" )) )
             PWR_GrpAddObj( grp, obj );
     }
 

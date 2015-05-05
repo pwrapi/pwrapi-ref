@@ -12,9 +12,9 @@
 XMLRPC =
 
 CC=gcc
-CFLAGS = -Wall -I../pow -fPIC
+CFLAGS = -Wall -I../pwr -fPIC
 CXXFLAGS = ${CFLAGS}
-LDFLAGS = ${CFLAGS} -L../pow -lpow -lm -ldl -pthread
+LDFLAGS = ${CFLAGS} -L../pwr -lpwr -lm -ldl -pthread
 
 ifeq ($(XMLRPC),y)
 LIB_SRC += rpcTreeNode.cc

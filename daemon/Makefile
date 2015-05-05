@@ -15,10 +15,10 @@ ROOT=${PWD}/..
 
 ULXMLRCP= ${HOME}/ulxmlrpcpp-1.7.5/install
 
-LDLIBS = -lpow -ldl -lulxmlrpcpp
-CPPFLAGS = -I ${ULXMLRCP}/include  -I../pow
+LDLIBS = -lpwr -ldl -lulxmlrpcpp
+CPPFLAGS = -I ${ULXMLRCP}/include  -I../pwr
 CFLAGS = -Wall 
-LDFLAGS = -L${ROOT}/pow  -L ${ULXMLRCP}/lib
+LDFLAGS = -L${ROOT}/pwr  -L ${ULXMLRCP}/lib
 CXXFLAGS = -Wall -I
 
 ifeq ($(DEBUG),y)

@@ -10,30 +10,30 @@
 #
 
 XMLRPC = n
-DEBUG ?= y
+DEBUG ?= n
 SHARED ?= y
 
 LD = g++
 CXXFLAGS = -Wall
-CPPFLAGS = -Itinyxml
+CPPFLAGS = -I../tinyxml
 
-LIB_SRC= debug.cc pow.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
+LIB_SRC= debug.cc pwr.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
 
 ifeq ($(SHARED),y)
 CXXFLAGS += -fPIC
 LDFLAGS += -shared
 LDLIBS += -ldl
-LIB = libpow.so
+LIB = libpwr.so
 LIB_SRC += dynamic.cc
 else
-LIB = libpow.a
+LIB = libpwr.a
 CPPFLAGS += -DHAVE_POWER_INSIGHT
 LIB_SRC += static.cc
 endif
 
 
 ifeq ($(DEBUG),y)
-CPPFLAGS += -DDEBUG_ON
+CPPFLAGS += -DDEBUG_ON -g
 endif
 
 
@@ -49,7 +49,7 @@ endif
 
 LIB_OBJS = ${LIB_SRC:.cc=.o}
 
-XML_OBJS=tinyxml/tinyxml2.o
+XML_OBJS=../tinyxml/tinyxml2.o
 
 DEPS = $(LIB_OBJS:.o=.d) 
 

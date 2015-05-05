@@ -11,11 +11,11 @@
 
 
 MACOS=
-PI=
+PI=y
 DEBUG=
 
 CC=gcc
-CFLAGS=-Wall -I../pow -fPIC
+CFLAGS=-Wall -I../pwr -fPIC
 
 ifeq ($(DEBUG),y)
 CFLAGS+=-DVERBOSE

@@ -302,7 +302,7 @@ int pwr_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
 
         if( pidev_verbose )
             printf( "Info: reading of type %u at time %llu with value %lf\n",
-                    attrs[i], *(unsigned long long *)timestamp[i], *((double *)values+i) );
+                    attrs[i], *((unsigned long long *)timestamp+i), *((double *)values+i) );
 
         status[i] = pwr_pidev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
     }

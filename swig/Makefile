@@ -11,17 +11,17 @@
 
 
 CFLAGS = -Wall -fPIC
-CPPFLAGS = -I../pow -I/usr/include/python2.7
-LDFLAGS = -shared $(shell python-config --ldflags) -L../pow
+CPPFLAGS = -I../pwr -I/usr/include/python2.7
+LDFLAGS = -shared $(shell python-config --ldflags) -L../pwr
 LD = ld 
 
-all: _pow.so
+all: _pwr.so
 
-_pow.so: pow_wrap.o
-	$(CC) $(LDFLAGS) -L. -lpow $< -o $@  
+_pwr.so: pwr_wrap.o
+	$(CC) $(LDFLAGS) -L. -lpwr $< -o $@  
 
-pow_wrap.c: pow.i ../pow/pow.h ../pow/types.h
-	swig -I../pow -classic -python pow.i
+pwr_wrap.c: pwr.i ../pwr/pwr.h ../pwr/types.h
+	swig -I../pwr -classic -python pwr.i
 
 clean:
-	rm -f _pow.so pow.py pow.pyc pow_wrap.c pow_wrap.o
+	rm -f _pwr.so pwr.py pwr.pyc pwr_wrap.c pwr_wrap.o

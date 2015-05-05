@@ -12,8 +12,8 @@
 XMLRPC =
 SHARED ?= y
 
-CXXFLAGS = -Wall -I../pow
-LDFLAGS = -L../pow -lpow -lm -pthread
+CXXFLAGS = -Wall -I../pwr
+LDFLAGS = -L../pwr -lpwr -lm -pthread
 
 ifeq ($(SHARED),y)
 CC=g++
@@ -34,14 +34,14 @@ LDFLAGS += -lulxmlrpcpp
 endif
 
 
-EXES=powerapi powergrp
+EXES=pwrapi pwrgrp
 all:  ${EXES}
 
-powergrp: powergrp.c
-	$(CC) ${CXXFLAGS} powergrp.c -o $@  ${LDFLAGS}
+pwrgrp: pwrgrp.c
+	$(CC) ${CXXFLAGS} pwrgrp.c -o $@  ${LDFLAGS}
 
-powerapi: powerapi.c
-	$(CC) ${CXXFLAGS} powerapi.c -o $@  ${LDFLAGS}
+pwrapi: pwrapi.c
+	$(CC) ${CXXFLAGS} pwrapi.c -o $@  ${LDFLAGS}
 
 clean:
 	rm -f  ${EXES}

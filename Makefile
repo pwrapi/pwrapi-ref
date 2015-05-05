@@ -5,7 +5,7 @@ export DEBUG=n
 SWIG=
 DAEMON=
 
-DIRS = pow plugins tools examples 
+DIRS = pwr plugins tools examples 
 
 ifeq ($(SWIG),y)
 DIRS += swig
@@ -19,7 +19,7 @@ all: $(DIRS:=Dir)
 
 clean: $(DIRS:=DirClean) 
 
-powDir :
+pwrDir :
 	cd $(subst Dir,,$@) ; ${MAKE}
 
 pluginsDir : 
@@ -37,7 +37,7 @@ swigDir :
 daemonDir :
 	cd $(subst Dir,,$@) ; ${MAKE}
 
-powDirClean :
+pwrDirClean :
 	cd $(subst DirClean,,$@) ; ${MAKE} clean
 
 pluginsDirClean : 

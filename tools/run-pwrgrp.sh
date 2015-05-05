@@ -19,8 +19,8 @@ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
 export POWERAPI_CONFIG="${ROOT}/tools/config/teller-platform.xml"
 export POWERAPI_ROOT="teller"
 
-SAMPLES=1
-FREQ=1
+SAMPLES=100
+FREQ=10
 
 ./powergrp -s ${SAMPLES} -f ${FREQ}
 

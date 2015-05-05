@@ -30,7 +30,8 @@ int main( int argc, char* argv[] )
     struct timeval t0, t1;
     unsigned long tdiff;
 
-    unsigned int i, option, samples = 1, freq = 1;
+    int option;
+    unsigned int i, samples = 1, freq = 1;
     static char usage[] =
         "usage: %s [-s samples] [-f freq] [-a attr] [-h]\n";
 
