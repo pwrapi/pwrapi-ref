@@ -19,10 +19,9 @@ MACOS=
 PI=y
 DEBUG=
 
-CC=gcc
 CFLAGS=-Wall -I../pwr -fPIC
 
-ifeq ($(DEBUG),y)
+if BUILD_DEBUG
 CFLAGS+=-DVERBOSE
 endif
 
@@ -34,14 +33,14 @@ all: libdummy_dev.so libpwr_pidev.so libpwr_rapldev.so libpwr_xtpmdev.so libpwr_
 libdummy_dev.so: pwr_dev.o dummy_dev.o
 	$(CC) -shared $(CFLAGS) -o $@ pwr_dev.o dummy_dev.o
 
-ifeq ($(MACOS),y)
+if BUILD_MACOS
 libpwr_pgdev.so: pwr_dev.o pwr_pgdev.o
 	$(CC) -shared $(CFLAGS) -framework IntelPowerGadget -o $@ pwr_dev.o pwr_pgdev.o
 else
 libpwr_pgdev.so:
 endif
 
-ifeq ($(PI),y)
+if BUILD_PIDEV
 libpwr_pidev.so: pwr_dev.o pwr_pidev.o
 	$(CC) -shared $(CFLAGS) -lpiapi -o $@ pwr_dev.o pwr_pidev.o
 else

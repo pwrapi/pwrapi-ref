@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign subdir-objects
 VERSION_INFO = 1:0:0
 
-include pwr/Makefile.am
+#include pwr/Makefile.am
 #include plugins/Makefile.am
 #include tools/Makefile.am
 #include examples/Makefile.am
@@ -29,11 +29,11 @@ DAEMON=
 
 DIRS = pwr plugins tools examples 
 
-ifeq ($(SWIG),y)
+if BUILD_SWIG
 DIRS += swig
 endif
 
-ifeq ($(DAEMON),y)
+if BUILD_DAEMON
 DIRS += daemon 
 endif
 

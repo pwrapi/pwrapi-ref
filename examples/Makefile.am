@@ -16,12 +16,11 @@ LDADD = $(top_builddir)/libpwr.la
 
 XMLRPC =
 
-CC=gcc
 CFLAGS = -Wall -I../pwr -fPIC
 CXXFLAGS = ${CFLAGS}
 LDFLAGS = ${CFLAGS} -L../pwr -lpwr -lm -ldl -pthread
 
-ifeq ($(XMLRPC),y)
+if BUILD_XMLRPC
 LIB_SRC += rpcTreeNode.cc
 ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
 CPPFLAGS += -DUSE_ULXMLRPC -I$(ULXMLRPC)/include
