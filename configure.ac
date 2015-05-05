@@ -1,7 +1,7 @@
 orig_CFLAGS="$CFLAGS"
 
-AC_INIT([powapi], [0.01])
-AC_CONFIG_SRCDIR([pow.h])
+AC_INIT([pwr], [0.01])
+AC_CONFIG_SRCDIR([pwr.h])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADERS([config.h])
@@ -20,7 +20,7 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 AC_CONFIG_MACRO_DIR([m4])
-m4_include([powapi.m4])
+m4_include([pwr.m4])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
