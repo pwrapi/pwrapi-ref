@@ -26,7 +26,7 @@
 #include <ulxmlrpcpp/ulxr_tcpip_connection.h>
 
 #include "util.h"
-#include "pow.h"
+#include "pwr.h"
 #include "./debug.h"
 
 using namespace ulxr;
