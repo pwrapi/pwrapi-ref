@@ -9,7 +9,7 @@
  * distribution.
 */
 
-#include "pow.h"
+#include "pwr.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -44,7 +44,7 @@ int main( int argc, char** argv )
 
     for( sample = 0; sample < samples; sample++ ) {
         PWR_ObjAttrGetValue( self, PWR_ATTR_TEMP, &temp, &timestamp );
-        if(sample) printf( "%lg %lld\n", temp, timestamp );
+        if(sample) printf( "%lg %llu\n", temp, (unsigned long long)timestamp );
 
         usleep( MICROSECONDS / freq );
     }

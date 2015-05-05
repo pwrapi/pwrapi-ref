@@ -15,7 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <pow.h> 
+#include <pwr.h> 
 
 char* myctime(const time_t *timep);
 
