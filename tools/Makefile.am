@@ -19,17 +19,17 @@ SHARED ?= y
 
 CXXFLAGS = -Wall -I../pwr
 LDFLAGS = -L../pwr -lpwr -lm -pthread
+LIB_SRC =
 
-ifeq ($(SHARED),y)
-CC=g++
+if BUILD_SHARED
 CXXFLAGS += -fPIC
 LDFLAGS += -ldl
 else
-CC=g++ -static
+CXXFLAGS += -static
 LDFLAGS += -L../plugins -lpwr_pidev -L$(HOME) -lpiapi
 endif
 
-ifeq ($(XMLRPC),y)
+if BUILD_XMLRPC
 LIB_SRC += rpcTreeNode.cc
 ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
 CPPFLAGS += -DUSE_ULXMLRPC -I$(ULXMLRPC)/include
