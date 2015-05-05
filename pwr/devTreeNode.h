@@ -16,7 +16,7 @@
 
 #include "debug.h"
 #include "treeNode.h"
-#include "dev.h"
+#include "pwrdev.h"
 
 namespace PowerAPI {
 

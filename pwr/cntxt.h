@@ -19,7 +19,7 @@
 #include "treeNode.h"
 #include "util.h"
 #include "pwrtypes.h"
-#include "dev.h"
+#include "pwrdev.h"
 #include "config.h"
 
 namespace PowerAPI {

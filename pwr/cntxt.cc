@@ -17,7 +17,7 @@
 #ifdef USE_RPC
 #include "rpcTreeNode.h"
 #endif
-#include "dev.h"
+#include "pwrdev.h"
 #include "group.h"
 #include "xmlConfig.h"
 #include "cntxt.h"
