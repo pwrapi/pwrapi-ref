@@ -33,8 +33,9 @@ libpwr_cpudev_la_CFLAGS = -I$(top_srcdir)/pwr
 libdummy_dev_la_SOURCES = plugins/pwr_dev.c plugins/dummy_dev.c
 libdummy_dev_la_CFLAGS = -I$(top_srcdir)/pwr
 
+bin_PROGRAMS = pwrapi pwrgrp pwrgen snippet dummyTest
+
 # Power API Tools
-bin_PROGRAMS = pwrapi pwrgrp pwrgen
 pwrapi_SOURCES = tools/pwrapi.c
 pwrapi_CFLAGS = -I$(top_srcdir)/pwr
 pwrapi_LDADD = libpwr.la
@@ -44,9 +45,15 @@ pwrgrp_LDADD = libpwr.la
 pwrgen_SOURCES = tools/pwrgen.cc 
 pwrgen_CPPFLAGS = -I$(top_srcdir)/../tinyxml
 pwrgen_LDADD = $(top_srcdir)/../tinyxml/libpwr_la-tinyxml2.lo
-#pwrgen_CPPFLAGS = -I$(top_srcdir)/../tinyxml
 
 # Power API Examples
+snippet_SOURCES = examples/snippet.c
+snippet_CFLAGS = -I$(top_srcdir)/pwr
+snippet_LDADD = libpwr.la
+dummyTest_SOURCES = examples/dummyTest.c
+dummyTest_CFLAGS = -I$(top_srcdir)/pwr
+dummyTest_LDADD = libpwr.la
+
 
 ACLOCAL_AMFLAGS = -I m4
 
