@@ -1,78 +1,41 @@
 AUTOMAKE_OPTIONS = foreign subdir-objects
 VERSION_INFO = 1:0:0
 
-#include pwr/Makefile.am
-#include plugins/Makefile.am
-#include tools/Makefile.am
-#include examples/Makefile.am
-
+#DIST_SUBDIRS = pwr plugins tools examples
 DIST_SUBDIRS = pwr plugins tools examples
 
-SUBDIRS = pwr plugins tools examples
+SUBDIRS = pwr plugins tools
 
 EXTRA_DIST = LICENSE Changes pwr.m4 autogen.sh  
 
-include_HEADERS = pwr.h
+include_HEADERS = pwr/pwr.h pwr/pwrtypes.h pwr/pwrdev.h
 
-lib_LTLIBRARIES = libpwr.la
+lib_LTLIBRARIES = libpwr.la libpwr_pgdev.la libpwr_pidev.la libpwr_rapldev.la libpwr_xtpmdev.la libpwr_wudev.la libpwr_cpudev.la libdummy_dev.la
 
-libpwr_la_SOURCES = src/pwr.cc src/init.cc src/app_hint.c
+# Power API Framework
+libpwr_la_SOURCES = pwr/debug.cc pwr/pwr.cc pwr/cntxt.cc pwr/treeNode.cc pwr/deviceStat.cc pwr/xmlConfig.cc ../tinyxml/tinyxml2.cpp
+libpwr_la_CPPFLAGS = -I../tinyxml
 libpwr_la_LDFLAGS = -version-info $(VERSION_INFO)
+
+# Power API Plugins
+libpwr_pgdev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_pgdev.c
+libpwr_pgdev_la_CFLAGS = -Ipwr
+libpwr_pidev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_pidev.c
+libpwr_pidev_la_CFLAGS = -Ipwr
+libpwr_rapldev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_rapldev.c
+libpwr_rapldev_la_CFLAGS = -Ipwr
+libpwr_xtpmdev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_xtpmdev.c
+libpwr_xtpmdev_la_CFLAGS = -Ipwr
+libpwr_wudev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_wudev.c
+libpwr_wudev_la_CFLAGS = -Ipwr
+libpwr_cpudev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_cpudev.c
+libpwr_cpudev_la_CFLAGS = -Ipwr
+libdummy_dev_la_SOURCES = plugins/pwr_dev.c plugins/dummy_dev.c
+libdummy_dev_la_CFLAGS = -Ipwr
+
+# Power API Tools
+
+# Power API Examples
 
 ACLOCAL_AMFLAGS = -I m4
 
-export SHARED=y
-export DEBUG=n
-
-SWIG=
-DAEMON=
-
-DIRS = pwr plugins tools examples 
-
-if BUILD_SWIG
-DIRS += swig
-endif
-
-if BUILD_DAEMON
-DIRS += daemon 
-endif
-
-all: $(DIRS:=Dir)
-
-clean: $(DIRS:=DirClean) 
-
-pwrDir :
-	cd $(subst Dir,,$@) ; ${MAKE}
-
-pluginsDir : 
-	cd $(subst Dir,,$@) ; ${MAKE}
-
-toolsDir :
-	cd $(subst Dir,,$@) ; ${MAKE}
-
-examplesDir :
-	cd $(subst Dir,,$@) ; ${MAKE}
-
-swigDir :
-	cd $(subst Dir,,$@) ; ${MAKE}
-
-daemonDir :
-	cd $(subst Dir,,$@) ; ${MAKE}
-
-pwrDirClean :
-	cd $(subst DirClean,,$@) ; ${MAKE} clean
-
-pluginsDirClean : 
-	cd $(subst DirClean,,$@) ; ${MAKE} clean
-
-toolsDirClean :
-	cd $(subst DirClean,,$@) ; ${MAKE} clean
-
-examplesDirClean :
-	cd $(subst DirClean,,$@) ; ${MAKE} clean
-
-swigDirClean :
-	cd $(subst DirClean,,$@) ; ${MAKE} clean
-
-daemonDirClean :
-	cd $(subst DirClean,,$@) ; ${MAKE} clean

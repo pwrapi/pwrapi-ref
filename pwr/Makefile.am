@@ -10,70 +10,7 @@
 #
 
 #AM_CXXFLAGS = "" 
-#AM_CPPFLAGS = -I$(top_srcdir)
-#AM_LDFLAGS = $(LIBTOOL_WRAPPER_LDFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir)
+AM_LDFLAGS = $(LIBTOOL_WRAPPER_LDFLAGS)
 LDADD = $(top_builddir)/libpwr.la
 
-XMLRPC = n
-DEBUG ?= n
-SHARED ?= y
-
-LD = g++
-CXXFLAGS = -Wall
-CPPFLAGS = -I../../tinyxml
-
-LIB_SRC= debug.cc pwr.cc cntxt.cc treeNode.cc deviceStat.cc xmlConfig.cc
-LDLIBS =
-
-if BUILD_SHARED
-CXXFLAGS += -fPIC
-LDFLAGS += -shared
-LDLIBS += -ldl
-LIB = libpwr.so
-LIB_SRC += dynamic.cc
-else
-LIB = libpwr.a
-CPPFLAGS += -DHAVE_POWER_INSIGHT
-LIB_SRC += static.cc
-endif
-
-if BUILD_DEBUG
-CPPFLAGS += -DDEBUG_ON -g
-endif
-
-if BUILD_XMLRPC
-LIB_SRC += rpcTreeNode.cc
-ULXMLRPC=$(HOME)/ulxmlrpcpp-1.7.5/install
-CPPFLAGS += -DUSE_ULXMLRPC -I$(ULXMLRPC)/include
-CPPFLAGS += -DUSE_RPC
-LDFLAGS += -L$(ULXMLRPC)/lib
-LDLIBS += -lulxmlrpcpp
-endif
-
-LIB_OBJS = ${LIB_SRC:.cc=.o}
-
-XML_OBJS=../../tinyxml/tinyxml2.o
-
-DEPS = $(LIB_OBJS:.o=.d) 
-
-all: ${LIB}
-
-${LIB}: ${LIB_OBJS} ${XML_OBJS}
-if BUILD_SHARED
-	$(LD) $(LDFLAGS) $(LDLIBS) -o $@ ${LIB_OBJS} ${XML_OBJS}
-else
-	ar rcs $@ ${LIB_OBJS} ${XML_OBJS}
-endif
-
-clean:
-	rm -f test ${LIB} ${LIB_OBJS} ${XML_OBJS} $(DEPS)
-
--include $(DEPS) 
-
-%.o: %.cc
-	g++ -MM $(CPPFLAGS) $(CXXFLAGS) $*.cc > $*.d
-	g++ $(CPPFLAGS) $(CXXFLAGS) -c $*.cc -o $*.o
-
-%.o: %.cpp
-	g++ -MM $(CPPFLAGS) $(CXXFLAGS) $*.cpp > $*.d
-	g++ $(CPPFLAGS) $(CXXFLAGS) -c $*.cpp -o $*.o
