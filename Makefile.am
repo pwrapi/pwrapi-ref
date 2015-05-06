@@ -19,21 +19,28 @@ libpwr_la_LDFLAGS = -version-info $(VERSION_INFO)
 
 # Power API Plugins
 libpwr_pgdev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_pgdev.c
-libpwr_pgdev_la_CFLAGS = -Ipwr
+libpwr_pgdev_la_CFLAGS = -I$(top_srcdir)/pwr
 libpwr_pidev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_pidev.c
-libpwr_pidev_la_CFLAGS = -Ipwr
+libpwr_pidev_la_CFLAGS = -I$(top_srcdir)/pwr
 libpwr_rapldev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_rapldev.c
-libpwr_rapldev_la_CFLAGS = -Ipwr
+libpwr_rapldev_la_CFLAGS = -I$(top_srcdir)/pwr
 libpwr_xtpmdev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_xtpmdev.c
-libpwr_xtpmdev_la_CFLAGS = -Ipwr
+libpwr_xtpmdev_la_CFLAGS = -I$(top_srcdir)/pwr
 libpwr_wudev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_wudev.c
-libpwr_wudev_la_CFLAGS = -Ipwr
+libpwr_wudev_la_CFLAGS = -I$(top_srcdir)/pwr
 libpwr_cpudev_la_SOURCES = plugins/pwr_dev.c plugins/pwr_cpudev.c
-libpwr_cpudev_la_CFLAGS = -Ipwr
+libpwr_cpudev_la_CFLAGS = -I$(top_srcdir)/pwr
 libdummy_dev_la_SOURCES = plugins/pwr_dev.c plugins/dummy_dev.c
-libdummy_dev_la_CFLAGS = -Ipwr
+libdummy_dev_la_CFLAGS = -I$(top_srcdir)/pwr
 
 # Power API Tools
+bin_PROGRAMS = pwrapi pwrgrp
+pwrapi_SOURCES = tools/pwrapi.c
+pwrapi_CFLAGS = -I$(top_srcdir)/pwr
+pwrapi_LDADD = libpwr.la
+pwrgrp_SOURCES = tools/pwrgrp.c
+pwrgrp_CFLAGS = -I$(top_srcdir)/pwr
+pwrgrp_LDADD = libpwr.la
 
 # Power API Examples
 
