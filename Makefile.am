@@ -13,8 +13,8 @@ include_HEADERS = pwr/pwr.h pwr/pwrtypes.h pwr/pwrdev.h
 lib_LTLIBRARIES = libpwr.la libpwr_pgdev.la libpwr_pidev.la libpwr_rapldev.la libpwr_xtpmdev.la libpwr_wudev.la libpwr_cpudev.la libdummy_dev.la
 
 # Power API Framework
-libpwr_la_SOURCES = pwr/debug.cc pwr/pwr.cc pwr/cntxt.cc pwr/treeNode.cc pwr/deviceStat.cc pwr/xmlConfig.cc ../tinyxml/tinyxml2.cpp
-libpwr_la_CPPFLAGS = -I../tinyxml
+libpwr_la_SOURCES = pwr/debug.cc pwr/pwr.cc pwr/cntxt.cc pwr/treeNode.cc pwr/deviceStat.cc pwr/xmlConfig.cc $(top_srcdir)/../tinyxml/tinyxml2.cpp
+libpwr_la_CPPFLAGS = -I$(top_srcdir)/../tinyxml
 libpwr_la_LDFLAGS = -version-info $(VERSION_INFO)
 
 # Power API Plugins
@@ -34,13 +34,17 @@ libdummy_dev_la_SOURCES = plugins/pwr_dev.c plugins/dummy_dev.c
 libdummy_dev_la_CFLAGS = -I$(top_srcdir)/pwr
 
 # Power API Tools
-bin_PROGRAMS = pwrapi pwrgrp
+bin_PROGRAMS = pwrapi pwrgrp pwrgen
 pwrapi_SOURCES = tools/pwrapi.c
 pwrapi_CFLAGS = -I$(top_srcdir)/pwr
 pwrapi_LDADD = libpwr.la
 pwrgrp_SOURCES = tools/pwrgrp.c
 pwrgrp_CFLAGS = -I$(top_srcdir)/pwr
 pwrgrp_LDADD = libpwr.la
+pwrgen_SOURCES = tools/pwrgen.cc 
+pwrgen_CPPFLAGS = -I$(top_srcdir)/../tinyxml
+pwrgen_LDADD = $(top_srcdir)/../tinyxml/libpwr_la-tinyxml2.lo
+#pwrgen_CPPFLAGS = -I$(top_srcdir)/../tinyxml
 
 # Power API Examples
 
