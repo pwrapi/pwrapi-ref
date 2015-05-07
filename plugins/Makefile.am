@@ -1,8 +1,11 @@
 lib_LTLIBRARIES = libpwr_pgdev.la libpwr_pidev.la libpwr_rapldev.la libpwr_xtpmdev.la libpwr_wudev.la libpwr_cpudev.la libdummy_dev.la
 
 # Power API Plugins
+if BUILD_MACOS
 libpwr_pgdev_la_SOURCES = pwr_dev.c pwr_pgdev.c
 libpwr_pgdev_la_CFLAGS = -I$(top_srcdir)/pwr
+endif
+
 libpwr_pidev_la_SOURCES = pwr_dev.c pwr_pidev.c
 libpwr_pidev_la_CFLAGS = -I$(top_srcdir)/pwr
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
