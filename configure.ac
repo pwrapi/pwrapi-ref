@@ -9,6 +9,7 @@ AM_MAINTAINER_MODE
 
 AC_PROG_CC
 AC_PROG_CXX
+AM_PROG_CC_C_O
 dnl Supply default CFLAGS, if not specified
 if test -z "$orig_CFLAGS"; then
   if test x$GCC = xyes; then
