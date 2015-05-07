@@ -26,5 +26,6 @@ m4_include([pwr.m4])
 AC_CONFIG_FILES([Makefile
                  pwr/Makefile
                  plugins/Makefile
-                 tools/Makefile])
+                 tools/Makefile
+                 examples/Makefile])
 AC_OUTPUT
