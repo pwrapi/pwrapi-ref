@@ -12,11 +12,11 @@
 #
 
 
-ROOT=${PWD}/../..
+ROOT=/home/ddeboni/sw/pwrapi
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pwr:${ROOT}/plugins"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pwr:${ROOT}/plugins"
-export POWERAPI_CONFIG="${ROOT}/tools/config/teller-platform.xml"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/lib:${ROOT}/lib/libpwr-plugins"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/lib:${ROOT}/lib/libpwr-plugins"
+export POWERAPI_CONFIG="${ROOT}/share/pwrapi/config/teller-platform.xml"
 export POWERAPI_ROOT="teller.node40"
 
 SAMPLES=100
@@ -27,5 +27,5 @@ do
     echo "-----------------------------------------------"
     echo "Collecting ${ATTR} ${SAMPLES} at ${FREQ} Hz"
     echo "-----------------------------------------------"
-    ../pwrapi -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
+    ${ROOT}/bin/pwrapi -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
 done
