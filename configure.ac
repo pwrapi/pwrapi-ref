@@ -21,7 +21,7 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 AC_CONFIG_MACRO_DIR([m4])
-m4_include([pwrapi.m4])
+m4_include([pwr.m4])
 
 AC_CONFIG_FILES([Makefile
                  pwr/Makefile
