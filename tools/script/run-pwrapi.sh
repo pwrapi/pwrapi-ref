@@ -12,10 +12,10 @@
 #
 
 
-ROOT=${PWD}/..
+ROOT=${PWD}/../..
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pwr:${ROOT}/plugins"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pwr:${ROOT}/plugins"
 export POWERAPI_CONFIG="${ROOT}/tools/config/teller-platform.xml"
 export POWERAPI_ROOT="teller.node40"
 
@@ -27,5 +27,5 @@ do
     echo "-----------------------------------------------"
     echo "Collecting ${ATTR} ${SAMPLES} at ${FREQ} Hz"
     echo "-----------------------------------------------"
-    ./powerapi -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
+    ../pwrapi -s ${SAMPLES} -f ${FREQ} -a ${ATTR}
 done
