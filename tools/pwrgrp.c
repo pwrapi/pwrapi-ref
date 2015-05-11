@@ -37,17 +37,28 @@ int main( int argc, char* argv[] )
     int stats[NUM_ATTR(attrs)];
 
     int option;
-    unsigned int i, j, samples = 1, freq = 1;
+    char *token, *range, name[128] = "";
+    unsigned int i, j, g0, g1, samples = 1, freq = 1, count = 0, g[1000];
     static char usage[] =
-        "usage: %s [-s samples] [-f freq] [-h]\n";
+        "usage: %s [-s samples] [-f freq] [-r range] [-h]\n";
 
-    while( (option=getopt( argc, argv, "s:f:h" )) != -1 )
+    while( (option=getopt( argc, argv, "s:f:r:h" )) != -1 )
         switch( option ) {
             case 's':
                 samples = atoi(optarg);
                 break;
             case 'f':
                 freq = atoi(optarg);
+                break;
+            case 'r':
+                while( (range=strtok( count ? optarg : NULL, "," )) ) {
+                    g0 = g1 = atoi(range);
+                    if( (range=strtok( range, "-" )) )
+                        g1 = atoi(range);
+                    for( i = g0; i < g1; i++ )
+                        g[count++] = i;
+                    printf( "ADDING GROUP %u to %u\n", g0, g1 );
+                }
                 break;
             case 'h':
             case '?':
@@ -77,17 +88,11 @@ int main( int argc, char* argv[] )
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( grp, i );
-        if( !(strcmp( PWR_ObjGetName( obj ), "teller.node40" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node41" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node42" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node43" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node44" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node45" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node46" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node47" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node48" )) ||
-            !(strcmp( PWR_ObjGetName( obj ), "teller.node49" )) )
-            PWR_GrpAddObj( grp, obj );
+        for( j = 0; j < count; j++ ) {
+            sprintf( name, "shepard.node%u", g[j] );
+            if( !(strcmp( PWR_ObjGetName( obj ), name )) )
+                PWR_GrpAddObj( grp, obj );
+        }
     }
 
     for( i = 0; i < samples; i++ ) {
