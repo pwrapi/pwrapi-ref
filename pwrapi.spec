@@ -1,22 +1,30 @@
-Name:		Power API Prototype
+Name:		pwrapi
 Version:	1.0
 Release:	1%{?dist}
-Summary:	
+Summary:	Power API prototype
 
-Group:		
-License:	
-URL:		
-Source0:	
+Group:		Development/Libraries
+License:	GPLv2+
+URL:		powerapi.sandia.gov
+Source0:	pwrapi-%{version}.tgz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildRequires:	
-Requires:	
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
+BuildRequires:	tinyxml2
 
 %description
-
+The Power API prototype is a prototype implementation of the Power API.  The main
+purpose for the creation of the prototype was to test the viability of the API
+functions during the design of the API specification.  The prototype is also being
+used to test implementation details such as how to interface with different types
+of hardware and communication between agents.  The prototype is a work in progress
+and only a subset of the functions listed in the specifications have been implemented.
 
 %prep
 %setup -q
+./autogen.sh
 
 
 %build
