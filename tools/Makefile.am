@@ -1,4 +1,4 @@
-bin_PROGRAMS = pwrapi pwrgrp pwrsrv pwrgen pypwr
+bin_PROGRAMS = pwrapi pwrgrp pwrgen # pwrsrv pypwr
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
