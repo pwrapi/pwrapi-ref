@@ -12,15 +12,15 @@
 #
 
 
-ROOT=/home/ddeboni/sw/pwrapi
+ROOT=`pwd`/..
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/lib:${ROOT}/lib/libpwr-plugins"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/lib:${ROOT}/lib/libpwr-plugins"
-export POWERAPI_CONFIG="${ROOT}/share/pwrapi/config/teller-platform.xml"
-export POWERAPI_ROOT="teller"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/../pwr:${ROOT}/../plugins"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/../pwr:${ROOT}/../plugins"
+export POWERAPI_CONFIG="${ROOT}/config/shepard-platform.xml"
+export POWERAPI_ROOT="shepard"
 
 SAMPLES=100
 FREQ=10
 
-${ROOT}/bin/pwrgrp -s ${SAMPLES} -f ${FREQ}
+${ROOT}/pwrgrp -s ${SAMPLES} -f ${FREQ} -r 1
 

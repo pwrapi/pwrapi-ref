@@ -12,7 +12,6 @@ BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
-BuildRequires:	tinyxml2
 
 %description
 The Power API prototype is a prototype implementation of the Power API.  The main
