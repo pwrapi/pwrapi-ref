@@ -1,0 +1,22 @@
+This directory contains the code for a daemon that executes PowerAPI calls on 
+behalf of a client. The daemon was created as a proof of concept of how a
+distributed PowerAPI might work. There are only a handful of PowerAPI calls
+implemented.
+
+The IPC mechanism is ULXMLRPC. ULXMLRPC is not included in this package. To 
+build this code you must install ULXMLRPC and modify the Makefile so it
+"points" to your ULXMLRPC install.
+
+The result of the build is the executable, "server". "server" is no different
+than any other application that uses the PowerAPI in that it needs to have
+environment variables set and a configuration file. See the examples directory
+for more information on running a PowerAPI application.
+
+This directory also contains a Python wrapper for the PowerAPI. The build is 
+dependent on libpwr and produces pypwr.so and pypwr.py.  
+
+To use the Python wrapper, the environment variable PYTHONPATH must be set to 
+this directory.
+
+The Python wrapper is not fully implemented. 
+
