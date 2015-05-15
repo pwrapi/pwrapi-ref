@@ -1,0 +1,24 @@
+.\" Manpage for pwrgen
+.\" Contact ddeboni@sandia.gov to correct errors or typos
+.TH PWRGEN 8 "28 May 2015" Linux "pwrgen man page"
+.SH NAME
+pwrgen\- Power API measurement and control utility
+.SH SYNOPSIS
+\fBpwrgen\fP [ -f \fIfilename\fP ] [ -n \fInodecount\fP ] [ -h ]
+.SH DESCRIPTION
+\fBpwrgen\fP is a command line utility for generating
+system configuration XML descriptions for the Power API
+based on node level hwloc information
+.SH OPTIONS
+.IP \fB-f\fP
+filename for output XML file
+.IP \fB-n\fP
+node count for replicating node level information
+.IP \fB-h\fP
+usage information
+.SH "SEE ALSO"
+pwrapi (8), pwrgrp (8)
+.SH BUGS
+No known bugs
+.SH AUTHOR
+David DeBonis (ddeboni@sandia.gov)
