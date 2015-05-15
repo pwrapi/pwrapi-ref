@@ -5,7 +5,7 @@ DIST_SUBDIRS = pwr plugins tools examples
 
 SUBDIRS = pwr plugins tools examples
 
-EXTRA_DIST = LICENSE Changes pwr.m4 autogen.sh  
+EXTRA_DIST = LICENSE Changes pwrapi.m4 autogen.sh  
 
 ACLOCAL_AMFLAGS = -I m4
 

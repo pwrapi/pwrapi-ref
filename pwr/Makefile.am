@@ -9,4 +9,4 @@ libpwr_la_SOURCES += dynamic.cc
 else
 libpwr_la_SOURCES += static.cc
 endif
-libpwr_la_LDFLAGS = -ltinyxml2
+libpwr_la_LDFLAGS = -ltinyxml2 -version-info 1:0:0
