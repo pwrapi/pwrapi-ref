@@ -1,6 +1,6 @@
 orig_CFLAGS="$CFLAGS"
 
-AC_INIT([pwr], [0.01])
+AC_INIT([pwrapi], [1.00])
 AC_CONFIG_SRCDIR([pwr/pwr.h])
 AM_INIT_AUTOMAKE
 
@@ -25,7 +25,7 @@ SWIG_ENABLE_CXX
 SWIG_PYTHON
 
 AC_CONFIG_MACRO_DIR([m4])
-m4_include([pwr.m4])
+m4_include([pwrapi.m4])
 
 AC_CONFIG_FILES([Makefile
                  pwr/Makefile
