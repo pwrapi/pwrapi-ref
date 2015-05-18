@@ -12,7 +12,7 @@
 #
 
 
-ROOT=`pwd`/..
+ROOT=/usr
 
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/../pwr:${ROOT}/../plugins"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/../pwr:${ROOT}/../plugins"

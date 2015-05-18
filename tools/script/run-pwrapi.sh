@@ -12,12 +12,12 @@
 #
 
 
-ROOT=/home/ddeboni/sw/pwrapi
+ROOT=/usr
 
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/lib:${ROOT}/lib/libpwr-plugins"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/lib:${ROOT}/lib/libpwr-plugins"
-export POWERAPI_CONFIG="${ROOT}/share/pwrapi/config/teller-platform.xml"
-export POWERAPI_ROOT="teller.node40"
+export POWERAPI_CONFIG="${ROOT}/share/pwrapi/config/shepard-platform.xml"
+export POWERAPI_ROOT="shepard.node40"
 
 SAMPLES=100
 FREQ=10

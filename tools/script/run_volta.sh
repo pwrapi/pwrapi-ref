@@ -1,5 +1,5 @@
 #!/bin/sh
-ROOT=${PWD}/..
+ROOT=/usr
 ULXMLRPC_INSTALL=${HOME}/ulxmlrpcpp-1.7.5/install
 
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins:${ULXMLRPC_INSTALL}/lib"
