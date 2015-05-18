@@ -9,6 +9,11 @@ pwrgrp_SOURCES = pwrgrp.c
 pwrgrp_CFLAGS = -I$(top_srcdir)/pwr
 pwrgrp_LDADD = $(top_builddir)/pwr/libpwr.la
 
+pwrgen_SOURCES = pwrgen.cc
+pwrgen_LDFLAGS = -ltinyxml2
+
+man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8
+
 if BUILD_DAEMON
 bin_PROGRAMS += pwrsrv
 
@@ -16,10 +21,9 @@ pwrsrv_SOURCES = pwrsrv.cpp
 pwrsrv_CPPFLAGS = -I$(top_srcdir)/pwr
 pwrsrv_LDADD = $(top_builddir)/pwr/libpwr.la
 pwrsrv_LDFLAGS = -lulxmlrpcpp
-endif
 
-pwrgen_SOURCES = pwrgen.cc
-pwrgen_LDFLAGS = -ltinyxml2
+man_MANS += pwrsrv.8
+endif
 
 configdir = $(docdir)/config
 config_DATA = 	config/shepard-platform.xml \
