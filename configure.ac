@@ -34,6 +34,7 @@ m4_include([config/pwrapi.m4])
 PWR_CHECK_SWIG()
 
 AC_CONFIG_FILES([Makefile
+                 src/Makefile
                  src/pwr/Makefile
                  src/bindings/python/Makefile
                  src/plugins/Makefile
