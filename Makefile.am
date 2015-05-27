@@ -15,5 +15,5 @@ SUBDIRS = pwr \
 
 EXTRA_DIST = LICENSE Changes pwrapi.m4 autogen.sh  
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I config 
 
