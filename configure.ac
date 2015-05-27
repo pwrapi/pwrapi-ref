@@ -1,6 +1,8 @@
 orig_CFLAGS="$CFLAGS"
 
 AC_INIT([pwrapi], [1.00])
+AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_MACRO_DIR([config])
 AC_CONFIG_SRCDIR([pwr/pwr.h])
 AM_INIT_AUTOMAKE
 
@@ -27,7 +29,7 @@ AC_PROG_SWIG(1.3.21)
 SWIG_ENABLE_CXX
 SWIG_PYTHON
 
-AC_CONFIG_MACRO_DIR([config])
+
 m4_include([config/pwrapi.m4])
 
 PWR_CHECK_SWIG()
