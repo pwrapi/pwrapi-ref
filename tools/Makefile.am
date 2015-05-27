@@ -2,12 +2,12 @@ bin_PROGRAMS = pwrapi pwrgrp pwrgen
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
-pwrapi_CFLAGS = -I$(top_srcdir)/pwr
-pwrapi_LDADD = $(top_builddir)/pwr/libpwr.la
+pwrapi_CFLAGS = -I$(top_srcdir)/src/pwr
+pwrapi_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 pwrgrp_SOURCES = pwrgrp.c
-pwrgrp_CFLAGS = -I$(top_srcdir)/pwr
-pwrgrp_LDADD = $(top_builddir)/pwr/libpwr.la
+pwrgrp_CFLAGS = -I$(top_srcdir)/src/pwr
+pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 pwrgen_SOURCES = pwrgen.cc
 pwrgen_LDFLAGS = -ltinyxml2
@@ -18,8 +18,8 @@ if BUILD_DAEMON
 bin_PROGRAMS += pwrsrv
 
 pwrsrv_SOURCES = pwrsrv.cpp
-pwrsrv_CPPFLAGS = -I$(top_srcdir)/pwr
-pwrsrv_LDADD = $(top_builddir)/pwr/libpwr.la
+pwrsrv_CPPFLAGS = -I$(top_srcdir)/src/pwr
+pwrsrv_LDADD = $(top_builddir)/src/pwr/libpwr.la
 pwrsrv_LDFLAGS = -lulxmlrpcpp
 
 man_MANS += pwrsrv.8

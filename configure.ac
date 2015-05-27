@@ -3,7 +3,6 @@ orig_CFLAGS="$CFLAGS"
 AC_INIT([pwrapi], [1.00])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config])
-AC_CONFIG_SRCDIR([pwr/pwr.h])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADERS([src/config.h])
@@ -35,10 +34,11 @@ m4_include([config/pwrapi.m4])
 PWR_CHECK_SWIG()
 
 AC_CONFIG_FILES([Makefile
-                 pwr/Makefile
-                 plugins/Makefile
-                 bindings/python/Makefile
+                 src/pwr/Makefile
+                 src/bindings/python/Makefile
+                 src/plugins/Makefile
                  tools/Makefile
                  examples/Makefile])
+
 AC_OUTPUT
 
