@@ -21,15 +21,21 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 AM_PATH_PYTHON(2.3)
+
+AC_PROG_SWIG(1.3.21)
+
 SWIG_ENABLE_CXX
 SWIG_PYTHON
 
 AC_CONFIG_MACRO_DIR([m4])
 m4_include([pwrapi.m4])
 
+PWR_CHECK_SWIG()
+
 AC_CONFIG_FILES([Makefile
                  pwr/Makefile
                  plugins/Makefile
+                 bindings/python/Makefile
                  tools/Makefile
                  examples/Makefile])
 AC_OUTPUT

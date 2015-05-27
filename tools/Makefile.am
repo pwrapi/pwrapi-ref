@@ -34,15 +34,3 @@ config_DATA = 	config/shepard-platform.xml \
 		config/teller-node.xml
 
 EXTRA_DIST = $(config_DATA)
-
-if BUILD_SWIG
-bin_PROGRAMS += pypwr
-
-EXTRA_DIST += pypwr.i
-python_PYTHON = pypwr.py
-
-pypwr_SOURCES = pypwr.cxx
-pypwr_CFLAGS = -I$(top_srcdir)/pwr
-pypwr_LDADD = $(top_builddir)/pwr/libpwr.la
-endif
-

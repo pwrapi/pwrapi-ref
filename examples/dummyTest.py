@@ -11,7 +11,7 @@
 # distribution.
 #
 
-import pow 
+import _pwr as pow 
 import time
 
 cntxt = pow.CntxtInit( pow.CNTXT_DEFAULT, pow.ROLE_APP, "App" )
