@@ -8,6 +8,8 @@ CLEANFILES = pwr.py  $(SWIG_OUT)
 
 lib_LTLIBRARIES = _pwr.la
 
+python_PYTHON = pwr.py
+
 _pwr_la_SOURCES = $(SWIG_OUT) 
 _pwr_la_CPPFLAGS = $(SWIG_PYTHON_CPPFLAGS) -I$(top_srcdir)/src/pwr
 _pwr_la_LDFLAGS = -module -version-info 1:0:0 $(PYTHON_LDFLAGS) -ldl
