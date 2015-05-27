@@ -187,7 +187,7 @@ typedef unsigned long long int64_t;
 
 	for ( i = 0; i < nitems; i++ ) {
 		PyObject* o = PyList_GetItem( $input, i);
-		$1[i] = PyInt_AsLong( o );
+		$1[i] = (PWR_AttrName) PyInt_AsLong( o );
 	}
 }
 

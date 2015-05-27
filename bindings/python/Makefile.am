@@ -1,7 +1,7 @@
 
 if HAVE_SWIG
 
-SWIG_SOURCE = pwr_swig.i
+SWIG_SOURCE = pypwr.i
 SWIG_OUT = pwr_swig.cpp
 
 CLEANFILES = pwr.py  $(SWIG_OUT)
