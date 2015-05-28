@@ -1,7 +1,8 @@
-AC_DEFINE(DEBUG,"y","Debug flag is set")
+AC_DEFINE(DEBUG,"n","Debug flag is not set")
 
 AM_CONDITIONAL(BUILD_DAEMON, [test x"$DAEMON" = "y"])
 AM_CONDITIONAL(BUILD_DEBUG, [test x"$DEBUG" = "y"])
+AM_CONDITIONAL(BUILD_XML, [test x"$XML" = "y"])
 AM_CONDITIONAL(BUILD_XMLRPC, [test x"$XMLRPC" = "y"])
 AM_CONDITIONAL(BUILD_PIDEV, [test x"$PIDEV" = "y"])
 AM_CONDITIONAL(BUILD_MACOS, [test x"$MACOS" = "y"])

@@ -9,6 +9,9 @@
  * distribution.
 */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <iostream>
 #include <assert.h>
 
@@ -19,7 +22,11 @@
 #endif
 #include "pwrdev.h"
 #include "group.h"
+#ifdef USE_XML
 #include "xmlConfig.h"
+#else
+#include "nullConfig.h"
+#endif
 #include "cntxt.h"
 #include "debug.h"
 #include "stat.h"
@@ -52,8 +59,12 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     DBGX("location=`%s`\n",m_myLocation.c_str());
 
     _DbgFlags = 0x1;
+#ifdef USE_XML
 	m_config = new XmlConfig( m_configFile );
-	
+#else
+	m_config = new NullConfig( m_configFile );
+#endif
+
 #if 0
 	m_config->print( std::cout );
 #endif
