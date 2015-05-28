@@ -9,10 +9,13 @@ pwrgrp_SOURCES = pwrgrp.c
 pwrgrp_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
+man_MANS = pwrapi.8 pwrgrp.8
+
+if BUILD_XML
 pwrgen_SOURCES = pwrgen.cc
 pwrgen_LDFLAGS = -ltinyxml2
-
-man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8
+man_MANS += pwrgen.8
+endif
 
 if BUILD_DAEMON
 bin_PROGRAMS += pwrsrv
