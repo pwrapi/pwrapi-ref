@@ -11,7 +11,7 @@ pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 man_MANS = pwrapi.8 pwrgrp.8
 
-if BUILD_XML 
+if USE_XML 
 bin_PROGRAMS += pwrgen
 
 pwrgen_SOURCES = pwrgen.cc
@@ -20,7 +20,7 @@ pwrgen_LDFLAGS = -ltinyxml2
 man_MANS += pwrgen.8
 endif
 
-if BUILD_DAEMON
+if USE_XMLRPC
 bin_PROGRAMS += pwrsrv
 
 pwrsrv_SOURCES = pwrsrv.cpp

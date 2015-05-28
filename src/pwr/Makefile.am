@@ -7,12 +7,12 @@ libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc treeNode.cc deviceStat.cc nullConfi
 
 libpwr_la_LDFLAGS = -version-info 1:0:0
 libpwr_la_LIBADD =
-if BUILD_XML
+if USE_XML
 libpwr_la_SOURCES += xmlConfig.cc
 libpwr_la_LIBADD += -ltinyxml2 
 endif
 
-if BUILD_STATIC
+if USE_STATIC
 libpwr_la_SOURCES += static.cc
 else
 libpwr_la_SOURCES += dynamic.cc
