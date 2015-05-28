@@ -1,4 +1,4 @@
-bin_PROGRAMS = pwrapi pwrgrp pwrgen
+bin_PROGRAMS = pwrapi pwrgrp
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
@@ -11,9 +11,12 @@ pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 man_MANS = pwrapi.8 pwrgrp.8
 
-if BUILD_XML
+if BUILD_XML 
+bin_PROGRAMS += pwrgen
+
 pwrgen_SOURCES = pwrgen.cc
 pwrgen_LDFLAGS = -ltinyxml2
+
 man_MANS += pwrgen.8
 endif
 
