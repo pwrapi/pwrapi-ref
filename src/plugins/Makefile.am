@@ -13,9 +13,11 @@ libpwr_pgdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_pgdev_la_LDFLAGS = -version-info 1:0:0
 endif
 
+if BUILD_PIDEV
 libpwr_pidev_la_SOURCES = pwr_dev.c pwr_pidev.c
 libpwr_pidev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_pidev_la_LDFLAGS = -version-info 1:0:0
+endif
 
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
 libpwr_rapldev_la_CFLAGS = -I$(top_srcdir)/src/pwr
