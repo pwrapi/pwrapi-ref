@@ -25,10 +25,8 @@ m4_include([config/pwrapi.m4])
 m4_include([config/pwrapi_python.m4])
 m4_include([config/pwrapi_swig.m4])
 
-
 PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
 
-#PWR_CHECK_SWIG()
 PWR_CHECK_DEBUG()
 PWR_CHECK_XML()
 PWR_CHECK_XMLRPC()
@@ -42,4 +40,3 @@ AC_CONFIG_FILES([Makefile
                  examples/Makefile])
 
 AC_OUTPUT
-
