@@ -34,7 +34,8 @@ make %{?_smp_mflags}
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
-
+# remove unpackaged files from the buildroot
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf %{buildroot}
@@ -42,9 +43,36 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc
+%{_libdir}/*
+/usr/lib/python2.6/site-packages/*
+%{_bindir}/*
+
+# devel
+%package devel
+Summary: Power API devel package
+Group: Development/Libraries
+Requires:  pwrapi
+%description devel
+This is a development package of the Power API.
+Users who want to implement their own plugins must install this
+package.
+
+%files devel
+%defattr(-,root,root)
+%{_includedir}/*.h
+#end devel
 
 
+%package doc
+Summary: Documentation files for %{name}
+Group: Development/Libraries
+%description doc
+Examples and man for Power API.
+%files doc
+%defattr(-,root,root)
+%{_mandir}/*/*
+%{_datadir}/doc/*/*/*
+%docdir %{_defaultdocdir}
 
 %changelog
 
