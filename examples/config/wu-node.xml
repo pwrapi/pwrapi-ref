@@ -7,7 +7,7 @@
 </Plugins>
 
 <Devices>
-    <device name="WU-node" plugin="WU" initString="/dev/tty.usbserial-A6007Gep:115200" />
+    <device name="WU-node" plugin="WU" initString="/dev/ttyUSB0:115200" />
 </Devices>
 
 <Objects>

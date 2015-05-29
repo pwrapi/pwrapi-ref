@@ -22,7 +22,7 @@ static char usage[] =
 
 int main( int argc, char** argv )
 {
-    double temp;
+    double power;
     PWR_Time timestamp;
     unsigned int option, sample, samples = 1, freq = 1;
 
@@ -43,8 +43,8 @@ int main( int argc, char** argv )
     PWR_Obj self = PWR_CntxtGetEntryPoint( cntxt );
 
     for( sample = 0; sample < samples; sample++ ) {
-        PWR_ObjAttrGetValue( self, PWR_ATTR_TEMP, &temp, &timestamp );
-        if(sample) printf( "%lg %llu\n", temp, (unsigned long long)timestamp );
+        PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &power, &timestamp );
+        if(sample) printf( "%lg %llu\n", power, (unsigned long long)timestamp );
 
         usleep( MICROSECONDS / freq );
     }

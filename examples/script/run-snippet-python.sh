@@ -11,14 +11,14 @@
 # distribution.
 #
 
+ROOT="${PWD}/../../../../.."
+EXAMPLE="${PWD}/.."
 
-ROOT=${PWD}/..
-
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/pow:${ROOT}/plugins"
-export POWERAPI_CONFIG="${ROOT}/examples/pg-node.xml"
+export LD_LIBRARY_PATH="${ROOT}/lib:${LD_LIBRARY_PATH}"
+export DYLD_LIBRARY_PATH="${ROOT}/lib:${DYLD_LIBRARY_PATH}"
+export POWERAPI_CONFIG="${EXAMPLE}/config/pg-node.xml"
 export POWERAPI_ROOT="plat.node"
-export PYTHONPATH="${ROOT}/swig"
+export PYTHONPATH="${ROOT}/lib"
 
 SAMPLES=100
 FREQ=10
@@ -27,4 +27,4 @@ echo "-----------------------------------------------"
 echo "Collecting ${SAMPLES} at ${FREQ} Hz"
 echo "-----------------------------------------------"
 #./snippet.py -s ${SAMPLES} -f ${FREQ}
-./snippet.py -h
+${EXAMPLE}/snippet.py -h
