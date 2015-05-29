@@ -12,11 +12,12 @@
 #ifndef _PWR_DEBUG_H
 #define _PWR_DEBUG_H
 
+#include <pwr_config.h>
 extern unsigned int _DbgFlags;
 
 #define DBG_CONFIG (1<<1)
 
-#ifdef DEBUG_ON  
+#ifdef USE_DEBUG
 
 #include <cxxabi.h>
 #include <stdlib.h>

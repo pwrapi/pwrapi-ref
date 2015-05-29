@@ -5,7 +5,7 @@ AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config])
 AM_INIT_AUTOMAKE
 
-AC_CONFIG_HEADERS([src/config.h])
+AC_CONFIG_HEADERS([src/pwr_config.h])
 AM_MAINTAINER_MODE
 
 AC_PROG_CC
@@ -28,6 +28,9 @@ SWIG_PYTHON
 m4_include([config/pwrapi.m4])
 
 PWR_CHECK_SWIG()
+PWR_CHECK_DEBUG()
+PWR_CHECK_XML()
+PWR_CHECK_XMLRPC()
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
