@@ -21,13 +21,14 @@ fi
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
-SWIG_ENABLE_CXX
-SWIG_PYTHON
-
-
 m4_include([config/pwrapi.m4])
+m4_include([config/pwrapi_python.m4])
+m4_include([config/pwrapi_swig.m4])
 
-PWR_CHECK_SWIG()
+
+PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
+
+#PWR_CHECK_SWIG()
 PWR_CHECK_DEBUG()
 PWR_CHECK_XML()
 PWR_CHECK_XMLRPC()

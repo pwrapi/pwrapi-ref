@@ -55,8 +55,3 @@ AC_DEFUN([PWR_CHECK_XMLRPC],[
 AM_CONDITIONAL(USE_PIDEV, [test "x$USE_PIDEV" = xyes])
 AM_CONDITIONAL(USE_PGDEV, [test "x$USE_PGDEV" = xyes])
 AM_CONDITIONAL(USE_STATIC, [test "x$USE_STATIC" = xyes])
-
-AC_DEFUN([PWR_CHECK_SWIG],[
-	AC_CHECK_PROG([swig],[swig],[yes],[no])
-	AM_CONDITIONAL([HAVE_SWIG], [test "x$swig" = xyes])
-])
