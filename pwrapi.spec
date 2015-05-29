@@ -1,5 +1,5 @@
 Name:		pwrapi
-Version:	1.0
+Version:	1.0.1
 Release:	1%{?dist}
 Summary:	Power API prototype
 
