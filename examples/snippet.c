@@ -22,8 +22,8 @@ static char usage[] =
 
 int main( int argc, char** argv )
 {
-    double power;
-    PWR_Time timestamp;
+    double power = 0.0;
+    PWR_Time timestamp = 0;
     unsigned int option, sample, samples = 1, freq = 1;
 
     while( (option=getopt( argc, argv, "s:f:h" )) != -1 )
