@@ -40,10 +40,22 @@ int main( int argc, char** argv )
         }
 
     PWR_Cntxt cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
+    if( cntxt == 0x0 ) {
+        printf( "ABORT - error occured when initializing context\n" );
+        exit( 0 );
+    }
+
     PWR_Obj self = PWR_CntxtGetEntryPoint( cntxt );
+    if( self == 0x0 ) {
+        printf( "ABORT - error occured when getting entry point\n" );
+        exit( 0 );
+    }
 
     for( sample = 0; sample < samples; sample++ ) {
-        PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &power, &timestamp );
+        if( PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &power, &timestamp ) != 0 ) {
+            printf( "ABORT - error occured when querying power\n" );
+            exit( 0 );
+        }
         if(sample) printf( "%lg %llu\n", power, (unsigned long long)timestamp );
 
         usleep( MICROSECONDS / freq );
