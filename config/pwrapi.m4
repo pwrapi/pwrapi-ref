@@ -13,27 +13,6 @@ AC_DEFUN([PWR_CHECK_DEBUG],[
     ) 
 ])
 
-AC_DEFUN([PWR_CHECK_XML],[
-
-    dnl this should really be a AC_ARG_WITH that points to the XML package
-
-    AC_ARG_ENABLE(
-        [xml],
-        [AS_HELP_STRING([--disable-xml], 
-            [Disable the use of XML for configuring the Power API])], 
-        [], 
-        [ enable_xml="yes" ]
-    ) 
-    
-    AS_IF(
-        [test "x$enable_xml" = "xyes"],
-        [AC_DEFINE([USE_XML],[1], 
-            [Set to 1 to use XML for configurating the Power API])]
-    )
-
-    AM_CONDITIONAL(USE_XML, [test "x$enable_xml" = xyes])
-])
-
 AC_DEFUN([PWR_CHECK_XMLRPC],[
 
     dnl this should really be a AC_ARG_WITH that points to the XMLRPC package
