@@ -11,11 +11,13 @@ pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 man_MANS = pwrapi.8 pwrgrp.8
 
-if USE_XML 
+if HAVE_TINYXML 
 bin_PROGRAMS += pwrgen
 
 pwrgen_SOURCES = pwrgen.cc
-pwrgen_LDFLAGS = -ltinyxml2
+pwrgen_CPPFLAGS = $(CPPFLAGS) $(TINYXML_CPPFLAGS)
+pwrgen_LDFLAGS = $(LDFLAGS) $(TINYXML_LDFLAGS)
+pwrgen_LDADD = $(TINYXML_LIBS) 
 
 man_MANS += pwrgen.8
 endif

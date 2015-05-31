@@ -5,11 +5,15 @@ include_HEADERS = pwr.h pwrtypes.h pwrdev.h
 # Power API Framework
 libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc treeNode.cc deviceStat.cc nullConfig.cc
 
-libpwr_la_LDFLAGS = -version-info 1:0:0
+libpwr_la_LDFLAGS = $(LDFLAGS) -version-info 1:0:0
 libpwr_la_LIBADD =
-if USE_XML
+libpwr_la_CPPFLAGS = $(CPPFLAGS)
+
+if HAVE_TINYXML
 libpwr_la_SOURCES += xmlConfig.cc
-libpwr_la_LIBADD += -ltinyxml2 
+libpwr_la_CPPFLAGS += $(TINYXML_CPPFLAGS)
+libpwr_la_LDFLAGS += $(TINYXML_LDFLAGS)
+libpwr_la_LIBADD += $(TINYXML_LIBS)
 endif
 
 if USE_STATIC
