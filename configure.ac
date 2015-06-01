@@ -20,6 +20,8 @@ fi
 
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
+AC_PROG_MKDIR_P
+AC_PROG_LN_S
 
 AC_C_RESTRICT
 AC_C_INLINE
@@ -33,7 +35,6 @@ PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
 PWRAPI_CHECK_TINYXML(pwrapi_have_tinyxml="yes"], [pwrapi_have_tinyxml="no"])
 
 PWR_CHECK_DEBUG()
-#PWR_CHECK_XML()
 PWR_CHECK_XMLRPC()
 
 AC_CONFIG_FILES([Makefile
