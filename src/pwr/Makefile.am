@@ -16,6 +16,13 @@ libpwr_la_LDFLAGS += $(TINYXML_LDFLAGS)
 libpwr_la_LIBADD += $(TINYXML_LIBS)
 endif
 
+if HAVE_XMLRPC
+libpwr_la_SOURCES += rpcTreeNode.cc 
+libpwr_la_CPPFLAGS += $(XMLRPC_CPPFLAGS)
+libpwr_la_LDFLAGS += $(XMLRPC_LDFLAGS)
+libpwr_la_LIBADD += $(XMLRPC_LIBS)
+endif
+
 if USE_STATIC
 libpwr_la_SOURCES += static.cc
 else
