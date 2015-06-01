@@ -26,9 +26,9 @@ if HAVE_XMLRPC
 bin_PROGRAMS += pwrsrv
 
 pwrsrv_SOURCES = pwrsrv.cpp
-pwrsrv_CPPFLAGS = -I$(top_srcdir)/src/pwr
-pwrsrv_LDADD = $(top_builddir)/src/pwr/libpwr.la
-pwrsrv_LDFLAGS = -lulxmlrpcpp
+pwrsrv_CPPFLAGS = $(XMLRPC_CPPFLAGS) -I$(top_srcdir)/src/pwr
+pwrsrv_LDFLAGS = $(XMLRPC_LDFLAGS)
+pwrsrv_LDADD = $(XMLRPC_LIBS) $(top_builddir)/src/pwr/libpwr.la
 
 man_MANS += pwrsrv.8
 endif
