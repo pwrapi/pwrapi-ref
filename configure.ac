@@ -30,12 +30,13 @@ m4_include([config/pwrapi.m4])
 m4_include([config/pwrapi_python.m4])
 m4_include([config/pwrapi_swig.m4])
 m4_include([config/pwrapi_tinyxml.m4])
+m4_include([config/pwrapi_ulxmlrpcpp.m4])
 
 PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
-PWRAPI_CHECK_TINYXML(pwrapi_have_tinyxml="yes"], [pwrapi_have_tinyxml="no"])
+PWRAPI_CHECK_TINYXML([pwrapi_have_tinyxml="yes"], [pwrapi_have_tinyxml="no"])
+PWRAPI_CHECK_ULXMLRPCPP([pwrapi_have_xmlrpc="yes"], [pwrapi_have_xmlrpc="no"])
 
 PWR_CHECK_DEBUG()
-PWR_CHECK_XMLRPC()
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile

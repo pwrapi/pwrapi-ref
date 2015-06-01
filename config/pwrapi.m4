@@ -13,24 +13,6 @@ AC_DEFUN([PWR_CHECK_DEBUG],[
     ) 
 ])
 
-AC_DEFUN([PWR_CHECK_XMLRPC],[
-
-    dnl this should really be a AC_ARG_WITH that points to the XMLRPC package
-    
-    AC_ARG_ENABLE(
-        [xmlrpc],
-        [AS_HELP_STRING([--enable-xmlrpc],
-            [Enable the use of XML RPC for distribution of the Power API])]
-    )
-
-    AS_IF([test "x$enable_xmlrpc" = "xyes"], 
-        [AC_DEFINE([USE_XMLRPC],[1], 
-            [Set to 1 to use XML RPC for distribution of the Power API])]
-    )
-    
-    AM_CONDITIONAL(USE_XMLRPC, [test "x$enable_xmlrpc" = xyes])
-])
-
 AM_CONDITIONAL(USE_PIDEV, [test "x$USE_PIDEV" = xyes])
 AM_CONDITIONAL(USE_PGDEV, [test "x$USE_PGDEV" = xyes])
 AM_CONDITIONAL(USE_STATIC, [test "x$USE_STATIC" = xyes])

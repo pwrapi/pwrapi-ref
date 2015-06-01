@@ -22,7 +22,7 @@ pwrgen_LDADD = $(TINYXML_LIBS)
 man_MANS += pwrgen.8
 endif
 
-if USE_XMLRPC
+if HAVE_XMLRPC
 bin_PROGRAMS += pwrsrv
 
 pwrsrv_SOURCES = pwrsrv.cpp
