@@ -20,7 +20,7 @@
 #include <termios.h>
 #include <sys/time.h>
 
-#ifdef VERBOSE
+#ifdef USE_DEBUG
 static int wudev_verbose = 1;
 #else
 static int wudev_verbose = 0;

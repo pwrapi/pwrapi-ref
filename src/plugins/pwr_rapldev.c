@@ -87,7 +87,7 @@
 #define MSR(X,Y,Z) ((X>>Y)&Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
-#ifdef VERBOSE
+#ifdef USE_DEBUG
 static int rapldev_verbose = 1;
 #else
 static int rapldev_verbose = 0;

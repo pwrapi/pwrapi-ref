@@ -18,7 +18,7 @@
 #include <string.h>
 #include <sched.h>
 
-#ifdef VERBOSE
+#ifdef USE_DEBUG
 static int pidev_verbose = 1;
 #else
 static int pidev_verbose = 0;

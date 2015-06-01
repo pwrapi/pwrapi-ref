@@ -21,7 +21,7 @@
 
 #include <IntelPowerGadget/EnergyLib.h>
 
-#ifdef VERBOSE
+#ifdef USE_DEBUG
 static int pgdev_verbose = 1;
 #else
 static int pgdev_verbose = 0;

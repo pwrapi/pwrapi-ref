@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
-#ifdef VERBOSE
+#ifdef USE_DEBUG
 static int xtpmdev_verbose = 1;
 #else
 static int xtpmdev_verbose = 0;
