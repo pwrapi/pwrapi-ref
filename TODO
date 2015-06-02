@@ -2,3 +2,4 @@
 - package powerinsight software
 - check for PowerGadget and PowerInsight to set USE_XXX macro
 - fix pwrgrp tool to allow for range of nodes
+- post files to external website for package distribution
