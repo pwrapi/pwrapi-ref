@@ -1,6 +1,6 @@
 #!/bin/sh
 
-INSTALL_PATH = `pwd`/../install
+INSTALL_PATH = `pwd`/../../install
 
 for IMAGE_PATH in '/tftpboot/images/compute_powerinsight/usr' '/tftpboot/images/compute.x86_64/usr' '/usr'
 do
