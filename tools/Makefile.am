@@ -1,4 +1,4 @@
-bin_PROGRAMS = pwrapi pwrgrp
+bin_PROGRAMS = pwrapi pwrgrp pwrgen
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
@@ -9,18 +9,7 @@ pwrgrp_SOURCES = pwrgrp.c
 pwrgrp_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
-man_MANS = pwrapi.8 pwrgrp.8
-
-if HAVE_TINYXML 
-bin_PROGRAMS += pwrgen
-
-pwrgen_SOURCES = pwrgen.cc
-pwrgen_CPPFLAGS = $(CPPFLAGS) $(TINYXML_CPPFLAGS)
-pwrgen_LDFLAGS = $(LDFLAGS) $(TINYXML_LDFLAGS)
-pwrgen_LDADD = $(TINYXML_LIBS) 
-
-man_MANS += pwrgen.8
-endif
+man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8
 
 if HAVE_XMLRPC
 bin_PROGRAMS += pwrsrv
