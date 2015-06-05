@@ -1,7 +1,7 @@
 Name:		pwrapi
 Version:	1.0.1
 Release:	1%{?dist}
-Summary:	Power API prototype
+Summary:	Power API reference implementation
 
 Group:		Development/Libraries
 License:	GPLv2+
@@ -14,11 +14,11 @@ BuildRequires:	automake
 BuildRequires:	libtool
 
 %description
-The Power API prototype is a prototype implementation of the Power API.  The main
-purpose for the creation of the prototype was to test the viability of the API
-functions during the design of the API specification.  The prototype is also being
+The Power API reference is a reference implementation of the Power API.  The main
+purpose for the creation of the reference was to test the viability of the API
+functions during the design of the API specification.  The reference is also being
 used to test implementation details such as how to interface with different types
-of hardware and communication between agents.  The prototype is a work in progress
+of hardware and communication between agents.  The reference is a work in progress
 and only a subset of the functions listed in the specifications have been implemented.
 
 %prep

@@ -1,8 +1,8 @@
-This software is a prototype implementation of the PowerAPI. The main purpose 
-for the creation of the prototype was to test the viability of API functions
-during the design of the API specification. The prototype is also being used
+This software is a reference implementation of the PowerAPI. The main purpose 
+for the creation of the reference was to test the viability of API functions
+during the design of the API specification. The reference is also being used
 to test implementation details such as how to interface with different types
-of hardware and communication between agents. The prototype is a work in
+of hardware and communication between agents. The reference is a work in
 progress and only a subset of the functions listed in the specification have
 been implemented.
 
@@ -22,7 +22,7 @@ included with this distribution and can be found at
 "http://www.grinninglizard.com/tinyxml". See the README in "pow" for
 instructions on integrating TinyXML-2 into this software package.
 
-The prototype also explores accessing the API via a scripting language such as
+The reference also explores accessing the API via a scripting language such as
 Python and remote PowerAPI calls. The Python binding is done via Swig and is
 located in directory swig. The remote API calls are supported via a daemon and
 ULXMLRPCPP. The daemon is located in directory daemon. ULXMLRPCPP was chosen
