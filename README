@@ -20,7 +20,7 @@ with. XML was chosen for expedient development not performance. libpwr has an
 object that interfaces with the XML file via TinyXML-2. TinyXML-2 is 
 included with this distribution and is already integrated into this
 software package.  The original software can also be found at 
-"http://www.grinninglizard.com/tinyxml".
+"https://github.com/leethomason/tinyxml2".
 
 The reference also explores accessing the API via a scripting language such as
 Python and remote PowerAPI calls. The Python binding is done via Swig and is
