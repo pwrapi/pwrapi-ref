@@ -38,6 +38,7 @@ PWR_CHECK_DEBUG()
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
+                 src/tinyxml2/Makefile
                  src/pwr/Makefile
                  src/bindings/python/Makefile
                  src/plugins/Makefile
