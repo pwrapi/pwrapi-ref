@@ -11,7 +11,7 @@ pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 pwrgen_SOURCES = pwrgen.c
 pwrgen_CPPFLAGS = -I$(top_srcdir)/src/tinyxml2
-pwrgen_LDADD = $(top_builddir)/src/tinyxml2/tinyxml2.la
+pwrgen_LDADD = $(top_builddir)/src/tinyxml2/libtinyxml2.la
 
 man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8
 
