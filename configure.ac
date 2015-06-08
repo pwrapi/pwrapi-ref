@@ -1,6 +1,6 @@
 orig_CFLAGS="$CFLAGS"
 
-AC_INIT([pwrapi], [1.00])
+AC_INIT([pwrapi], [1.0.1])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config])
 AM_INIT_AUTOMAKE
