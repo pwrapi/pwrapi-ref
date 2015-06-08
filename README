@@ -16,11 +16,11 @@ used for development. The dummy plugin is trivial and a good place to look when
 implementing a plugin for a new platform. 
 
 libpow is configured via an XML file describing the hardware it is interacting 
-with. XML was chosen for expedient development not performance. libpow has an
-object that interfaces with the XML file via TinyXML-2. TinyXML-2 is not
-included with this distribution and can be found at 
-"http://www.grinninglizard.com/tinyxml". See the README in "pow" for
-instructions on integrating TinyXML-2 into this software package.
+with. XML was chosen for expedient development not performance. libpwr has an
+object that interfaces with the XML file via TinyXML-2. TinyXML-2 is 
+included with this distribution and is already integrated into this
+software package.  The original software can also be found at 
+"http://www.grinninglizard.com/tinyxml".
 
 The reference also explores accessing the API via a scripting language such as
 Python and remote PowerAPI calls. The Python binding is done via Swig and is
