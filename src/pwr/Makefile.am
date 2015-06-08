@@ -6,8 +6,8 @@ include_HEADERS = pwr.h pwrtypes.h pwrdev.h
 libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc treeNode.cc deviceStat.cc nullConfig.cc xmlConfig.cc
 
 libpwr_la_LDFLAGS = $(LDFLAGS) -version-info 1:0:1
-libpwr_la_LIBADD =
-libpwr_la_CPPFLAGS = $(CPPFLAGS)
+libpwr_la_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/tinyxml2
+libpwr_la_LIBADD = $(top_builddir)/src/tinyxml2/tinyxml2.la
 
 if HAVE_XMLRPC
 libpwr_la_SOURCES += rpcTreeNode.cc 
