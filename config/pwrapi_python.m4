@@ -5,6 +5,8 @@ AC_DEFUN([PWRAPI_CHECK_PYTHON], [
     [AS_HELP_STRING([--with-python@<:@=DIR@:>@],
       [Use Python package installed in optionally specified DIR])])
 
+  AC_REQUIRE([AM_PATH_PYTHON])
+
   pwrapi_check_python_happy="yes"
 
   FOUND_PYTHON="no"
