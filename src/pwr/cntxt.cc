@@ -22,11 +22,7 @@
 #endif
 #include "pwrdev.h"
 #include "group.h"
-#ifdef USE_XML
 #include "xmlConfig.h"
-#else
-#include "nullConfig.h"
-#endif
 #include "cntxt.h"
 #include "debug.h"
 #include "stat.h"
