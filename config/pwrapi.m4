@@ -1,4 +1,4 @@
-AC_DEFUN([PWR_CHECK_DEBUG],[
+AC_DEFUN([PWRAPI_CHECK_DEBUG],[
 
     AC_ARG_ENABLE(
         [debug],
@@ -12,7 +12,5 @@ AC_DEFUN([PWR_CHECK_DEBUG],[
             [Set to 1 to use debugging features of the Power API])]    
     ) 
 ])
-
-AM_CONDITIONAL(USE_PIDEV, [test "x$USE_PIDEV" = xyes])
-AM_CONDITIONAL(USE_PGDEV, [test "x$USE_PGDEV" = xyes])
+i
 AM_CONDITIONAL(USE_STATIC, [test "x$USE_STATIC" = xyes])

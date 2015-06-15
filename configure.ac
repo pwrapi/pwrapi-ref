@@ -30,11 +30,16 @@ m4_include([config/pwrapi.m4])
 m4_include([config/pwrapi_python.m4])
 m4_include([config/pwrapi_swig.m4])
 m4_include([config/pwrapi_ulxmlrpcpp.m4])
+m4_include([config/pwrapi_powerinsight.m4])
+m4_include([config/pwrapi_powergadget.m4])
 
 PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
 PWRAPI_CHECK_ULXMLRPCPP([pwrapi_have_xmlrpc="yes"], [pwrapi_have_xmlrpc="no"])
 
-PWR_CHECK_DEBUG()
+PWRAPI_CHECK_POWERINSIGHT([pwrapi_have_powerinsight="yes"], [pwrapi_have_powerinsight="no"])
+PWRAPI_CHECK_POWERGADGET([pwrapi_have_powergadget="yes"], [pwrapi_have_powergadget="no"])
+
+PWRAPI_CHECK_DEBUG()
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
