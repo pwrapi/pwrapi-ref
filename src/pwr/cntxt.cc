@@ -55,11 +55,7 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     DBGX("location=`%s`\n",m_myLocation.c_str());
 
     _DbgFlags = 0x1;
-#ifdef USE_XML
 	m_config = new XmlConfig( m_configFile );
-#else
-	m_config = new NullConfig( m_configFile );
-#endif
 
 #if 0
 	m_config->print( std::cout );
