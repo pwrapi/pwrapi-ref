@@ -19,7 +19,7 @@ AC_DEFUN([PWRAPI_CHECK_POWERGADGET], [
            		 POWERGADGET_LDFLAGS=
            		 POWERGADGET_LIBS="-lpowergadget"
            		 LIBS="$LIBS $POWERGADGET_LIBS"],
-				[POWERGADGET_CPPFLAGS="-I$with_powergadget/include"
+				[POWERGADGET_CPPFLAGS="-I$with_powergadget/Headers"
                  CPPFLAGS="$POWERGADGET_CPPFLAGS $CPPFLAGS"
                  POWERGADGET_LDFLAGS="-L$with_powergadget/lib"
                  LDFLAGS="$POWERGADGET_LDFLAGS $LDFLAGS"
@@ -31,7 +31,7 @@ AC_DEFUN([PWRAPI_CHECK_POWERGADGET], [
 	AC_LANG_SAVE
 	AC_LANG_CPLUSPLUS
 
-	AC_CHECK_HEADERS([powergadget.h], [], [pwrapi_check_powergadget_happy="no"])
+	AC_CHECK_HEADERS([IntelPowerGadgetLib.h], [], [pwrapi_check_powergadget_happy="no"])
 	AC_LINK_IFELSE([AC_LANG_PROGRAM([], [
 			int a;
 		])], [pwrapi_check_powergadget_lib_happy="yes"],
