@@ -14,9 +14,9 @@
 
 ROOT=/usr
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/../pwr:${ROOT}/../plugins"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/../pwr:${ROOT}/../plugins"
-export POWERAPI_CONFIG="${ROOT}/config/shepard-platform.xml"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${ROOT}/lib"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${ROOT}/lib"
+export POWERAPI_CONFIG="${ROOT}/share/doc/pwrapi/config/shepard-platform.xml"
 export POWERAPI_ROOT="shepard"
 
 SAMPLES=100
