@@ -10,7 +10,7 @@ lib_LTLIBRARIES += libpwr_pgdev.la
 
 libpwr_pgdev_la_SOURCES = pwr_dev.c pwr_pgdev.c
 libpwr_pgdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
-libpwr_pgdev_la_LDFLAGS = -version-info 1:0:1
+libpwr_pgdev_la_LDFLAGS = -version-info 1:0:1 -framework IntelPowerGadget
 endif
 
 if HAVE_POWERINSIGHT
@@ -18,7 +18,7 @@ lib_LTLIBRARIES += libpwr_pidev.la
 
 libpwr_pidev_la_SOURCES = pwr_dev.c pwr_pidev.c
 libpwr_pidev_la_CFLAGS = -I$(top_srcdir)/src/pwr
-libpwr_pidev_la_LDFLAGS = -version-info 1:0:1
+libpwr_pidev_la_LDFLAGS = -version-info 1:0:1 -lpiapi -lpthread
 endif
 
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
