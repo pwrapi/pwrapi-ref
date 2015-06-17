@@ -11,19 +11,19 @@ AC_DEFUN([PWRAPI_CHECK_POWERGADGET], [
 
 	AS_IF([test -z "$with_powergadget"],
 		[POWERGADGET_CPPFLAGS=
-                 POWERGADGET_LDFLAGS=
-                 POWERGADGET_LIBS="IntelPowerGadget"
+                 POWERGADGET_LDFLAGS="-framework IntelPowerGadget"
+                 POWERGADGET_LIBS=
                  LIBS="$LIBS $POWERGADGET_LIBS"],
 		[	AS_IF([test "x$with_powergadget" = "xyes"],
 				[POWERGADGET_CPPFLAGS=
-           		 POWERGADGET_LDFLAGS=
-           		 POWERGADGET_LIBS="IntelPowerGadget"
+                 POWERGADGET_LDFLAGS="-framework IntelPowerGadget"
+           		 POWERGADGET_LIBS=
            		 LIBS="$LIBS $POWERGADGET_LIBS"],
 				[POWERGADGET_CPPFLAGS="-I$with_powergadget/Headers"
                  CPPFLAGS="$POWERGADGET_CPPFLAGS $CPPFLAGS"
-                 POWERGADGET_LDFLAGS=
+                 POWERGADGET_LDFLAGS="-framework IntelPowerGadget"
                  LDFLAGS="$POWERGADGET_LDFLAGS $LDFLAGS"
-                 POWERGADGET_LIBS="$with_powergadget/IntelPowerGadget"
+                 POWERGADGET_LIBS=
                  LIBS="$LIBS $POWERGADGET_LIBS"]
 		)]
 	)
