@@ -26,7 +26,7 @@ using namespace PowerAPI;
 TreeNode::TreeNode( Cntxt* ctx ) 
 	: m_ctx(ctx)
 {
-    m_attrMap.resize( PWR_ATTR_INVALID, AttrEntry(this, m_ctx) );
+    m_attrMap.resize( TOTAL_NUM_PWR_ATTRS + 1, AttrEntry(this, m_ctx) );
 }
 
 void TreeNode::AttrEntry::init( PWR_AttrName attr )
