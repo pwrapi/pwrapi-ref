@@ -12,5 +12,5 @@ AC_DEFUN([PWRAPI_CHECK_DEBUG],[
             [Set to 1 to use debugging features of the Power API])]    
     ) 
 ])
-i
+
 AM_CONDITIONAL(USE_STATIC, [test "x$USE_STATIC" = xyes])
