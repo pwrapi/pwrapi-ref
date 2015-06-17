@@ -6,8 +6,8 @@ of hardware and communication between agents. The reference is a work in
 progress and only a subset of the functions listed in the specification have
 been implemented.
 
-The main component of this software is libpow (located in directory pow). 
-Any application that uses the PowerAPI must link against libpow.so. 
+The main component of this software is libpwr (located in directory pwr). 
+Any application that uses the PowerAPI must link against libpwr.so. 
 It implements the API and is designed as a hardware neutral framework. The
 framework accesses platform specific power measurement and control via plugins.
 The plugins are implemented as dynamic libraries (located in directory plugins).
@@ -15,7 +15,7 @@ There are currently plugins for several platforms as well as a dummy plugin
 used for development. The dummy plugin is trivial and a good place to look when
 implementing a plugin for a new platform. 
 
-libpow is configured via an XML file describing the hardware it is interacting 
+libpwr is configured via an XML file describing the hardware it is interacting 
 with. XML was chosen for expedient development not performance. libpwr has an
 object that interfaces with the XML file via TinyXML-2. TinyXML-2 is 
 included with this distribution and is already integrated into this
@@ -38,8 +38,8 @@ execution of example programs rely on environment variables POWERAPI_CONFIG and
 POWERAPI_ROOT. POWERAPI_CONFIG tells the PowerAPI library what system
 configuration file to use. POWERAPI_ROOT tells the PowerAPI library its entry
 point. Consult the run scripts in examples on how to set these variables.
-Debug printouts are part of libpow and can be enabled by 1) enabling DEBUG in
-pow/Makefile and setting _DbgFlag in pow/cntxt.cc. 
+Debug printouts are part of libpwr and can be enabled by 1) enabling DEBUG in
+pwr/Makefile and setting _DbgFlag in pwr/cntxt.cc. 
 
 This software has been compiled on:
 	Mac OSX 10.9.5 / gcc version 4.6.4 (MacPorts gcc46 4.6.4_3)
