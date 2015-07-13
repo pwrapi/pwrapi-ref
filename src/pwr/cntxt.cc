@@ -85,8 +85,6 @@ Cntxt::Cntxt( PWR_CntxtType type, PWR_Role role, const char* name  ) :
     assert(m_top);
     DBGX("%s\n",m_top->name().c_str());
 
-	initDevices( *m_config );
-
     DBGX("return\n");
 }
 
@@ -146,7 +144,11 @@ void Cntxt::initAttr( TreeNode* _node, TreeNode::AttrEntry& attr )
 			DBGX("dev=`%s` openString=`%s`\n",dev.device.c_str(),
 												 dev.openString.c_str());
 
-			assert ( m_devMap.find( dev.device.c_str() ) != m_devMap.end() );
+			if ( m_devMap.find( dev.device.c_str() ) == m_devMap.end() ) {
+                if ( ! initDevice( dev.device ) ) {
+                    assert(0); 
+                }
+            }
 
 			DevTreeNode* node = 
 				new DevTreeNode( m_devMap[dev.device].second, dev.openString );
@@ -195,11 +197,12 @@ void Cntxt::finiPlugins()
 {
 }
 
-void Cntxt::initDevices( Config& cfg )
+bool Cntxt::initDevice( std::string& devName )
 {
-	initPlugins( cfg );	
+    DBGX("device name=`%s`\n", devName.c_str() ); 
+	initPlugins( *m_config );	
 
-	std::deque< Config::SysDev > devices = cfg.findSysDevs(); 
+	std::deque< Config::SysDev > devices = (*m_config).findSysDevs(); 
 	std::deque< Config::SysDev >::iterator iter = devices.begin();
 
 	for ( ; iter != devices.end(); ++iter ) {
@@ -208,12 +211,16 @@ void Cntxt::initDevices( Config& cfg )
         DBGX("device name=`%s` plugin=`%s` initString=`%s`\n", 
 			dev.name.c_str(), dev.plugin.c_str(), dev.initString.c_str() ); 
 
-		m_devMap[ dev.name ].second = 
-			m_pluginLibMap[ dev.plugin ]->init( dev.initString.c_str() ); 
-		assert( m_devMap[ dev.name ].second );
+        if ( 0 == devName.compare( dev.name ) ) {
+		    m_devMap[ dev.name ].second = 
+			    m_pluginLibMap[ dev.plugin ]->init( dev.initString.c_str() ); 
+		    assert( m_devMap[ dev.name ].second );
 
-		m_devMap[ dev.name ].first = m_pluginLibMap[ dev.plugin ]; 
+		    m_devMap[ dev.name ].first = m_pluginLibMap[ dev.plugin ]; 
+            return true;
+        }
     }
+    return false;
 }
 
 void Cntxt::finiDevices()
