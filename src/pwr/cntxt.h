@@ -72,7 +72,7 @@ class Cntxt {
 	
     void initPlugins( Config& );
 	void finiPlugins( );
-    void initDevices( Config& );
+    bool initDevice( std::string& );
 	void finiDevices( );
     bool standAlone() { return m_standAlone; } 
 
