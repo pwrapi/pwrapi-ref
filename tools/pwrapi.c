@@ -101,15 +101,32 @@ int main( int argc, char* argv[] )
                 } 
                 break;
             case 't':
-                if( !strcmp( optarg, "platform" ) ) type = PWR_OBJ_PLATFORM;
-                else if( !strcmp( optarg, "cabinet" ) ) type = PWR_OBJ_CABINET;
-                else if( !strcmp( optarg, "board" ) ) type = PWR_OBJ_BOARD;
-                else if( !strcmp( optarg, "node" ) ) type = PWR_OBJ_NODE;
-                else if( !strcmp( optarg, "core" ) ) type = PWR_OBJ_CORE;
-                else if( !strcmp( optarg, "mem" ) ) type = PWR_OBJ_MEM;
-                else if( !strcmp( optarg, "nic" ) ) type = PWR_OBJ_NIC;
-                else type = PWR_OBJ_INVALID;
-                break;
+                switch( optarg[0] ) {
+                    case 'P':
+                        type = PWR_OBJ_PLATFORM;
+                        break;
+                    case 'B':
+                        type = PWR_OBJ_BOARD;
+                        break;
+                    case 'N':
+                        type = PWR_OBJ_NODE;
+                        break;
+                    case 'S':
+                        type = PWR_OBJ_SOCKET;
+                        break;
+                    case 'C':
+                        type = PWR_OBJ_CORE;
+                        break;
+                    case 'M':
+                        type = PWR_OBJ_MEM;
+                        break;
+                    case 'I':
+                        type = PWR_OBJ_NIC;
+                        break;
+                    default:
+                        printf( "Error: unsupported object type (try P B N S C M I)\n" );
+                        return -1;
+                }
             case 'h':
             case '?':
                 fprintf( stderr, usage, argv[0] );
