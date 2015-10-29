@@ -103,7 +103,7 @@ int main( int argc, char* argv[] )
         return -1;
     }
 */
-    if( type && (grp=get_type_objects( self, type )) == (PWR_Grp)0x0 ) {
+    if( type != PWR_OBJ_INVALID && (grp=get_type_objects( self, type )) == (PWR_Grp)0x0 ) {
         printf( "Error: getting core objects failed\n" );
         return -1;
     }
