@@ -19,30 +19,52 @@
 
 #define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
+PWR_Grp get_type_objects( PWR_Obj self, PWR_ObjType type )
+{
+    unsigned int i, j, count = 0;
+    size_t size;
+    PWR_Grp grp;
+    PWR_Obj obj;
+
+    if( (grp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 ) {
+        printf( "Error: getting child objects from PowerAPI context failed\n" );
+        return (PWR_Grp)0x0;
+    }
+    size = PWR_GrpGetNumObjs( grp );
+    for( i = 0; i < size; i++ ) {
+        obj = PWR_GrpGetObjByIndx( grp, i );
+        for( j = 0; j < count; j++ ) {
+            if( PWR_ObjGetType( obj ) == type )
+                PWR_GrpAddObj( grp, obj );
+        }
+    }
+
+    return grp;
+}
+
 int main( int argc, char* argv[] )
 {
-    PWR_Obj self, obj;
+    PWR_Obj self;
     PWR_Grp grp;
     PWR_Cntxt cntxt;
-    size_t size;
     unsigned long long time;
     double start = 0.0;
     PWR_Time start_ts = 0;
     struct timeval t0, t1;
     unsigned long tdiff;
 
-    PWR_AttrName attrs[] = { PWR_ATTR_CURRENT, PWR_ATTR_POWER, PWR_ATTR_ENERGY };
+    PWR_AttrName attrs[] = { PWR_ATTR_POWER, PWR_ATTR_ENERGY };
     PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
     double vals[NUM_ATTR(attrs)*1000];
     int stats[NUM_ATTR(attrs)];
 
     int option;
     char *token, *range, name[128] = "";
-    unsigned int i, j, g0, g1, samples = 1, freq = 1, count = 0, g[1000];
+    unsigned int i, j, samples = 1, freq = 1, count = 0, type = 0;
     static char usage[] =
-        "usage: %s [-s samples] [-f freq] [-r range] [-h]\n";
+        "usage: %s [-s samples] [-f freq] [-t type] [-h]\n";
 
-    while( (option=getopt( argc, argv, "s:f:r:h" )) != -1 )
+    while( (option=getopt( argc, argv, "s:f:t:h" )) != -1 )
         switch( option ) {
             case 's':
                 samples = atoi(optarg);
@@ -50,15 +72,15 @@ int main( int argc, char* argv[] )
             case 'f':
                 freq = atoi(optarg);
                 break;
-            case 'r':
-                while( (range=strtok( count ? optarg : NULL, "," )) ) {
-                    g0 = g1 = atoi(range);
-                    if( (range=strtok( range, "-" )) )
-                        g1 = atoi(range);
-                    for( i = g0; i < g1; i++ )
-                        g[count++] = i;
-                    printf( "ADDING GROUP %u to %u\n", g0, g1 );
-                }
+            case 't':
+                if( !strcmp( optarg, "platform" ) ) type = PWR_OBJ_PLATFORM;
+                else if( !strcmp( optarg, "cabinet" ) ) type = PWR_OBJ_CABINET;
+                else if( !strcmp( optarg, "board" ) ) type = PWR_OBJ_BOARD;
+                else if( !strcmp( optarg, "node" ) ) type = PWR_OBJ_NODE;
+                else if( !strcmp( optarg, "core" ) ) type = PWR_OBJ_CORE;
+                else if( !strcmp( optarg, "mem" ) ) type = PWR_OBJ_MEM;
+                else if( !strcmp( optarg, "nic" ) ) type = PWR_OBJ_NIC;
+                else type = PWR_OBJ_INVALID;
                 break;
             case 'h':
             case '?':
@@ -81,18 +103,9 @@ int main( int argc, char* argv[] )
         return -1;
     }
 */
-    if( (grp=PWR_ObjGetChildren( self )) == 0x0 ) {
-        printf( "Error: getting object by name from PowerAPI context failed\n" );
+    if( type && (grp=get_type_objects( self, type )) == (PWR_Grp)0x0 ) {
+        printf( "Error: getting core objects failed\n" );
         return -1;
-    }
-    size = PWR_GrpGetNumObjs( grp );
-    for( i = 0; i < size; i++ ) {
-        obj = PWR_GrpGetObjByIndx( grp, i );
-        for( j = 0; j < count; j++ ) {
-            sprintf( name, "shepard.node%u", g[j] );
-            if( !(strcmp( PWR_ObjGetName( obj ), name )) )
-                PWR_GrpAddObj( grp, obj );
-        }
     }
 
     for( i = 0; i < samples; i++ ) {
