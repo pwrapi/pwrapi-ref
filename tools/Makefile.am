@@ -13,7 +13,11 @@ pwrgen_SOURCES = pwrgen.cc
 pwrgen_CPPFLAGS = -I$(top_srcdir)/src/tinyxml2
 pwrgen_LDADD = $(top_builddir)/src/tinyxml2/libtinyxml2.la
 
-man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8
+pwrdmp_SOURCES = pwrdmp.c
+pwrdmp_CFLAGS = -I$(top_srcdir)/src/pwr
+pwrdmp_LDADD = $(top_builddir)/src/pwr/libpwr.la
+
+man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8 pwrdmp.8
 
 if HAVE_XMLRPC
 bin_PROGRAMS += pwrsrv

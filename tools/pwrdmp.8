@@ -1,0 +1,27 @@
+.\" Manpage for pwrgrp
+.\" Contact ddeboni@sandia.gov to correct errors or typos
+.TH PWRGRP 8 "28 May 2015" Linux "pwrgrp man page"
+.SH NAME
+pwrgrp\- Power API measurement and control utility
+.SH SYNOPSIS
+\fBpwrgrp\fP [ -s \fIsamples\fP ] [ -f \fIfrequency\fP ]
+[ -r \fI[range]\fP ] [ -h ]
+.SH DESCRIPTION
+\fBpwrgrp\fP is a command line utility for communicating monitor
+and control commands through the Power API to grouped nodes
+.SH OPTIONS
+.IP \fB-r\fP
+range of nodes to perform command over 
+(contained in brackets, comma seperated and/or hyphen)
+.IP \fB-s\fP
+number of samples to collect (default is 1, 0 for infinite)
+.IP \fB-f\fP
+frequency of collection (default is 1Hz, 0 for off)
+.IP \fB-h\fP
+usage information
+.SH "SEE ALSO"
+pwrapi (8), pwrgen (8)
+.SH BUGS
+No known bugs
+.SH AUTHOR
+David DeBonis (ddeboni@sandia.gov)
