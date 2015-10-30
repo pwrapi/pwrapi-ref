@@ -1,4 +1,4 @@
-bin_PROGRAMS = pwrapi pwrgrp pwrgen
+bin_PROGRAMS = pwrapi pwrgrp pwrgen pwrdmp
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
