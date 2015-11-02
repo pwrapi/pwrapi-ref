@@ -20,7 +20,7 @@
 
 void dump_type_objects( PWR_Obj self, PWR_ObjType type )
 {
-    unsigned int i, j, k, count = 0;
+    unsigned int i, j;
     size_t size;
     PWR_Grp grp;
     PWR_Obj obj;
@@ -31,16 +31,15 @@ void dump_type_objects( PWR_Obj self, PWR_ObjType type )
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( grp, i );
-        for( j = 0; j < count; j++ ) {
-            if( PWR_ObjGetType( obj ) == type ) {
-                printf( "%s %s", PWR_ObjGetName( obj ),
-                        PWR_ObjGetTypeString( type ) );
-                for( k = 0; k < TOTAL_NUM_PWR_ATTRS; k++ )
-                    printf( " %s", PWR_AttrGetTypeString( k ) );
-                printf( "\n" );
+        if( type == PWR_OBJ_INVALID || PWR_ObjGetType( obj ) == type ) {
+            printf( "%s %s", PWR_ObjGetName( obj ),
+                    PWR_ObjGetTypeString( type ) );
+            for( j = 0; j < TOTAL_NUM_PWR_ATTRS; j++ ) {
+                printf( " %s", PWR_AttrGetTypeString( j ) );
             }
-            dump_type_objects( obj, type );
+            printf( "\n" );
         }
+        dump_type_objects( obj, type );
     }
 }
 
@@ -64,6 +63,9 @@ int main( int argc, char* argv[] )
                     case 'P':
                         type = PWR_OBJ_PLATFORM;
                         break;
+                    case 'A':
+                        type = PWR_OBJ_CABINET;
+                        break;
                     case 'B':
                         type = PWR_OBJ_BOARD;
                         break;
@@ -86,6 +88,7 @@ int main( int argc, char* argv[] )
                         printf( "Error: unsupported object type (try P B N S C M I)\n" );
                         return -1;
                 }
+                break;
             case 'h':
             case '?':
                 fprintf( stderr, usage, argv[0] );
@@ -102,12 +105,7 @@ int main( int argc, char* argv[] )
         return -1;
     }
 
-    if( type != PWR_OBJ_INVALID )
-        dump_type_objects( self, type );
-    else {
-        printf( "Error: getting core objects failed\n" );
-        return -1;
-    }
+    dump_type_objects( self, type );
 
     return 0;
 }

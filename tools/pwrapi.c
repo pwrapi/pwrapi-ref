@@ -21,7 +21,7 @@
 
 PWR_Grp get_type_objects( PWR_Obj self, PWR_ObjType type )
 {
-    unsigned int i, j, count = 0;
+    unsigned int i;
     size_t size;
     PWR_Grp grp;
     PWR_Obj obj;
@@ -33,10 +33,8 @@ PWR_Grp get_type_objects( PWR_Obj self, PWR_ObjType type )
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( grp, i );
-        for( j = 0; j < count; j++ ) {
-            if( PWR_ObjGetType( obj ) == type )
-                PWR_GrpAddObj( grp, obj );
-        }
+        if( PWR_ObjGetType( obj ) == type )
+            PWR_GrpAddObj( grp, obj );
     }
 
     return grp;
@@ -105,6 +103,9 @@ int main( int argc, char* argv[] )
                     case 'P':
                         type = PWR_OBJ_PLATFORM;
                         break;
+                    case 'A':
+                        type = PWR_OBJ_CABINET;
+                        break;
                     case 'B':
                         type = PWR_OBJ_BOARD;
                         break;
@@ -127,6 +128,7 @@ int main( int argc, char* argv[] )
                         printf( "Error: unsupported object type (try P B N S C M I)\n" );
                         return -1;
                 }
+                break;
             case 'h':
             case '?':
                 fprintf( stderr, usage, argv[0] );
