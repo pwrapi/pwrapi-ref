@@ -100,6 +100,7 @@ int main( int argc, char* argv[] )
                         printf( "Error: unsupported object type (try P B N S C M I)\n" );
                         return -1;
                 }
+                break;
             case 'h':
             case '?':
                 fprintf( stderr, usage, argv[0] );
