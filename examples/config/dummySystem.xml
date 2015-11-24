@@ -3,7 +3,7 @@
 <System>
 
 <Plugins>
-    <plugin name="Dummy" lib="libdummy_dev.so"/>
+    <plugin name="Dummy" lib="libdummy_dev"/>
 </Plugins>
 
 <Devices>
@@ -31,7 +31,7 @@
 
 </obj>
 
-<obj name="plat.cab0" type="Cabinet" location="cab0-daemon" >
+<obj name="plat.cab0" type="Cabinet" >
 
     <attributes>
         <attr name="POWER" op="SUM" >
