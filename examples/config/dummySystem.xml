@@ -31,7 +31,7 @@
 
 </obj>
 
-<obj name="plat.cab0" type="Cabinet" location="daemon-cab0" >
+<obj name="plat.cab0" type="Cabinet" location="cab0-daemon" >
 
     <attributes>
         <attr name="POWER" op="SUM" >
