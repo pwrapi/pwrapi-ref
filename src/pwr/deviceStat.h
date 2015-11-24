@@ -17,15 +17,16 @@
 namespace PowerAPI {
 
 class DeviceStat : public Stat {
+	typedef double (*OpFuncPtr)(std::vector<double>&);
   public:
-	DeviceStat( Cntxt* ctx, ObjTreeNode* obj, PWR_AttrName name,
-													PWR_AttrStat stat ) 
-	  : Stat( ctx, obj, name, stat ) { }
+	DeviceStat( Cntxt* ctx, Object* obj, PWR_AttrName name,
+											OpFuncPtr ptr, double hz ) 
+	  : Stat( ctx, obj, name, ptr, hz ), m_isLogging(false) { }
 
-	DeviceStat( Cntxt*ctx, Grp* grp, PWR_AttrName name, PWR_AttrStat stat ) 
-	  : Stat( ctx, grp, name, stat ) { }
+	DeviceStat( Cntxt*ctx, Grp* grp, PWR_AttrName name, OpFuncPtr ptr, double hz ) 
+	  : Stat( ctx, grp, name, ptr, hz ), m_isLogging(false) { }
 
-	virtual ~DeviceStat() {}
+	virtual ~DeviceStat();
 
 	virtual int start();
 	virtual int stop();
@@ -34,6 +35,12 @@ class DeviceStat : public Stat {
 	virtual int getValues( double value[], PWR_StatTimes statTimes[] );
 
   private:
+	int startObj();
+	int startGrp();
+	int stopObj();
+	int stopGrp();
+	int objGetValue( Object*, double* value, PWR_StatTimes* statTimes );
+	bool m_isLogging;
 };
 
 }

@@ -15,9 +15,14 @@
 #include <time.h>
 
 #include "pwrtypes.h"
+//#include "eventChannel.h"
+
 
 #ifdef __cplusplus
+struct EventChannel;
 extern "C" {
+#else
+typedef void EventChannel;
 #endif
 
 int PWR_GetMajorVersion();
@@ -55,6 +60,15 @@ int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, void* buf );
 int PWR_ObjAttrGetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status  );
 int PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Status );
 
+int PWR_ObjAttrStartLog( PWR_Obj, PWR_AttrName name );
+int PWR_ObjAttrStopLog( PWR_Obj, PWR_AttrName name );
+int PWR_ObjAttrGetSamples( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
+											unsigned int count, void* buf );
+
+int PWR_ObjAttrStartLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
+int PWR_ObjAttrStopLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
+int PWR_ObjAttrGetSamples_NB( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
+											unsigned int* count, void* buf,  PWR_Request );
 /*
 * Subset of API that works on Grp 
 */
@@ -111,6 +125,22 @@ int PWR_StatGetValue( PWR_Stat, double* value, PWR_StatTimes* statTimes );
  */
 int PWR_StatGetValues( PWR_Stat, double values[],
                                             PWR_StatTimes statTimes[] );
+
+EventChannel* PWR_CntxtGetEventChannel( PWR_Cntxt ctx );
+int PWR_CntxtMakeProgress( PWR_Cntxt ctx );
+
+PWR_Request PWR_ReqCreate( PWR_Cntxt );
+PWR_Request PWR_ReqCreateCallback( PWR_Cntxt, Callback callback, void* data );
+int PWR_ReqDestroy( PWR_Request );
+
+int PWR_ReqCheck( PWR_Request, int* status );
+int PWR_ReqWait( PWR_Request, int* status );
+
+int PWR_ObjAttrGetValue_NB( PWR_Obj, PWR_AttrName name, void* buf,
+		                                            PWR_Time *, PWR_Request );
+
+int PWR_ObjAttrSetValue_NB( PWR_Obj, PWR_AttrName name, void* buf,
+		                                            PWR_Request );
 
 /*
 *  Utility Functions

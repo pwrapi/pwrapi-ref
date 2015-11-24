@@ -361,8 +361,11 @@ XMLNode* XmlConfig::findNodeWithAttr( XMLElement* elm,
 XMLNode* XmlConfig::findNodes1stChild( XMLNode* node, const std::string name )
 {
 	node = findNode( node, name );
-	assert( node );
-	return node->FirstChild();
+	if ( node ) {
+		return node->FirstChild();
+	} else {
+		return NULL;
+	}
 }
 
 XMLElement* XmlConfig::findObject( const std::string name )
@@ -424,7 +427,7 @@ std::string XmlConfig::findObjLocation( std::string name )
 
 XMLNode* XmlConfig::findNode( XMLNode* node, const std::string name )
 {
-	DBGX2(DBG_CONFIG,"root=%s find node named `%s`\n", 
+	DBGX2(DBG_CONFIG,"root=%s find xml element `%s`\n", 
 			static_cast<XMLElement*>(node)->Name(), name.c_str());
 
     // find the plugins element
@@ -433,7 +436,7 @@ XMLNode* XmlConfig::findNode( XMLNode* node, const std::string name )
 
 		DBGX2(DBG_CONFIG,"current=`%s`\n", elm->Name() );
         if ( 0 == name.compare( elm->Name() ) ) {
-			DBGX2(DBG_CONFIG,"found node named `%s`\n", name.c_str());
+			DBGX2(DBG_CONFIG,"found element `%s`\n", name.c_str());
             break;
         }
         node = node->NextSibling();

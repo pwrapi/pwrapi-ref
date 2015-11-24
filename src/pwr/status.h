@@ -18,7 +18,7 @@
 
 namespace PowerAPI {
 
-class TreeNode;
+class Object; 
 
 class Status {
 
@@ -33,7 +33,7 @@ class Status {
         return PWR_RET_SUCCESS;
     }
 
-    void add( TreeNode* obj, PWR_AttrName name, int error  ) {
+    void add( Object* obj, PWR_AttrName name, int error  ) {
         PWR_AttrAccessError tmp;
         tmp.obj = obj;
         tmp.name = name;

@@ -38,13 +38,11 @@ typedef int (*pwr_writev_t)( pwr_fd_t fd, unsigned int arraysize,
 typedef int (*pwr_time_t)( pwr_fd_t fd, PWR_Time *time );
 typedef int (*pwr_clear_t)( pwr_fd_t fd );
 
-typedef int (*statOp_t)( int num, double input[], double* result, PWR_Time* ts);
+typedef int (*pwr_get_samples_t)( pwr_fd_t fd, PWR_AttrName name, 
+			PWR_Time* time, double period, unsigned int*, void* );
 
-typedef int (*pwr_stat_start_t)( pwr_fd_t fd, PWR_AttrName name );
-typedef int (*pwr_stat_stop_t)( pwr_fd_t fd, PWR_AttrName name );
-typedef int (*pwr_stat_clear_t)( pwr_fd_t fd, PWR_AttrName name );
-typedef int (*pwr_stat_get_t)( pwr_fd_t fd, PWR_AttrName name, statOp_t,
-									void* result, PWR_StatTimes* ts );
+typedef int (*pwr_log_start_t)( pwr_fd_t fd, PWR_AttrName name );
+typedef int (*pwr_log_stop_t)( pwr_fd_t fd, PWR_AttrName name );
 
 typedef struct plugin_devops_t {
     pwr_open_t  open;
@@ -59,10 +57,9 @@ typedef struct plugin_devops_t {
     pwr_time_t  time;
     pwr_clear_t clear;
 
-	pwr_stat_start_t stat_start;
-	pwr_stat_stop_t  stat_stop;
-	pwr_stat_clear_t stat_clear;
-	pwr_stat_get_t stat_get;
+	pwr_log_start_t log_start;
+	pwr_log_stop_t  log_stop;
+	pwr_get_samples_t  get_samples;
 
     void *private_data;
 

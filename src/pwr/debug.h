@@ -12,10 +12,13 @@
 #ifndef _PWR_DEBUG_H
 #define _PWR_DEBUG_H
 
+#ifndef NO_CONFIG 
 #include <pwr_config.h>
+#endif
 extern unsigned int _DbgFlags;
 
 #define DBG_CONFIG (1<<1)
+#define DBG_EC (1<<2)
 
 #ifdef USE_DEBUG
 
@@ -36,14 +39,18 @@ extern unsigned int _DbgFlags;
     }\
 }
 
-#define DBG( fmt, args... ) \
-    fprintf( stderr, "%s():%d: "fmt, __func__, __LINE__, ##args)
+#define DBG( fmt, ... ) DBG2( 0x1, fmt, ## __VA_ARGS__ )
+
+#define DBG2( flag, fmt, ... ) \
+    if ( flag & _DbgFlags ) {\
+    	fprintf( stderr, "%s():%d: "fmt, __func__, __LINE__, ##__VA_ARGS__);\
+	}
 
 #else
 
 #define DBGX( fmt, args... )
 #define DBGX2( flag, fmt, ... )
-#define DBG( fmt, args... )
+#define DBG2( fmt, args... )
 
 #endif
 

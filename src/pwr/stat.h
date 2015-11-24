@@ -16,23 +16,27 @@
 
 #include "pwr.h"
 #include "group.h"
-#include "objTreeNode.h"
+#include "object.h"
 
 namespace PowerAPI {
 
 class Grp;
-class ObjTreeNode;
+class Object;
 class Cntxt;
 
 class Stat {
+	typedef double (*OpFuncPtr)(std::vector<double>&);
   public:
-	Stat( Cntxt* ctx, ObjTreeNode* obj, PWR_AttrName name, PWR_AttrStat stat ) 
-	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), 
-			m_attrName( name ), m_attrStat( stat ) { }
+	Stat( Cntxt* ctx, Object* obj, PWR_AttrName name, OpFuncPtr ptr,
+															double hz ) 
+	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), m_attrName( name ), 
+	    opPtr( ptr ), m_period( 1 / hz ),
+		m_startTime(PWR_TIME_NOT_SET), m_stopTime(PWR_TIME_NOT_SET) { }
 
-	Stat( Cntxt* ctx, Grp* grp, PWR_AttrName name, PWR_AttrStat stat ) 
-	  : m_ctx( ctx), m_obj(NULL), m_grp(grp), 
-			m_attrName( name ), m_attrStat( stat ) { }
+	Stat( Cntxt* ctx, Grp* grp, PWR_AttrName name, OpFuncPtr ptr, double hz ) 
+	  : m_ctx( ctx), m_obj(NULL), m_grp(grp), m_attrName( name ),
+	    opPtr( ptr ), m_period( 1/ hz), 
+		m_startTime(PWR_TIME_NOT_SET), m_stopTime(PWR_TIME_NOT_SET) { }
 	virtual ~Stat() {}
 
 	virtual int start() = 0;
@@ -45,12 +49,16 @@ class Stat {
 		return m_ctx;
 	}
 
+
   protected:
+	OpFuncPtr		opPtr;
 	Cntxt*			m_ctx;
-	ObjTreeNode*	m_obj;
+	Object*			m_obj;
 	Grp*			m_grp;
 	PWR_AttrName	m_attrName;
-	PWR_AttrStat    m_attrStat;
+    double 			m_period;
+    double 			m_startTime;
+    double 			m_stopTime;
 };
 
 }

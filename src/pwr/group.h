@@ -18,7 +18,8 @@
 #include "status.h"
 #include "pwrtypes.h"
 #include "debug.h"
-#include "objTreeNode.h"
+#include "object.h"
+#include "util.h"
 
 namespace PowerAPI {
 
@@ -32,9 +33,9 @@ class Grp {
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
 
-    ObjTreeNode* getObj( int i ) { return m_list[i]; }
+    Object* getObj( int i ) { return m_list[i]; }
 
-    int add( ObjTreeNode* obj ) {
+    int add( Object* obj ) {
         m_list.push_back( obj );
         return PWR_RET_SUCCESS; 
     }
@@ -43,43 +44,29 @@ class Grp {
         return m_name;
     }
     
-    int attrSetValue( PWR_AttrName type, void* ptr, size_t len, Status* status )
+    int attrSetValue( PWR_AttrName type, void* ptr, Status* status )
 	{
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
-            int ret = m_list[i]->attrSetValue( type, ptr, len );
+            int ret = m_list[i]->attrSetValue( type, ptr );
             if ( PWR_RET_SUCCESS != ret ) {
                 status->add( m_list[i], type, ret );
             }
         }
-        if ( !status->empty() ) {
-            return PWR_RET_FAILURE;
-        } else {
-            return PWR_RET_SUCCESS;
-        }
+        return !status->empty() ? PWR_RET_FAILURE : PWR_RET_SUCCESS;
+    }
+
+    int attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[], Status* status )
+	{
+		assert(0);
     }
 
     int attrSetValues( int num, PWR_AttrName attr[], void* buf, Status* status )
     {
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
-            std::vector<PWR_AttrName> attrsV(num);
-            std::vector<int>          statusV(num);
-        
-            if ( PWR_RET_SUCCESS !=
-						m_list[i]->attrSetValues( attrsV, buf, statusV ) ) 
-			{
-                for ( int j = 0; j < num; j++ ) {
-                    if ( PWR_RET_SUCCESS != statusV[j] ) {
-                        status->add( m_list[i], attrsV[j], statusV[j] );
-                    }
-                }
-            }
+			m_list[i]->attrSetValues( num, attr, buf, status );
         }
-        if ( !status->empty() ) {
-            return PWR_RET_FAILURE;
-        } else {
-            return PWR_RET_SUCCESS;
-        }
+        return !status->empty() ? PWR_RET_FAILURE : PWR_RET_SUCCESS;
     }
 
     int attrGetValues( int num, PWR_AttrName attr[], void* buf,
@@ -87,40 +74,17 @@ class Grp {
     {
         DBGX("num=%d size=%lu\n",num,m_list.size());
         uint64_t* ptr = (uint64_t*) buf;
-        std::vector<PWR_AttrName>   attrsV(num);
-        std::vector<PWR_Time>       tsV(num);
-        std::vector<int>            statusV(num);
-
-        for ( int j = 0; j < num; j++ ) {
-            attrsV[j] =  attr[ j ];
-            DBGX("%s\n",attrNameToString(attrsV[j]));
-        }
 
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
-            if ( PWR_RET_SUCCESS != m_list[i]->attrGetValues( attrsV, 
-                        				ptr + i * num, tsV, statusV ) ) 
-			{
-                for ( int j = 0; j < num; j++ ) {
-                    if ( PWR_RET_SUCCESS != statusV[j] ) {
-                        status->add( m_list[i], attrsV[j], statusV[j] );
-                    }
-                }
-            }
-            for ( int j = 0; j < num; j++ ) {
-                ts[ i * num + j ] = tsV[j];
-            }
+            m_list[i]->attrGetValues( num, attr, ptr + i * num, ts, status ); 
         }
 
-        if ( !status->empty() ) {
-            return PWR_RET_FAILURE;
-        } else {
-            return PWR_RET_SUCCESS;
-        }
+        return !status->empty() ? PWR_RET_FAILURE : PWR_RET_SUCCESS;
     }
 
-    int remove( ObjTreeNode* obj ) {
-        std::vector<ObjTreeNode*>::iterator iter = m_list.begin();
+    int remove( Object* obj ) {
+        std::vector<Object*>::iterator iter = m_list.begin();
         for ( ; iter != m_list.end(); ++iter ) {
             if ( *iter == obj ) {
                 m_list.erase( iter );
@@ -130,11 +94,11 @@ class Grp {
         return PWR_RET_SUCCESS;
     }
 
-    ObjTreeNode* find( std::string name ) {
+    Object* find( std::string name ) {
         DBGX("%s\n", name.c_str());
         
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
-            ObjTreeNode* obj = m_list[i];
+            Object* obj = m_list[i];
             if ( obj->parent() ) {
                 std::string tmp = m_list[i]->parent()->name() + "." + name;
                 DBGX("%s %s\n",tmp.c_str(), obj->name().c_str() );
@@ -146,12 +110,12 @@ class Grp {
         return NULL;
     }
 
-    Cntxt* getCtx() { return m_ctx; }
+    Cntxt* getCntxt() { return m_ctx; }
 
   private:
     Cntxt*   					m_ctx;
     std::string 				m_name;
-    std::vector<ObjTreeNode*> 	m_list;
+    std::vector<Object*> 	m_list;
 };
 
 }

@@ -12,12 +12,14 @@
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "cntxt.h"
+#include <assert.h>
+#include "distCntxt.h"
 #include "debug.h"
+#include "pwrdev.h"
 
 using namespace PowerAPI;
 
-plugin_dev_t* Cntxt::getDev( std::string lib, std::string name )
+plugin_dev_t* DistCntxt::getDev( std::string lib, std::string name )
 {
 	DBGX("lib %s name=`%s`\n", lib.c_str(), name.c_str() );
     void* ptr = dlopen( lib.c_str(), RTLD_LAZY);
