@@ -22,8 +22,11 @@ typedef void* PWR_Grp;
 typedef void* PWR_Obj;
 typedef void* PWR_Status;
 typedef void* PWR_Stat;
+typedef void* PWR_Request;
 
 typedef int PWR_CntxtState;
+
+typedef int (*Callback)(void* data, int status);
 
 #define PWR_RET_WARN_DEPRECATED 1
 #define PWR_RET_SUCCESS 0
