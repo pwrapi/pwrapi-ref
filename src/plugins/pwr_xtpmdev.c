@@ -45,10 +45,12 @@ static plugin_devops_t devops = {
     .writev       = pwr_xtpmdev_writev,
     .time         = pwr_xtpmdev_time,
     .clear        = pwr_xtpmdev_clear,
+#if 0
     .stat_get     = pwr_dev_stat_get,
     .stat_start   = pwr_dev_stat_start,
     .stat_stop    = pwr_dev_stat_stop,
     .stat_clear   = pwr_dev_stat_clear,
+#endif
     .private_data = 0x0
 };
 

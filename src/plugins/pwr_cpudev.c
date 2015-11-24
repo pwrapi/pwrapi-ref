@@ -47,10 +47,12 @@ static plugin_devops_t devops = {
     .writev       = pwr_cpudev_writev,
     .time         = pwr_cpudev_time,
     .clear        = pwr_cpudev_clear,
+#if 0
     .stat_get     = pwr_dev_stat_get,
     .stat_start   = pwr_dev_stat_start,
     .stat_stop    = pwr_dev_stat_stop,
     .stat_clear   = pwr_dev_stat_clear,
+#endif
     .private_data = 0x0
 };
 
