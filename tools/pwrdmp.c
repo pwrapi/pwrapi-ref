@@ -17,59 +17,47 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
-PWR_Grp get_type_objects( PWR_Obj self, PWR_ObjType type )
+void dump_type_objects( PWR_Obj self, PWR_ObjType type )
 {
-    unsigned int i;
+    unsigned int i, j;
     size_t size;
     PWR_Grp grp;
     PWR_Obj obj;
 
-    if( (grp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 ) {
-        printf( "Error: getting child objects from PowerAPI context failed\n" );
-        return (PWR_Grp)0x0;
-    }
+    if( (grp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 )
+        return;
+
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( grp, i );
-        if( PWR_ObjGetType( obj ) == type )
-            PWR_GrpAddObj( grp, obj );
+        if( type == PWR_OBJ_INVALID || PWR_ObjGetType( obj ) == type ) {
+            printf( "%s %s", PWR_ObjGetName( obj ),
+                    PWR_ObjGetTypeString( type ) );
+            for( j = 0; j < TOTAL_NUM_PWR_ATTRS; j++ ) {
+                printf( " %s", PWR_AttrGetTypeString( j ) );
+            }
+            printf( "\n" );
+        }
+        dump_type_objects( obj, type );
     }
-
-    return grp;
 }
 
 int main( int argc, char* argv[] )
 {
     PWR_Obj self;
-    PWR_Grp grp;
     PWR_Cntxt cntxt;
-    unsigned long long time;
-    double start = 0.0;
-    PWR_Time start_ts = 0;
-    struct timeval t0, t1;
-    unsigned long tdiff;
-
-    PWR_AttrName attrs[] = { PWR_ATTR_POWER, PWR_ATTR_ENERGY };
-    PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
-    double vals[NUM_ATTR(attrs)*1000];
-    int stats[NUM_ATTR(attrs)];
+    PWR_Grp grp;
 
     int option;
-    char *token, *range, name[128] = "";
-    unsigned int i, j, samples = 1, freq = 1, count = 0, type = 0;
-    static char usage[] =
-        "usage: %s [-s samples] [-f freq] [-t type] [-h]\n";
+    unsigned int i, j, samples = 1, freq = 1, numattrs = 0;
+    PWR_ObjType type = PWR_OBJ_INVALID;
 
-    while( (option=getopt( argc, argv, "s:f:t:h" )) != -1 )
+    static char usage[] =
+        "usage: %s [-t type] [-h]\n";
+
+    while( (option=getopt( argc, argv, "t:h" )) != -1 )
         switch( option ) {
-            case 's':
-                samples = atoi(optarg);
-                break;
-            case 'f':
-                freq = atoi(optarg);
-                break;
             case 't':
                 switch( optarg[0] ) {
                     case 'P':
@@ -116,43 +104,8 @@ int main( int argc, char* argv[] )
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }
-/*
-    if( (obj=PWR_CntxtGetObjByName( cntxt, "teller.node40" )) == 0x0 ) {
-        printf( "Error: getting object by name from PowerAPI context failed\n" );
-        return -1;
-    }
-*/
-    if( type != PWR_OBJ_INVALID && (grp=get_type_objects( self, type )) == (PWR_Grp)0x0 ) {
-        printf( "Error: getting core objects failed\n" );
-        return -1;
-    }
 
-    for( i = 0; i < samples; i++ ) {
-        gettimeofday( &t0, 0x0 );
-
-        if( PWR_GrpAttrGetValues( grp, NUM_ATTR(attrs), attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
-            printf( "Error: reading of PowerAPI attributes failed\n" );
-            return -1;
-        }
-        for( j = 0; j < NUM_ATTR(attrs); j++ ) {
-            if( !i && attrs[j] == PWR_ATTR_ENERGY ) {
-                start = vals[j];
-                start_ts = vals_ts[j];
-            }
-            if( !j ) time = vals_ts[j] - start_ts;
-            if( attrs[j] == PWR_ATTR_ENERGY )
-                printf( "%lf ", vals[j] - start );
-            printf( "%lf ", vals[j] );
-        }
-        printf( "%lf\n", time/1000000000.0 );
-
-        gettimeofday( &t1, 0x0 );
-        tdiff = t1.tv_sec - t0.tv_sec +
-            (t1.tv_usec - t0.tv_usec) / 1000000.0;
-
-        if( tdiff < 1000000.0 / freq )
-            usleep( 1000000.0 / freq - tdiff );
-    }
+    dump_type_objects( self, type );
 
     return 0;
 }

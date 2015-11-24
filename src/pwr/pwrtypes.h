@@ -60,7 +60,7 @@ typedef enum {
 typedef enum {
     PWR_OBJ_INVALID = 0, 
     PWR_OBJ_PLATFORM,
-	PWR_OBJ_CORE_START = PWR_OBJ_PLATFORM, 
+	PWR_OBJ_START = PWR_OBJ_PLATFORM, 
     PWR_OBJ_CABINET, 
     PWR_OBJ_BOARD,
     PWR_OBJ_NODE,
@@ -69,15 +69,15 @@ typedef enum {
     /* */
     PWR_OBJ_MEM,
     PWR_OBJ_NIC,
-	PWR_OBJ_CORE_STOP = PWR_OBJ_NIC, 
+	PWR_OBJ_STOP = PWR_OBJ_NIC, 
 } PWR_ObjType;
 
-#define  TOTAL_NUM_PWR_OBJS  ( ( PWR_OBJ_CORE_STOP - PWR_OBJ_CORE_START ) + 1 )
+#define  TOTAL_NUM_PWR_OBJS  ( ( PWR_OBJ_STOP - PWR_OBJ_START ) + 1 )
 
 typedef enum {
     PWR_ATTR_INVALID = 0,   /* Required String */
     PWR_ATTR_NAME,	        /* Required String */
-	PWR_ATTR_CORE_START = PWR_ATTR_NAME,
+	PWR_ATTR_START = PWR_ATTR_NAME,
     PWR_ATTR_FREQ,	        /* Required Float  */
     PWR_ATTR_MAX_PCAP,      /* Required Float  */
     PWR_ATTR_MIN_PCAP,      /* Required Float  */
@@ -93,12 +93,12 @@ typedef enum {
     PWR_ATTR_CSTATE,	    /* Required Int    */
     PWR_ATTR_SSTATE,	  	/* Required Int    */
     PWR_ATTR_FREQ_LIMIT_MAX,	/* double, Hz    */
-    PWR_ATTR_FREQ_LIMIT_MIX,	/* double, Hz    */
+    PWR_ATTR_FREQ_LIMIT_MIN,	/* double, Hz    */
     PWR_ATTR_NOT_SPECIFIED,
-    PWR_ATTR_CORE_STOP = PWR_ATTR_NOT_SPECIFIED
+    PWR_ATTR_STOP = PWR_ATTR_NOT_SPECIFIED
 } PWR_AttrName;
 
-#define TOTAL_NUM_PWR_ATTRS ( ( PWR_ATTR_CORE_STOP - PWR_ATTR_CORE_START ) + 1 )
+#define TOTAL_NUM_PWR_ATTRS ( ( PWR_ATTR_STOP - PWR_ATTR_START ) + 1 )
 
 typedef enum {
     PWR_ATTR_STAT_MIN,
