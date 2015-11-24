@@ -13,7 +13,7 @@ class Request {
 
   public:
 	Request( Cntxt* ctx, Callback callback = NULL, void* data = NULL ) : 
-		retval( PWR_RET_SUCCESS),
+		retval( PWR_RET_SUCCESS ),
 		m_cntxt( ctx),
 		m_callback( callback ),
 		m_data( data ) 

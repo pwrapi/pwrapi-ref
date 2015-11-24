@@ -84,12 +84,16 @@ int DistRequest::wait( int* status )
 	EventChannel* ec = ctx->getEventChannel();
 	DBGX("%lu\n", m_commReqs.size());
 
+	*status = PWR_RET_SUCCESS;
 	while ( ! m_commReqs.empty() ) {	
 		Event* ev = ec->getEvent();
 		assert(ev);
 		CommReq* req = (CommReq*)ev->id;
 		req->process( ev );
-		*status = ev->status;
+		if ( ev->status != PWR_RET_SUCCESS ) {
+			*status = ev->status;
+			break;
+		}
 	}
 
 	execCallback( );
