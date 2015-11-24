@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string>
 #include <assert.h>
+#include <sys/utsname.h>
 
 #include "distCntxt.h"
 #include "distObject.h"
@@ -182,13 +183,25 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 
 void DistCntxt::initPlugins( Config& cfg )
 {
-    std::deque< Config::Plugin > plugins = m_config->findPlugins();
+	struct utsname name;
+	int rc = uname( &name );
+	assert( 0 == rc );
 
+	std::string os( name.sysname);
+
+
+    std::deque< Config::Plugin > plugins = m_config->findPlugins();
     std::deque< Config::Plugin >::iterator iter = plugins.begin();
 
     for ( ; iter != plugins.end(); ++ iter ) {
 
         Config::Plugin& plugin = *iter;
+
+		if ( 0 == os.compare("Darwin") ) {
+			plugin.lib += ".dylib";
+		} else {
+			plugin.lib += ".so";
+		}
 
         DBGX("plugin name=`%s` lib=`%s`\n", plugin.name.c_str(),
                                         plugin.lib.c_str() );
