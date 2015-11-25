@@ -3,6 +3,7 @@ orig_CFLAGS="$CFLAGS"
 AC_INIT([pwrapi], [1.0.1])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config])
+AM_INIT_AUTOMAKE([subdir-objects])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADERS([src/pwr_config.h])
@@ -48,6 +49,7 @@ AC_CONFIG_FILES([Makefile
                  src/bindings/python/Makefile
                  src/plugins/Makefile
                  tools/Makefile
+                 tools/pwrdaemon/Makefile
                  examples/Makefile])
 
 AC_OUTPUT
