@@ -1,3 +1,6 @@
+SUBDIRS = pwrdaemon
+DIST_SUBDRIS = pwrdaemon
+
 bin_PROGRAMS = pwrapi pwrgrp pwrgen pwrdmp
 
 # Power API Tools
