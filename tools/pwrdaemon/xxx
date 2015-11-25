@@ -1,0 +1,21 @@
+#!/bin/sh
+
+ROOT=${HOME}/pwrGIT/dist/build/install
+CONFIG=${HOME}/pwrGIT/dist/examples/config/dummySystemCab0-daemon.xml
+
+export LD_LIBRARY_PATH="${ROOT}/lib:${LD_LIBRARY_PATH}"
+export DYLD_LIBRARY_PATH="${ROOT}/lib:${DYLD_LIBRARY_PATH}"
+
+
+pwrdaemon \
+--srvr.rtrHost=localhost \
+--srvr.rtrPort=6001 \
+--srvr.topObj=cab0 \
+--srvr.pwrApiConfig=$CONFIG \
+--srvr.pwrApiRoot=plat.cab0 \
+--srvr.pwrApiLocation=cab0-daemon \
+--rtr.pwrApiConfig=$CONFIG \
+--rtr.clientPort=6000 \
+--rtr.serverPort=6001 \
+--rtr.routerDim=0:6010:localhost:5010 \
+--rtr.routerId=1
