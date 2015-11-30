@@ -4,12 +4,14 @@
 #include "xmlConfig.h"
 #include "allocEvent.h"
 #include "routerEvent.h"
+#include "routerCore.h"
+#include "torusCore.h"
 
 using namespace PWR_Router;
 
 static void initArgs( int argc, char* argv[], Args* );
 
-Router::Router( int argc, char* argv[] ) : m_args(1),
+Router::Router( int argc, char* argv[] ) :
     m_client( this, &Router::addClientChan, &Router::delClientChan ),
     m_server( this, &Router::addServerChan, &Router::delServerChan ),
     m_router( this, &Router::addRouterChan, &Router::delRouterChan ),
@@ -24,7 +26,7 @@ Router::Router( int argc, char* argv[] ) : m_args(1),
 
 	Args& args= m_args;
 
-    printf("rtrId=%d dimensions=%lu\n", args.rtrId, args.dim.size() );
+    printf("rtrId=%d\n", args.rtrId );
     printf("client=%s server=%s\n", args.clientPort.c_str(), 
 												args.serverPort.c_str() );
 
@@ -44,30 +46,7 @@ Router::Router( int argc, char* argv[] ) : m_args(1),
     std::string XPOS_server;
     std::string XPOS_serverPort;
 
-	m_rtrLinks.resize( args.dim.size() );
-    for ( size_t i = 0; i < args.dim.size(); i++ ) {
-		EventChannel* ec;
-		m_rtrLinks[i].resize(2);
-
-        printf("%lu: posPort=%s ", i, args.dim[i].posPort.c_str() );
-        printf("negSrvr=%s negSrvrPort=%s\n", 
-				args.dim[i].negSrvr.c_str(), args.dim[i].negSrvrPort.c_str() );
-
-        std::string config = "server=" + args.dim[i].negSrvr + 
-							" serverPort=" + args.dim[i].negSrvrPort;
-
-	   	ec = getEventChannel( "TCP", allocRtrEvent, config, "router" );
-        m_chanSelect->addChannel( ec, 
-							new RouterData(ec, &m_router ) );
-
-        m_rtrLinks[i][NEG_LINK] = ec;
-
-		config = "listenPort=" + args.dim[i].posPort;
-        ec = getEventChannel( "TCP", allocRtrEvent, config , "router" );
-        m_chanSelect->addChannel( ec, 
-							new AcceptData<EventData>( ec, &m_router ) );
-        m_rtrLinks[i][POS_LINK] = ec;
-    }
+	m_routerCore = new TorusCore( m_args.coreArgs, this );
 }
 
 int Router::work()
@@ -132,7 +111,7 @@ AppID Router::findDestApp( ObjID id ) {
 
 EventChannel* Router::findRtrChan( RouterID id ) {
 	DBGX("router id %d\n",id);
-	return m_rtrLinks[0][NEG_LINK];
+	return m_routerCore->getChannel( id );
 }
 EventChannel* Router::findServerChan( ServerID id ) {
 	DBGX("server id %d\n", id );
@@ -176,19 +155,22 @@ static void initArgs( int argc, char* argv[], Args* args )
 			break;
           case RTR_DIM:
             {
+				TorusArgs* cArgs =	new TorusArgs;
                 std::string tmp = optarg;
                 size_t pos = tmp.find_first_of(':');
                 unsigned int dim = atoi( tmp.substr( 0, pos ).c_str() );
-                if ( dim < args->dim.size() ) {
+				cArgs->dim.resize(dim+1);
+                if ( dim < cArgs->dim.size() ) {
                     tmp = tmp.substr(pos+1);
                     pos = tmp.find_first_of(':');
-                    args->dim[ dim ].posPort = tmp.substr( 0, pos );
+                    cArgs->dim[ dim ].posPort = tmp.substr( 0, pos );
                     tmp = tmp.substr(pos+1);
                     pos = tmp.find_first_of(':');
-                    args->dim[ dim ].negSrvr = tmp.substr( 0,pos );
+                    cArgs->dim[ dim ].negSrvr = tmp.substr( 0,pos );
                     tmp = tmp.substr(pos+1);
-                    args->dim[ dim ].negSrvrPort = tmp.substr( 0,pos+1 );
+                    cArgs->dim[ dim ].negSrvrPort = tmp.substr( 0,pos+1 );
                 }
+				args->coreArgs = cArgs; 
 
             }
             break;

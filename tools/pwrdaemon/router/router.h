@@ -11,6 +11,7 @@
 #include <tcpEventChannel.h>
 #include "routerEvent.h"
 #include "commCreateEvent.h"
+#include "routerCore.h"
 
 #define RTR_ID( x ) x >> 32 
 #define SERVER_ID( x ) x & 0xffffffff
@@ -21,22 +22,16 @@ class Config;
 
 namespace PWR_Router {
 
-typedef uint32_t RouterID;
 typedef uint32_t ServerID;
 
-struct Dim {
-    std::string posPort;
-    std::string negSrvr;
-    std::string negSrvrPort;
-};
 struct Args {
-    Args( size_t numDim ) : rtrId(-1), dim(numDim) { }
+    Args( ) : rtrId(-1), coreArgs(NULL) { }
     RouterID   	rtrId;
     std::string	serverPort;
     std::string clientPort;
 	std::string pwrApiConfig;
 
-    std::vector< Dim > dim;
+	RouterCoreArgs* coreArgs;
 };
 
 class Router : public EventGenerator {
@@ -123,6 +118,8 @@ class Router : public EventGenerator {
 	Chan m_server;
 	Chan m_router;
 
+	ChannelSelect& chanSelect() { return *m_chanSelect; }
+
   private:
 
 	EventChannel* findRtrChan( RouterID );
@@ -158,7 +155,6 @@ class Router : public EventGenerator {
 	}			
 
   private:
-	enum { NEG_LINK, POS_LINK };
 	PowerAPI::Config*               m_config;
 	ChannelSelect* 			 		m_chanSelect;
 
@@ -166,8 +162,7 @@ class Router : public EventGenerator {
 	std::map<EventChannel*,Client*>	m_clientMap;
 
 	std::map<ServerID,EventChannel*> m_localMap;
-	std::map<RouterID,EventChannel*> m_routeMap;
-	std::vector< std::vector<EventChannel*> > 	m_rtrLinks;
+	RouterCore* 					m_routerCore;
 };
 
 struct CommReqInfo {

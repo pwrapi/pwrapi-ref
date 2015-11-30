@@ -5,6 +5,7 @@ bin_PROGRAMS = pwrdaemon
 pwrdaemon_SOURCES = \
 	pwrdaemon.cc \
 	router/router.cc \
+	router/torusCore.cc \
 	router/routerSelect.cc \
 	router/allocEvent.cc \
 	router/client.cc \
