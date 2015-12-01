@@ -171,18 +171,14 @@ struct CommGetSamplesReqEvent : public CommEvent {
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> attrName;
 		buf >> startTime;
-		printf("%s()\n",__func__);
 		buf >> period;
-		printf("%s() period=%f\n",__func__,period);
 		buf >> count; 
 		CommEvent::serialize_in(buf);
 	} 
 	virtual void serialize_out( SerialBuf& buf ) {
 		CommEvent::serialize_out(buf);
 		buf << count; 
-		printf("%s() period=%f\n",__func__,period);
 		buf << period;
-		printf("%s()\n",__func__);
 		buf << startTime;
 		buf << attrName;
 	} 
