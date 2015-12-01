@@ -27,6 +27,7 @@ TcpEventChannel::TcpEventChannel( AllocFuncPtr func, std::string config, std::st
 
     split( config, foo );
 
+	DBGX2(DBG_EC,"%s\n",getName().c_str());
 	if ( foo.find("server") == foo.end() ) {
 		m_fd = initServer( foo["listenPort"] );
 		m_chanFdMap[m_fd] = this;
@@ -40,7 +41,9 @@ TcpEventChannel::TcpEventChannel( AllocFuncPtr func, std::string config, std::st
 
 void TcpEventChannel::close()
 {
+	DBGX2(DBG_EC,"%s fd=%d\n",getName().c_str(),m_fd);
 	assert( m_fd != -1 );
+	m_chanFdMap.erase(m_fd);
 	::close( m_fd );
 	m_fd = -1;
 }
@@ -62,13 +65,13 @@ int TcpEventChannel::xx()
 TcpEventChannel::TcpEventChannel( AllocFuncPtr func, int fd, std::string name ) : 
 	EventChannel( func, name ), m_fd( fd )
 {
-	DBGX2(DBG_EC,"fd=%d name=`%s`\n",fd,name.c_str());
+	DBGX2(DBG_EC,"%s fd=%d\n",getName().c_str(),m_fd);
 	m_chanFdMap[fd] = this;
 }
 
 TcpEventChannel::~TcpEventChannel( ) 
 {
-	DBGX2(DBG_EC,"\n");
+	DBGX2(DBG_EC,"%s fd=%d\n",getName().c_str(),m_fd);
 	if ( m_fd > -1 ) ::close( m_fd );
 }
 int TcpEventChannel::initClient( std::string hostname, std::string portStr )
@@ -91,9 +94,9 @@ int TcpEventChannel::initClient( std::string hostname, std::string portStr )
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons( port );
 
-	DBGX2(DBG_EC,"serverPort=%d\n",port);
-
 	int ret = connect( fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)); 	
+
+	DBGX2(DBG_EC,"serverPort=%d fd=%d\n",port,ret);
 
 	return ret == 0 ? fd : -1; 
 }
@@ -115,12 +118,18 @@ int TcpEventChannel::setupRecv( int port )
     int fd = socket( AF_INET, SOCK_STREAM, 0 );
     assert( fd >= 0 ); 
 
+	int on = 1;
+	int status = setsockopt( fd, SOL_SOCKET, SO_REUSEADDR, 
+			 (const char*) &on, sizeof(on)); 
+	assert(0==status);
+
     struct sockaddr_in echoServAddr; /* Local address */
 
     memset(&echoServAddr, 0, sizeof(echoServAddr));
     echoServAddr.sin_family = AF_INET;
     echoServAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     echoServAddr.sin_port = htons(port);
+
 
     if (bind( fd, (struct sockaddr *) 
                                     &echoServAddr, sizeof(echoServAddr)) < 0) {
@@ -150,7 +159,7 @@ EventChannel* TcpEventChannel::accept( )
 	DBGX2(DBG_EC,"fd=%d\n",cliFd);
 	assert( cliFd >= 0 );
 	
-	return new TcpEventChannel( m_allocFunc, cliFd, getName() + "-accept" );
+	return new TcpEventChannel( m_allocFunc, cliFd, getName() + "-recv" );
 }
 #if 1 
 #define print(x,y)
@@ -259,21 +268,24 @@ ChannelSelect::Data* TcpChannelSelect::wait()
 {
     int     fdmax = 0;;
     fd_set  read_fds;
+    fd_set  write_fds;
 	EventChannel* chan;
 
-	DBGX2(DBG_EC,"\n");
 	do {
     	FD_ZERO( &read_fds );
+    	FD_ZERO( &write_fds );
 
 		std::map<EventChannel*,Data*>::iterator iter = m_chanMap.begin();
 
 		while ( iter != m_chanMap.end() ) {
     		int fd = static_cast<TcpEventChannel*>(iter->first)->getSelectFd();
 
-			//DBGX2(DBG_EC,"fd=%d\n",fd);
+			DBGX2(DBG_EC,"fd=%d %s\n",fd, 
+				static_cast<TcpEventChannel*>(iter->first)->getName().c_str());
 			if ( fd > -1 ) {
     			fdmax = fd > fdmax ? fd : fdmax; 
     			FD_SET( fd, &read_fds );
+    			FD_SET( fd, &write_fds );
 			}
 			++iter;
 		}
@@ -285,7 +297,7 @@ ChannelSelect::Data* TcpChannelSelect::wait()
 
     	for ( int i = 0; i <= fdmax; i++ ) {
         	if ( FD_ISSET( i, &read_fds ) ) {
-				DBGX2(DBG_EC,"\n");
+				DBGX2(DBG_EC,"selected %d\n",i);
 				chan = TcpEventChannel::selected( i );
 				break;
         	}
