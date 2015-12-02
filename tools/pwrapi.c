@@ -23,21 +23,22 @@ PWR_Grp get_type_objects( PWR_Obj self, PWR_ObjType type )
 {
     unsigned int i;
     size_t size;
-    PWR_Grp grp;
+    PWR_Grp cgrp, tgrp;
     PWR_Obj obj;
 
-    if( (grp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 ) {
+    if( (cgrp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 ) {
         printf( "Error: getting child objects from PowerAPI context failed\n" );
         return (PWR_Grp)0x0;
     }
-    size = PWR_GrpGetNumObjs( grp );
+    size = PWR_GrpGetNumObjs( cgrp );
     for( i = 0; i < size; i++ ) {
-        obj = PWR_GrpGetObjByIndx( grp, i );
+        obj = PWR_GrpGetObjByIndx( cgrp, i );
         if( PWR_ObjGetType( obj ) == type )
-            PWR_GrpAddObj( grp, obj );
+            PWR_GrpAddObj( tgrp, obj );
+        tgrp = get_type_objects( obj, type );
     }
 
-    return grp;
+    return tgrp;
 }
 
 int main( int argc, char* argv[] )
