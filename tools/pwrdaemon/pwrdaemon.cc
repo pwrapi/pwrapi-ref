@@ -1,8 +1,8 @@
 
-#include "router.h"
-#include "server.h"
 #include <pthread.h>
 #include <string.h>
+#include "router.h"
+#include "server.h"
 
 
 void* startRtrThread( void *);

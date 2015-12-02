@@ -46,7 +46,6 @@ int PWR_GetMinorVersion()
 
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
-	DBG( "\n" );
 	return new DistCntxt( type, role, name );
 }
 
@@ -102,7 +101,6 @@ int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrName type )
 
 int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts )
 {
-	DBG("\n");
     return OBJECT(obj)->attrGetValue( type, ptr, ts );
 }
 

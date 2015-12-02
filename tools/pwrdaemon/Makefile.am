@@ -20,3 +20,4 @@ pwrdaemon_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/pwr \
 
 pwrdaemon_LDADD = $(top_builddir)/src/pwr/libpwr.la \
 				  $(top_builddir)/src/tinyxml2/libtinyxml2.la
+pwrdaemon_LDFLAGS = -lpthread
