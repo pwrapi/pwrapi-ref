@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "treeCore.h"
 #include "router.h"
 #include "routerSelect.h"
