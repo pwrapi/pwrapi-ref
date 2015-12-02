@@ -11,12 +11,17 @@
 # distribution.
 #
 
-ROOT="${PWD}/../../../../.."
+ROOT=${HOME}/pwrGIT/dist/build/install
 EXAMPLE="${PWD}/.."
 
 export LD_LIBRARY_PATH="${ROOT}/lib:${LD_LIBRARY_PATH}"
 export DYLD_LIBRARY_PATH="${ROOT}/lib:${DYLD_LIBRARY_PATH}"
-export POWERAPI_CONFIG="${EXAMPLE}/config/dummySystem.xml"
-export POWERAPI_ROOT="plat.cab0.board0.node0"
+export POWERAPI_CONFIG="${EXAMPLE}/config/dummySystemCab0-daemon.xml"
+#export POWERAPI_ROOT="plat.cab0.board0.node0"
+export POWERAPI_ROOT="plat"
+export POWERAPI_SERVER="localhost"
+export POWERAPI_SERVER_PORT="5000"
 
-${EXAMPLE}/dummyTest
+echo ${DYLD_LIBRARY_PATH}
+
+$HOME/pwrGIT/dist/build/examples/dummyTest
