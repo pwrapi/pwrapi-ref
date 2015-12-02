@@ -12,6 +12,7 @@ typedef uint32_t RouterID;
 
 struct RouterCoreArgs {
 	virtual ~RouterCoreArgs() {}
+	std::string type;
 };
 
 class RouterCore {

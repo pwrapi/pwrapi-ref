@@ -17,5 +17,6 @@ pwrdaemon \
 --rtr.pwrApiConfig=$CONFIG \
 --rtr.clientPort=6000 \
 --rtr.serverPort=6001 \
---rtr.routerDim=0:6010:localhost:5010 \
+--rtr.routerType=tree \
+--rtr.routerInfo=0:5010:localhost:6010 \
 --rtr.routerId=1

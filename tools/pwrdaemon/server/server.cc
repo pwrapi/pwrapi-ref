@@ -28,7 +28,7 @@ Server::Server( int argc, char* argv[] )
 	}
 
     m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , "");
-	_DbgFlags = 0x1;
+	_DbgFlags = 0x5;
 	EventChannel* ctxChan = PWR_CntxtGetEventChannel( m_ctx );
     EventChannel* rtrChan = getEventChannel( "TCP", allocRtrEvent, 
 			"server=" + m_args.host + " serverPort=" + m_args.port, "router" );
@@ -117,7 +117,6 @@ static void initArgs( int argc, char* argv[], Args* args )
 			args->pwrApiServerPort = optarg;
             break;
           default: 
-			printf("asdfasdf\n");
 			print_usage();
         }
     }

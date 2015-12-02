@@ -66,7 +66,6 @@ class RouterData : public SelectData {
 			return true;
 		} else { 
         	if ( event->process( gen, m_chan ) ) { 
-				DBG("\n");
 				delete event;	
 			}	
 			return false;

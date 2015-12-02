@@ -6,6 +6,7 @@ pwrdaemon_SOURCES = \
 	pwrdaemon.cc \
 	router/router.cc \
 	router/torusCore.cc \
+	router/treeCore.cc \
 	router/routerSelect.cc \
 	router/allocEvent.cc \
 	router/client.cc \

@@ -6,6 +6,7 @@
 #include "routerEvent.h"
 #include "routerCore.h"
 #include "torusCore.h"
+#include "treeCore.h"
 
 using namespace PWR_Router;
 
@@ -30,23 +31,29 @@ Router::Router( int argc, char* argv[] ) :
     printf("client=%s server=%s\n", args.clientPort.c_str(), 
 												args.serverPort.c_str() );
 
-    EventChannel* clientChan =
+	if ( ! args.clientPort.empty()  )  {
+    	EventChannel* clientChan =
                 getEventChannel( "TCP", allocClientEvent, 
-						"listenPort=" + args.clientPort, "client" );
-    EventChannel* serverChan =
-                getEventChannel( "TCP", allocServerEvent, 
-						"listenPort=" + args.serverPort, "server" );
-
-
-    m_chanSelect->addChannel( clientChan,
+						"listenPort=" + args.clientPort, "client-listen" );
+    	m_chanSelect->addChannel( clientChan,
 				new AcceptData<EventData>(clientChan, &m_client ) );
-    m_chanSelect->addChannel( serverChan,
+	}
+	if ( ! args.serverPort.empty()  )  {
+    	EventChannel* serverChan =
+                getEventChannel( "TCP", allocServerEvent, 
+						"listenPort=" + args.serverPort, "server-listen" );
+    	m_chanSelect->addChannel( serverChan,
 				new AcceptData<EventData>(serverChan, &m_server ) );
+	}
 
     std::string XPOS_server;
     std::string XPOS_serverPort;
 
-	m_routerCore = new TorusCore( m_args.coreArgs, this );
+	if ( 0 == m_args.coreArgs->type.compare( "torus" ) ) {
+		m_routerCore = new TorusCore( m_args.coreArgs, this );
+	} else if ( 0 == m_args.coreArgs->type.compare( "tree" ) ) {
+		m_routerCore = new TreeCore( m_args.coreArgs, this );
+	}
 }
 
 int Router::work()
@@ -123,15 +130,19 @@ static void print_usage() {
     printf("%s()\n",__func__);
 }
 
+static void initTreeInfo( TreeArgs* args, std::string info );
+static void initTorusInfo( TorusArgs* args, std::string info );
+
 static void initArgs( int argc, char* argv[], Args* args )
 {
     int opt = 0;
     int long_index = 0;
-    enum { CLNT_PORT, SRVR_PORT, RTR_DIM, RTR_ID, PWRAPI_CONFIG };
+    enum { CLNT_PORT, SRVR_PORT, RTR_TYPE, RTR_INFO, RTR_ID, PWRAPI_CONFIG };
     static struct option long_options[] = {
         {"clientPort"           , required_argument, NULL, CLNT_PORT },
         {"serverPort"           , required_argument, NULL, SRVR_PORT },
-        {"routerDim"            , required_argument, NULL, RTR_DIM },
+        {"routerType"           , required_argument, NULL, RTR_TYPE },
+        {"routerInfo"           , required_argument, NULL, RTR_INFO },
         {"routerId"             , required_argument, NULL, RTR_ID },
 		{"pwrApiConfig"     	, required_argument, NULL, PWRAPI_CONFIG },
         {0,0,0,0}
@@ -153,36 +164,86 @@ static void initArgs( int argc, char* argv[], Args* args )
 		  case PWRAPI_CONFIG:
 			args->pwrApiConfig = optarg;
 			break;
-          case RTR_DIM:
-            {
-				TorusArgs* cArgs =	new TorusArgs;
-                std::string tmp = optarg;
-                size_t pos = tmp.find_first_of(':');
-                unsigned int dim = atoi( tmp.substr( 0, pos ).c_str() );
-				cArgs->dim.resize(dim+1);
-                if ( dim < cArgs->dim.size() ) {
-                    tmp = tmp.substr(pos+1);
-                    pos = tmp.find_first_of(':');
-                    cArgs->dim[ dim ].posPort = tmp.substr( 0, pos );
-                    tmp = tmp.substr(pos+1);
-                    pos = tmp.find_first_of(':');
-                    cArgs->dim[ dim ].negSrvr = tmp.substr( 0,pos );
-                    tmp = tmp.substr(pos+1);
-                    cArgs->dim[ dim ].negSrvrPort = tmp.substr( 0,pos+1 );
-                }
-				args->coreArgs = cArgs; 
+          case RTR_TYPE:
+			assert( ! args->coreArgs ); 
+			if ( 0 == strcmp( optarg, "torus" ) ) {
+				args->coreArgs = new TorusArgs;
+				args->coreArgs->type = optarg;
+			} else if ( 0 == strcmp( optarg, "tree" ) ) {
+				args->coreArgs = new TreeArgs;
+				args->coreArgs->type = optarg;
+			} else {
+				assert(0);
+			}
+			break;
+          case RTR_INFO:
+			assert( args->coreArgs );
+			if ( 0 == args->coreArgs->type.compare( "torus" ) ) {
+				initTorusInfo( static_cast<TorusArgs*>(args->coreArgs), optarg );
+			} else if ( 0 == args->coreArgs->type.compare( "tree" ) ) {
+				initTreeInfo( static_cast<TreeArgs*>(args->coreArgs), optarg );
+			}		
 
-            }
             break;
           default: print_usage();
             exit(-1);
         }
     }
 
-    if ( args->clientPort.empty() ||
-          args->serverPort.empty() ||
-          (RouterID) -1 == args->rtrId ) {
+    if ( (RouterID) -1 == args->rtrId ) {
         print_usage();
         exit(-1);
     }
+}
+
+void initTreeInfo( TreeArgs* args, std::string info )
+{
+    size_t pos = info.find_first_of(':');
+    unsigned int link = atoi( info.substr( 0, pos ).c_str() );
+	printf("link=%d\n",link);
+	args->links.resize( link+1);
+		
+   	info = info.substr(pos+1);
+    pos = info.find_first_of(':');
+    args->links[ link ].myListenPort = info.substr( 0, pos );
+
+    info = info.substr(pos+1);
+    pos = info.find_first_of(':');
+    args->links[ link ].otherHost = info.substr( 0,pos );
+
+   	info = info.substr(pos+1);
+
+	if ( link > 0 ) {
+   		pos = info.find_first_of(':');
+    	args->links[ link ].otherHostListenPort = info.substr( 0,pos );
+
+    	info = info.substr(pos+1);
+    	pos = info.find_first_of(':');
+    	args->links[ link ].nidStart = info.substr( 0,pos );
+
+    	info = info.substr(pos+1);
+		printf("'%s'\n",info.c_str());
+    	args->links[ link ].nidStop = info.substr( 0,pos +1);
+
+	} else {
+    	args->links[ link ].otherHostListenPort = info.substr( 0,pos+1 );
+	}
+
+}
+
+void initTorusInfo( TorusArgs* args, std::string info )
+{
+    size_t pos = info.find_first_of(':');
+    unsigned int dim = atoi( info.substr( 0, pos ).c_str() );
+	args->dim.resize(dim+1);
+    if ( dim < args->dim.size() ) {
+    	info = info.substr(pos+1);
+        pos = info.find_first_of(':');
+        args->dim[ dim ].posPort = info.substr( 0, pos );
+        info = info.substr(pos+1);
+        pos = info.find_first_of(':');
+        args->dim[ dim ].negSrvr = info.substr( 0,pos );
+        info = info.substr(pos+1);
+        args->dim[ dim ].negSrvrPort = info.substr( 0,pos+1 );
+	}
 }
