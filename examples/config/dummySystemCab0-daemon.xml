@@ -8,7 +8,6 @@
 
 <Devices>
     <device name="Dummy-node1" plugin="Dummy" initString="node1"/>
-    <device name="Dummy-node2" plugin="Dummy" initString="node2"/>
 </Devices>
 
 <Locations>
