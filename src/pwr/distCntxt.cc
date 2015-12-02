@@ -133,7 +133,7 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 		Config::ObjDev& dev = *iter;
 		std::string location = m_config->findObjLocation( objName );
 		if ( location.compare( m_myLocation ) ) {
-			DBG("not my device\n");
+			DBGX("not my device\n");
 			remote.insert( findObject( objName ) );
 			continue;
 		}

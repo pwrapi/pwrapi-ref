@@ -48,6 +48,7 @@ extern unsigned int _DbgFlags;
 
 #else
 
+#define DBG( fmt, ... )
 #define DBGX( fmt, args... )
 #define DBGX2( flag, fmt, ... )
 #define DBG2( fmt, args... )

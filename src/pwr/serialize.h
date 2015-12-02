@@ -3,6 +3,8 @@
 
 #include <assert.h>
 #include <vector>
+#include <stdio.h>
+#include <stdint.h>
 
 struct SerialBuf {
 

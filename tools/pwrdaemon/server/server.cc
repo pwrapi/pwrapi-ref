@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "server.h"
 
 #include "allocEvent.h"
