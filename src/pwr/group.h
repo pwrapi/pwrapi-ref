@@ -36,6 +36,13 @@ class Grp {
     Object* getObj( int i ) { return m_list[i]; }
 
     int add( Object* obj ) {
+        DBGX("%s\n",obj->name().c_str());
+        for ( unsigned i; i < m_list.size(); i ++ ) {
+            if ( m_list[i] == obj ) {
+                DBGX("duplicate\n");
+                return PWR_RET_FAILURE;
+            }
+        }
         m_list.push_back( obj );
         return PWR_RET_SUCCESS; 
     }

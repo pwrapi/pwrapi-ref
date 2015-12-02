@@ -14,7 +14,7 @@ Object* Cntxt::getObjByName( std::string name )
 
 Object* Cntxt::getSelf()
 {
-    DBGX("\n");
+    DBGX("root=%p\n",m_rootObj);
     return m_rootObj;
 }
 
@@ -33,7 +33,7 @@ Object* Cntxt::getParent( Object* obj )
 
 Grp* Cntxt::getChildren( Object* obj )
 {
-    DBGX("\n");
+    DBGX("%s\n",obj->name().c_str());
     Grp* grp = new Grp( this, "" );
     std::deque< std::string > children = m_config->findChildren( obj->name() );
 
