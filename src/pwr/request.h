@@ -18,6 +18,7 @@ class Request {
 		m_callback( callback ),
 		m_data( data ) 
 	{}
+	virtual ~Request() {}
 
 	virtual int wait( int* status ) = 0;
 	virtual int check( int* status ) = 0;

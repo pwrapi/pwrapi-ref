@@ -31,6 +31,7 @@ class DistRequest : public Request {
         if ( m_callback) {
             (m_callback)(m_data,retval);
         }
+		return false;
     }
 
 	void getSamples( DistCommReq*, CommGetSamplesRespEvent* );
