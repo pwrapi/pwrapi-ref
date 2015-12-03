@@ -141,6 +141,11 @@ int main( int argc, char* argv[] )
                 exit( 1 );
         }
 
+    if ( PWR_OBJ_INVALID == type || 0 == numattrs ) {
+        fprintf( stderr, usage, argv[0] );
+        exit( 1 );
+    } 
+
     if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application" )) == 0x0 ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
