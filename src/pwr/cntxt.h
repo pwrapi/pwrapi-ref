@@ -20,6 +20,7 @@ class AttrInfo;
 class Cntxt {
   public:
 	Cntxt() : m_rootObj( NULL ), m_config(NULL) {}
+	virtual ~Cntxt() {}
 
 	virtual Object* getEntryPoint();
 	virtual Object* getObjByName( std::string );
