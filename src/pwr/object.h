@@ -24,7 +24,7 @@ class Object {
 	Object( std::string name, PWR_ObjType type, Cntxt* ctx );
 
 	PWR_ObjType type() { return m_objType; } 
-	std::string name() { return m_name; } 
+	std::string& name() { return m_name; } 
 	Cntxt* getCntxt() { return m_cntxt; } 
 
 	virtual Object* parent();
