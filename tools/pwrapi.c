@@ -11,6 +11,7 @@
 
 #include "pwr.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,26 +20,31 @@
 
 #define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
-PWR_Grp get_type_objects( PWR_Obj self, PWR_ObjType type )
+
+int get_type_objects( PWR_Obj self, PWR_ObjType type, PWR_Grp outGroup )
 {
     unsigned int i;
     size_t size;
-    PWR_Grp cgrp, tgrp;
+    PWR_Grp cgrp;
     PWR_Obj obj;
 
-    if( (cgrp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 ) {
+    if( (cgrp=PWR_ObjGetChildren( self )) == PWR_NULL  ) {
         printf( "Error: getting child objects from PowerAPI context failed\n" );
-        return (PWR_Grp)0x0;
+        return -1;
     }
+
     size = PWR_GrpGetNumObjs( cgrp );
     for( i = 0; i < size; i++ ) {
         obj = PWR_GrpGetObjByIndx( cgrp, i );
-        if( PWR_ObjGetType( obj ) == type )
-            PWR_GrpAddObj( tgrp, obj );
-        tgrp = get_type_objects( obj, type );
+        if( PWR_ObjGetType( obj ) == type ) {
+            printf("add %s object\n",PWR_ObjGetName(obj));
+            int rc = PWR_GrpAddObj( outGroup, obj );
+            assert( rc!=PWR_RET_FAILURE );
+        }
+        int rc = get_type_objects( obj, type, outGroup );
+        if ( rc != 0 ) return rc;
     }
-
-    return tgrp;
+    return 0;
 }
 
 int main( int argc, char* argv[] )
@@ -59,7 +65,6 @@ int main( int argc, char* argv[] )
     PWR_AttrName attrs[100];
     PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
     double vals[NUM_ATTR(attrs)*1000];
-    int stats[NUM_ATTR(attrs)];
     static char usage[] =
         "usage: %s [-s samples] [-f freq] [-a attr] [-h]\n";
 
@@ -141,21 +146,34 @@ int main( int argc, char* argv[] )
         return -1;
     }
 
-    if( (self=PWR_CntxtGetEntryPoint( cntxt )) == 0x0 ) {
+
+    if( (self=PWR_CntxtGetEntryPoint( cntxt ) ) == 0x0 ) {
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }
 
-    if( type != PWR_OBJ_INVALID && (grp=get_type_objects( self, type )) == (PWR_Grp)0x0 ) {
+    grp = PWR_GrpCreate( cntxt, "tmp" );
+    assert( PWR_NULL != grp );
+
+    if( type != PWR_OBJ_INVALID && 0 != get_type_objects( self, type, grp ) ) {
         printf( "Error: getting core objects failed\n" );
         return -1;
     }
 
+    PWR_Status stats = PWR_StatusCreate();
     for( i = 0; i < samples; i++ ) {
         gettimeofday( &t0, 0x0 );
 
-        if( PWR_GrpAttrGetValues( grp, numattrs, attrs, vals, vals_ts, stats ) == PWR_RET_INVALID ) {
-            printf( "Error: reading of PowerAPI attribute failed\n" );
+        if( PWR_GrpAttrGetValues( grp, numattrs, attrs, vals, vals_ts, stats ) 
+                != PWR_RET_SUCCESS ) 
+        {
+            PWR_AttrAccessError error; 
+            int rc = PWR_StatusPopError( stats, &error );  
+
+            printf("Error: reading of `%s` failed for object `%s` with error %d\n",
+                    PWR_AttrGetTypeString( error.name), 
+                    PWR_ObjGetName(error.obj), error.error );
+
             return -1;
         }
 
