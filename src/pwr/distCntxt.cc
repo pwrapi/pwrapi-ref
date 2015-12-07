@@ -11,6 +11,7 @@
 #include "debug.h"
 #include "group.h"
 #include "xmlConfig.h"
+#include "pyConfig.h"
 #include "util.h"
 #include "device.h"
 
@@ -33,13 +34,19 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
         printf("error: environment variable `POWERAPI_CONFIG` must be set\n");
         exit(-1);
     }
+	
     DBGX("configFile=`%s`\n",configFile.c_str());
     if( getenv( "POWERAPI_LOCATION" ) != NULL ) {
-   		m_myLocation = getenv( "POWERAPI_LOCATION" );
-	}
-	DBGX("location=`%s`\n",m_myLocation.c_str());
+        m_myLocation = getenv( "POWERAPI_LOCATION" );
+    }
+    DBGX("location=`%s`\n",m_myLocation.c_str());
 
-    m_config = new XmlConfig( configFile );
+    size_t pos = configFile.find_last_of( "." );
+    if ( 0 == configFile.compare(pos,4,".xml") ) {
+        m_config = new XmlConfig( configFile );
+    } else {
+        m_config = new PyConfig( configFile );
+    }
 
 #if 0
     m_config->print( std::cout );

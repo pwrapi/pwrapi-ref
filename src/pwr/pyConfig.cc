@@ -90,7 +90,6 @@ std::deque< Config::Plugin > PyConfig::findPlugins( )
 
 	PyObject* pValue = PyObject_CallObject( pFunc, NULL );
 
-	//PyObject_Print( pValue, stderr, Py_PRINT_RAW ); printf("\n");
 	for ( int i; i < PyList_Size( pValue); i++ ) {
 
 		PyObject* tmp = PyList_GetItem(pValue,i);
@@ -117,7 +116,6 @@ std::deque< Config::SysDev > PyConfig::findSysDevs()
 
 	PyObject* pValue = PyObject_CallObject( pFunc, NULL );
 
-	//PyObject_Print( pValue, stderr, Py_PRINT_RAW ); printf("\n");
 	for ( int i; i < PyList_Size( pValue); i++ ) {
 
 		PyObject* tmp = PyList_GetItem(pValue,i);
@@ -230,7 +228,6 @@ std::deque< std::string > PyConfig::findChildren( std::string name )
 	
 	pValue = PyObject_CallObject( pFunc, pArgs );
 
-	//PyObject_Print( pValue, stderr, Py_PRINT_RAW );
 	for ( int i; i < PyList_Size( pValue); i++ ) {
 		char* str = PyString_AsString(PyList_GetItem(pValue,i) );
 		DBGX2(DBG_CONFIG,"%s \n", str );

@@ -54,7 +54,6 @@ class Config {
 	virtual std::deque< ObjDev > findObjDevs( std::string, PWR_AttrName ) = 0;
 	virtual std::deque< Plugin > findPlugins() = 0;
 	virtual std::deque< SysDev > findSysDevs() = 0;
-	virtual std::deque< std::string > findObjType( PWR_ObjType ) = 0; 
     virtual Location findLocation( std::string ) = 0;
 
 	virtual bool hasObject( const std::string ) = 0;

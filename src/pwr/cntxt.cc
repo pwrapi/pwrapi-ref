@@ -40,6 +40,7 @@ Grp* Cntxt::getChildren( Object* obj )
     std::deque< std::string >::iterator iter = children.begin();
 
     for ( ; iter != children.end(); ++iter ) {
+        DBGX("%s\n", (*iter).c_str() );
         grp->add( findObject( *iter ) );
     }
     return grp;
@@ -104,7 +105,9 @@ Object* Cntxt::createObject( std::string name, PWR_ObjType type,
 Object* Cntxt::findObject( std::string name ) {
     DBGX("obj=`%s`\n",name.c_str());
     if ( m_objMap.find( name ) == m_objMap.end() ) {
-        m_objMap[name] = createObject(name, m_config->objType(name), this );
+        PWR_ObjType type = m_config->objType(name);
+        assert( type != PWR_OBJ_INVALID );
+        m_objMap[name] = createObject(name, type, this );
     }
 
     return m_objMap[name];;

@@ -1,13 +1,13 @@
 lib_LTLIBRARIES = libpwr.la
 
-include_HEADERS = pwr.h pwrtypes.h pwrdev.h eventChannel.h events.h event.h eventType.h serialize.h tcpEventChannel.h util.h xmlConfig.h config.h
+include_HEADERS = pwr.h pwrtypes.h pwrdev.h eventChannel.h events.h event.h eventType.h serialize.h tcpEventChannel.h util.h pyConfig.h xmlConfig.h config.h
 
 # Power API Framework
-libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc object.cc xmlConfig.cc deviceStat.cc
+libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc object.cc pyConfig.cc xmlConfig.cc deviceStat.cc
 libpwr_la_SOURCES += distCntxt.cc distComm.cc distRequest.cc distObject.cc eventChannel.cc tcpEventChannel.cc allocEvent.cc
 
-libpwr_la_LDFLAGS = $(LDFLAGS) -version-info 1:0:1
-libpwr_la_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/tinyxml2
+libpwr_la_LDFLAGS = $(LDFLAGS) $(PYTHON_LDFLAGS) -version-info 1:0:1
+libpwr_la_CPPFLAGS = $(CPPFLAGS) $(PYTHON_CPPFLAGS) -I$(top_srcdir)/src/tinyxml2
 libpwr_la_LIBADD = $(top_builddir)/src/tinyxml2/libtinyxml2.la
 
 if HAVE_XMLRPC
