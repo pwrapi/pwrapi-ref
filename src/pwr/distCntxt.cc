@@ -44,17 +44,24 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
     size_t pos = configFile.find_last_of( "." );
     if ( 0 == configFile.compare(pos,4,".xml") ) {
         m_config = new XmlConfig( configFile );
-    } else {
+    } else if ( 0 == configFile.compare(pos,3,".py") ) {
         m_config = new PyConfig( configFile );
-    }
+    } else {
+		assert(0);
+	}
 
 #if 0
     m_config->print( std::cout );
 #endif
 
-    if( getenv( "POWERAPI_ROOT" ) != NULL ) {
-    	DBGX("root=`%s`\n",getenv( "POWERAPI_ROOT" ) );
-        m_rootObj = findObject( getenv( "POWERAPI_ROOT" ) );
+    char* tmp = getenv( "POWERAPI_ROOT" );
+    if( tmp != NULL ) {
+    	DBGX("root=`%s`\n", tmp );
+        m_rootObj = findObject(tmp);
+		if ( ! m_rootObj ) {
+        	printf("error: `POWERAPI_ROOT=%s` is invalid\n",tmp);
+        	exit(-1);
+		}
     } else {
         printf("error: environment variable `POWERAPI_ROOT` must be set\n");
         exit(-1);
@@ -100,21 +107,45 @@ Object* DistCntxt::createObject( std::string name, PWR_ObjType type,
     return new DistObject( name, type, cntxt );
 }
 
-static void fpOp( void* inout, void* in )
+static void sumOp( void* out, void* in, size_t num )
 {
-	DBG("%f %f\n",*(double*)inout,*(double*)in);
-	*(double*)inout += *(double*) in;
+	double tmp = 0;
+	for ( int i = 0; i < num; i++) {
+		DBG("%f\n",((double*)in)[i]);
+		tmp += ((double*)in)[i];
+	}
+	*(double*)out = tmp;
 }
 
-PWR_Time timeOp( PWR_Time in1, PWR_Time in2 )
+static void avgOp( void* out, void* in, size_t num )
 {
-	return in1 < in2 ? in2 : in1;
+	double tmp = 0;
+	for ( int i = 0; i < num; i++) {
+		DBG("%f\n",((double*)in)[i]);
+		tmp += ((double*)in)[i];
+	}
+	*(double*)out = tmp/num;
+}
+
+static PWR_Time timeOp( std::vector<PWR_Time> x )
+{
+	return x[0];
 }
 
 AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 {
 	DBGX("obj='%s' attr=%s\n",obj->name().c_str(),attrNameToString(attrName));
-	AttrInfo* attrInfo = new AttrInfo( fpOp, timeOp );
+
+    std::string op = m_config->findAttrOp( obj->name(),attrName );
+    AttrInfo::OpFuncPtr opFunc = NULL;
+    if ( ! op.compare("SUM") ) {
+        opFunc = sumOp;
+    } else if ( ! op.compare("AVG") ) {
+        opFunc = avgOp;
+    }
+    assert(opFunc);
+
+	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp );
 
    	std::set<Object*> remote;
 	traverse( obj->name(), attrName, attrInfo->devices, remote );
@@ -127,9 +158,18 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 	return attrInfo;
 }
 void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
-                    std::deque<Device*>& local, std::set<Object*>& remote )
+                    std::vector<Device*>& local, std::set<Object*>& remote )
 {
 	DBGX("obj='%s' attr=%s\n",objName.c_str(),attrNameToString(attrName));
+
+	std::string objLocation = m_config->findObjLocation( objName );
+	DBGX("myloc=%s objLoc=%s\n",m_myLocation.c_str(), objLocation.c_str());
+	if ( objLocation.compare( m_myLocation ) ) {
+    	Object* tmp = findObject( objName ); 
+        assert( tmp );
+		remote.insert( tmp );
+		return;
+	}
 
 	std::deque< Config::ObjDev > objDev = 
 			m_config->findObjDevs( objName, attrName ); 
@@ -141,7 +181,9 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 		std::string location = m_config->findObjLocation( objName );
 		if ( location.compare( m_myLocation ) ) {
 			DBGX("not my device\n");
-			remote.insert( findObject( objName ) );
+            Object* tmp = findObject( objName );
+            assert( tmp );
+			remote.insert( tmp );
 			continue;
 		}
 
@@ -177,14 +219,7 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 
 	DBGX("found %lu children\n",children.size());
 	for ( ; j != children.end(); ++j ) {
-		std::string objLocation = m_config->findObjLocation( *j );
-		DBGX("myloc=%s objLoc=%s\n",m_myLocation.c_str(), objLocation.c_str());
-		if ( 0 == objLocation.compare( m_myLocation ) ) {
-			traverse( *j, attrName, local, remote );
-		} else {
-			DBGX("obj=`%s` location=`%s`\n",(*j).c_str(), objLocation.c_str() );
-			remote.insert( findObject( *j ) );
-		}
+		traverse( *j, attrName, local, remote );
 	}
 }
 

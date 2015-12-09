@@ -75,17 +75,20 @@ int Object::attrGetValuesDevice( AttrInfo& info, PWR_AttrName name,
 		            void* buf, PWR_Time* timeStamp )
 {
 	DBGX("\n");
-	std::deque<Device*>::iterator iter = info.devices.begin();
 		
-	for ( ; iter != info.devices.end(); ++iter ) {
-		uint64_t value;
-		PWR_Time tmpTS;
-		int retval = (*iter)->getValue( name, &value, 8, &tmpTS );
+	std::vector<uint64_t> value(info.devices.size());
+	std::vector<PWR_Time> tmpTS(info.devices.size());
+
+	for ( unsigned i = 0 ; i < info.devices.size(); i++ ) {
+		int retval = info.devices[i]->getValue( name, &value[i], 8, &tmpTS[i] );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
-		info.operation( buf, &value );
-		*timeStamp = info.calcTime( *timeStamp, tmpTS );
+	}
+
+	if ( info.devices.size() ) {
+		info.operation( buf, &value[0], value.size() );
+		*timeStamp = info.calcTime( tmpTS );
 	}
 	return PWR_RET_SUCCESS;
 }
@@ -121,9 +124,8 @@ int Object::attrSetValuesDevice( AttrInfo& info, PWR_AttrName name,
 {
 	DBGX("\n");
 
-	std::deque<Device*>::iterator iter = info.devices.begin();
-	for ( ; iter != info.devices.end(); ++iter ) {
-		int retval = (*iter)->setValue( name, buf, 8 );
+	for ( unsigned i = 0 ; i < info.devices.size(); i++ ) {
+		int retval = info.devices[i]->setValue( name, buf, 8 );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
@@ -172,9 +174,8 @@ int Object::attrStartLog( PWR_AttrName name )
 
 	AttrInfo& info = *m_attrInfo[name];
 
-	std::deque<Device*>::iterator iter = info.devices.begin();
-	for ( ; iter != info.devices.end(); ++iter ) {
-		int retval = (*iter)->startLog( name );
+	for ( unsigned i = 0 ; i < info.devices.size(); i++ ) {
+		int retval = info.devices[i]->startLog( name );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
@@ -194,9 +195,8 @@ int Object::attrStopLog( PWR_AttrName name )
 
 	AttrInfo& info = *m_attrInfo[name];
 
-	std::deque<Device*>::iterator iter = info.devices.begin();
-	for ( ; iter != info.devices.end(); ++iter ) {
-		int retval = (*iter)->stopLog( name );
+	for ( unsigned i = 0; i < info.devices.size(); i++ ) {
+		int retval = info.devices[i]->stopLog( name );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
@@ -216,12 +216,11 @@ int Object::attrGetSamples( PWR_AttrName name, PWR_Time* ts,
 
 	AttrInfo& info = *m_attrInfo[name];
 
-	std::deque<Device*>::iterator iter = info.devices.begin();
-	for ( ; iter != info.devices.end(); ++iter ) {
+	for ( unsigned i = 0; i < info.devices.size(); i++ ) {
 		std::vector<uint64_t> data(*count);
 		unsigned int tCnt = *count; 
 		PWR_Time tStart;
-		int retval = (*iter)->getSamples( name, &tStart, period, &tCnt, &data[0] );
+		int retval = info.devices[i]->getSamples( name, &tStart, period, &tCnt, &data[0] );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}

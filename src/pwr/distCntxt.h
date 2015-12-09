@@ -2,8 +2,8 @@
 #ifndef _DIST_CNTXT_H
 #define _DIST_CNTXT_H
 
+#include <vector>
 #include <map>
-#include <deque>
 
 #include "cntxt.h"
 #include "pwrdev.h"
@@ -27,7 +27,7 @@ class DistCntxt : public Cntxt {
 
   private:
 	void traverse( std::string objName, PWR_AttrName,
-					std::deque<Device*>&, std::set<Object*>& );
+					std::vector<Device*>&, std::set<Object*>& );
 
 	Communicator* getCommunicator( std::set<Object*> objects );
 	void initPlugins( Config& cfg );

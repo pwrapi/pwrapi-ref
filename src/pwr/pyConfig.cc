@@ -61,6 +61,7 @@ bool PyConfig::hasObject( const std::string name )
 
 PWR_ObjType PyConfig::objType( const std::string name )
 {
+	PWR_ObjType type = PWR_OBJ_INVALID;
 	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "getObjType" );
 	assert(pFunc);
 	PyObject* pArgs = PyTuple_New( 1 );
@@ -73,11 +74,13 @@ PWR_ObjType PyConfig::objType( const std::string name )
 	
 	pValue = PyObject_CallObject( pFunc, pArgs );
 
-	assert(pValue);
-	char* tmp = PyString_AsString(pValue);
+	if ( pValue ) {
+		type = objTypeStrToInt( PyString_AsString(pValue) );
+	}
+	DBGX2(DBG_CONFIG,"obj=`%s` type=%s\n",
+                    name.c_str(),objTypeToString(type).c_str());
 
-	DBGX2(DBG_CONFIG,"obj=`%s` type=%s\n",name.c_str(),tmp);
-	return objTypeStrToInt( tmp );
+	return type;
 }
 
 std::deque< Config::Plugin > PyConfig::findPlugins( )
@@ -137,10 +140,11 @@ std::deque< Config::SysDev > PyConfig::findSysDevs()
 std::deque< Config::ObjDev > 
 			PyConfig::findObjDevs( std::string name, PWR_AttrName attr )
 {
-	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
 	std::deque< Config::ObjDev > devs;
+	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
+                            name.c_str(),attrNameToString(attr).c_str());
 
-	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findObjDevs" );
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findAttrDevs" );
 	assert(pFunc);
 	PyObject* pArgs = PyTuple_New( 2 );
 	assert(pArgs);
@@ -177,7 +181,8 @@ std::deque< std::string >
         PyConfig::findAttrChildren( std::string name, PWR_AttrName attr )
 {
 	std::deque< std::string > children;
-	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
+	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
+                            name.c_str(),attrNameToString(attr).c_str());
 
 	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findAttrChildren" );
 	assert(pFunc);
@@ -208,7 +213,32 @@ std::deque< std::string >
 
 std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 {
-	assert(0);
+	std::string retval;
+	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
+							name.c_str(),attrNameToString(attr).c_str());
+
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findAttrOp" );
+	assert(pFunc);
+
+	PyObject* pArgs = PyTuple_New( 2 );
+	assert(pArgs);
+
+	PyObject* pValue = PyString_FromString( name.c_str() );
+	assert(pValue);
+
+	PyTuple_SetItem( pArgs, 0, pValue );
+
+	pValue = PyString_FromString( attrNameToString(attr).c_str() );
+	assert(pValue);
+	PyTuple_SetItem( pArgs, 1, pValue );
+	
+	pValue = PyObject_CallObject( pFunc, pArgs );
+	assert(pValue);
+
+	retval = PyString_AsString(pValue );
+	DBGX2(DBG_CONFIG,"%s \n", retval.c_str() );
+
+	return retval;
 }
 
 std::deque< std::string > PyConfig::findChildren( std::string name )
@@ -245,13 +275,51 @@ Config::Location PyConfig::findLocation( std::string name )
 std::string PyConfig::findParent( std::string name )
 {
 	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
-	assert(0);
+	std::string retval;
+
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findParent" );
+	assert(pFunc);
+	PyObject* pArgs = PyTuple_New( 1 );
+	assert(pArgs);
+
+	PyObject* pValue = PyString_FromString( name.c_str() );
+	assert(pValue);
+
+	PyTuple_SetItem( pArgs, 0, pValue );
+	
+	pValue = PyObject_CallObject( pFunc, pArgs );
+
+	if ( pValue ) {
+		retval = PyString_AsString(pValue);
+	}
+	DBGX2(DBG_CONFIG,"%s\n", retval.c_str() );
+
+	return retval;
 }
 
 std::string PyConfig::findObjLocation( std::string name )
 {
 	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
-	return "";
+	std::string retval;
+
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findObjLocation" );
+	assert(pFunc);
+	PyObject* pArgs = PyTuple_New( 1 );
+	assert(pArgs);
+
+	PyObject* pValue = PyString_FromString( name.c_str() );
+	assert(pValue);
+
+	PyTuple_SetItem( pArgs, 0, pValue );
+	
+	pValue = PyObject_CallObject( pFunc, pArgs );
+
+	if ( pValue ) {
+		retval = PyString_AsString(pValue);
+	}
+	DBGX2(DBG_CONFIG,"%s\n", retval.c_str() );
+
+	return retval;
 }
 
 std::string PyConfig::objTypeToString( PWR_ObjType type )
@@ -266,8 +334,8 @@ std::string PyConfig::objTypeToString( PWR_ObjType type )
     case PWR_OBJ_NIC:      return "Nic";
     case PWR_OBJ_MEM:      return "Memory";
     case PWR_OBJ_INVALID:  return "Invalid";
+    default: return "";
     }
-    return NULL;
 }
 
 PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )

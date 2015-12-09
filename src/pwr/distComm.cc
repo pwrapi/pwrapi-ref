@@ -15,10 +15,9 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 {
 	DBGX("num objects %lu\n", objects.size() );
 	m_ec = cntxt->getEventChannel();
+	assert(m_ec);
 
-	DBGX("\n");
 	CommCreateEvent* ev = new CommCreateEvent();
-	DBGX("\n");
 	m_commID = ev->commID = m_currentCommID++;
 
 	std::set<Object*>::iterator iter = objects.begin();
@@ -26,9 +25,7 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 		ev->members.push_back((*iter)->name());
 	}
 
-	DBGX("\n");
 	m_ec->sendEvent( ev );
-	DBGX("\n");
 }
 
 void DistComm::getValue( PWR_AttrName attr, CommReq* req )

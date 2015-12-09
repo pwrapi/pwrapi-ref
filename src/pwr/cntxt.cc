@@ -25,8 +25,13 @@ Object* Cntxt::getEntryPoint() {
 Object* Cntxt::getParent( Object* obj )
 {
     std::string parentName = m_config->findParent( obj->name() );
+
+    if ( parentName.empty() ) return NULL;
+
     if ( m_objMap.find(parentName) == m_objMap.end() ) {
-        m_objMap[ parentName ] = findObject( parentName );
+        Object* tmp = findObject( parentName );
+        assert( tmp );
+        m_objMap[ parentName ] = tmp;
     }
     return m_objMap[ parentName ];
 }
@@ -41,7 +46,9 @@ Grp* Cntxt::getChildren( Object* obj )
 
     for ( ; iter != children.end(); ++iter ) {
         DBGX("%s\n", (*iter).c_str() );
-        grp->add( findObject( *iter ) );
+        Object* tmp = findObject( *iter );
+        assert( tmp );
+        grp->add( tmp ); 
     }
     return grp;
 }
@@ -106,7 +113,9 @@ Object* Cntxt::findObject( std::string name ) {
     DBGX("obj=`%s`\n",name.c_str());
     if ( m_objMap.find( name ) == m_objMap.end() ) {
         PWR_ObjType type = m_config->objType(name);
-        assert( type != PWR_OBJ_INVALID );
+        if( type == PWR_OBJ_INVALID ) {
+            return NULL;
+        }
         m_objMap[name] = createObject(name, type, this );
     }
 
@@ -126,7 +135,9 @@ void Cntxt::findAllObjType( Object* obj, PWR_ObjType type, Grp* grp )
     std::deque< std::string >::iterator iter = children.begin();
 
     for ( ; iter != children.end(); ++iter ) {
-        findAllObjType( findObject( *iter), type, grp );
+        Object* tmp = findObject( *iter );
+        assert( tmp );
+        findAllObjType( tmp, type, grp );
     }
 }
 
