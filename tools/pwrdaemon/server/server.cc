@@ -29,13 +29,16 @@ Server::Server( int argc, char* argv[] )
 		setenv( "POWERAPI_SERVER_PORT", m_args.pwrApiServerPort.c_str(), 0 );  
 	}
 
-    m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , "");
+	m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , "");
+	assert(m_ctx);
+
 	_DbgFlags = 0x5;
 	EventChannel* ctxChan = PWR_CntxtGetEventChannel( m_ctx );
     EventChannel* rtrChan = getEventChannel( "TCP", allocRtrEvent, 
 			"server=" + m_args.host + " serverPort=" + m_args.port, "router" );
 
 	m_chanSelect = getChannelSelect("TCP");
+	assert( m_chanSelect );
 	if ( ctxChan ) {
     	m_chanSelect->addChannel( ctxChan, new CntxtData( ctxChan ) ); 
 	}

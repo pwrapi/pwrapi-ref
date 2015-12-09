@@ -2,6 +2,7 @@
 #include <debug.h>
 #include "router.h"
 #include "xmlConfig.h"
+#include "pyConfig.h"
 #include "allocEvent.h"
 #include "routerEvent.h"
 #include "routerCore.h"
@@ -21,7 +22,15 @@ Router::Router( int argc, char* argv[] ) :
 	initArgs( argc, argv, &m_args );
 	_DbgFlags = 0x5;
 	printf("config='%s'\n",m_args.pwrApiConfig.c_str() );
-	m_config = new PowerAPI::XmlConfig( m_args.pwrApiConfig );
+
+	size_t pos = m_args.pwrApiConfig.find_last_of( "." );
+	if ( 0 == m_args.pwrApiConfig.compare(pos,4,".xml") ) {	
+		m_config = new PowerAPI::XmlConfig( m_args.pwrApiConfig );
+	} else if ( 0 == m_args.pwrApiConfig.compare(pos,3,".py") ) {
+		m_config = new PowerAPI::PyConfig( m_args.pwrApiConfig );
+	} else {
+		assert(0);
+	}
 
 	m_chanSelect = getChannelSelect( "TCP" );
 
