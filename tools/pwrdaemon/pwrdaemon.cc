@@ -47,13 +47,13 @@ int main( int argc, char* argv[] )
 	}
 
 	if ( rtrThread ) {
-		printf("wait for router thread\n");
+		printf("wait for router thread to exit\n");
 		rc = pthread_join( rtrThread, NULL );
 		assert(0==rc);
 	}
 
 	if ( srvrThread ) {
-		printf("wait for router thread\n");
+		printf("wait for server thread to exit\n");
 		rc = pthread_join( srvrThread, NULL );
 		assert(0==rc);
 	}
