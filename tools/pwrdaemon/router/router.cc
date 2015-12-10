@@ -1,4 +1,6 @@
 
+#include <string>
+#include <fstream>
 #include <debug.h>
 #include "router.h"
 #include "xmlConfig.h"
@@ -19,9 +21,11 @@ Router::Router( int argc, char* argv[] ) :
     m_router( this, &Router::addRouterChan, &Router::delRouterChan ),
     m_chanSelect(NULL)
 {
+    if ( NULL != getenv( "POWERAPI_DEBUG" ) ) {
+        _DbgFlags = atoi( getenv( "POWERAPI_DEBUG" ) );
+    }
 	initArgs( argc, argv, &m_args );
-	_DbgFlags = 0x5;
-	printf("config='%s'\n",m_args.pwrApiConfig.c_str() );
+	DBGX("config='%s'\n",m_args.pwrApiConfig.c_str() );
 
 	size_t pos = m_args.pwrApiConfig.find_last_of( "." );
 	if ( 0 == m_args.pwrApiConfig.compare(pos,4,".xml") ) {	
@@ -36,8 +40,8 @@ Router::Router( int argc, char* argv[] ) :
 
 	Args& args= m_args;
 
-    printf("rtrId=%d\n", args.rtrId );
-    printf("client=%s server=%s\n", args.clientPort.c_str(), 
+    DBGX("rtrId=%d\n", args.rtrId );
+    DBGX("client=%s server=%s\n", args.clientPort.c_str(), 
 												args.serverPort.c_str() );
 
 	if ( ! args.clientPort.empty()  )  {
@@ -63,6 +67,31 @@ Router::Router( int argc, char* argv[] ) :
 	} else if ( 0 == m_args.coreArgs->type.compare( "tree" ) ) {
 		m_routerCore = new TreeCore( m_args.coreArgs, this );
 	}
+
+	initRouteTable( m_args.routeTable );
+}
+
+void Router::initRouteTable( std::string file )
+{		
+	std::ifstream fs;
+	DBGX("%s\n",file.c_str());
+	fs.open( file.c_str(), std::ifstream::in  );
+	if ( fs.fail() ) {
+		printf("can't read route file %s\n", file.c_str());	
+	}
+
+	std::string tmpStr;	
+	while( ! std::getline( fs, tmpStr, '\n' ).eof() ) {
+		size_t pos1 = tmpStr.find_first_of(":");
+		size_t pos2 = tmpStr.find_last_of(":");
+
+		
+		RouterID rtrID = atoi( tmpStr.substr(pos1+1, pos2-1).c_str() );
+		ServerID srvrID = atoi( tmpStr.substr(pos2+1).c_str() );
+		DBGX("%s %d %d\n",tmpStr.substr(0,pos1).c_str(), rtrID, srvrID );
+
+		m_routeTable[ tmpStr.substr( 0, pos1)  ] = APP_ID( rtrID, srvrID );  
+	}
 }
 
 int Router::work()
@@ -78,7 +107,13 @@ int Router::work()
 }
 
 void Router::sendEvent( ObjID destObj, Event* ev ) {
-	sendEvent( findDestApp( destObj ), ev ); 	
+	AppID destID = findDestApp( destObj );
+	DBGX("dest=`%s` AppID=%lx\n", destObj.c_str(), destID );
+	if ( -1 == destID ) {
+		printf("Could not route %s, drop event\n",destObj.c_str());
+		return;
+	}
+	sendEvent( destID, ev ); 	
 }
 
 void Router::sendEvent( AppID dest, Event* ev ) {
@@ -91,17 +126,17 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 	if ( rtrID == m_args.rtrId ) {
 		DBGX("local channel\n");
 		ec = findServerChan( srvrID ); 
-		//ec = findServerChan( "daemon-cab0" ); 
 	} else {
 		DBGX("router channel\n");
 		ec = findRtrChan( rtrID );
 	}
+	assert(ec);
 
 	if ( ev->type == Router2Router ) {
 		RouterEvent* rev = static_cast<RouterEvent*>(ev);
 		DBGX("is RouterEvent\n");
 
-		if ( rtrID == m_args.rtrId && rev->isResponse ) {
+		if ( rtrID == m_args.rtrId && -1 == srvrID ) {
 			Event* pev = rev->getPayload( allocServerEvent );
 			DBGX("call process\n");
 			if ( pev->process( this ) ) {
@@ -111,8 +146,9 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 		} 
 
 	} else {
-		DBGX("create RouterEvent\n");
-		AppID src = APP_ID( m_args.rtrId, 0 );
+		DBGX("rtrId%d\n",m_args.rtrId);
+		AppID src = APP_ID( m_args.rtrId, -1 );
+		DBGX("create RouterEvent src=%#lx dest=%#lx\n",src,dest);
 		RouterEvent* rev = new RouterEvent( src, dest, ev );
 		ev = rev;
 	}
@@ -122,7 +158,12 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 
 AppID Router::findDestApp( ObjID id ) {
 	DBGX("%s\n",id.c_str());
-	return APP_ID( (m_args.rtrId + 1) % 2, 0 );
+	return findRoute( id );
+	AppID retval = -1;
+	if ( m_routeTable.find(id) != m_routeTable.end() ) {
+		retval = m_routeTable[id];
+	}
+	return retval; 
 }	
 
 EventChannel* Router::findRtrChan( RouterID id ) {
@@ -131,7 +172,10 @@ EventChannel* Router::findRtrChan( RouterID id ) {
 }
 EventChannel* Router::findServerChan( ServerID id ) {
 	DBGX("server id %d\n", id );
-	return m_localMap[id];
+	if ( -1 == id  ) {
+	} else {
+		return m_localMap[id];
+	}
 }
 
 #include <getopt.h>
@@ -146,13 +190,14 @@ static void initArgs( int argc, char* argv[], Args* args )
 {
     int opt = 0;
     int long_index = 0;
-    enum { CLNT_PORT, SRVR_PORT, RTR_TYPE, RTR_INFO, RTR_ID, PWRAPI_CONFIG };
+    enum { CLNT_PORT, SRVR_PORT, RTR_TYPE, RTR_INFO, RTR_ID, PWRAPI_CONFIG, RTR_TABLE };
     static struct option long_options[] = {
         {"clientPort"           , required_argument, NULL, CLNT_PORT },
         {"serverPort"           , required_argument, NULL, SRVR_PORT },
         {"routerType"           , required_argument, NULL, RTR_TYPE },
         {"routerInfo"           , required_argument, NULL, RTR_INFO },
         {"routerId"             , required_argument, NULL, RTR_ID },
+        {"routeTable"           , required_argument, NULL, RTR_TABLE },
 		{"pwrApiConfig"     	, required_argument, NULL, PWRAPI_CONFIG },
         {0,0,0,0}
     };
@@ -169,6 +214,9 @@ static void initArgs( int argc, char* argv[], Args* args )
             break;
           case RTR_ID:
             args->rtrId = atoi(optarg);
+            break;
+          case RTR_TABLE:
+            args->routeTable = optarg;
             break;
 		  case PWRAPI_CONFIG:
 			args->pwrApiConfig = optarg;
@@ -199,7 +247,8 @@ static void initArgs( int argc, char* argv[], Args* args )
         }
     }
 
-    if ( (RouterID) -1 == args->rtrId ) {
+    if ( (RouterID) -1 == args->rtrId 
+		|| args->routeTable.empty() ) {
         print_usage();
         exit(-1);
     }
@@ -209,7 +258,6 @@ void initTreeInfo( TreeArgs* args, std::string info )
 {
     size_t pos = info.find_first_of(':');
     unsigned int link = atoi( info.substr( 0, pos ).c_str() );
-	printf("link=%d\n",link);
 	args->links.resize( link+1);
 		
    	info = info.substr(pos+1);
@@ -231,7 +279,6 @@ void initTreeInfo( TreeArgs* args, std::string info )
     	args->links[ link ].nidStart = info.substr( 0,pos );
 
     	info = info.substr(pos+1);
-		printf("'%s'\n",info.c_str());
     	args->links[ link ].nidStop = info.substr( 0,pos +1);
 
 	} else {

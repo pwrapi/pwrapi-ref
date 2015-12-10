@@ -15,7 +15,7 @@
 
 #define RTR_ID( x ) x >> 32 
 #define SERVER_ID( x ) x & 0xffffffff
-#define APP_ID( rtr, server ) (AppID) rtr << 32 | server
+#define APP_ID( rtr, server ) (AppID) (unsigned)rtr << 32 | (unsigned)server
 
 class EventChannel;
 class Config;
@@ -27,6 +27,7 @@ typedef uint32_t ServerID;
 struct Args {
     Args( ) : rtrId(-1), coreArgs(NULL) { }
     RouterID   	rtrId;
+	std::string routeTable;
     std::string	serverPort;
     std::string clientPort;
 	std::string pwrApiConfig;
@@ -90,9 +91,14 @@ class Router : public EventGenerator {
 	Router( int, char* [] );
 
 	void addServer( std::string name, EventChannel* ec ) {
-		DBGX("%s\n",name.c_str());
-		//assert( m_localMap.find(name) == m_localMap.end() );
-		m_localMap[ 0 ] = ec;
+		AppID id = findRoute( name );
+
+		DBGX("rootObj=`%s` rtrId=%d serverId=%d\n",
+			name.c_str(), RTR_ID(id), SERVER_ID(id)  );
+
+		assert( -1 != id );
+
+		m_localMap[ SERVER_ID(id) ] = ec;
 		m_serverMap[ ec ]->initName(name);
 	}
 
@@ -125,6 +131,15 @@ class Router : public EventGenerator {
 	EventChannel* findRtrChan( RouterID );
 	EventChannel* findServerChan( ServerID );
 
+	AppID findRoute( ObjID id ) {
+    	AppID retval = -1;
+    	if ( m_routeTable.find(id) != m_routeTable.end() ) {
+        	retval = m_routeTable[id];
+   		}
+		DBGX("name=`%s` AppID=%lx\n", id.c_str(), retval  )
+    	return retval;
+	}
+
 	void addClientChan( EventChannel* ec) {
 		DBGX("\n");
 		m_clientMap[ec] = new Client(*this);
@@ -154,6 +169,8 @@ class Router : public EventGenerator {
 		DBGX("\n");
 	}			
 
+	void initRouteTable( std::string file );
+
   private:
 	PowerAPI::Config*               m_config;
 	ChannelSelect* 			 		m_chanSelect;
@@ -163,6 +180,7 @@ class Router : public EventGenerator {
 
 	std::map<ServerID,EventChannel*> m_localMap;
 	RouterCore* 					m_routerCore;
+	std::map< std::string, AppID >  m_routeTable;
 };
 
 struct CommReqInfo {

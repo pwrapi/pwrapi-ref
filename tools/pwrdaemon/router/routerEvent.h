@@ -10,9 +10,8 @@ struct RouterEvent : public Event {
 
 	typedef Event* (*AllocFuncPtr)(unsigned int, SerialBuf& );
 
-    RouterEvent( AppID _src, AppID _dest, Event* ev, bool resp = false ) :
-        Event( Router2Router ), src(_src), dest( _dest),
-		isResponse( resp )
+    RouterEvent( AppID _src, AppID _dest, Event* ev ) :
+        Event( Router2Router ), src(_src), dest( _dest)
 	{	
 		ev->serialize_out( payload );
 	    eventType = ev->type;
@@ -35,20 +34,19 @@ struct RouterEvent : public Event {
     AppID 	dest;
 	EventType	eventType;
 	SerialBuf 	payload;
-	bool      	isResponse;
 
     virtual void serialize_out( SerialBuf& buf ) {
         Event::serialize_out(buf);
         buf << dest;
+        buf << src;
 		buf << eventType;
 		buf << payload.buf;
-		buf << isResponse;
     }
 
     virtual void serialize_in( SerialBuf& buf ) {
-		buf >> isResponse;
 		buf >> payload.buf;
 		buf >> eventType;
+        buf >> src;
         buf >> dest;
         Event::serialize_in(buf);
     }

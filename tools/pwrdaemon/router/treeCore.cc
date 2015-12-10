@@ -27,8 +27,8 @@ TreeCore::TreeCore( RouterCoreArgs* _args,  Router* router )
 		}
         EventChannel* ec;
 
-        printf("%lu: myListenPort=%s ", i, link.myListenPort.c_str() );
-        printf("otherHost=%s otherHostListnPort=%s\n",
+        DBGX("%lu: myListenPort=%s ", i, link.myListenPort.c_str() );
+        DBGX("otherHost=%s otherHostListnPort=%s\n",
                 link.otherHost.c_str(), link.otherHostListenPort.c_str() );
 
         std::string config = "server=" + link.otherHost +
@@ -57,6 +57,9 @@ TreeCore::TreeCore( RouterCoreArgs* _args,  Router* router )
 EventChannel* TreeCore::getChannel( RouterID id )
 {
 	DBGX("router ID %d\n",id);
+
+	if ( m_rtrLinks.empty() ) return NULL;
+
 	for ( unsigned i = 1; i < m_rtrLinks.size(); i++ ) {
 		if ( id >= m_rtrLinks[i].nidStart &&
 			 id <= m_rtrLinks[i].nidStop ) {

@@ -14,7 +14,7 @@ class RtrRouterEvent: public  RouterEvent {
 
     bool process( EventGenerator* _rtr, EventChannel* ec ) {
         Router& rtr = *static_cast<Router*>(_rtr);
-		DBGX("\n");
+		DBGX("dest=%#lx\n",dest);
 		rtr.sendEvent( dest, this );
 
         return false;
