@@ -24,7 +24,10 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
 {
 	DBGX("\n");
 	m_evChan = initEventChannel();	
-	_DbgFlags = 0xf;
+
+	if ( NULL != getenv( "POWERAPI_DEBUG" ) ) {
+		_DbgFlags = atoi( getenv( "POWERAPI_DEBUG" ) );
+	}
 
 	std::string configFile;
 
