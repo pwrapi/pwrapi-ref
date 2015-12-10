@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
-import re, sys
+import re, sys, logging
+
+Debug = logging.debug
 
 Platform = "Platform" 
 Cabinet = "Cabinet" 
@@ -20,7 +22,7 @@ objectMap = {}
 locationMap = {}
 
 def funcName():
-	return 'PY::'+sys._getframe().f_back.f_code.co_name + '(): '
+	return 'PY::'+sys._getframe().f_back.f_code.co_name
 
 class Attr:
 	def __init__(self ):
@@ -52,7 +54,7 @@ class Object:
 		return self.numChildren
 
 	def setChild(self, childObj, numChildren ):
-		print funcName() + self.name , numChildren 
+		Debug( "{0}(): obj={1} numChildren={2}".format( funcName(), self.name , numChildren ) ) 
 		self.child = childObj
 		self.numChildren = numChildren 
 
@@ -74,43 +76,43 @@ class Object:
 		return children
 
 	def findAttrOp(self, myName, attr):
-		print funcName() + 'attr', attr
+		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
 
 		if not self.attrs.has_key( attr ):
-			print funcName() + 'attr', attr, 'not found'
+			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
 			return None
 
 		return self.attrs[attr].getOp() 
 
 	def findAttrChildren(self, myName, attr):
-		print funcName(), 'obj', myName,' attr', attr
+		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
 		children = []
 
 		if not self.attrs.has_key( attr ):
-			print funcName() + 'attr', attr, 'not found'
+			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
 			return None
 
 		for i in range(self.numChildren):
-			print funcName() + 'child ', self.child.getName()
+			Debug( "{0}(): child={1}".format( funcName(),self.child.getName() ))
 			children = children + \
 				[ myName + '.' + self.child.getName() + str(i) ]	
 
 		return children
 
 	def setAttrOp( self, attr, op ):
-		print funcName() + 'attr', attr
+		Debug( "{0}(): attr={1} op={2}".format( funcName(), attr, op ) ) 
 		if not self.attrs.has_key( attr ):
 			self.attrs[attr] = Attr()
 		self.attrs[attr].setOp( op ) 
 
 	def addAttrDevice( self, attr, src ):
-		print funcName() + 'attr', attr
+		Debug( "{0}(): attr={1} src={2}".format( funcName(), attr, src ) ) 
 		self.attrs[attr].addSrc( src ) 
 
 	def getDevs( self, attr ):
-		print funcName() + 'attr', attr
+		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
 		if not self.attrs.has_key( attr ):
-			print funcName() + 'attr', attr, 'not found'
+			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
 			return None
 
 		return self.attrs[attr].getDevs()
@@ -122,12 +124,11 @@ class Object:
 		else:
 			tmp = tmp
 	
-		print tmp 
 		for i in range(self.numChildren):
 			self.child.traverse( func, tmp + '.', i )
 				
 def checkName( tmp ):	
-	print funcName(), tmp 
+	Debug( "{0}(): {1}".format( funcName(), tmp ) )
 	for index in range(len(tmp)):
 
 		val = tmp[index]
@@ -135,7 +136,7 @@ def checkName( tmp ):
 		objType = ''.join(ch for ch in val if ch.isalpha() )
 		number = ''.join(ch for ch in val if ch.isdigit() )
 		if not objectMap.has_key( objType ):
-			print "invalid object type", objType
+			Debug( "invalid object type {0}".format( objType ))
 			return False	
 
 		parent = objectMap[objType].getParent()
@@ -143,17 +144,17 @@ def checkName( tmp ):
 		if parent: 
 			#print val, number, parent.getNumChildren()		
 			if int(number) >= parent.getNumChildren():   
-				print "invalid: object out of range", val 
+				Debug( "invalid: object out of range {0}".format( val ) ) 
 				return False	
 		else:
 			if number:
-				print "invalid: object out of range", val 
+				Debug( "invalid: object out of range {0}".format( val ) ) 
 				return False
 
 	return True
 
 def getObject( name ):
-	print funcName() + 'object', name
+	Debug( "obj={0}".format( funcName(), name ) )
 	tmp = name.split('.')
 
 	if not checkName( tmp ):
@@ -165,51 +166,54 @@ def getObject( name ):
 
 
 def getObjType( name ):
-	print funcName() + 'object', name
+	Debug( "{0}(): obj={1}".format( funcName(), name ) )
 	return getObject(name).getType( )
 
 def findChildren( name ):
-	print funcName() + 'object', name
+	Debug( "{0}(): obj={1}".format( funcName(), name ) )
 	return getObject(name).findChildren( name )
 
 def findParent( name ):
-	print funcName() + 'object', name
+	Debug( "{0}(): obj={1}".format( funcName(), name ) )
 	return getObject(name).getParent( name )
 
 def findObjLocation( name ):
 
-	print funcName(), name 
+	Debug( "{0}(): obj={1}".format( funcName(), name ) )
 
 	tmp = name.split('.')
 	checkName( tmp )
 
 	while len(tmp):
 		tmp2 = '.'.join(tmp)	
-		print tmp2
 		if locationMap.has_key( tmp2 ):
+			Debug( "{0}(): obj={1} loc={2}".\
+					format( funcName(), name, locationMap[ tmp2 ] ) )
 			return locationMap[ tmp2 ] 
 
 		tmp.pop()	
 
+	Debug( "{0}(): obj={1} loc=``".format( funcName(), name ) )
+
 	return ''   
 
-	print funcName() + 'object', name
 	return getObject(name).findObjLocation( name )
 
 def findAttrChildren( name, attr ):
-	print funcName() + 'object', name, 'attr', attr 
+	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
 	return getObject(name).findAttrChildren( name, attr )
 
 def findAttrOp( name, attr ):
-	print funcName() + 'object', name, 'attr', attr 
+	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
 	return getObject(name).findAttrOp( name, attr )
 
 def findAttrDevs( name, attr ):
-	print funcName() + 'object', name
+	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
 	return getObject(name).getDevs(attr)
 
 def findPlugins():
-	print funcName() 
+	Debug( "{0}():".format( funcName() ) )
+	
 	dictList = []
 	for key, value in plugins.iteritems():
 		temp = [key,value]
@@ -217,9 +221,14 @@ def findPlugins():
 	return dictList 
 
 def findSysDevs():
-	print funcName() 
+	Debug( "{0}():".format( funcName() ) )
 	dictList = []
 	for key, value  in devices.iteritems():
 		temp = [key] + value
 		dictList.append(temp)
 	return dictList 
+
+
+def setLocation( obj, loc ):
+	Debug( "{0}(): obj={1} loc={2}".format( funcName(), obj, loc ) )
+	locationMap[obj] = loc 
