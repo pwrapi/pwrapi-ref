@@ -11,16 +11,21 @@
 namespace PWR_Server {
 
 class SrvrCommGetSamplesReqEvent;
-static int getSamplesFini( SrvrCommGetSamplesReqEvent*, int status );
+static void getSamplesFini( SrvrCommGetSamplesReqEvent*, int status );
 
 class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
   public:
-   	SrvrCommGetSamplesReqEvent( SerialBuf& buf ) : CommGetSamplesReqEvent( buf ) {}  
+   	SrvrCommGetSamplesReqEvent( SerialBuf& buf ) : 
+		CommGetSamplesReqEvent( buf ), m_req(NULL) {}  
+
    	~SrvrCommGetSamplesReqEvent( ) {
 		DBGX("\n");
+		if ( m_req ) {
+			PWR_ReqDestroy( m_req );
+		}
 	}
 
-	bool process( EventGenerator* gen, EventChannel* ec) {
+	bool process( EventGenerator* gen, EventChannel* ) {
 		m_info = static_cast<Server*>(gen);
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
@@ -30,7 +35,6 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
     	DBGX("obj='%s' attr=`%s`\n", PWR_ObjGetName(obj),
                             PWR_AttrGetTypeString( attrName ) );
 		DBGX("period=%f count=%d\n", period, count );
-    	m_evChan = ec;
     	m_respEvent.id = id;
 		m_respEvent.data.resize( count );
 		m_respEvent.count = count;
@@ -51,24 +55,17 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
     CommGetSamplesRespEvent   m_respEvent;
 
-	Server*		m_info;
-    EventChannel*   m_evChan;
+	Server*			m_info;
 	PWR_Request	    m_req;
 };
 
-static int getSamplesFini( SrvrCommGetSamplesReqEvent* data, int status )
+static void getSamplesFini( SrvrCommGetSamplesReqEvent* data, int status )
 {
     DBG("status=%d\n",status);
 
     data->m_respEvent.status = status;
 
-    RouterEvent* ev = new RouterEvent( 0, 0, &data->m_respEvent, true );
-
-    data->m_evChan->sendEvent( ev );
-
-	delete data;
-	
-    return 1;
+	data->m_info->fini( data, &data->m_respEvent );
 }
 
 }

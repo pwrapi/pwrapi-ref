@@ -20,11 +20,9 @@ struct CommInfo {
 struct Args {
     std::string port;
     std::string host;
-    std::string topObj;
 
 	std::string pwrApiConfig;
 	std::string pwrApiRoot;
-	std::string pwrApiLocation;
 	std::string pwrApiServer;
 	std::string pwrApiServerPort;
 };
@@ -38,10 +36,14 @@ class Server : public EventGenerator {
 
 	std::map< CommID, CommInfo > 	m_commMap;
 	PWR_Cntxt m_ctx;
+	void fini( Event*, Event* = NULL );	
+	void initFini( Event* key, Event*, EventChannel* );
+	void freeFini( Event* key );
 
   private:
 	ChannelSelect*  m_chanSelect;
 	Args			m_args;
+	std::map<Event*, std::pair<Event*,EventChannel*> > m_finiMap;
 };
 
 class SelectData : public ChannelSelect::Data {

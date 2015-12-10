@@ -18,7 +18,7 @@ class SrvrCommCreateEvent: public  CommCreateEvent {
 		DBG("\n");
 	}  
 
-	bool process( EventGenerator* gen, EventChannel* ec ) {
+	bool process( EventGenerator* gen, EventChannel* ) {
 		Server& info = *static_cast<Server*>(gen);
 
        	DBG("commID=%llu\n", commID);

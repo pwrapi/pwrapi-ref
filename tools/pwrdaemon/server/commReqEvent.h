@@ -3,18 +3,17 @@
 #define _SRVR_COMM_REQ_EVENT_H
 
 #include <events.h>
-#include <eventChannel.h>
 #include <debug.h>
 #include "server.h"
 
 namespace PWR_Server {
 
 class SrvrCommReqEvent;
-static int requestFini( SrvrCommReqEvent*, int status );
+static void requestFini( SrvrCommReqEvent*, int status );
 
 class SrvrCommReqEvent: public  CommReqEvent {
   public:
-   	SrvrCommReqEvent( SerialBuf& buf ) : CommReqEvent( buf ) {
+   	SrvrCommReqEvent( SerialBuf& buf ) : CommReqEvent( buf ), m_req(NULL) {
 		DBGX("\n");
 	}  
 
@@ -25,7 +24,7 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		}
 	}
 
-	bool process( EventGenerator* gen, EventChannel* ec) {
+	bool process( EventGenerator* gen, EventChannel* ) {
 		m_info = static_cast<Server*>(gen);
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
@@ -33,7 +32,6 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		DBGX("commID=%llu\n",commID);
     	DBGX("obj='%s' attr=`%s`\n", PWR_ObjGetName(obj),
                             PWR_AttrGetTypeString( attrName ) );
-    	m_evChan = ec;
     	m_respEvent.op = op;
     	m_respEvent.id = id;
     	m_req = PWR_ReqCreateCallback( m_info->m_ctx, 
@@ -55,22 +53,18 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		return false;
 	}
 
-	Server*		m_info;
+	Server*			m_info;
     CommRespEvent   m_respEvent;
-    EventChannel*   m_evChan;
 	PWR_Request	    m_req;
 };
 
-static int requestFini( SrvrCommReqEvent* data, int status )
+static void requestFini( SrvrCommReqEvent* data, int status )
 {
     DBG("status=%d\n",status);
 
     data->m_respEvent.status = status;
-	RouterEvent* ev = new RouterEvent( 0,0, &data->m_respEvent, true );
 
-    data->m_evChan->sendEvent( ev );
-	
-    return 1;
+	data->m_info->fini( data, &data->m_respEvent );
 }
 
 }
