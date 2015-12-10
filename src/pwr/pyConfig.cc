@@ -19,16 +19,25 @@ using namespace PowerAPI;
 PyConfig::PyConfig( std::string file ) 
 {
 	DBGX2(DBG_CONFIG,"config file `%s`\n",file.c_str());
+
+	size_t pos = file.find_last_of('/');
+
+	std::string path;
+	std::string module = file;
+	if ( std::string::npos != pos ) { 
+ 		path = file.substr( 0, pos );
+		module = file.substr( pos + 1 );
+
+		setenv( "PYTHONPATH", path.c_str(), 1 );
+	}
+	module = module.substr(0, module.find_last_of('.' ) );
+
+	DBGX2( DBG_CONFIG, "path=`%s` module=`%s`\n",
+									path.c_str(), module.c_str() );
 	Py_Initialize();
 	
-	//m_pName = PyString_FromString( (char*) file.c_str() );
-	m_pName = PyString_FromString( "xtpm-node" );
-	assert( m_pName );
-
-	m_pModule = PyImport_Import( m_pName );
+	m_pModule = PyImport_ImportModule( module.c_str() );
 	assert( m_pModule );
-
-	Py_DECREF( m_pName );
 }
 
 PyConfig::~PyConfig()

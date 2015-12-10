@@ -41,7 +41,6 @@ class PyConfig : public Config {
     std::string attrNameToString( PWR_AttrName );
     PWR_ObjType objTypeStrToInt( const std::string );
     std::string objTypeToString( PWR_ObjType type );
-	PyObject* m_pName;
 	PyObject* m_pModule;
 };
 
