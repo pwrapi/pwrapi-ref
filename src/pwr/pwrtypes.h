@@ -26,7 +26,7 @@ typedef void* PWR_Request;
 
 typedef int PWR_CntxtState;
 
-typedef int (*Callback)(void* data, int status);
+typedef void (*Callback)(void* data, int status);
 
 #define PWR_RET_WARN_DEPRECATED 1
 #define PWR_RET_SUCCESS 0

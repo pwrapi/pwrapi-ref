@@ -59,6 +59,12 @@ void XmlConfig::printTree( std::ostream& out, XMLNode* node )
 
 }
 
+bool XmlConfig::hasServer( const std::string name ) 
+{
+	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
+	return ! findObjLocation( name ).empty();
+}
+
 bool XmlConfig::hasObject( const std::string name ) 
 {
 	DBGX2(DBG_CONFIG,"find %s\n",name.c_str());
@@ -293,32 +299,6 @@ XMLNode* XmlConfig::findDev( XMLElement* elm, std::string name )
 {
 	return findNodeWithAttr( elm, "devices", "name", name );
 } 
-
-Config::Location XmlConfig::findLocation( std::string name )
-{
-    Config::Location location;
-
-   XMLNode* node = findNodes1stChild( m_systemNode->FirstChild(), "Locations" );
-
-   while ( node ) {
-        XMLElement* elm = static_cast<XMLElement*>(node);
-
-       assert( ! strcmp( elm->Name(), "location" ) );
-
-       if ( 0 == name.compare( elm->Attribute("name")) ) {
-            location.type = elm->Attribute("type");
-            location.config = elm->Attribute("config");
-           DBGX2(DBG_CONFIG,"found %s %s %s\n",elm->Attribute("name"), location.type.c_str(), location.config.c_str());
-            
-           break;
-       }
-
-        node = node->NextSibling();
-   } 
-
-    return location;
-}
-
 
 XMLNode* XmlConfig::findAttr( XMLElement* elm, std::string attr )
 {

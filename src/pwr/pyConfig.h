@@ -27,17 +27,17 @@ class PyConfig : public Config {
 	std::deque< std::string >
                 findAttrChildren( std::string, PWR_AttrName );
 	std::string findAttrOp( std::string, PWR_AttrName );
-    std::string findObjLocation( std::string );
 	std::deque< std::string > findChildren( std::string );
 	std::deque< Config::ObjDev > findObjDevs( std::string, PWR_AttrName );
 	std::deque< Config::Plugin > findPlugins();
 	std::deque< Config::SysDev > findSysDevs();
-    Location findLocation( std::string );
+	bool hasServer( std::string );
 	bool hasObject( const std::string name );
 	PWR_ObjType objType( const std::string );
 	void print( std::ostream& );
 
   private:
+    std::string findObjLocation( std::string );
     std::string attrNameToString( PWR_AttrName );
     PWR_ObjType objTypeStrToInt( const std::string );
     std::string objTypeToString( PWR_ObjType type );

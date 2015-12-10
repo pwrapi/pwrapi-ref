@@ -49,11 +49,18 @@ void PyConfig::print( std::ostream& out  )
 {
 }
 
+bool PyConfig::hasServer( const std::string name ) 
+{
+	DBGX2(DBG_CONFIG,"find %s\n",name.c_str());
+
+	return ! findObjLocation( name ).empty();
+}
+
 bool PyConfig::hasObject( const std::string name ) 
 {
 	DBGX2(DBG_CONFIG,"find %s\n",name.c_str());
 
-	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "hstObject" );
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "hasObject" );
 	assert(pFunc);
 	PyObject* pArgs = PyTuple_New( 1 );
 	assert(pArgs);
@@ -274,11 +281,6 @@ std::deque< std::string > PyConfig::findChildren( std::string name )
 	}
 	assert(pValue);
 	return children;
-}
-
-Config::Location PyConfig::findLocation( std::string name )
-{
-	assert(0);
 }
 
 std::string PyConfig::findParent( std::string name )

@@ -40,21 +40,16 @@ class Config {
 		std::string lib;
 	};
 
-    struct Location {
-        std::string type;
-        std::string config;
-    };
-
     virtual std::string findParent( std::string ) = 0;
 	virtual std::string findAttrOp( std::string, PWR_AttrName ) = 0;
 	virtual std::deque< std::string > 
 						findAttrChildren( std::string, PWR_AttrName ) = 0;
+
 	virtual std::deque< std::string > findChildren( std::string ) = 0;
-    virtual std::string findObjLocation( std::string ) = 0;
+	virtual bool hasServer( std::string ) = 0;
 	virtual std::deque< ObjDev > findObjDevs( std::string, PWR_AttrName ) = 0;
 	virtual std::deque< Plugin > findPlugins() = 0;
 	virtual std::deque< SysDev > findSysDevs() = 0;
-    virtual Location findLocation( std::string ) = 0;
 
 	virtual bool hasObject( const std::string ) = 0;
 	virtual PWR_ObjType objType( const std::string ) = 0;

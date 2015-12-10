@@ -42,7 +42,7 @@ class DistCntxt : public Cntxt {
 	std::map< plugin_devops_t*, std::map< std::string, Device* > > m_deviceMap;
 
 	std::map< std::set< Object*>, Communicator* >	m_commMap;
-	std::string m_myLocation;	
+	std::string m_rootName;	
 };
 
 }

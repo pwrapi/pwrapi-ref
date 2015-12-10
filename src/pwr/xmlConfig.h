@@ -28,18 +28,18 @@ class XmlConfig : public Config {
 	std::deque< std::string >
                 findAttrChildren( std::string, PWR_AttrName );
 	std::string findAttrOp( std::string, PWR_AttrName );
-    std::string findObjLocation( std::string );
 	std::deque< std::string > findChildren( std::string );
 	std::deque< Config::ObjDev > findObjDevs( std::string, PWR_AttrName );
 	std::deque< Config::Plugin > findPlugins();
 	std::deque< Config::SysDev > findSysDevs();
     std::deque< std::string > findObjType( PWR_ObjType );
-    Location findLocation( std::string );
+	virtual bool hasServer( std::string );
 	bool hasObject( const std::string name );
 	PWR_ObjType objType( const std::string );
 	void print( std::ostream& );
 
   private:
+    std::string findObjLocation( std::string );
 	XMLNode* findNode( XMLNode*, const std::string name );
 	XMLNode* findNodes1stChild( XMLNode*, const std::string name );
 	XMLNode* findNodeWithAttr( XMLElement*, const std::string nodeName, 

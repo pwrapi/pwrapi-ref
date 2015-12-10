@@ -39,10 +39,6 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
     }
 	
     DBGX("configFile=`%s`\n",configFile.c_str());
-    if( getenv( "POWERAPI_LOCATION" ) != NULL ) {
-        m_myLocation = getenv( "POWERAPI_LOCATION" );
-    }
-    DBGX("location=`%s`\n",m_myLocation.c_str());
 
     size_t pos = configFile.find_last_of( "." );
     if ( 0 == configFile.compare(pos,4,".xml") ) {
@@ -60,6 +56,7 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
     char* tmp = getenv( "POWERAPI_ROOT" );
     if( tmp != NULL ) {
     	DBGX("root=`%s`\n", tmp );
+		m_rootName = tmp;
         m_rootObj = findObject(tmp);
 		if ( ! m_rootObj ) {
         	printf("error: `POWERAPI_ROOT=%s` is invalid\n",tmp);
@@ -165,9 +162,7 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 {
 	DBGX("obj='%s' attr=%s\n",objName.c_str(),attrNameToString(attrName));
 
-	std::string objLocation = m_config->findObjLocation( objName );
-	DBGX("myloc=%s objLoc=%s\n",m_myLocation.c_str(), objLocation.c_str());
-	if ( objLocation.compare( m_myLocation ) ) {
+	if ( m_config->hasServer( objName ) && objName.compare( m_rootName ) ) {
     	Object* tmp = findObject( objName ); 
         assert( tmp );
 		remote.insert( tmp );
@@ -181,14 +176,6 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 	DBGX("found %lu local\n",objDev.size());
 	for ( ; iter != objDev.end(); ++iter ) {
 		Config::ObjDev& dev = *iter;
-		std::string location = m_config->findObjLocation( objName );
-		if ( location.compare( m_myLocation ) ) {
-			DBGX("not my device\n");
-            Object* tmp = findObject( objName );
-            assert( tmp );
-			remote.insert( tmp );
-			continue;
-		}
 
         DBGX("dev=`%s` openString=`%s`\n",dev.device.c_str(),
                                                  dev.openString.c_str());
