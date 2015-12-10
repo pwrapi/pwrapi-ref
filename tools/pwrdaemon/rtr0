@@ -1,0 +1,9 @@
+#!/bin/sh
+
+pwrdaemon \
+--rtr.clientPort=15000 \
+--rtr.serverPort=15001 \
+--rtr.routerType=tree \
+--rtr.routerId=0 \
+--rtr.routeTable=routeTable.txt \
+--rtr.pwrApiConfig=xtpmNode.py

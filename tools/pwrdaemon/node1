@@ -1,0 +1,15 @@
+#!/bin/sh
+
+ROOT=${HOME}/pwrGIT/working/build/install
+#CONFIG=${HOME}/pwrGIT/dist/examples/config/dummySystemCab0-daemon.xml
+CONFIG=${HOME}/pwrGIT/working/examples/config/xtpm-node.py
+
+export LD_LIBRARY_PATH="${ROOT}/lib:${LD_LIBRARY_PATH}"
+export DYLD_LIBRARY_PATH="${ROOT}/lib:${DYLD_LIBRARY_PATH}"
+
+
+pwrdaemon \
+--srvr.rtrHost=localhost \
+--srvr.rtrPort=15001 \
+--srvr.pwrApiConfig=$CONFIG \
+--srvr.pwrApiRoot=plat.cab0.board0.node1

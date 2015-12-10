@@ -1,0 +1,2 @@
+plat.cab0.board0.node0:0:0
+plat.cab0.board0.node1:0:1
