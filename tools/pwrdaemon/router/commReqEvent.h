@@ -21,13 +21,16 @@ class RtrCommReqEvent: public  CommReqEvent {
     	info->src = ec;
     	info->ev = this;
     	info->id = id;
+		info->valueOp = valueOp;
 
     	id = (EventId) info;
 
-    	DBGX("commID=%llu eventId=%#llx new eventId=%p\n",
-                                commID, id, info );
+    	DBGX("commID=%llu eventId=%#llx new eventId=%p\n", commID, id, info );
 
     	std::vector<ObjID>& commList= client.getCommList( commID );
+
+		info->num = commList.size(); 
+
     	std::vector<ObjID>::iterator iter = commList.begin();
     	for ( ; iter != commList.end(); ++iter ) {
 

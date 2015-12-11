@@ -12,6 +12,7 @@
 #include "routerEvent.h"
 #include "commCreateEvent.h"
 #include "routerCore.h"
+#include "impTypes.h"
 
 #define RTR_ID( x ) x >> 32 
 #define SERVER_ID( x ) x & 0xffffffff
@@ -187,6 +188,9 @@ struct CommReqInfo {
    	EventChannel*   src;
     CommEvent*      ev;
     EventId         id;
+	size_t			num;
+	ValueOp			valueOp;
+	std::deque<CommRespEvent*> respQ; 
 };
 
 }

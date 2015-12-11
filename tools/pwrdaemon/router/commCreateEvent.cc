@@ -12,7 +12,12 @@ bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 
    	for ( unsigned int i = 0; i < members.size(); i++ ) {
        	DBGX("%s\n", members[i].c_str() );
-		rtr.sendEvent( members[i].c_str(), this );
+		
+		CommCreateEvent* ev = new CommCreateEvent();
+		ev->commID = commID;
+
+		ev->members.push_back( members[i].c_str() );
+		rtr.sendEvent( members[i].c_str(), ev );
 	}	
 
 	client->addComm( commID, this );
