@@ -28,7 +28,7 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 	m_ec->sendEvent( ev );
 }
 
-void DistComm::getValue( PWR_AttrName attr, CommReq* req )
+void DistComm::getValue( PWR_AttrName attr, ValueOp op, CommReq* req )
 {
 	DBGX("%s\n",attrNameToString(attr));
 
@@ -37,6 +37,7 @@ void DistComm::getValue( PWR_AttrName attr, CommReq* req )
 	CommReqEvent* ev = new CommReqEvent;	
 	ev->commID = m_commID;
 	ev->op = CommEvent::Get;
+	ev->valueOp = op;
 	ev->id = (EventId) req;	
 	ev->attrName = attr; 
 	m_ec->sendEvent( ev );
@@ -44,6 +45,7 @@ void DistComm::getValue( PWR_AttrName attr, CommReq* req )
 }
 
 void DistGetCommReq::process( Event* _ev ) {
+	DBGX("\n");
 	m_req->getValue( this, static_cast<CommRespEvent*>(_ev) );
 }
 
@@ -63,6 +65,7 @@ void DistComm::setValue( PWR_AttrName attr, void* buf, CommReq* req )
 }
 
 void DistSetCommReq::process( Event* _ev ) {
+	DBGX("\n");
 	m_req->setValue( this, static_cast<CommRespEvent*>(_ev) );
 }
 

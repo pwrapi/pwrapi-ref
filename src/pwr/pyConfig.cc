@@ -227,6 +227,35 @@ std::deque< std::string >
 	return children;
 }
 
+std::string PyConfig::findAttrType( std::string name, PWR_AttrName attr )
+{
+	std::string retval;
+	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
+							name.c_str(),attrNameToString(attr).c_str());
+
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findAttrType" );
+	assert(pFunc);
+
+	PyObject* pArgs = PyTuple_New( 2 );
+	assert(pArgs);
+
+	PyObject* pValue = PyString_FromString( name.c_str() );
+	assert(pValue);
+
+	PyTuple_SetItem( pArgs, 0, pValue );
+
+	pValue = PyString_FromString( attrNameToString(attr).c_str() );
+	assert(pValue);
+	PyTuple_SetItem( pArgs, 1, pValue );
+	
+	pValue = PyObject_CallObject( pFunc, pArgs );
+	assert(pValue);
+
+	retval = PyString_AsString(pValue );
+	DBGX2(DBG_CONFIG,"%s \n", retval.c_str() );
+
+	return retval;
+}
 std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 {
 	std::string retval;

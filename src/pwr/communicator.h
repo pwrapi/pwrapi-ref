@@ -3,6 +3,7 @@
 #define _COMMUNICATOR_H
 
 #include "pwrtypes.h"
+#include "impTypes.h"
 
 struct Event;
 
@@ -17,7 +18,7 @@ class CommReq {
 class Communicator {
   public:
 	Communicator() {}
-	virtual void getValue( PWR_AttrName, CommReq* req ) = 0;
+	virtual void getValue( PWR_AttrName, ValueOp, CommReq* req ) = 0;
 	virtual void setValue( PWR_AttrName, void* buf, CommReq* req ) = 0;
 	virtual void startLog( PWR_AttrName, CommReq* req ) = 0;
 	virtual void stopLog( PWR_AttrName, CommReq* req ) = 0;

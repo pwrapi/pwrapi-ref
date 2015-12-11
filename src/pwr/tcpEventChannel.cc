@@ -182,6 +182,7 @@ static void _print( unsigned char* buf, size_t len )
 
 Event* TcpEventChannel::getEvent( bool blocking ) 
 {
+//	printf("%s() waiting\n",__func__); getchar();
 	if ( -1 == m_fd ) {
 		m_fd = xx();
 	}
@@ -213,6 +214,7 @@ Event* TcpEventChannel::getEvent( bool blocking )
 
 bool TcpEventChannel::sendEvent( Event* event )
 {
+//	printf("%s() waiting\n",__func__); getchar();
 	if ( -1 == m_fd ) {
 		m_fd = xx();
 	}

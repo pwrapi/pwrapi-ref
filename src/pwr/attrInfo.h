@@ -2,6 +2,7 @@
 #define _ATTR_INFO_H
 
 #include <deque>
+#include <communicator.h>
 
 namespace PowerAPI {
 
@@ -13,8 +14,8 @@ class AttrInfo {
 	typedef void (*OpFuncPtr)( void* out, void* in, size_t num );
 	typedef PWR_Time (*TimeFuncPtr)( std::vector<PWR_Time> );
 
-	AttrInfo( OpFuncPtr fptr, TimeFuncPtr tptr) : 
-		comm( NULL ), operation(fptr), calcTime(tptr) {}
+	AttrInfo( OpFuncPtr fptr, TimeFuncPtr tptr, ValueOp op) : 
+		comm( NULL ), operation(fptr), calcTime(tptr), valueOp(op) {}
 
 	virtual bool isValid() { 
 		return ! devices.empty() || comm; 
@@ -24,6 +25,7 @@ class AttrInfo {
 	Communicator*		comm;
 	OpFuncPtr			operation;
 	TimeFuncPtr 		calcTime;
+	ValueOp				valueOp;	
 };
 
 }

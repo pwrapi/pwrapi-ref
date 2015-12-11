@@ -4,6 +4,7 @@
 #include <sys/utsname.h>
 
 #include "distCntxt.h"
+#include "distRequest.h"
 #include "distObject.h"
 #include "distComm.h"
 
@@ -17,6 +18,7 @@
 
 #include "tcpEventChannel.h"
 #include "allocEvent.h"
+#include "communicator.h"
 
 using namespace PowerAPI;
 
@@ -135,17 +137,32 @@ static PWR_Time timeOp( std::vector<PWR_Time> x )
 AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 {
 	DBGX("obj='%s' attr=%s\n",obj->name().c_str(),attrNameToString(attrName));
+	
+	ValueOp vOp = NO_OP;
 
     std::string op = m_config->findAttrOp( obj->name(),attrName );
+    std::string type = m_config->findAttrType( obj->name(),attrName );
     AttrInfo::OpFuncPtr opFunc = NULL;
     if ( ! op.compare("SUM") ) {
         opFunc = sumOp;
+		if ( ! type.compare("Float") ) {
+			op = FP_ADD;
+		} else {
+			op = INT_ADD;
+		}
+
     } else if ( ! op.compare("AVG") ) {
         opFunc = avgOp;
+
+		if ( ! type.compare("Float") ) {
+			op = FP_AVG;
+		} else {
+			op = INT_AVG;
+		}
     }
     assert(opFunc);
 
-	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp );
+	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp, vOp );
 
    	std::set<Object*> remote;
 	traverse( obj->name(), attrName, attrInfo->devices, remote );
@@ -273,6 +290,16 @@ bool DistCntxt::initDevice( std::string& devName )
 int DistCntxt::makeProgress()
 {
 	DBGX("\n");
-	//pwr_CommMakeProgress( ctx );
-	return PWR_RET_FAILURE;
+    EventChannel* ec = getEventChannel();
+
+	Event* ev = ec->getEvent();
+    DistCommReq* req = static_cast<DistCommReq*>((CommReq*)ev->id);
+    req->process( ev );
+	if ( req->m_req ) {
+		DBGX("\n");
+		req->m_req->execCallback();
+	}
+	delete ev;
+	DBGX("\n");
+	return PWR_RET_SUCCESS;
 }

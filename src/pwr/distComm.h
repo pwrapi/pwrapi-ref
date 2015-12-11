@@ -16,7 +16,6 @@ class DistRequest;
 class DistCommReq : public CommReq {
   public:
 	DistCommReq( DistRequest* req ) : m_req( req ) {}
-  protected:
 	DistRequest* m_req;
 };
 
@@ -59,7 +58,7 @@ class DistComm : public Communicator {
 
 	DistComm( DistCntxt*, std::set<Object*>& );
 	~DistComm() {}
-	virtual void getValue( PWR_AttrName, CommReq* req );
+	virtual void getValue( PWR_AttrName, ValueOp, CommReq* req );
 	virtual void setValue( PWR_AttrName, void* buf, CommReq* req );
 	virtual void startLog( PWR_AttrName, CommReq* req );
 	virtual void stopLog( PWR_AttrName, CommReq* req );

@@ -4,6 +4,7 @@
 
 #include <map>
 #include <pwrtypes.h>
+#include <impTypes.h>
 #include <string>
 #include <set>
 

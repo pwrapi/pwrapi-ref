@@ -128,7 +128,7 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
 			DistCommReq* commReq = 
 						new DistGetCommReq(static_cast<DistRequest*>(req));	
 			distReq->insert( commReq );
-			info->comm->getValue( names[i], commReq );
+			info->comm->getValue( names[i], info->valueOp, commReq );
 		}
 	}
 

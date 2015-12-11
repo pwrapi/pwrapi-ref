@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "pwrtypes.h"
+#include "impTypes.h"
 #include "event.h"
 
 typedef std::string ObjID;
@@ -93,8 +94,10 @@ struct CommReqEvent : public CommEvent {
 
     PWR_AttrName attrName;
     uint64_t value;
+	ValueOp valueOp;
 
 	virtual void serialize_in( SerialBuf& buf ) {
+		buf >> valueOp;
 		buf >> value;
 		buf >> attrName;
 		CommEvent::serialize_in(buf);
@@ -103,6 +106,7 @@ struct CommReqEvent : public CommEvent {
 		CommEvent::serialize_out(buf);
 		buf << attrName;
 		buf << value;
+		buf << valueOp;
 	} 
 };
 

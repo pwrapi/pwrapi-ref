@@ -27,6 +27,7 @@ class PyConfig : public Config {
 	std::deque< std::string >
                 findAttrChildren( std::string, PWR_AttrName );
 	std::string findAttrOp( std::string, PWR_AttrName );
+	std::string findAttrType( std::string, PWR_AttrName );
 	std::deque< std::string > findChildren( std::string );
 	std::deque< Config::ObjDev > findObjDevs( std::string, PWR_AttrName );
 	std::deque< Config::Plugin > findPlugins();
