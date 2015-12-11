@@ -12,6 +12,9 @@ Node = "Node"
 Sum = 'SUM'
 Avg = 'AVG'
 
+Float = 'Float'
+Integer = 'Integer'
+
 Energy ='ENERGY'
 Power ='POWER'
 MaxPower ='MAX_POWER'
@@ -27,15 +30,21 @@ def funcName():
 class Attr:
 	def __init__(self ):
 		self.op = None 
+		self.type = None
 		self.src = []
 
 	def getDevs(self):
 		return self.src
 
-	def setOp(self,op):
+	def setOp(self,op, type):
 		self.op = op
+		self.type = type 
+
 	def getOp(self):
 		return self.op
+
+	def getType(self):
+		return self.type
 
 	def addSrc( self, src ):
 		self.src += [src]	
@@ -84,6 +93,15 @@ class Object:
 
 		return self.attrs[attr].getOp() 
 
+	def findAttrType(self, myName, attr):
+		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
+
+		if not self.attrs.has_key( attr ):
+			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
+			return None
+
+		return self.attrs[attr].getType() 
+
 	def findAttrChildren(self, myName, attr):
 		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
 		children = []
@@ -99,11 +117,11 @@ class Object:
 
 		return children
 
-	def setAttrOp( self, attr, op ):
+	def setAttrOp( self, attr, op, type ):
 		Debug( "{0}(): attr={1} op={2}".format( funcName(), attr, op ) ) 
 		if not self.attrs.has_key( attr ):
 			self.attrs[attr] = Attr()
-		self.attrs[attr].setOp( op ) 
+		self.attrs[attr].setOp( op, type ) 
 
 	def addAttrDevice( self, attr, src ):
 		Debug( "{0}(): attr={1} src={2}".format( funcName(), attr, src ) ) 
@@ -206,6 +224,10 @@ def findAttrChildren( name, attr ):
 def findAttrOp( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
 	return getObject(name).findAttrOp( name, attr )
+
+def findAttrType( name, attr ):
+	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
+	return getObject(name).findAttrType( name, attr )
 
 def findAttrDevs( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
