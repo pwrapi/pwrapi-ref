@@ -1,12 +1,8 @@
 #!/bin/sh
 
-ROOT=${HOME}/pwrGIT/working/build/install
-#CONFIG=${HOME}/pwrGIT/dist/examples/config/dummySystemCab0-daemon.xml
-CONFIG=${HOME}/pwrGIT/working/examples/config/xtpm-node.py
+export POWERAPI_DEBUG=15
 
-export LD_LIBRARY_PATH="${ROOT}/lib:${LD_LIBRARY_PATH}"
-export DYLD_LIBRARY_PATH="${ROOT}/lib:${DYLD_LIBRARY_PATH}"
-
+CONFIG=${HOME}/pwrGIT/working/examples/config/xtpmNode.py
 
 pwrdaemon \
 --srvr.rtrHost=localhost \

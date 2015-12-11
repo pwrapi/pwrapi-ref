@@ -1,9 +1,14 @@
 #!/bin/sh
 
+
+export POWERAPI_DEBUG=15
+
+CONFIG=/home/mjleven/pwrGIT/working/examples/config/xtpmNode.py
+
 pwrdaemon \
 --rtr.clientPort=15000 \
 --rtr.serverPort=15001 \
 --rtr.routerType=tree \
 --rtr.routerId=0 \
 --rtr.routeTable=routeTable.txt \
---rtr.pwrApiConfig=xtpmNode.py
+--rtr.pwrApiConfig=$CONFIG

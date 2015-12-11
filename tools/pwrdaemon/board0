@@ -1,0 +1,13 @@
+#!/bin/sh
+
+export POWERAPI_DEBUG=15
+
+CONFIG=/home/mjleven/pwrGIT/working/examples/config/xtpmNode.py
+
+pwrdaemon \
+--srvr.rtrHost=localhost \
+--srvr.rtrPort=15001 \
+--srvr.pwrApiConfig=$CONFIG \
+--srvr.pwrApiRoot=plat.cab0.board0 \
+--srvr.pwrApiServer=localhost \
+--srvr.pwrApiServerPort=15000

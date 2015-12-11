@@ -1,0 +1,6 @@
+export POWERAPI_ROOT=plat
+export POWERAPI_CONFIG=/home/mjleven/pwrGIT/working/examples/config/xtpmNode.py
+export POWERAPI_SERVER_PORT="15000"
+export POWERAPI_SERVER="localhost"
+export POWERAPI_DEBUG=15
+pwr1 $1 
