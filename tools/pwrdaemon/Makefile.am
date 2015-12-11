@@ -14,11 +14,12 @@ pwrdaemon_SOURCES = \
 	server/server.cc \
 	server/allocEvent.cc
 
-pwrdaemon_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/pwr \
+pwrdaemon_CPPFLAGS = $(CPPFLAGS) $(PYTHON_CPPFLAGS) -I$(top_srcdir)/src/pwr \
 				   -I$(top_srcdir)/tools/pwrdaemon/router \
 				   -I$(top_srcdir)/tools/pwrdaemon/server \
 				   -I$(top_srcdir)/src/tinyxml2
 
 pwrdaemon_LDADD = $(top_builddir)/src/pwr/libpwr.la \
 				  $(top_builddir)/src/tinyxml2/libtinyxml2.la
-pwrdaemon_LDFLAGS = -lpthread
+
+pwrdaemon_LDFLAGS = -lpthread $(PYTHON_LDFLAGS)
