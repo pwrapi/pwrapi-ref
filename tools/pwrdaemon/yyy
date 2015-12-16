@@ -1,9 +1,0 @@
-#!/bin/sh
-
-pwrdaemon \
---rtr.clientPort=5000 \
---rtr.serverPort=5001 \
---rtr.routerType=tree \
---rtr.routerInfo=1:6010:localhost:5010:1:1 \
---rtr.routerId=0 \
---rtr.pwrApiConfig=$HOME/pwrGIT/dist/examples/config/dummySystemCab0-daemon.xml
