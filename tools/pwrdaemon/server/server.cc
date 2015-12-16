@@ -14,20 +14,24 @@ Server::Server( int argc, char* argv[] )
 {
 	initArgs( argc, argv, &m_args );
 
-	setenv( "POWERAPI_CONFIG", m_args.pwrApiConfig.c_str(), 0 );  
-	setenv( "POWERAPI_ROOT", m_args.pwrApiRoot.c_str(), 0 );  
+	setenv( (m_args.name + "POWERAPI_CONFIG" ).c_str(), 
+				m_args.pwrApiConfig.c_str(), 0 );  
+	setenv( (m_args.name + "POWERAPI_ROOT").c_str(), 
+				m_args.pwrApiRoot.c_str(), 0 );  
 
 	DBGX("%s\n",m_args.pwrApiConfig.c_str());
 	DBGX("%s\n",m_args.pwrApiRoot.c_str());
 	
 	if ( ! m_args.pwrApiServer.empty() ) {
-		setenv( "POWERAPI_SERVER", m_args.pwrApiServer.c_str(), 0 );  
+		setenv( (m_args.name + "POWERAPI_SERVER").c_str(),
+				m_args.pwrApiServer.c_str(), 0 );  
 	}
 	if ( ! m_args.pwrApiServerPort.empty() ) {
-		setenv( "POWERAPI_SERVER_PORT", m_args.pwrApiServerPort.c_str(), 0 );  
+		setenv( (m_args.name + "POWERAPI_SERVER_PORT").c_str(),
+				m_args.pwrApiServerPort.c_str(), 0 );  
 	}
 
-	m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , "");
+	m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , m_args.name.c_str() );
 	assert(m_ctx);
 
 	EventChannel* ctxChan = PWR_CntxtGetEventChannel( m_ctx );
@@ -55,7 +59,7 @@ int Server::work()
     SelectData* data;
 
     while ( ( data = static_cast<SelectData*>( m_chanSelect->wait() ) ) ) {
-		DBGX("something happened on channel\n");
+		DBGX("something happened on channel: %s\n",m_args.pwrApiRoot.c_str());
 
 		if ( data->process( this ) ) {
 			delete data;
@@ -97,7 +101,7 @@ void Server::fini( Event* key, Event* payload )
 
 #include <getopt.h>
 static void print_usage() {
-    printf("%s()\n",__func__);
+    printf("Server::%s()\n",__func__);
 }
 
 static void initArgs( int argc, char* argv[], Args* args )
@@ -106,8 +110,9 @@ static void initArgs( int argc, char* argv[], Args* args )
     int long_index = 0;
     enum { RTR_PORT, RTR_HOST, TOP_OBJ, 
 			PWRAPI_CONFIG, PWRAPI_ROOT,
-			PWRAPI_SERVER, PWRAPI_SERVER_PORT  };
+			PWRAPI_SERVER, PWRAPI_SERVER_PORT, NAME  };
     static struct option long_options[] = {
+        {"name"    			, required_argument, NULL, NAME },
         {"rtrPort"    		, required_argument, NULL, RTR_PORT },
         {"rtrHost"      	, required_argument, NULL, RTR_HOST },
         {"pwrApiConfig" 	, required_argument, NULL, PWRAPI_CONFIG },
@@ -121,6 +126,9 @@ static void initArgs( int argc, char* argv[], Args* args )
 
     while ( ( opt = getopt_long( argc, argv, "", long_options, &long_index ) ) != -1 ) {
         switch(opt) {
+          case NAME:
+            args->name = optarg;
+            break;
           case RTR_PORT:
             args->port = optarg;
             break;

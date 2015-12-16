@@ -22,6 +22,7 @@ class RtrCommReqEvent: public  CommReqEvent {
     	info->ev = this;
     	info->id = id;
 		info->valueOp = valueOp;
+		DBGX("valueOp=%d\n",valueOp);	
 
     	id = (EventId) info;
 

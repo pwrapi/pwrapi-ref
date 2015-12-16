@@ -25,6 +25,7 @@ struct Args {
 	std::string pwrApiRoot;
 	std::string pwrApiServer;
 	std::string pwrApiServerPort;
+	std::string name;
 };
 
 class Server : public EventGenerator {

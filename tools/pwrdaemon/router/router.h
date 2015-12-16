@@ -133,32 +133,32 @@ class Router : public EventGenerator {
 	EventChannel* findServerChan( ServerID );
 
 	AppID findRoute( ObjID id ) {
-    	AppID retval = -1;
-    	if ( m_routeTable.find(id) != m_routeTable.end() ) {
-        	retval = m_routeTable[id];
-   		}
+		AppID retval = -1;
+		if ( m_routeTable.find(id) != m_routeTable.end() ) {
+			retval = m_routeTable[id];
+		}
 		DBGX("name=`%s` AppID=%lx\n", id.c_str(), retval  )
     	return retval;
 	}
 
 	void addClientChan( EventChannel* ec) {
-		DBGX("\n");
+		DBGX("ec=%p\n",ec);
 		m_clientMap[ec] = new Client(*this);
 	}			
 
 	void delClientChan( EventChannel* ec ) {
-		DBGX("\n");
+		DBGX("ec=%p\n",ec);
 		delete m_clientMap[ec];
 		m_clientMap.erase(ec);
 	}			
 
 	void addServerChan( EventChannel* ec) {
-		DBGX("\n");
+		DBGX("ec=%p\n",ec);
 		m_serverMap[ec] = new Server(*this);
 	}			
 
 	void delServerChan( EventChannel* ec ) {
-		DBGX("\n");
+		DBGX("ec=%p\n",ec);
 		delete m_serverMap[ec];
 		m_serverMap.erase(ec);
 	}			

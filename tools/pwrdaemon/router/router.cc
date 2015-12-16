@@ -129,8 +129,8 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 	} else {
 		DBGX("router channel\n");
 		ec = findRtrChan( rtrID );
+		assert(ec);
 	}
-	assert(ec);
 
 	if ( ev->type == Router2Router ) {
 		RouterEvent* rev = static_cast<RouterEvent*>(ev);
@@ -159,11 +159,6 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 AppID Router::findDestApp( ObjID id ) {
 	DBGX("%s\n",id.c_str());
 	return findRoute( id );
-	AppID retval = -1;
-	if ( m_routeTable.find(id) != m_routeTable.end() ) {
-		retval = m_routeTable[id];
-	}
-	return retval; 
 }	
 
 EventChannel* Router::findRtrChan( RouterID id ) {
@@ -173,6 +168,7 @@ EventChannel* Router::findRtrChan( RouterID id ) {
 EventChannel* Router::findServerChan( ServerID id ) {
 	DBGX("server id %d\n", id );
 	if ( -1 == id  ) {
+		return NULL;
 	} else {
 		return m_localMap[id];
 	}
