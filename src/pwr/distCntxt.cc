@@ -143,23 +143,25 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
     std::string op = m_config->findAttrOp( obj->name(),attrName );
     std::string type = m_config->findAttrType( obj->name(),attrName );
     AttrInfo::OpFuncPtr opFunc = NULL;
+    DBGX("op=%s type=%s\n",op.c_str(),type.c_str());
     if ( ! op.compare("SUM") ) {
         opFunc = sumOp;
 		if ( ! type.compare("Float") ) {
-			op = FP_ADD;
+			vOp = FP_ADD;
 		} else {
-			op = INT_ADD;
+			vOp = INT_ADD;
 		}
 
     } else if ( ! op.compare("AVG") ) {
         opFunc = avgOp;
 
 		if ( ! type.compare("Float") ) {
-			op = FP_AVG;
+			vOp = FP_AVG;
 		} else {
-			op = INT_AVG;
+			vOp = INT_AVG;
 		}
     }
+    assert(vOp != NO_OP );
     assert(opFunc);
 
 	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp, vOp );
