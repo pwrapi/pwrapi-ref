@@ -43,6 +43,7 @@ class DistCntxt : public Cntxt {
 
 	std::map< std::set< Object*>, Communicator* >	m_commMap;
 	std::string m_rootName;	
+	std::string m_name;
 };
 
 }

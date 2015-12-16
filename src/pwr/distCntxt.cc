@@ -22,19 +22,36 @@
 
 using namespace PowerAPI;
 
-DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
+static const char* getenv2( std::string prefix, std::string sufix ) 
+{
+	const char* env = getenv( (prefix + sufix).c_str() ); 
+	DBG("%s %s\n",prefix.c_str(),sufix.c_str());
+
+	if ( ! env ) {
+		env = getenv( sufix.c_str() );
+	}
+	return env; 
+}
+
+DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
+	m_name(name)
 {
 	DBGX("\n");
 	m_evChan = initEventChannel();	
 
-	if ( NULL != getenv( "POWERAPI_DEBUG" ) ) {
-		_DbgFlags = atoi( getenv( "POWERAPI_DEBUG" ) );
+	const char* env;
+
+	env = getenv2( name, "POWERAPI_DEBUG" );
+
+	if ( env ) {
+		_DbgFlags = atoi(env);
 	}
 
 	std::string configFile;
 
-    if( getenv( "POWERAPI_CONFIG" ) != NULL ) {
-        configFile = getenv( "POWERAPI_CONFIG" );
+	env = getenv2( name, "POWERAPI_CONFIG" );
+    if( env ) { 
+        configFile = env;
     } else {
         printf("error: environment variable `POWERAPI_CONFIG` must be set\n");
         exit(-1);
@@ -55,13 +72,13 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
     m_config->print( std::cout );
 #endif
 
-    char* tmp = getenv( "POWERAPI_ROOT" );
-    if( tmp != NULL ) {
-    	DBGX("root=`%s`\n", tmp );
-		m_rootName = tmp;
-        m_rootObj = findObject(tmp);
+    env = getenv2( name, "POWERAPI_ROOT" );
+    if( env  ) {
+    	DBGX("root=`%s`\n", env );
+		m_rootName = env;
+        m_rootObj = findObject(env);
 		if ( ! m_rootObj ) {
-        	printf("error: `POWERAPI_ROOT=%s` is invalid\n",tmp);
+        	printf("error: `POWERAPI_ROOT=%s` is invalid\n",env);
         	exit(-1);
 		}
     } else {
@@ -73,7 +90,7 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name )
 
 EventChannel* DistCntxt::initEventChannel()
 {
-	char* tmp = getenv("POWERAPI_SERVER");
+	const char* tmp = getenv2( m_name,"POWERAPI_SERVER");
 	if ( NULL == tmp ) {
 		return NULL;
 	}
@@ -83,7 +100,7 @@ EventChannel* DistCntxt::initEventChannel()
 	
 	DBGX("%s\n", server.c_str() );
 
-	tmp = getenv("POWERAPI_SERVER_PORT");
+	tmp = getenv2(m_name.c_str(),"POWERAPI_SERVER_PORT");
 
     std::string serverPort( tmp );
     assert( ! serverPort.empty() );
