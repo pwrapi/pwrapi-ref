@@ -1,0 +1,32 @@
+#!/bin/sh
+
+
+#export POWERAPI_DEBUG=1
+
+CONFIG=/home/mjleven/pwrGIT/working/examples/config/xtpmNode.py
+
+pwrdaemon \
+--rtr.clientPort=15000 \
+--rtr.serverPort=15001 \
+--rtr.routerType=tree \
+--rtr.routerId=0 \
+--rtr.routeTable=routeTable.txt \
+--rtr.pwrApiConfig=$CONFIG \
+--srvr.rtrHost=localhost \
+--srvr.name=board0 \
+--srvr.rtrPort=15001 \
+--srvr.pwrApiConfig=$CONFIG \
+--srvr.pwrApiRoot=plat.cab0.board0 \
+--srvr.pwrApiServer=localhost \
+--srvr.pwrApiServerPort=15000 \
+--srvr0.name=node0 \
+--srvr0.rtrHost=localhost \
+--srvr0.rtrPort=15001 \
+--srvr0.pwrApiConfig=$CONFIG \
+--srvr0.pwrApiRoot=plat.cab0.board0.node0 \
+--srvr1.name=node1 \
+--srvr1.rtrHost=localhost \
+--srvr1.rtrPort=15001 \
+--srvr1.pwrApiConfig=$CONFIG \
+--srvr1.pwrApiRoot=plat.cab0.board0.node1
+
