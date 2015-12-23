@@ -287,12 +287,12 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
 
         if( optdev_verbose ) {
             printf( "Info: node[%d].number            - %d\n", i, PWR_OPTDEV(dev->private_data)->node[i].number );
-            printf( "Info: node[%d].tdp_to_watt       - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].tdp_to_watt );
-            printf( "Info: node[%d].run_avg_range     - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range );
-            printf( "Info: node[%d].avg_divide_by     - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by );
-            printf( "Info: node[%d].proc_tdp          - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].proc_tdp );
-            printf( "Info: node[%d].base_tdp          - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].base_tdp );
-            printf( "Info: node[%d].off_core_pwr_watt - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].off_core_pwr_watt );
+            printf( "Info: node[%d].tdp_to_watt       - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].tdp_to_watt );
+            printf( "Info: node[%d].run_avg_range     - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range );
+            printf( "Info: node[%d].avg_divide_by     - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by );
+            printf( "Info: node[%d].proc_tdp          - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].proc_tdp );
+            printf( "Info: node[%d].base_tdp          - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].base_tdp );
+            printf( "Info: node[%d].off_core_pwr_watt - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].off_core_pwr_watt );
         }
     }
 
