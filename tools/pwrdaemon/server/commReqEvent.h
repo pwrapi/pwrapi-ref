@@ -29,7 +29,7 @@ class SrvrCommReqEvent: public  CommReqEvent {
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
-		DBGX("commID=%llu\n",commID);
+		DBGX("commID=%lu\n",commID);
     	DBGX("obj='%s' attr=`%s`\n", PWR_ObjGetName(obj),
                             PWR_AttrGetTypeString( attrName ) );
     	m_respEvent.op = op;
