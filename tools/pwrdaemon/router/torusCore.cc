@@ -12,11 +12,11 @@ TorusCore::TorusCore( RouterCoreArgs* _args,  Router* router ) {
 
     m_rtrLinks.resize( nDims );
 
-    for ( size_t i = 0; i < nDims; i++ ) {
+    for ( int i = 0; i < nDims; i++ ) {
         EventChannel* ec;
         m_rtrLinks[i].resize(1);
 
-        printf("%lu: posPort=%s ", i, args.dim[i].posPort.c_str() );
+        printf("%d: posPort=%s ", i, args.dim[i].posPort.c_str() );
         printf("negSrvr=%s negSrvrPort=%s\n",
                 args.dim[i].negSrvr.c_str(), args.dim[i].negSrvrPort.c_str() );
 

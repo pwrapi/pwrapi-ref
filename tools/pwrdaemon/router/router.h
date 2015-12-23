@@ -14,8 +14,10 @@
 #include "routerCore.h"
 #include "impTypes.h"
 
-#define RTR_ID( x ) x >> 32 
-#define SERVER_ID( x ) x & 0xffffffff
+typedef uint32_t ServerID;
+
+#define RTR_ID( x ) (RouterID)(x >> 32) 
+#define SERVER_ID( x ) (ServerID) (x & 0xffffffff)
 #define APP_ID( rtr, server ) (AppID) (unsigned)rtr << 32 | (unsigned)server
 
 class EventChannel;
@@ -23,7 +25,6 @@ class Config;
 
 namespace PWR_Router {
 
-typedef uint32_t ServerID;
 
 struct Args {
     Args( ) : rtrId(-1), coreArgs(NULL) { }
@@ -97,7 +98,7 @@ class Router : public EventGenerator {
 		DBGX("rootObj=`%s` rtrId=%d serverId=%d\n",
 			name.c_str(), RTR_ID(id), SERVER_ID(id)  );
 
-		assert( -1 != id );
+		assert( (unsigned) -1 != id );
 
 		m_localMap[ SERVER_ID(id) ] = ec;
 		m_serverMap[ ec ]->initName(name);

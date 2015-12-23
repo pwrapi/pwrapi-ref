@@ -24,7 +24,7 @@ class RtrCommLogReqEvent: public  CommLogReqEvent {
 
         id = (EventId) info;
 
-        DBGX("commID=%llu eventId=%#llx new eventId=%p\n",
+        DBGX("commID=%lu eventId=%#lx new eventId=%p\n",
                                 commID, id, info );
 
 		std::vector<ObjID>& commList= client.getCommList( commID );

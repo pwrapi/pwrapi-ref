@@ -13,7 +13,7 @@ TreeCore::TreeCore( RouterCoreArgs* _args,  Router* router )
 	int nLinks = args.links.size();
 
     m_rtrLinks.resize( nLinks );
-    for ( size_t i = 0; i < nLinks; i++ ) {
+    for (int i = 0; i < nLinks; i++ ) {
 		Link& link = args.links[i];
 		if ( link.myListenPort.empty() ) {
 			continue;
@@ -27,7 +27,7 @@ TreeCore::TreeCore( RouterCoreArgs* _args,  Router* router )
 		}
         EventChannel* ec;
 
-        DBGX("%lu: myListenPort=%s ", i, link.myListenPort.c_str() );
+        DBGX("%d: myListenPort=%s ", i, link.myListenPort.c_str() );
         DBGX("otherHost=%s otherHostListnPort=%s\n",
                 link.otherHost.c_str(), link.otherHostListenPort.c_str() );
 

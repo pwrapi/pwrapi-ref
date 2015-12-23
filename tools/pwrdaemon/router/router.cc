@@ -1,10 +1,10 @@
 
+#include "pyConfig.h"
 #include <string>
 #include <fstream>
 #include <debug.h>
 #include "router.h"
 #include "xmlConfig.h"
-#include "pyConfig.h"
 #include "allocEvent.h"
 #include "routerEvent.h"
 #include "routerCore.h"
@@ -109,7 +109,7 @@ int Router::work()
 void Router::sendEvent( ObjID destObj, Event* ev ) {
 	AppID destID = findDestApp( destObj );
 	DBGX("dest=`%s` AppID=%lx\n", destObj.c_str(), destID );
-	if ( -1 == destID ) {
+	if ( (unsigned) -1 == destID ) {
 		printf("Could not route %s, drop event\n",destObj.c_str());
 		return;
 	}
@@ -136,7 +136,7 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 		RouterEvent* rev = static_cast<RouterEvent*>(ev);
 		DBGX("is RouterEvent\n");
 
-		if ( rtrID == m_args.rtrId && -1 == srvrID ) {
+		if ( rtrID == m_args.rtrId && (unsigned) -1 == srvrID ) {
 			Event* pev = rev->getPayload( allocServerEvent );
 			DBGX("call process\n");
 			if ( pev->process( this ) ) {
@@ -167,7 +167,7 @@ EventChannel* Router::findRtrChan( RouterID id ) {
 }
 EventChannel* Router::findServerChan( ServerID id ) {
 	DBGX("server id %d\n", id );
-	if ( -1 == id  ) {
+	if ( (unsigned) -1 == id  ) {
 		return NULL;
 	} else {
 		return m_localMap[id];

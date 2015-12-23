@@ -8,7 +8,7 @@ using namespace PWR_Router;
 bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 	Router& rtr = *static_cast<Router*>(_rtr);
 	Router::Client* client = rtr.getClient( ec );
-	DBGX("id=%llu\n",commID);
+	DBGX("id=%lu\n",commID);
 
    	for ( unsigned int i = 0; i < members.size(); i++ ) {
        	DBGX("%s\n", members[i].c_str() );
