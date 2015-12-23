@@ -17,7 +17,7 @@ pwrdaemon_SOURCES = \
 pwrdaemon_CPPFLAGS = $(CPPFLAGS) $(PYTHON_CPPFLAGS) -I$(top_srcdir)/src/pwr \
 				   -I$(top_srcdir)/tools/pwrdaemon/router \
 				   -I$(top_srcdir)/tools/pwrdaemon/server \
-				   -I$(top_srcdir)/src/tinyxml2
+				   -I$(top_srcdir)/src/tinyxml2 -Wall
 
 pwrdaemon_LDADD = $(top_builddir)/src/pwr/libpwr.la \
 				  $(top_builddir)/src/tinyxml2/libtinyxml2.la
