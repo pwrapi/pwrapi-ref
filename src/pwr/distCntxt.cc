@@ -1,7 +1,12 @@
+
+
+#include "pyConfig.h"
+
 #include <stdlib.h>
 #include <string>
 #include <assert.h>
 #include <sys/utsname.h>
+
 
 #include "distCntxt.h"
 #include "distRequest.h"
@@ -12,7 +17,6 @@
 #include "debug.h"
 #include "group.h"
 #include "xmlConfig.h"
-#include "pyConfig.h"
 #include "util.h"
 #include "device.h"
 
@@ -129,7 +133,7 @@ Object* DistCntxt::createObject( std::string name, PWR_ObjType type,
 static void sumOp( void* out, void* in, size_t num )
 {
 	double tmp = 0;
-	for ( int i = 0; i < num; i++) {
+	for ( unsigned i = 0; i < num; i++) {
 		DBG("%f\n",((double*)in)[i]);
 		tmp += ((double*)in)[i];
 	}
@@ -139,7 +143,7 @@ static void sumOp( void* out, void* in, size_t num )
 static void avgOp( void* out, void* in, size_t num )
 {
 	double tmp = 0;
-	for ( int i = 0; i < num; i++) {
+	for ( unsigned i = 0; i < num; i++) {
 		DBG("%f\n",((double*)in)[i]);
 		tmp += ((double*)in)[i];
 	}

@@ -9,9 +9,10 @@
  * distribution.
 */
 
+#include "pyConfig.h"
+
 #include <assert.h>
 
-#include "pyConfig.h"
 #include "debug.h"
 
 using namespace PowerAPI;
@@ -109,7 +110,7 @@ std::deque< Config::Plugin > PyConfig::findPlugins( )
 
 	PyObject* pValue = PyObject_CallObject( pFunc, NULL );
 
-	for ( int i; i < PyList_Size( pValue); i++ ) {
+	for ( int i=0; i < PyList_Size( pValue); i++ ) {
 
 		PyObject* tmp = PyList_GetItem(pValue,i);
 
@@ -135,7 +136,7 @@ std::deque< Config::SysDev > PyConfig::findSysDevs()
 
 	PyObject* pValue = PyObject_CallObject( pFunc, NULL );
 
-	for ( int i; i < PyList_Size( pValue); i++ ) {
+	for ( int i = 0; i < PyList_Size( pValue); i++ ) {
 
 		PyObject* tmp = PyList_GetItem(pValue,i);
 
@@ -144,7 +145,7 @@ std::deque< Config::SysDev > PyConfig::findSysDevs()
 		tmp2.name = PyString_AsString(PyList_GetItem(tmp,0) );
 		tmp2.plugin = PyString_AsString(PyList_GetItem(tmp,1) );
 		tmp2.initString = PyString_AsString(PyList_GetItem(tmp,2) );
-		DBGX2(DBG_CONFIG,"%s %s \n", tmp2.name.c_str(), 
+		DBGX2(DBG_CONFIG,"%s %s %s\n", tmp2.name.c_str(), 
 			tmp2.plugin.c_str(), tmp2.initString.c_str() );
 		
 		retval.push_back( tmp2 ); 
@@ -177,7 +178,7 @@ std::deque< Config::ObjDev >
 	pValue = PyObject_CallObject( pFunc, pArgs );
 
 	//PyObject_Print( pValue, stderr, Py_PRINT_RAW ); printf("\n");
-	for ( int i; i < PyList_Size( pValue); i++ ) {
+	for ( int i = 0; i < PyList_Size( pValue); i++ ) {
 
 		PyObject* tmp = PyList_GetItem(pValue,i);
 
@@ -218,7 +219,7 @@ std::deque< std::string >
 	pValue = PyObject_CallObject( pFunc, pArgs );
 	assert(pValue);
 
-	for ( int i; i < PyList_Size( pValue); i++ ) {
+	for ( int i = 0; i < PyList_Size( pValue); i++ ) {
 		char* str = PyString_AsString(PyList_GetItem(pValue,i) );
 		DBGX2(DBG_CONFIG,"%s \n", str );
 		children.push_back( str ); 
@@ -303,7 +304,7 @@ std::deque< std::string > PyConfig::findChildren( std::string name )
 	
 	pValue = PyObject_CallObject( pFunc, pArgs );
 
-	for ( int i; i < PyList_Size( pValue); i++ ) {
+	for ( int i = 0; i < PyList_Size( pValue); i++ ) {
 		char* str = PyString_AsString(PyList_GetItem(pValue,i) );
 		DBGX2(DBG_CONFIG,"%s \n", str );
 		children.push_back( str ); 

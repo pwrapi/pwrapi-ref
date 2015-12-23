@@ -81,7 +81,7 @@ class Device {
 
     virtual int getSamples( PWR_AttrName name, PWR_Time* ts, 
 						double period, unsigned int* nSamples, void* results ) {
-        DBGX("%llu\n",*ts);
+        DBGX("%lu\n",*ts);
         if ( m_ops->get_samples ) {
             return m_ops->get_samples( m_fd, name, ts, period, nSamples, results );
         } else {

@@ -279,7 +279,7 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	
-	DBGX("ts=%llu\n",*ts);
+	DBGX("ts=%lu\n",*ts);
 
 	AttrInfo* info = m_attrInfo[ attr ];
 	if ( info->comm ) {

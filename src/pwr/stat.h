@@ -51,11 +51,11 @@ class Stat {
 
 
   protected:
-	OpFuncPtr		opPtr;
 	Cntxt*			m_ctx;
 	Object*			m_obj;
 	Grp*			m_grp;
 	PWR_AttrName	m_attrName;
+	OpFuncPtr		opPtr;
     double 			m_period;
     double 			m_startTime;
     double 			m_stopTime;

@@ -55,7 +55,7 @@ Grp* Cntxt::getChildren( Object* obj )
 
 Grp* Cntxt::getGrp( PWR_ObjType type )
 {
-    Grp* grp;
+    Grp* grp = NULL;
     DBGX("\n");
     std::string tmp = objTypeToString( type );
     tmp = "internal" + tmp;

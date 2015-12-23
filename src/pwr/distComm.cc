@@ -32,8 +32,6 @@ void DistComm::getValue( PWR_AttrName attr, ValueOp op, CommReq* req )
 {
 	DBGX("%s\n",attrNameToString(attr));
 
-	DistGetCommReq* distReq = static_cast<DistGetCommReq*>(req);
-
 	CommReqEvent* ev = new CommReqEvent;	
 	ev->commID = m_commID;
 	ev->op = CommEvent::Get;
@@ -52,7 +50,6 @@ void DistGetCommReq::process( Event* _ev ) {
 void DistComm::setValue( PWR_AttrName attr, void* buf, CommReq* req )
 {
 	DBGX("%s\n",attrNameToString(attr));
-	DistSetCommReq* distReq = static_cast<DistSetCommReq*>(req);
 
 	CommReqEvent* ev = new CommReqEvent;	
 	ev->commID = m_commID;
@@ -72,7 +69,6 @@ void DistSetCommReq::process( Event* _ev ) {
 void DistComm::startLog( PWR_AttrName attr, CommReq* req )
 {
 	DBGX("%s\n",attrNameToString(attr));
-	DistStartLogCommReq* distReq = static_cast<DistStartLogCommReq*>(req);
 
 	CommLogReqEvent* ev = new CommLogReqEvent;	
 	ev->commID = m_commID;
@@ -101,7 +97,6 @@ void DistGetSamplesCommReq::process( Event* _ev ) {
 void DistComm::stopLog( PWR_AttrName attr, CommReq* req )
 {
 	DBGX("%s\n",attrNameToString(attr));
-	DistStopLogCommReq* distReq = static_cast<DistStopLogCommReq*>(req);
 
 	CommLogReqEvent* ev = new CommLogReqEvent;	
 	ev->commID = m_commID;
@@ -116,7 +111,6 @@ void DistComm::getSamples( PWR_AttrName attr, PWR_Time* time,
 				double period, unsigned int count, CommReq* req )
 {
 	DBGX("%s period=%f count=%d\n",attrNameToString(attr), period, count );
-	DistGetSamplesCommReq* distReq = static_cast<DistGetSamplesCommReq*>(req);
 
 	CommGetSamplesReqEvent* ev = new CommGetSamplesReqEvent;	
 	ev->commID = m_commID;

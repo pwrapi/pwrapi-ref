@@ -37,7 +37,7 @@ class Grp {
 
     int add( Object* obj ) {
         DBGX("%s\n",obj->name().c_str());
-        for ( unsigned i; i < m_list.size(); i ++ ) {
+        for ( unsigned i = 0; i < m_list.size(); i ++ ) {
             if ( m_list[i] == obj ) {
                 DBGX("duplicate\n");
                 return PWR_RET_FAILURE;

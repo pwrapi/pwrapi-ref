@@ -45,13 +45,12 @@ int DistRequest::wait( Status* status )
 // can we use "this"
 void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 {
-	CommGetSamplesRespEvent* event= static_cast<CommGetSamplesRespEvent*>(ev);		
 	retval = ev->status;
-	for ( int i = 0; i< ev->count; i++ ) {
+	for ( unsigned i = 0; i< ev->count; i++ ) {
 		((uint64_t*)value)[i] = ev->data[i];
 	}
 	*timeStamp = ev->startTime;
-	DBGX("start time %llu, samples %d\n",*timeStamp, ev->count);
+	DBGX("start time %lu, samples %d\n",*timeStamp, ev->count);
 	m_commReqs.erase( req ); 
 }
 
