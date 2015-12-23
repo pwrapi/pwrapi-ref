@@ -23,6 +23,7 @@ examples_config_DATA =	config/cpu-node.xml \
 			config/pi-node.xml \
 			config/pi-platform.xml \
 			config/rapl-node.xml \
+			config/opt-node.xml \
 			config/wu-node.xml \
 			config/xtpm-node.xml \
 			config/xtpm-platform.xml

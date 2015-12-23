@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="OPT" lib="libpwr_optdev.so"/>
+</Plugins>
+
+<Devices>
+    <device name="OPT-node" plugin="OPT" initString="0:0"/>
+</Devices>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="child" name="node" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node" />
+    </children>
+
+</obj>
+
+<obj name="plat.node" type="Node" >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" >
+            <src type="child" name="socket" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket" />
+    </children>
+
+</obj>
+
+<obj name="plat.node.socket" type="Socket" >
+
+    <devices>
+        <dev name="optdev" device="OPT-node" openString="1" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="optdev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+</Objects>
+</System>
