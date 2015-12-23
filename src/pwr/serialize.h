@@ -72,8 +72,8 @@ struct SerialBuf {
 
     SerialBuf& operator<<( const double t ) {
 
-		//uint64_t tmp = *(uint64_t*) &t;
-		//out(tmp);
+		uint64_t tmp = *(uint64_t*) &t;
+		out(tmp);
         return *this;
 	}
 
@@ -92,8 +92,8 @@ struct SerialBuf {
 
     SerialBuf& operator>>( double& t ) {
 				
-		//uint64_t tmp = in();
-		//t = *(double*) &tmp;			
+		uint64_t tmp = in();
+		t = *(double*) &tmp;			
         return *this;
 	}
 
