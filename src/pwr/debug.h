@@ -12,6 +12,8 @@
 #ifndef _PWR_DEBUG_H
 #define _PWR_DEBUG_H
 
+#include <sys/types.h>
+#include <unistd.h>
 #ifndef NO_CONFIG 
 #include <pwr_config.h>
 #endif
@@ -32,7 +34,7 @@ extern unsigned int _DbgFlags;
 {\
     if ( flag & _DbgFlags ) {\
         char* realname = abi::__cxa_demangle(typeid(*this).name(),0,0,NULL);\
-        fprintf( stderr, "%s::%s():%d: "fmt, realname ? realname : "?????????", \
+        fprintf( stderr, "%d:%s::%s():%d: "fmt, getpid(), realname ? realname : "?????????", \
                         __func__, __LINE__, ## __VA_ARGS__ );\
         fflush(stderr);\
         if ( realname ) free(realname);\
@@ -41,9 +43,12 @@ extern unsigned int _DbgFlags;
 
 #define DBG( fmt, ... ) DBG2( 0x1, fmt, ## __VA_ARGS__ )
 
-#define DBG2( flag, fmt, ... ) \
+#define DBG2( flag, fmt, ... ) DBG3( flag, "", fmt, ## __VA_ARGS__ ) 
+#define DBG4( pre, fmt, ... ) DBG3( 0x1, pre, fmt, ## __VA_ARGS__ ) 
+
+#define DBG3( flag, prefix, fmt, ... ) \
     if ( flag & _DbgFlags ) {\
-    	fprintf( stderr, "%s():%d: "fmt, __func__, __LINE__, ##__VA_ARGS__);\
+    	fprintf( stderr, "%d:%s:%s():%d: "fmt, getpid(), prefix, __func__, __LINE__, ##__VA_ARGS__);\
 	}
 
 #else

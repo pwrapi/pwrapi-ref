@@ -1,12 +1,8 @@
-
-
 #include "pyConfig.h"
-
 #include <stdlib.h>
 #include <string>
 #include <assert.h>
 #include <sys/utsname.h>
-
 
 #include "distCntxt.h"
 #include "distRequest.h"
@@ -64,6 +60,9 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
     DBGX("configFile=`%s`\n",configFile.c_str());
 
     size_t pos = configFile.find_last_of( "." );
+    if ( std::string::npos == pos ) {
+        assert(0);
+    }
     if ( 0 == configFile.compare(pos,4,".xml") ) {
         m_config = new XmlConfig( configFile );
     } else if ( 0 == configFile.compare(pos,3,".py") ) {
@@ -91,6 +90,39 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
     }
 
 }
+DistCntxt::~DistCntxt() 
+{
+	delete m_config;
+	while ( ! m_objMap.empty() ) { 
+		delete m_objMap.begin()->second;
+		m_objMap.erase( m_objMap.begin() );
+	}
+
+	while ( ! m_deviceMap.empty() ) {
+
+		std::map< std::string, Device* >& tmp = m_deviceMap.begin()->second;	
+		while ( ! tmp.empty() ) {
+			delete tmp.begin()->second;	
+			tmp.erase( tmp.begin() );
+		}
+
+		m_deviceMap.erase( m_deviceMap.begin() );
+	}
+
+	while ( ! m_devMap.empty() ) {
+
+		printf("m_devMap %s\n",m_devMap.begin()->first.c_str());
+
+		m_devMap.begin()->second.first->final( m_devMap.begin()->second.second );
+		m_devMap.erase( m_devMap.begin() );	
+	}
+	
+	while ( ! m_pluginLibMap.empty() ) {
+		printf("m_pluginLibMap %s\n",m_pluginLibMap.begin()->first.c_str());
+		m_pluginLibMap.erase( m_pluginLibMap.begin() );
+	}
+}
+	
 
 EventChannel* DistCntxt::initEventChannel()
 {

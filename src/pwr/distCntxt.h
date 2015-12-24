@@ -18,7 +18,7 @@ class DistCntxt : public Cntxt {
 
   public:
     DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name );
-    ~DistCntxt( ) {}
+    ~DistCntxt( );
 	EventChannel* getEventChannel() { return m_evChan; }
 
 	int makeProgress();

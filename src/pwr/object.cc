@@ -17,6 +17,14 @@ Object::Object( std::string name, PWR_ObjType type, Cntxt* ctx ) :
 	DBGX("%s %s\n",name.c_str(), objTypeToString(type) );
 }
 
+Object::~Object()
+{
+	while ( ! m_attrInfo.empty() ) {
+		delete m_attrInfo.begin()->second;
+		m_attrInfo.erase( m_attrInfo.begin() );
+	} 
+}
+
 
 Object* Object::parent()
 {	

@@ -16,6 +16,7 @@ class AttrInfo {
 
 	AttrInfo( OpFuncPtr fptr, TimeFuncPtr tptr, ValueOp op) : 
 		comm( NULL ), operation(fptr), calcTime(tptr), valueOp(op) {}
+	virtual ~AttrInfo() {}
 
 	virtual bool isValid() { 
 		return ! devices.empty() || comm; 

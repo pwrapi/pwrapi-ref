@@ -22,6 +22,7 @@ class Object {
 
   public:
 	Object( std::string name, PWR_ObjType type, Cntxt* ctx );
+	virtual ~Object();
 
 	PWR_ObjType type() { return m_objType; } 
 	std::string& name() { return m_name; } 
