@@ -14,11 +14,11 @@ static void logReqFini( SrvrCommLogReqEvent* data, int status );
 class SrvrCommLogReqEvent: public  CommLogReqEvent {
   public:
    	SrvrCommLogReqEvent( SerialBuf& buf ) : CommLogReqEvent( buf ), m_req(NULL) {  
-		DBG("\n");
+		DBGX("\n");
     }
 
     ~SrvrCommLogReqEvent( ) {
-        DBG("\n");
+        DBGX("\n");
 		if ( m_req ) { 
 			PWR_ReqDestroy( m_req );
 		}
@@ -60,7 +60,7 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
 
 static void logReqFini( SrvrCommLogReqEvent* data, int status )
 {
-	DBG("status=%d\n",status);
+	DBG4("PWR_Server","status=%d\n",status);
 
     data->m_respEvent.status = status;
 

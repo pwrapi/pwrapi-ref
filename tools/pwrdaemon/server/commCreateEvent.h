@@ -12,16 +12,16 @@ namespace PWR_Server {
 class SrvrCommCreateEvent: public  CommCreateEvent {
   public:
    	SrvrCommCreateEvent( SerialBuf& buf ) : CommCreateEvent( buf ) {
-		DBG("\n");
+		DBGX("\n");
 	}  
 	~SrvrCommCreateEvent() {
-		DBG("\n");
+		DBGX("\n");
 	}  
 
 	bool process( EventGenerator* gen, EventChannel* ) {
 		Server& info = *static_cast<Server*>(gen);
 
-       	DBG("commID=%lu\n", commID);
+       	DBGX("commID=%lu\n", commID);
 
     	CommInfo& cInfo = info.m_commMap[commID];
     	cInfo.objects.resize( members.size() );
@@ -29,7 +29,7 @@ class SrvrCommCreateEvent: public  CommCreateEvent {
 
     	for ( unsigned int i = 0; i < members.size(); i++ ) {
         	std::string& name = members[i];
-        	DBG("get object %s\n", name.c_str());
+        	DBGX("get object %s\n", name.c_str());
         	cInfo.objects[i] = PWR_CntxtGetObjByName( 
 												info.m_ctx, name.c_str() );
         	assert( cInfo.objects[i] );

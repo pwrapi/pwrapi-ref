@@ -12,16 +12,16 @@ namespace PWR_Server {
 class SrvrCommDestroyEvent: public  CommDestroyEvent {
   public:
    	SrvrCommDestroyEvent( SerialBuf& buf ) : CommDestroyEvent( buf ) {
-		DBG("\n");
+		DBGX("\n");
 	}  
 	~SrvrCommDestroyEvent() {
-		DBG("\n");
+		DBGX("\n");
 	}
 
 	bool process( EventGenerator* gen, EventChannel* ) {
 		Server& info = *static_cast<Server*>(gen);
 
-       	DBG("commID=%lu\n", commID);
+       	DBGX("commID=%lu\n", commID);
 
 		// We have a bunch of PWR_Obj hanging off of the comm.
 		// How/should we clean them up?	

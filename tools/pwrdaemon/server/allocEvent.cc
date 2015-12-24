@@ -20,7 +20,7 @@ static const char* _eventNames[] = {
 
 Event* PWR_Server::allocRtrEvent( unsigned int type, SerialBuf& buf )
 {
-	DBG("`%s`\n",_eventNames[type]); 
+	DBG4( "PWR_Server","`%s`\n",_eventNames[type]); 
 
 	switch( (EventType) type ) {
 	  default:
@@ -33,7 +33,7 @@ Event* PWR_Server::allocRtrEvent( unsigned int type, SerialBuf& buf )
 
 Event* PWR_Server::allocReqEvent( unsigned int type, SerialBuf& buf )
 {
-    DBG("`%s`\n",_eventNames[type]);
+    DBG4("PWR_Server", "`%s`\n",_eventNames[type]);
 
     switch( (EventType) type ) {
       default:

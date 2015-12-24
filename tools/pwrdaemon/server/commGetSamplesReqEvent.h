@@ -61,7 +61,7 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
 static void getSamplesFini( SrvrCommGetSamplesReqEvent* data, int status )
 {
-    DBG("status=%d\n",status);
+    DBG4("PWR_Server","status=%d\n",status);
 
     data->m_respEvent.status = status;
 

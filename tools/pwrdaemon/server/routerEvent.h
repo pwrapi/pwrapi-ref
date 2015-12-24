@@ -14,10 +14,10 @@ namespace PWR_Server {
 class SrvrRouterEvent: public RouterEvent {
   public:
    	SrvrRouterEvent( SerialBuf& buf ) : RouterEvent( buf ) {
-		DBG("\n");
+		DBGX("\n");
 	}  
 	~SrvrRouterEvent() {
-		DBG("\n");
+		DBGX("\n");
 	}  
 
 	bool process( EventGenerator* gen, EventChannel* ec ) {
