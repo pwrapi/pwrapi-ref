@@ -81,6 +81,8 @@ int main( int argc, char* argv[] )
 		assert(0==rc);
 	}
 
+	printf("%s exit\n",argv[0]);
+
 	return 0;
 }
 
