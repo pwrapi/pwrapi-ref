@@ -21,7 +21,7 @@ static const char* _eventNames[] = {
 
 Event* PWR_Router::allocRtrEvent( unsigned int type, SerialBuf& buf )
 {
-	DBG("`%s`\n",_eventNames[type]); 
+	DBG4("PWR_Router","`%s`\n",_eventNames[type]); 
 
 	switch( (EventType) type ) {
 	  default:
@@ -34,7 +34,7 @@ Event* PWR_Router::allocRtrEvent( unsigned int type, SerialBuf& buf )
 
 Event* PWR_Router::allocClientEvent( unsigned int type, SerialBuf& buf )
 {
-	DBG("`%s`\n",_eventNames[type]); 
+	DBG4("PWR_Router","`%s`\n",_eventNames[type]); 
 
 	switch( (EventType) type ) {
 	  default:

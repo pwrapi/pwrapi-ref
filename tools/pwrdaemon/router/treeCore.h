@@ -29,8 +29,8 @@ class TreeCore : public RouterCore {
 		ABC() : send(NULL), recv(NULL), nidStart(0), nidStop(0) {}
         EventChannel* send;
         EventChannel* recv;
-		uint32_t nidStart;
-		uint32_t nidStop;
+		unsigned nidStart;
+		unsigned nidStop;
     };
 
   public:
