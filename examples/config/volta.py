@@ -3,18 +3,23 @@
 from pyConfig import * 
 import os,string, batchUtil
 
-#logging.basicConfig( format='%(levelname)s: %(message)s', level=logging.DEBUG )
 
 nidList = os.environ['SLURM_NODELIST'].split(',')
 
+tmp = int(os.environ['POWERAPI_DEBUG']) 
+
+if tmp & 2 :
+	logging.basicConfig( format='%(levelname)s: %(message)s', \
+							level=logging.DEBUG )
+
 Debug( 'PYTHONPATH=\'{0}\''.format(os.environ['PYTHONPATH']) )
-Debug( 'POWERAPI_DEBUG=\'{0}\''.format(os.environ['POWERAPI_DEBUG']) )
+Debug( 'POWERAPI_DEBUG=\'{0}\''.format( tmp ) )
 
 nidMap = batchUtil.createNidMap( nidList )
 
 #print 'nidMap=', nidMap
 
-numNodes = len( nidMap ) #int(os.environ['SLURM_JOB_NUM_NODES'])
+numNodes = len( nidMap )
 
 plugins['CrayXTPM'] = 'libpwr_xtpmdev'
 devices['XTPM-node'] = ['CrayXTPM','']
