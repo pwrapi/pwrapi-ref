@@ -2,9 +2,7 @@
 
 import re, sys, logging
 
-#Debug = logging.debug
-def Debug( x ):
-	print x
+Debug = logging.debug
 
 Platform = "Platform" 
 Cabinet = "Cabinet" 
@@ -197,7 +195,7 @@ class Object:
 		for i in range(self.calcNumChildren(tmp)):
 			self.child.traverse( func, tmp + '.', i )
 				
-def checkName( tmp ):	
+def _checkName( tmp ):	
 	Debug( "{0}(): {1}".format( funcName(), tmp ) )
 
 	pos = tmp.rfind('.')
@@ -211,7 +209,6 @@ def checkName( tmp ):
 	
 	objType = ''.join(ch for ch in post if ch.isalpha() )
 
-	Debug("asdfsdafk")
 	if not objectMap.has_key(objType):
 		sys.exit( "ERROR: mmisformed name \'{0}\', bad objType \'{1}\'".\
 									format( tmp, objType))
@@ -219,18 +216,14 @@ def checkName( tmp ):
 	if '' == pre:
 		return True 
 
-	Debug("asdfsdafk")
 	parent = objectMap[objType].getParent()
 	if None == parent:
 		print "no parent"
 		sys.exit(0)
 
-	Debug("asdfsdafk")
 	number = ''.join(ch for ch in post if ch.isdigit() )
 
-	Debug("asdfsdafk")
 	numChildren = parent.getNumChildren( pre )   
-	Debug("asdfsdafk")
 	if -1 == numChildren:
 		sys.exit("ERROR".format())
 
@@ -239,42 +232,41 @@ def checkName( tmp ):
 										format( number, numChildren  ) ) 
 		return False	
 
-	return checkName(pre)
+	return _checkName(pre)
 
-def getObject( name ):
-	print "rrrr"
+def _getObject( name ):
 	Debug( "{0}() obj={1}".format( funcName(), name ) )
-	print "rrrr"
 
-	if not checkName( name ):
-		print "asdfsadfsadfasdf"
+	if not _checkName( name ):
 		return None 
-	print "XXX"
 
 	tmp = name.split('.')
 
 	objType = ''.join(ch for ch in tmp[-1] if ch.isalpha() )
-	
+
 	return objectMap[objType]
 
 
+# external
 def getObjType( name ):
 	Debug( "{0}(): obj={1}".format( funcName(), name ) )
-	return getObject(name).getType( )
+	return _getObject(name).getType( )
 
+# external
 def findChildren( name ):
 	Debug( "{0}(): obj={1}".format( funcName(), name ) )
-	return getObject(name).findChildren( name )
+	return _getObject(name).findChildren( name )
 
+# external
 def findParent( name ):
 	Debug( "{0}(): obj={1}".format( funcName(), name ) )
-	return getObject(name).getParent( ).getName()
+	return _getObject(name).getParent( ).getName()
 
+# external
 def findObjLocation( name ):
-
 	Debug( "{0}(): obj={1}".format( funcName(), name ) )
 
-	checkName( name )
+	_checkName( name )
 
 	tmp = name.split('.')
 
@@ -291,27 +283,30 @@ def findObjLocation( name ):
 
 	return ''   
 
-	return getObject(name).findObjLocation( name )
+	return _getObject(name).findObjLocation( name )
 
+#external
 def findAttrChildren( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
-	return getObject(name).findAttrChildren( name, attr )
+	return _getObject(name).findAttrChildren( name, attr )
 
+#external
 def findAttrOp( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
-	return getObject(name).findAttrOp( name, attr )
+	return _getObject(name).findAttrOp( name, attr )
 
+#external
 def findAttrType( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
-	print "abc"
-	tmp = getObject(name)
-	print "xxx"
+	tmp = _getObject(name)
 	return tmp.findAttrType( name, attr )
 
+# external
 def findAttrDevs( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
-	return getObject(name).getDevs(name,attr)
+	return _getObject(name).getDevs(name,attr)
 
+# external
 def findPlugins():
 	Debug( "{0}():".format( funcName() ) )
 	
@@ -321,6 +316,7 @@ def findPlugins():
 		dictList.append(temp)
 	return dictList 
 
+# external
 def findSysDevs():
 	Debug( "{0}():".format( funcName() ) )
 	dictList = []
@@ -330,10 +326,12 @@ def findSysDevs():
 	return dictList 
 
 
+# external
 def setLocation( obj, loc ):
 	Debug( "{0}(): obj={1} loc={2}".format( funcName(), obj, loc ) )
 	locationMap[obj] = loc 
 
+# external
 def printLocations():
 	for key, value in locationMap.iteritems():
 		print key, value
