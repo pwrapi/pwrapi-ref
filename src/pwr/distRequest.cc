@@ -8,9 +8,12 @@
 #include "distCntxt.h"
 #include "event.h"
 #include "events.h"
-//#include "distComm.h"
+#include "distComm.h"
 
 using namespace PowerAPI;
+
+DistRequest::~DistRequest( ) {
+}
 
 int DistRequest::check( int* status )
 {
@@ -34,6 +37,7 @@ int DistRequest::wait( Status* status )
 		assert(ev);
 		CommReq* req = (CommReq*)ev->id;
 		req->process( ev );
+		delete ev;
 	}
 
 	execCallback( );
@@ -51,6 +55,7 @@ void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 	}
 	*timeStamp = ev->startTime;
 	DBGX("start time %lu, samples %d\n",*timeStamp, ev->count);
+	delete req;
 	m_commReqs.erase( req ); 
 }
 
@@ -58,6 +63,7 @@ void DistRequest::setStatus( DistCommReq* req, CommRespEvent* ev  )
 {
 	DBGX("\n");
 	retval = ev->status;
+	delete req;
 	m_commReqs.erase( req ); 
 }
 
@@ -67,6 +73,7 @@ void DistRequest::getValue( DistCommReq* req, CommRespEvent* ev )
 	*timeStamp = ev->timeStamp;
 	*(uint64_t*)value = ev->value;
 
+	delete req;
 	m_commReqs.erase( req ); 
 }
 
@@ -74,6 +81,7 @@ void DistRequest::setValue( DistCommReq* req, CommRespEvent* ev )
 {
 	DBGX("\n");
 	retval = ev->status;
+	delete req;
 	m_commReqs.erase( req ); 
 }
 

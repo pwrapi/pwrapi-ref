@@ -20,6 +20,8 @@ class DistRequest : public Request {
 			Callback callback = NULL, void* data = NULL ) :
 		Request( ctx, callback, data )
 	{}
+	~DistRequest( );
+
 	int wait( Status* status );
 	int check( int* status );
 	int wait( int* status );

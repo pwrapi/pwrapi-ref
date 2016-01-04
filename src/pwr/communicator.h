@@ -18,6 +18,7 @@ class CommReq {
 class Communicator {
   public:
 	Communicator() {}
+	virtual ~Communicator() {}
 	virtual void getValue( PWR_AttrName, ValueOp, CommReq* req ) = 0;
 	virtual void setValue( PWR_AttrName, void* buf, CommReq* req ) = 0;
 	virtual void startLog( PWR_AttrName, CommReq* req ) = 0;

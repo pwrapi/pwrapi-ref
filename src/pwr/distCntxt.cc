@@ -92,6 +92,7 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
 }
 DistCntxt::~DistCntxt() 
 {
+	delete m_evChan;
 	delete m_config;
 	while ( ! m_objMap.empty() ) { 
 		delete m_objMap.begin()->second;
@@ -120,6 +121,11 @@ DistCntxt::~DistCntxt()
 	while ( ! m_pluginLibMap.empty() ) {
 		printf("m_pluginLibMap %s\n",m_pluginLibMap.begin()->first.c_str());
 		m_pluginLibMap.erase( m_pluginLibMap.begin() );
+	}
+	
+	while ( ! m_commMap.empty() ) {
+		delete m_commMap.begin()->second;
+		m_commMap.erase( m_commMap.begin() );
 	}
 }
 	

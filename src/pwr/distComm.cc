@@ -26,6 +26,7 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 	}
 
 	m_ec->sendEvent( ev );
+	delete ev;
 }
 
 void DistComm::getValue( PWR_AttrName attr, ValueOp op, CommReq* req )

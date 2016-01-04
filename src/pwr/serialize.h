@@ -9,7 +9,7 @@
 struct SerialBuf {
 
 	SerialBuf() {}
-	SerialBuf( size_t length ) { buf.resize(length); }
+	SerialBuf( size_t length ) { buf.resize(length,0); }
 
 	SerialBuf& operator<<( const std::string& str ) {
 		size_t len = str.length();
