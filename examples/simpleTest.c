@@ -30,7 +30,7 @@ int main( int argc, char* argv[] )
     PWR_Time ts;
 	PWR_Status  status;
 
-	assert( argc == 2 );	
+	assert( argc == 3 );	
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
     assert( PWR_NULL != cntxt   );
@@ -52,10 +52,14 @@ int main( int argc, char* argv[] )
     assert( children );
 #endif
 
-    retval = PWR_ObjAttrGetValue( obj, PWR_ATTR_ENERGY, &value, &ts );
-    assert( retval == PWR_RET_SUCCESS );
+	int count = atoi(argv[2]);
+	while ( count-- ) {	
+    	retval = PWR_ObjAttrGetValue( obj, PWR_ATTR_ENERGY, &value, &ts );
+    	assert( retval == PWR_RET_SUCCESS );
 
-	printf("%f\n",value);
+		printf("%s: value=%f\n",argv[0], value);
+		//sleep(1);
+	}
     return 0;
 }
 char* myctime(const time_t *timep)
