@@ -55,7 +55,6 @@ void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 	}
 	*timeStamp = ev->startTime;
 	DBGX("start time %lu, samples %d\n",*timeStamp, ev->count);
-	delete req;
 	m_commReqs.erase( req ); 
 }
 
@@ -63,7 +62,6 @@ void DistRequest::setStatus( DistCommReq* req, CommRespEvent* ev  )
 {
 	DBGX("\n");
 	retval = ev->status;
-	delete req;
 	m_commReqs.erase( req ); 
 }
 
@@ -73,7 +71,6 @@ void DistRequest::getValue( DistCommReq* req, CommRespEvent* ev )
 	*timeStamp = ev->timeStamp;
 	*(uint64_t*)value = ev->value;
 
-	delete req;
 	m_commReqs.erase( req ); 
 }
 
@@ -81,7 +78,6 @@ void DistRequest::setValue( DistCommReq* req, CommRespEvent* ev )
 {
 	DBGX("\n");
 	retval = ev->status;
-	delete req;
 	m_commReqs.erase( req ); 
 }
 
