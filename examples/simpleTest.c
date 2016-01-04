@@ -60,6 +60,7 @@ int main( int argc, char* argv[] )
 		printf("%s: value=%f\n",argv[0], value);
 		//sleep(1);
 	}
+	PWR_CntxtDestroy( cntxt );
     return 0;
 }
 char* myctime(const time_t *timep)
