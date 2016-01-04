@@ -36,9 +36,9 @@ class RtrCommRespEvent: public  CommRespEvent {
 			assert( FP_ADD == info->valueOp );
 			std::deque<CommRespEvent*>::iterator iter = info->respQ.begin();	
 			for ( ; iter != info->respQ.end(); ++iter ) {
-        		delete (*iter);
 				fpAdd( &resp->value, &(*iter)->value );
 				resp->timeStamp = (*iter)->timeStamp;
+				delete (*iter);
 			} 
 
         	info->src->sendEvent( resp );
