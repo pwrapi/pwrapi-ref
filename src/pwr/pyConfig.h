@@ -13,6 +13,8 @@
 #define _PWR_PYCONFIG_H
 
 #include <Python.h>
+
+#include <pthread.h>
 #include "pwrtypes.h"
 #include "config.h"
 
@@ -42,7 +44,19 @@ class PyConfig : public Config {
     std::string attrNameToString( PWR_AttrName );
     PWR_ObjType objTypeStrToInt( const std::string );
     std::string objTypeToString( PWR_ObjType type );
-	PyObject* m_pModule;
+
+	void lock() {
+		pthread_mutex_lock(&m_mutex);
+		//printf("locked %p\n", pthread_self());
+	}
+
+	void unlock() {
+		pthread_mutex_unlock(&m_mutex);
+		//printf("unlocked %p\n",pthread_self());
+	}
+
+    static pthread_mutex_t	m_mutex;
+    PyObject* m_pModule;
 };
 
 }

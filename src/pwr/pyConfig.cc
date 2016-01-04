@@ -17,6 +17,8 @@
 
 using namespace PowerAPI;
 
+pthread_mutex_t PyConfig::m_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 PyConfig::PyConfig( std::string file ) 
 {
 	DBGX2(DBG_CONFIG,"config file `%s`\n",file.c_str());
@@ -35,10 +37,13 @@ PyConfig::PyConfig( std::string file )
 
 	DBGX2( DBG_CONFIG, "path=`%s` module=`%s`\n",
 									path.c_str(), module.c_str() );
+
+	lock();
 	Py_Initialize();
 	
 	m_pModule = PyImport_ImportModule( module.c_str() );
 	assert( m_pModule );
+	unlock();
 }
 
 PyConfig::~PyConfig()
@@ -72,9 +77,11 @@ bool PyConfig::hasObject( const std::string name )
 
 	PyTuple_SetItem( pArgs, 0, PyInt_FromLong( 0 ) );
 	
+	lock();
 	// new referenc
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
 	assert(pRetval);
+	unlock();
 
 	Py_DECREF( pFunc );
 	Py_DECREF( pArgs );
@@ -84,6 +91,8 @@ bool PyConfig::hasObject( const std::string name )
 
 PWR_ObjType PyConfig::objType( const std::string name )
 {
+	DBGX2(DBG_CONFIG,"%s\n",name.c_str());
+
 	PWR_ObjType type = PWR_OBJ_INVALID;
 
 	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "getObjType" );
@@ -93,7 +102,10 @@ PWR_ObjType PyConfig::objType( const std::string name )
 	assert(pArgs);
 
 	PyTuple_SetItem( pArgs, 0, PyString_FromString( name.c_str() ) );
+
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
+	unlock();
 
 	if ( pRetval ) {
 		type = objTypeStrToInt( PyString_AsString(pRetval) );
@@ -116,8 +128,10 @@ std::deque< Config::Plugin > PyConfig::findPlugins( )
 	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findPlugins" );
 	assert(pFunc);
 
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, NULL );
 	assert(pRetval);
+	unlock();
 
 	for ( int i=0; i < PyList_Size( pRetval); i++ ) {
 
@@ -146,8 +160,10 @@ std::deque< Config::SysDev > PyConfig::findSysDevs()
 	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findSysDevs" );
 	assert(pFunc);
 
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, NULL );
 	assert(pRetval);
+	unlock();
 
 	for ( int i=0; i < PyList_Size( pRetval ); i++ ) {
 
@@ -188,10 +204,12 @@ std::deque< Config::ObjDev >
 	PyTuple_SetItem( pArgs, 1, 
 				PyString_FromString( attrNameToString(attr).c_str() ) );
 	
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
 	assert(pRetval);
+	unlock();
 
-	PyObject_Print( pRetval, stderr, Py_PRINT_RAW ); printf("\n");
+	//PyObject_Print( pRetval, stderr, Py_PRINT_RAW ); printf("\n");
 	
 	for ( int i=0; i < PyList_Size(pRetval); i++ ) {
 
@@ -233,8 +251,10 @@ std::deque< std::string >
 	PyTuple_SetItem( pArgs, 1, 
 			PyString_FromString( attrNameToString(attr).c_str() ) );
 	
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
 	assert(pRetval);
+	unlock();
 
 	for ( int i=0; i < PyList_Size(pRetval); i++ ) {
 		char* str = PyString_AsString(PyList_GetItem(pRetval,i) );
@@ -266,8 +286,10 @@ std::string PyConfig::findAttrType( std::string name, PWR_AttrName attr )
 	PyTuple_SetItem( pArgs, 1, 
 				PyString_FromString( attrNameToString(attr).c_str() ) );
 	
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
 	assert(pRetval);
+	unlock();
 
 	retval = PyString_AsString(pRetval );
 
@@ -301,11 +323,13 @@ std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	PyTuple_SetItem( pArgs, 1, 
 			PyString_FromString( attrNameToString(attr).c_str() ) );
 
+	lock();
 	// new	
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
-	printf("%s()\n",__func__);
-	PyObject_Print( pRetval, stderr, Py_PRINT_RAW ); printf("\n");
 	assert(pRetval);
+	unlock();
+
+	//PyObject_Print( pRetval, stderr, Py_PRINT_RAW ); printf("\n");
 
 	retval = PyString_AsString( pRetval );
 
@@ -331,8 +355,10 @@ std::deque< std::string > PyConfig::findChildren( std::string name )
 
 	PyTuple_SetItem( pArgs, 0, PyString_FromString( name.c_str() ) );
 	
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
 	assert(pRetval);
+	unlock();
 
 	for ( int i=0; i < PyList_Size( pRetval); i++ ) {
 		char* str = PyString_AsString(PyList_GetItem(pRetval,i) );
@@ -360,7 +386,9 @@ std::string PyConfig::findParent( std::string name )
 
 	PyTuple_SetItem( pArgs, 0, PyString_FromString( name.c_str() ) );
 	
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
+	unlock();
 
 	if ( pRetval ) {
 		retval = PyString_AsString(pRetval);
@@ -386,7 +414,9 @@ std::string PyConfig::findObjLocation( std::string name )
 
 	PyTuple_SetItem( pArgs, 0,  PyString_FromString( name.c_str() ) );
 	
+	lock();
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
+	unlock();
 
 	if ( pRetval ) {
 		retval = PyString_AsString(pRetval);
