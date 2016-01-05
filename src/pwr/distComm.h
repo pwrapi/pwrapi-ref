@@ -4,6 +4,7 @@
 
 #include <set>
 #include "communicator.h"
+#include "events.h"
 
 class EventChannel;
 
@@ -66,10 +67,10 @@ class DistComm : public Communicator {
 			                unsigned int count, CommReq* req );
 
   private:
-	static uint64_t m_currentCommID;
+	static uint32_t m_currentCommID;
 
 	EventChannel* 	m_ec;
-	uint64_t 		m_commID;	
+	CommID 		m_commID;	
 };
 
 }
