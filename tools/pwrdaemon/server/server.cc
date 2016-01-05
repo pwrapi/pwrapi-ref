@@ -75,6 +75,7 @@ void Server::initFini( Event* key, Event* x, EventChannel* y )
 	DBGX("\n");
 	m_finiMap[ key ] = std::make_pair(x,y);
 }
+
 void Server::freeFini( Event* key )
 {
 	DBGX("\n");
