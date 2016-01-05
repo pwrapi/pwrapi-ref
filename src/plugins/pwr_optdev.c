@@ -23,7 +23,7 @@
 #define OPT_CPU_MODEL_A10_5800        16
 
 /* D18F0x0[15:0] */
-#define MSR_OPT_BASE_ADDR             0xd18f000
+#define MSR_OPT_BASE_ADDR             0x0d18f000
 #define MSR_OPT_CORE                  0x18
 #define MSR_OPT_VENDOR_ID             0x1022
 #define MSR_OPT_VENDOR_MASK           0xffff
@@ -49,6 +49,18 @@
 #define MSR_OPT_TDP_TO_WATT_LO_MASK   0xfc00
 #define MSR_OPT_TDP_TO_WATT_HI_SHIFT  10
 #define MSR_OPT_TDP_TO_WATT_LO_SHIFT  -6
+ 
+/* D18F5xE8[28:16] */
+#define MSR_OPT_APM_TDP_LIMIT         0x50e8
+#define MSR_OPT_APM_TDP_LIMIT_MASK    0x1fffffff
+#define MSR_OPT_APM_TDP_LIMIT_SHIFT   16
+
+/* D18F5xE8[25:4] */
+#define MSR_OPT_RUN_AVG_ACC_CAP       0x50e0
+#define MSR_OPT_RUN_AVG_ACC_CAP_MASK  0x03ffffff
+#define MSR_OPT_RUN_AVG_ACC_CAP_SHIFT 4
+#define MSR_OPT_RUN_AVG_ACC_CAP_NEG   0x00200000
+#define MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK 0x001fffff
 
 #define MSR(X,Y,Z) ((X&Y)>>Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
@@ -189,19 +201,31 @@ static int optdev_read( int fd, int offset, long long *msr )
     return 0;
 }
 
-static int optdev_gather( int fd, int node,
+static int optdev_gather( int fd, node_t node,
                            double *power, double *time )
 {
     long long msr;
+    unsigned short apm_tdp_limit, run_avg_acc_cap;
 
-    /* FILL IN READ OF POWER */
-#if 0
-    if( optdev_read( fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
+    if( optdev_read( fd, MSR_OPT_APM_TDP_LIMIT + node.number, &msr ) < 0 ) {
         printf( "Error: PWR OPT device read failed\n" );
         return -1;
     }
-    *energy = (double)msr;
-#endif
+    apm_tdp_limit =
+        (unsigned short)(MSR(msr, MSR_OPT_APM_TDP_LIMIT_MASK, MSR_OPT_APM_TDP_LIMIT_SHIFT));
+
+    if( optdev_read( fd, MSR_OPT_RUN_AVG_ACC_CAP + node.number, &msr ) < 0 ) {
+        printf( "Error: PWR OPT device read failed\n" );
+        return -1;
+    }
+    run_avg_acc_cap =
+        (unsigned short)(MSR(msr, MSR_OPT_RUN_AVG_ACC_CAP_MASK, MSR_OPT_RUN_AVG_ACC_CAP_SHIFT));
+
+    if( run_avg_acc_cap >= MSR_OPT_RUN_AVG_ACC_CAP_NEG )
+        run_avg_acc_cap = 
+            -((~(run_avg_acc_cap & MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK) & MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK) + 1);
+
+    *power = (apm_tdp_limit - (run_avg_acc_cap / node.avg_divide_by)) * node.tdp_to_watt;
 
     return 0;
 }
@@ -342,7 +366,7 @@ int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
     }
 
     if( optdev_gather( (PWR_OPTFD(fd)->dev)->fd,
-                        (PWR_OPTFD(fd)->dev)->core,
+                        (PWR_OPTFD(fd)->dev)->node[(PWR_OPTFD(fd)->dev)->core],
                         &energy, &time ) < 0 ) {
         printf( "Error: PWR OPT device gather failed\n" );
         return -1;

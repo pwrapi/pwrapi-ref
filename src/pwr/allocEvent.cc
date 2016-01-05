@@ -3,9 +3,11 @@
 #include "debug.h"
 #include "events.h"
 
+#ifdef USE_DEBUG
 static const char* _eventNames[] = {
 	    FOREACH_ENUM(GENERATE_STRING)
 };
+#endif
 
 Event* ctx_allocEvent( unsigned int type, SerialBuf& buf )
 {

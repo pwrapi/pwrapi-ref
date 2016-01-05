@@ -15,9 +15,11 @@
 
 using namespace PWR_Router;
 
+#ifdef USE_DEBUG
 static const char* _eventNames[] = {
 	    FOREACH_ENUM(GENERATE_STRING)
 };
+#endif
 
 Event* PWR_Router::allocRtrEvent( unsigned int type, SerialBuf& buf )
 {
