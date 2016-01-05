@@ -8,8 +8,6 @@
 #include <string>
 #include <set>
 
-class EventChannel;
-
 namespace PowerAPI {
 
 class Config;

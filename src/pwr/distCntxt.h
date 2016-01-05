@@ -8,6 +8,7 @@
 #include "cntxt.h"
 #include "pwrdev.h"
 
+class EventChannel;
 namespace PowerAPI {
 
 class Config;
