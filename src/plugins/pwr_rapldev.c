@@ -87,12 +87,6 @@
 #define MSR(X,Y,Z) ((X>>Y)&Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
-#ifdef USE_DEBUG
-static int rapldev_verbose = 1;
-#else
-static int rapldev_verbose = 0;
-#endif
-
 typedef enum {
     INTEL_LAYER_PKG,
     INTEL_LAYER_PP0,
@@ -163,8 +157,7 @@ static int rapldev_parse( const char *initstr, int *core, int *layer )
 {
     char *token;
 
-    if( rapldev_verbose )
-        printf( "Info: received initialization string %s\n", initstr );
+    DBGP( "Info: received initialization string %s\n", initstr );
 
     if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
         printf( "Error: missing core separator in initialization string %s\n", initstr );
@@ -178,8 +171,7 @@ static int rapldev_parse( const char *initstr, int *core, int *layer )
     }
     *layer = atoi(token);
  
-    if( rapldev_verbose )
-        printf( "Info: extracted initialization string (CORE=%d, layer=%d)\n", *core, *layer );
+    DBGP( "Info: extracted initialization string (CORE=%d, layer=%d)\n", *core, *layer );
 
     return 0;
 }
@@ -333,8 +325,7 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_rapldev_t) );
     bzero( dev->private_data, sizeof(pwr_rapldev_t) );
 
-    if( rapldev_verbose ) 
-        printf( "Info: PWR RAPL device open\n" );
+    DBGP( "Info: PWR RAPL device open\n" );
 
     if( rapldev_parse( initstr, &core, (int *)(&(PWR_RAPLDEV(dev->private_data)->layer)) ) < 0 ) {
         printf( "Error: PWR RAPL device initialization string %s invalid\n", initstr );
@@ -363,11 +354,9 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     PWR_RAPLDEV(dev->private_data)->units.time =
         pow( 0.5, (double)(MSR(msr, TIME_UNITS_SHIFT, TIME_UNITS_MASK)) );
 
-    if( rapldev_verbose ) {
-        printf( "Info: units.power    - %g\n", PWR_RAPLDEV(dev->private_data)->units.power );
-        printf( "Info: units.energy   - %g\n", PWR_RAPLDEV(dev->private_data)->units.energy );
-        printf( "Info: units.time     - %g\n", PWR_RAPLDEV(dev->private_data)->units.time );
-    }
+    DBGP( "Info: units.power    - %g\n", PWR_RAPLDEV(dev->private_data)->units.power );
+    DBGP( "Info: units.energy   - %g\n", PWR_RAPLDEV(dev->private_data)->units.energy );
+    DBGP( "Info: units.time     - %g\n", PWR_RAPLDEV(dev->private_data)->units.time );
 
     if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_POWER_INFO, &msr ) < 0 ) {
         printf( "Error: PWR RAPL device read failed\n" );
@@ -382,12 +371,10 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     PWR_RAPLDEV(dev->private_data)->power.window =
         PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW_POWER_SHIFT, WINDOW_POWER_MASK));
 
-    if( rapldev_verbose ) {
-        printf( "Info: power.thermal  - %g\n", PWR_RAPLDEV(dev->private_data)->power.thermal );
-        printf( "Info: power.minimum  - %g\n", PWR_RAPLDEV(dev->private_data)->power.minimum );
-        printf( "Info: power.maximum  - %g\n", PWR_RAPLDEV(dev->private_data)->power.maximum );
-        printf( "Info: power.window   - %g\n", PWR_RAPLDEV(dev->private_data)->power.window );
-    }
+    DBGP( "Info: power.thermal  - %g\n", PWR_RAPLDEV(dev->private_data)->power.thermal );
+    DBGP( "Info: power.minimum  - %g\n", PWR_RAPLDEV(dev->private_data)->power.minimum );
+    DBGP( "Info: power.maximum  - %g\n", PWR_RAPLDEV(dev->private_data)->power.maximum );
+    DBGP( "Info: power.window   - %g\n", PWR_RAPLDEV(dev->private_data)->power.window );
 
     if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_POWER_LIMIT, &msr ) < 0 ) {
         printf( "Error: PWR RAPL device read failed\n" );
@@ -410,24 +397,21 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     PWR_RAPLDEV(dev->private_data)->limit.clamped2 =
         (unsigned short)(MSR_BIT(msr, CLAMPED2_LIMIT_BIT));
  
-    if( rapldev_verbose ) {
-        printf( "Info: limit.power1   - %g\n", PWR_RAPLDEV(dev->private_data)->limit.power1 );
-        printf( "Info: limit.window1  - %g\n", PWR_RAPLDEV(dev->private_data)->limit.window1 );
-        printf( "Info: limit.enabled1 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.enabled1 );
-        printf( "Info: limit.clamped1 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.clamped1 );
-        printf( "Info: limit.power2   - %g\n", PWR_RAPLDEV(dev->private_data)->limit.power1 );
-        printf( "Info: limit.window2  - %g\n", PWR_RAPLDEV(dev->private_data)->limit.window1 );
-        printf( "Info: limit.enabled2 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.enabled2 );
-        printf( "Info: limit.clamped2 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.clamped2 );
-    }
+    DBGP( "Info: limit.power1   - %g\n", PWR_RAPLDEV(dev->private_data)->limit.power1 );
+    DBGP( "Info: limit.window1  - %g\n", PWR_RAPLDEV(dev->private_data)->limit.window1 );
+    DBGP( "Info: limit.enabled1 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.enabled1 );
+    DBGP( "Info: limit.clamped1 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.clamped1 );
+    DBGP( "Info: limit.power2   - %g\n", PWR_RAPLDEV(dev->private_data)->limit.power1 );
+    DBGP( "Info: limit.window2  - %g\n", PWR_RAPLDEV(dev->private_data)->limit.window1 );
+    DBGP( "Info: limit.enabled2 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.enabled2 );
+    DBGP( "Info: limit.clamped2 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.clamped2 );
 
     return dev;
 }
 
 int pwr_rapldev_final( plugin_devops_t *dev )
 {
-    if( rapldev_verbose ) 
-        printf( "Info: PWR RAPL device close\n" );
+    DBGP( "Info: PWR RAPL device close\n" );
 
     close( PWR_RAPLDEV(dev->private_data)->fd );
     free( dev->private_data );
@@ -458,8 +442,7 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     double time = 0.0;
     int policy = 0;
 
-    if( rapldev_verbose ) 
-        printf( "Info: PWR RAPL device read\n" );
+    DBGP( "Info: PWR RAPL device read\n" );
 
     if( len != sizeof(double) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
@@ -520,8 +503,7 @@ int pwr_rapldev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
-    if( rapldev_verbose ) 
-        printf( "Info: PWR RAPL device time\n" );
+    DBGP( "Info: PWR RAPL device time\n" );
 
     return pwr_rapldev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }

@@ -19,12 +19,6 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
-#ifdef USE_DEBUG
-static int xtpmdev_verbose = 1;
-#else
-static int xtpmdev_verbose = 0;
-#endif
-
 typedef struct {
     int fd;
 } pwr_xtpmdev_t;
@@ -112,16 +106,14 @@ plugin_devops_t *pwr_xtpmdev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_xtpmdev_t) );
     bzero( dev->private_data, sizeof(pwr_xtpmdev_t) );
 
-    if( xtpmdev_verbose )
-        printf( "Info: initializing PWR XTPM device\n" );
+    DBGP( "Info: initializing PWR XTPM device\n" );
 
     return dev;
 }
 
 int pwr_xtpmdev_final( plugin_devops_t *dev )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: finalizing PWR XTPM device\n" );
+    DBGP( "Info: finalizing PWR XTPM device\n" );
 
     free( dev->private_data );
     free( dev );
@@ -133,8 +125,7 @@ pwr_fd_t pwr_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_xtpmfd_t) );
     bzero( fd, sizeof(pwr_xtpmfd_t) );
 
-    if( xtpmdev_verbose )
-        printf( "Info: opening PWR XTPM device\n" );
+    DBGP( "Info: opening PWR XTPM device\n" );
 
     PWR_XTPMFD(fd)->dev = PWR_XTPMDEV(dev->private_data);
 
@@ -148,8 +139,7 @@ pwr_fd_t pwr_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
 
 int pwr_xtpmdev_close( pwr_fd_t fd )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: closing PWR XTPM device\n" );
+    DBGP( "Info: closing PWR XTPM device\n" );
 
     PWR_XTPMFD(fd)->dev = 0x0;
     free( fd );
@@ -162,8 +152,7 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     double generation;
     struct timeval tv;
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading from PWR XTPM device\n" );
+    DBGP( "Info: reading from PWR XTPM device\n" );
 
     if( len != sizeof(double) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
@@ -205,16 +194,14 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
         PWR_XTPMFD(fd)->generation = generation;
     }
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading of type %u at time %llu with value %lf\n",
-                attr, *(unsigned long long *)timestamp, *(double *)value );
+    DBGP( "Info: reading of type %u at time %llu with value %lf\n",
+        attr, *(unsigned long long *)timestamp, *(double *)value );
     return 0;
 }
 
 int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: writing to PWR XTPM device\n" );
+    DBGP( "Info: writing to PWR XTPM device\n" );
 
     if( len != sizeof(double) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
@@ -233,8 +220,7 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
             break;
     }
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading of type %u with value %lf\n", attr, *(double *)value );
+    DBGP( "Info: reading of type %u with value %lf\n", attr, *(double *)value );
     return 0;
 }
 
@@ -264,8 +250,7 @@ int pwr_xtpmdev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading time from PWR XTPM device\n" );
+    DBGP( "Info: reading time from PWR XTPM device\n" );
 
     return pwr_xtpmdev_read( fd, PWR_ATTR_ENERGY, &value, sizeof(double), timestamp );;
 }

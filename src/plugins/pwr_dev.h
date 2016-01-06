@@ -14,6 +14,12 @@
 
 #include "pwrdev.h"
 
+#ifdef USE_DEBUG
+#define DBGP(X,...) printf(X, ## __VA_ARGS__ )
+#else
+#define DBGP(X,...)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

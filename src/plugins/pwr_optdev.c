@@ -65,12 +65,6 @@
 #define MSR(X,Y,Z) ((X&Y)>>Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
-#ifdef USE_DEBUG
-static int optdev_verbose = 1;
-#else
-static int optdev_verbose = 0;
-#endif
-
 #define OPT_NODE_MAX 8
 
 typedef struct {
@@ -122,8 +116,7 @@ static int optdev_parse( const char *initstr, int *core )
 {
     char *token;
 
-    if( optdev_verbose )
-        printf( "Info: received initialization string %s\n", initstr );
+    DBGP( "Info: received initialization string %s\n", initstr );
 
     if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
         printf( "Error: missing core separator in initialization string %s\n", initstr );
@@ -131,8 +124,7 @@ static int optdev_parse( const char *initstr, int *core )
     }
     *core = atoi(token);
 
-    if( optdev_verbose )
-        printf( "Info: extracted initialization string (CORE=%d)\n", *core );
+    DBGP( "Info: extracted initialization string (CORE=%d)\n", *core );
 
     return 0;
 }
@@ -241,8 +233,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_optdev_t) );
     bzero( dev->private_data, sizeof(pwr_optdev_t) );
 
-    if( optdev_verbose ) 
-        printf( "Info: PWR OPT device open\n" );
+    DBGP( "Info: PWR OPT device open\n" );
     if( optdev_parse( initstr, &core ) < 0 ) {
         printf( "Error: PWR OPT device initialization string %s invalid\n", initstr );
         return 0x0;
@@ -309,15 +300,13 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
         PWR_OPTDEV(dev->private_data)->node[i].proc_tdp =
             (unsigned short)(MSR(msr, MSR_OPT_PROC_TDP_MASK, 0));
 
-        if( optdev_verbose ) {
-            printf( "Info: node[%d].number            - %d\n", i, PWR_OPTDEV(dev->private_data)->node[i].number );
-            printf( "Info: node[%d].tdp_to_watt       - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].tdp_to_watt );
-            printf( "Info: node[%d].run_avg_range     - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range );
-            printf( "Info: node[%d].avg_divide_by     - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by );
-            printf( "Info: node[%d].proc_tdp          - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].proc_tdp );
-            printf( "Info: node[%d].base_tdp          - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].base_tdp );
-            printf( "Info: node[%d].off_core_pwr_watt - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].off_core_pwr_watt );
-        }
+        DBGP( "Info: node[%d].number            - %d\n", i, PWR_OPTDEV(dev->private_data)->node[i].number );
+        DBGP( "Info: node[%d].tdp_to_watt       - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].tdp_to_watt );
+        DBGP( "Info: node[%d].run_avg_range     - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range );
+        DBGP( "Info: node[%d].avg_divide_by     - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by );
+        DBGP( "Info: node[%d].proc_tdp          - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].proc_tdp );
+        DBGP( "Info: node[%d].base_tdp          - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].base_tdp );
+        DBGP( "Info: node[%d].off_core_pwr_watt - %u\n", i, PWR_OPTDEV(dev->private_data)->node[i].off_core_pwr_watt );
     }
 
     return dev;
@@ -325,8 +314,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
 
 int pwr_optdev_final( plugin_devops_t *dev )
 {
-    if( optdev_verbose ) 
-        printf( "Info: PWR OPT device close\n" );
+    DBGP( "Info: PWR OPT device close\n" );
 
     close( PWR_OPTDEV(dev->private_data)->fd );
     free( dev->private_data );
@@ -357,8 +345,7 @@ int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
     double time = 0.0;
     int policy = 0;
 
-    if( optdev_verbose ) 
-        printf( "Info: PWR OPT device read\n" );
+    DBGP( "Info: PWR OPT device read\n" );
 
     if( len != sizeof(double) ) {
         printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
@@ -417,8 +404,7 @@ int pwr_optdev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
-    if( optdev_verbose ) 
-        printf( "Info: PWR OPT device time\n" );
+    DBGP( "Info: PWR OPT device time\n" );
 
     return pwr_optdev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );
 }

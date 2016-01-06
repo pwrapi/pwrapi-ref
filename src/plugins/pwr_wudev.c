@@ -20,12 +20,6 @@
 #include <termios.h>
 #include <sys/time.h>
 
-#ifdef USE_DEBUG
-static int wudev_verbose = 1;
-#else
-static int wudev_verbose = 0;
-#endif
-
 typedef struct {
     int fd;
 } pwr_wudev_t;
@@ -58,8 +52,7 @@ static int wudev_parse( const char *initstr, char *port, int *baud )
 {
     char *token;
 
-    if( wudev_verbose )
-        printf( "Info: received initialization string %s\n", initstr );
+    DBGP( "Info: received initialization string %s\n", initstr );
 
     if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
         printf( "Error: missing serial port seperator in initialization string %s\n", initstr );
@@ -73,8 +66,7 @@ static int wudev_parse( const char *initstr, char *port, int *baud )
     }
     *baud = atoi(token);
 
-    if( wudev_verbose )
-        printf( "Info: extracted initialization string (PORT=%s, BAUD=%d)\n", port, *baud);
+    DBGP( "Info: extracted initialization string (PORT=%s, BAUD=%d)\n", port, *baud);
 
     return 0;
 }
@@ -196,8 +188,7 @@ plugin_devops_t *pwr_wudev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_wudev_t) );
     bzero( dev->private_data, sizeof(pwr_wudev_t) );
 
-    if( wudev_verbose )
-        printf( "Info: initializing PWR Wattsup device\n" );
+    DBGP( "Info: initializing PWR Wattsup device\n" );
 
     if( initstr == 0x0 || wudev_parse( initstr, port, &baud ) < 0 ) {
         printf( "Error: invalid monitor and control hardware initialization string\n" );
@@ -214,8 +205,7 @@ plugin_devops_t *pwr_wudev_init( const char *initstr )
 
 int pwr_wudev_final( plugin_devops_t *dev )
 {
-    if( wudev_verbose )
-        printf( "Info: finalizing PWR Wattsup device\n" );
+    DBGP( "Info: finalizing PWR Wattsup device\n" );
 
     close( PWR_WUDEV(dev->private_data)->fd );
     free( dev->private_data );
@@ -229,8 +219,7 @@ pwr_fd_t pwr_wudev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_wufd_t) );
     bzero( fd, sizeof(pwr_wufd_t) );
 
-    if( wudev_verbose )
-        printf( "Info: opening PWR Wattsup descriptor\n" );
+    DBGP( "Info: opening PWR Wattsup descriptor\n" );
 
     PWR_WUFD(fd)->dev = PWR_WUDEV(dev->private_data);
 
@@ -239,8 +228,7 @@ pwr_fd_t pwr_wudev_open( plugin_devops_t *dev, const char *openstr )
 
 int pwr_wudev_close( pwr_fd_t fd )
 {
-    if( wudev_verbose )
-        printf( "Info: closing PWR Wattsup descriptor\n" );
+    DBGP( "Info: closing PWR Wattsup descriptor\n" );
 
     PWR_WUFD(fd)->dev = 0x0;
     free( fd );
@@ -253,8 +241,7 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     char buf[256] = "";
     struct timeval tv;
 
-    if( wudev_verbose )
-        printf( "Info: reading from PWR Wattsup device\n" );
+    DBGP( "Info: reading from PWR Wattsup device\n" );
  
     if( wudev_write( (PWR_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
         printf( "Error: command write to Wattsup device failed\n" );
@@ -267,8 +254,7 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     }
 
     if( strlen( buf ) > 0 ) {
-        if( wudev_verbose )
-            printf( "Info: read buffer is %s\n", buf );
+        DBGP( "Info: read buffer is %s\n", buf );
 
         switch( attr ) {
             case PWR_ATTR_VOLTAGE:
@@ -296,16 +282,14 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
 
 int pwr_wudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
-    if( wudev_verbose )
-        printf( "Info: writing to PWR Wattsup device\n" );
+    DBGP( "Info: writing to PWR Wattsup device\n" );
 
     switch( attr ) {
         default:
             printf( "Warning: unknown PWR reading attr (%u)\n", attr );
             break;
 
-        if( wudev_verbose )
-            printf( "Info: setting of type %u with value %lf\n",
+        DBGP( "Info: setting of type %u with value %lf\n",
                     attr, *((double *)value) );
     }
 
@@ -338,16 +322,14 @@ int pwr_wudev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
-    if( wudev_verbose )
-        printf( "Info: getting time from PWR Wattsup device\n" );
+    DBGP( "Info: getting time from PWR Wattsup device\n" );
 
     return pwr_wudev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp);
 }
 
 int pwr_wudev_clear( pwr_fd_t fd )
 {
-    if( wudev_verbose )
-        printf( "Info: clearing PWR Wattsup device\n" );
+    DBGP( "Info: clearing PWR Wattsup device\n" );
 
     return 0;
 }
