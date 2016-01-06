@@ -244,7 +244,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
         return 0x0;
     }
 
-    sfprintf( stderr, file, "/dev/cpu/%d/msr", core );
+    sprintf( file, "/dev/cpu/%d/msr", core );
     if( (PWR_OPTDEV(dev->private_data)->fd=open( file, O_RDONLY )) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device open failed\n" );
         return 0x0;
