@@ -25,7 +25,7 @@ using namespace PowerAPI;
 static const char* getenv2( std::string prefix, std::string sufix ) 
 {
 	const char* env = getenv( (prefix + sufix).c_str() ); 
-	DBG("%s %s\n",prefix.c_str(),sufix.c_str());
+	DBG("prefix='%s' sufix='%s'\n",prefix.c_str(),sufix.c_str());
 
 	if ( ! env ) {
 		env = getenv( sufix.c_str() );
@@ -36,7 +36,7 @@ static const char* getenv2( std::string prefix, std::string sufix )
 DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
 	m_name(name)
 {
-	DBGX("\n");
+	DBGX("name=%s\n",name);
 	m_evChan = initEventChannel();	
 
 	const char* env;
@@ -112,14 +112,11 @@ DistCntxt::~DistCntxt()
 
 	while ( ! m_devMap.empty() ) {
 
-		printf("m_devMap %s\n",m_devMap.begin()->first.c_str());
-
 		m_devMap.begin()->second.first->final( m_devMap.begin()->second.second );
 		m_devMap.erase( m_devMap.begin() );	
 	}
 	
 	while ( ! m_pluginLibMap.empty() ) {
-		printf("m_pluginLibMap %s\n",m_pluginLibMap.begin()->first.c_str());
 		m_pluginLibMap.erase( m_pluginLibMap.begin() );
 	}
 	
