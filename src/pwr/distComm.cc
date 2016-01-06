@@ -1,4 +1,5 @@
 
+#include <sys/syscall.h>
 #include "util.h"
 #include "distComm.h"
 #include "distCntxt.h"
@@ -10,7 +11,12 @@
 
 using namespace PowerAPI;
 
-uint64_t DistComm::m_currentCommID = 1;
+static inline int gettid() {
+	return syscall(SYS_gettid);
+}
+
+uint32_t DistComm::m_currentCommID = 1;
+
 DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 {
 	DBGX("num objects %lu\n", objects.size() );
@@ -18,7 +24,7 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 	assert(m_ec);
 
 	CommCreateEvent* ev = new CommCreateEvent();
-	m_commID = ev->commID = m_currentCommID++;
+	m_commID = ev->commID = ((CommID)gettid() << 32) | m_currentCommID++;
 
 	std::set<Object*>::iterator iter = objects.begin();
 	for ( ; iter != objects.end(); ++iter ) {

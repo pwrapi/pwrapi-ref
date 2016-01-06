@@ -304,7 +304,6 @@ std::string PyConfig::findAttrType( std::string name, PWR_AttrName attr )
 std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 {
 	std::string retval;
-	return "SUM";
 	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
 							name.c_str(),attrNameToString(attr).c_str());
 
