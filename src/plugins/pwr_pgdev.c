@@ -21,12 +21,6 @@
 
 #include <IntelPowerGadget/EnergyLib.h>
 
-#ifdef USE_DEBUG
-static int pgdev_verbose = 1;
-#else
-static int pgdev_verbose = 0;
-#endif
-
 typedef struct {
     int num_nodes;
     int num_msrs;
@@ -62,25 +56,23 @@ static int pgdev_parse( const char *openstr, int *node, int *gpu )
 {
     char *token;
 
-    if( pgdev_verbose )
-        printf( "Info: received initialization string %s\n", openstr );
+    DBGP( "Info: received initialization string %s\n", openstr );
 
     *node = 0;
     if( (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
-        printf( "Error: missing server port separator in initialization string %s\n", openstr );
+        fprintf( stderr, "Error: missing server port separator in initialization string %s\n", openstr );
         return -1;
     }
     *node = atoi(token);
 
     *gpu = 0;
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        printf( "Error: missing server port separator in initialization string %s\n", openstr );
+        fprintf( stderr, "Error: missing server port separator in initialization string %s\n", openstr );
         return -1;
     }
     *gpu = atoi(token);
 
-    if( pgdev_verbose )
-        printf( "Info: extracted initialization string (NODE=%d, GPU=%d)\n", *node, *gpu );
+    DBGP( "Info: extracted initialization string (NODE=%d, GPU=%d)\n", *node, *gpu );
 
     return 0;
 }
@@ -93,8 +85,7 @@ plugin_devops_t *pwr_pgdev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_pgdev_t) );
     bzero( dev->private_data, sizeof(pwr_pgdev_t) );
 
-    if( pgdev_verbose )
-        printf( "Info: initializing PWR PowerGadget device\n" );
+    DBGP( "Info: initializing PWR PowerGadget device\n" );
 
     IntelEnergyLibInitialize();
     StartLog("/tmp/PowerGadgetLog.csv");
@@ -109,8 +100,7 @@ plugin_devops_t *pwr_pgdev_init( const char *initstr )
 
 int pwr_pgdev_final( plugin_devops_t *dev )
 {
-    if( pgdev_verbose )
-        printf( "Info: finalizing PWR PowerGadget device\n" );
+    DBGP( "Info: finalizing PWR PowerGadget device\n" );
 
     StopLog();
                                                 
@@ -125,12 +115,11 @@ pwr_fd_t pwr_pgdev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_pgfd_t) );
     bzero( fd, sizeof(pwr_pgfd_t) );
 
-    if( pgdev_verbose )
-        printf( "Info: opening PWR PowerGadget descriptor\n" );
+    DBGP( "Info: opening PWR PowerGadget descriptor\n" );
 
     PWR_PGFD(fd)->dev = PWR_PGDEV(dev->private_data);
     if( openstr == 0x0 || pgdev_parse(openstr, &(PWR_PGFD(fd)->node), &(PWR_PGFD(fd)->gpu)) < 0 ) {
-        printf( "Error: invalid monitor and control hardware open string\n" );
+        fprintf( stderr, "Error: invalid monitor and control hardware open string\n" );
         return 0x0;
     }
 
@@ -139,8 +128,7 @@ pwr_fd_t pwr_pgdev_open( plugin_devops_t *dev, const char *openstr )
 
 int pwr_pgdev_close( pwr_fd_t fd )
 {
-    if( pgdev_verbose )
-        printf( "Info: closing PWR PowerGadget device\n" );
+    DBGP( "Info: closing PWR PowerGadget device\n" );
 
     PWR_PGFD(fd)->dev = 0x0;
     free( fd );
@@ -159,8 +147,7 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     uint64_t systime;
 #endif
 
-    if( pgdev_verbose )
-        printf( "Info: reading from PWR PowerGadget device\n" );
+    DBGP( "Info: reading from PWR PowerGadget device\n" );
 
 #ifndef USE_SYSTIME
     gettimeofday( &tv, NULL );
@@ -173,10 +160,10 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
             ReadSample();
             for( i = 0; i < (PWR_PGFD(fd)->dev)->num_msrs; i++ ) {
                 if( GetMsrFunc( i, &func ) < 0 )
-                    printf( "Warning: reading msr %d function %d\n", i, func );
+                    fprintf( stderr, "Warning: reading msr %d function %d\n", i, func );
                 else if( func == MSR_FUNC_POWER ) {
                         if( GetPowerData( 0, i, data, &n ) < 0 )
-                            printf( "Warning: reading msr %d function %d\n", i, func );
+                            fprintf( stderr, "Warning: reading msr %d function %d\n", i, func );
                         *((double *)value) = data[1];
                         break;
                 }
@@ -196,9 +183,9 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
         case PWR_ATTR_FREQ:
             if( !PWR_PGFD(fd)->gpu ) {
                 if( GetIAFrequency( PWR_PGFD(fd)->node, &val ) < 0 )
-                    printf( "Warning: reading node %d frequency\n", PWR_PGFD(fd)->node );
+                    fprintf( stderr, "Warning: reading node %d frequency\n", PWR_PGFD(fd)->node );
             } else if( GetGTFrequency( &val ) )
-                printf( "Warning: reading gpu frequency\n" );
+                fprintf( stderr, "Warning: reading gpu frequency\n" );
             *((double *)value) = val * 10000000.0;
             break;
         case PWR_ATTR_TEMP:
@@ -206,7 +193,7 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
             *((double *)value) = val;
             break;
         default:
-            printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
 #ifndef USE_SYSTIME
@@ -215,17 +202,15 @@ int pwr_pgdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     *timestamp = (systime>>32)*1000000000ULL + ((uint32_t)systime);
 #endif
 
-    if( pgdev_verbose )
-        printf( "Info: reading of type %u at time %llu with value %lf\n",
-                attr, *(unsigned long long *)timestamp, *(double *)value );
+    DBGP( "Info: reading of type %u at time %llu with value %lf\n",
+          attr, *(unsigned long long *)timestamp, *(double *)value );
 
     return 0;
 }
 
 int pwr_pgdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
-    if( pgdev_verbose )
-        printf( "Info: writing to PWR PowerGadget device\n" );
+    DBGP( "Info: writing to PWR PowerGadget device\n" );
 
     return 0;
 }
@@ -235,8 +220,7 @@ int pwr_pgdev_readv( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    if( pgdev_verbose )
-        printf( "Info: reading from PWR PowerGadget device\n" );
+    DBGP( "Info: reading from PWR PowerGadget device\n" );
 
     for( i = 0; i < arraysize; i++ )
         status[i] = pwr_pgdev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
@@ -249,8 +233,7 @@ int pwr_pgdev_writev( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    if( pgdev_verbose )
-        printf( "Info: writing to PWR PowerGadget device\n" );
+    DBGP( "Info: writing to PWR PowerGadget device\n" );
 
     for( i = 0; i < arraysize; i++ )
         status[i] = pwr_pgdev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
@@ -262,8 +245,7 @@ int pwr_pgdev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
-    if( pgdev_verbose )
-        printf( "Info: reading time from PWR PowerGadget device\n" );
+    DBGP( "Info: reading time from PWR PowerGadget device\n" );
 
     return pwr_pgdev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );;
 }

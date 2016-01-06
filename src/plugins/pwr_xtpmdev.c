@@ -19,12 +19,6 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
-#ifdef USE_DEBUG
-static int xtpmdev_verbose = 1;
-#else
-static int xtpmdev_verbose = 0;
-#endif
-
 typedef struct {
     int fd;
 } pwr_xtpmdev_t;
@@ -60,10 +54,10 @@ static int xtpmdev_read( const char *name, double *val )
     int offset = 0;
     int fd;
 
-    sprintf( path, "/sys/cray/pm_counters/%s", name );
+    sfprintf( stderr, path, "/sys/cray/pm_counters/%s", name );
     fd = open( path, O_RDONLY );
     if( fd < 0 ) {
-        printf( "Error: unable to open counter file at %s\n", path );
+        fprintf( stderr, "Error: unable to open counter file at %s\n", path );
         return -1;
     }
 
@@ -76,7 +70,7 @@ static int xtpmdev_read( const char *name, double *val )
         offset++;
     }
 
-    printf( "Error: unable to parse PM counter value\n" );
+    fprintf( stderr, "Error: unable to parse PM counter value\n" );
     close( fd );
     return -1;
 }
@@ -86,16 +80,16 @@ static int xtpmdev_write( const char *name, double val )
     char path[256] = "", strval[20] = "";
     int fd;
 
-    sprintf( path, "/sys/cray/pm_counters/%s", name );
+    sfprintf( stderr, path, "/sys/cray/pm_counters/%s", name );
     fd = open( path, O_WRONLY );
     if( fd < 0 ) {
-        printf( "Error: unable to open PM counter file at %s\n", path );
+        fprintf( stderr, "Error: unable to open PM counter file at %s\n", path );
         return -1;
     }
 
-    sprintf( strval, "%lf", val ); 
+    sfprintf( stderr, strval, "%lf", val ); 
     if( write( fd, strval, strlen(strval) ) < 0 ) {
-        printf( "Error: unable to write PM counter\n" );
+        fprintf( stderr, "Error: unable to write PM counter\n" );
         close( fd );
         return -1;
     }
@@ -112,16 +106,14 @@ plugin_devops_t *pwr_xtpmdev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_xtpmdev_t) );
     bzero( dev->private_data, sizeof(pwr_xtpmdev_t) );
 
-    if( xtpmdev_verbose )
-        printf( "Info: initializing PWR XTPM device\n" );
+    DBGP( "Info: initializing PWR XTPM device\n" );
 
     return dev;
 }
 
 int pwr_xtpmdev_final( plugin_devops_t *dev )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: finalizing PWR XTPM device\n" );
+    DBGP( "Info: finalizing PWR XTPM device\n" );
 
     free( dev->private_data );
     free( dev );
@@ -133,13 +125,12 @@ pwr_fd_t pwr_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_xtpmfd_t) );
     bzero( fd, sizeof(pwr_xtpmfd_t) );
 
-    if( xtpmdev_verbose )
-        printf( "Info: opening PWR XTPM device\n" );
+    DBGP( "Info: opening PWR XTPM device\n" );
 
     PWR_XTPMFD(fd)->dev = PWR_XTPMDEV(dev->private_data);
 
     if( xtpmdev_read( "generation", &(PWR_XTPMFD(fd)->generation) ) < 0 ) {
-        printf( "Error: unable to open generation counter\n" );
+        fprintf( stderr, "Error: unable to open generation counter\n" );
         return 0x0;
     }
 
@@ -148,8 +139,7 @@ pwr_fd_t pwr_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
 
 int pwr_xtpmdev_close( pwr_fd_t fd )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: closing PWR XTPM device\n" );
+    DBGP( "Info: closing PWR XTPM device\n" );
 
     PWR_XTPMFD(fd)->dev = 0x0;
     free( fd );
@@ -162,79 +152,75 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     double generation;
     struct timeval tv;
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading from PWR XTPM device\n" );
+    DBGP( "Info: reading from PWR XTPM device\n" );
 
     if( len != sizeof(double) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+        fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_ENERGY:
             if( xtpmdev_read( "energy", (double *)value) < 0 ) {
-                printf( "Error: unable to read energy counter\n" );
+                fprintf( stderr, "Error: unable to read energy counter\n" );
                 return -1;
             }
             break;
         case PWR_ATTR_POWER:
             if( xtpmdev_read( "power", (double *)value) < 0 ) {
-                printf( "Error: unable to read power counter\n" );
+                fprintf( stderr, "Error: unable to read power counter\n" );
                 return -1;
             }
             break;
         case PWR_ATTR_MAX_POWER:
             if( xtpmdev_read( "power_cap", (double *)value) < 0 ) {
-                printf( "Error: unable to read power_cap counter\n" );
+                fprintf( stderr, "Error: unable to read power_cap counter\n" );
                 return -1;
             }
             break;
         default:
-            printf( "Warning: unknown PWR XTPM reading attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR XTPM reading attr (%u) requested\n", attr );
             break;
     }
     gettimeofday( &tv, NULL );
     *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
     if( xtpmdev_read( "generation", &generation) < 0 ) {
-        printf( "Error: unable to open generation counter\n" );
+        fprintf( stderr, "Error: unable to open generation counter\n" );
         return 0x0;
     }
     if( PWR_XTPMFD(fd)->generation != generation ) {
-        printf( "Warning: generation counter rolled over" );
+        fprintf( stderr, "Warning: generation counter rolled over" );
         PWR_XTPMFD(fd)->generation = generation;
     }
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading of type %u at time %llu with value %lf\n",
-                attr, *(unsigned long long *)timestamp, *(double *)value );
+    DBGP( "Info: reading of type %u at time %llu with value %lf\n",
+        attr, *(unsigned long long *)timestamp, *(double *)value );
     return 0;
 }
 
 int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
-    if( xtpmdev_verbose )
-        printf( "Info: writing to PWR XTPM device\n" );
+    DBGP( "Info: writing to PWR XTPM device\n" );
 
     if( len != sizeof(double) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+        fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
     switch( attr ) {
         case PWR_ATTR_MAX_POWER:
             if( xtpmdev_write( "power_cap", *((double *)value) ) < 0 ) {
-                printf( "Error: unable to write power_cap counter\n" );
+                fprintf( stderr, "Error: unable to write power_cap counter\n" );
                 return -1;
             }
             break;
         default:
-            printf( "Warning: unknown PWR XTPM writing attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR XTPM writing attr (%u) requested\n", attr );
             break;
     }
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading of type %u with value %lf\n", attr, *(double *)value );
+    DBGP( "Info: reading of type %u with value %lf\n", attr, *(double *)value );
     return 0;
 }
 
@@ -264,8 +250,7 @@ int pwr_xtpmdev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
 
-    if( xtpmdev_verbose )
-        printf( "Info: reading time from PWR XTPM device\n" );
+    DBGP( "Info: reading time from PWR XTPM device\n" );
 
     return pwr_xtpmdev_read( fd, PWR_ATTR_ENERGY, &value, sizeof(double), timestamp );;
 }
