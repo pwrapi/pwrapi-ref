@@ -56,10 +56,10 @@ static int cpudev_read( int cpu, const char *name, double *val )
     int offset = 0;
     int fd;
 
-    sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+    sfprintf( stderr, path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
     fd = open( path, O_RDONLY );
     if( fd < 0 ) {
-        printf( "Error: unable to open CPU file at %s\n", path );
+        fprintf( stderr, "Error: unable to open CPU file at %s\n", path );
         return -1;
     }
 
@@ -71,7 +71,7 @@ static int cpudev_read( int cpu, const char *name, double *val )
         offset++;
     }
 
-    printf( "Error: unable to parse PM counter value\n" );
+    fprintf( stderr, "Error: unable to parse PM counter value\n" );
     return -1;
 }
 
@@ -80,16 +80,16 @@ static int cpudev_write( int cpu, const char *name, double val )
     char path[256] = "", strval[20] = "";
     int fd;
 
-    sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+    sfprintf( stderr, path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
     fd = open( path, O_WRONLY );
     if( fd < 0 ) {
-        printf( "Error: unable to open CPU file at %s\n", path );
+        fprintf( stderr, "Error: unable to open CPU file at %s\n", path );
         return -1;
     }
 
-    sprintf( strval, "%lf", val );
+    sfprintf( stderr, strval, "%lf", val );
     if( write( fd, strval, strlen(strval) ) < 0 ) {
-        printf( "Error: unable to write PM counter\n" );
+        fprintf( stderr, "Error: unable to write PM counter\n" );
         close( fd );
         return -1;
     }
@@ -105,7 +105,7 @@ static int cpudev_avail_freq( int cpu, int freq[], int *count )
     char val[20] = "";
     int offset = 0;
 
-    sprintf( freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq/scaling_available_frequencies", cpu );
+    sfprintf( stderr, freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq/scaling_available_frequencies", cpu );
     fd = open( freqpath, O_RDONLY );
 
     while( read( fd, val+offset, 1 ) != EOF ) {
@@ -160,7 +160,7 @@ pwr_fd_t pwr_cpudev_open( plugin_devops_t *dev, const char *openstr )
     PWR_CPUFD(fd)->dev = PWR_CPUDEV(dev->private_data);
 
     if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
-        printf( "Error: missing CPU separator in initialization string %s\n", openstr );
+        fprintf( stderr, "Error: missing CPU separator in initialization string %s\n", openstr );
         return 0x0;
     }
     PWR_CPUFD(fd)->cpu = atoi(token);
@@ -185,7 +185,7 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
     struct timeval tv;
 
     if( len != sizeof(unsigned long long) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
+        fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
         return -1;
     }
 
@@ -198,13 +198,13 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
             break;
         case PWR_ATTR_SSTATE:
             if( cpudev_read( PWR_CPUFD(fd)->cpu, "online", (double *)value) < 0 ) {
-                printf( "Error: unable to read cpu %d sleep state\n", PWR_CPUFD(fd)->cpu );
+                fprintf( stderr, "Error: unable to read cpu %d sleep state\n", PWR_CPUFD(fd)->cpu );
                 return -1;
             }
             break;
         case PWR_ATTR_FREQ:
             if( cpudev_read( PWR_CPUFD(fd)->cpu, "cpufreq", (double *)value) < 0 ) {
-                printf( "Error: unable to read cpu %d frequency\n", PWR_CPUFD(fd)->cpu );
+                fprintf( stderr, "Error: unable to read cpu %d frequency\n", PWR_CPUFD(fd)->cpu );
                 return -1;
             }
             break;
@@ -212,7 +212,7 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
             *((double *)value) = (double)0;
             break;
         default:
-            printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
     gettimeofday( &tv, NULL );
@@ -227,7 +227,7 @@ int pwr_cpudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 int pwr_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
     if( len != sizeof(unsigned long long) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
+        fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(unsigned long long) );
         return -1;
     }
 
@@ -240,13 +240,13 @@ int pwr_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             break;
         case PWR_ATTR_SSTATE:
             if( cpudev_write( PWR_CPUFD(fd)->cpu, "online", *((double *)value)) < 0 ) {
-                printf( "Error: unable to write cpu %d sleep state\n", PWR_CPUFD(fd)->cpu );
+                fprintf( stderr, "Error: unable to write cpu %d sleep state\n", PWR_CPUFD(fd)->cpu );
                 return -1;
             }
             break;
         case PWR_ATTR_FREQ:
             if( cpudev_write( PWR_CPUFD(fd)->cpu, "cpufreq", *((double *)value)) < 0 ) {
-                printf( "Error: unable to write cpu %d frequency\n", PWR_CPUFD(fd)->cpu );
+                fprintf( stderr, "Error: unable to write cpu %d frequency\n", PWR_CPUFD(fd)->cpu );
                 return -1;
             }
             break;
@@ -254,7 +254,7 @@ int pwr_cpudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             *((double *)value) = (double)0;
             break;
         default:
-            printf( "Warning: unknown PWR writing attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR writing attr (%u) requested\n", attr );
             break;
     }
 

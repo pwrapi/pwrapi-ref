@@ -160,13 +160,13 @@ static int rapldev_parse( const char *initstr, int *core, int *layer )
     DBGP( "Info: received initialization string %s\n", initstr );
 
     if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
-        printf( "Error: missing core separator in initialization string %s\n", initstr );
+        fprintf( stderr, "Error: missing core separator in initialization string %s\n", initstr );
         return -1;
     }
     *core = atoi(token);
 
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        printf( "Error: missing layer separator in initialization string %s\n", initstr );
+        fprintf( stderr, "Error: missing layer separator in initialization string %s\n", initstr );
         return -1;
     }
     *layer = atoi(token);
@@ -187,7 +187,7 @@ static int rapldev_identify( int *cpu_model )
     char vendor[80] = "";
 
     if( (file=fopen( "/proc/cpuinfo", "r" )) == 0x0 ) {
-        printf( "Error: RAPL cpuinfo open failed\n" );
+        fprintf( stderr, "Error: RAPL cpuinfo open failed\n" );
         return -1;
     }
 
@@ -196,14 +196,14 @@ static int rapldev_identify( int *cpu_model )
         if( strncmp( str, "vendor_id", 8) == 0 ) {
             sscanf( str, "%*s%*s%s", vendor );
             if( strncmp( vendor, "GenuineIntel", 12 ) != 0 ) {
-                printf( "Warning: %s, only Intel supported\n", vendor );
+                fprintf( stderr, "Warning: %s, only Intel supported\n", vendor );
                 retval = -1;
             }
         }
         else if( strncmp( str, "cpu_family", 10) == 0 ) {
             sscanf( str, "%*s%*s%*s%d", &family );
             if( family != 6 ) {
-                printf( "Warning: Unsupported CPU family %d\n", family );
+                fprintf( stderr, "Warning: Unsupported CPU family %d\n", family );
                 retval = -1;
             }
         }
@@ -218,7 +218,7 @@ static int rapldev_identify( int *cpu_model )
                 case CPU_MODEL_HASWELL:
                     break;
                 default:
-                    printf( "Warning: Unsupported model %d\n", *cpu_model );
+                    fprintf( stderr, "Warning: Unsupported model %d\n", *cpu_model );
                     retval = -1;
                     break;
             }
@@ -235,7 +235,7 @@ static int rapldev_read( int fd, int offset, long long *msr )
     int size = sizeof(uint64_t);
 
     if( pread( fd, &value, size, offset ) != size ) {
-        printf( "Error: RAPL read failed\n" );
+        fprintf( stderr, "Error: RAPL read failed\n" );
         return -1;
     }
  
@@ -250,7 +250,7 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
 
     if( layer == INTEL_LAYER_PKG ) {
         if( rapldev_read( fd, MSR_ENERGY_STATUS, &msr ) < 0 ) {
-            printf( "Error: PWR RAPL device read failed\n" );
+            fprintf( stderr, "Error: PWR RAPL device read failed\n" );
             return -1;
         }
         *energy = (double)msr * units.energy;
@@ -258,7 +258,7 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
         if( cpu_model == CPU_MODEL_SANDY_EP ||
             cpu_model == CPU_MODEL_IVY_EP ) {
             if( rapldev_read( fd, MSR_PERF_STATUS, &msr ) < 0 ) {
-                printf( "Error: PWR RAPL device read failed\n" );
+                fprintf( stderr, "Error: PWR RAPL device read failed\n" );
                 return -1;
             }
             *time = (double)msr * units.time;
@@ -266,13 +266,13 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
     }
     else if( layer == INTEL_LAYER_PP0 ) {
         if( rapldev_read( fd, MSR_PP0_ENERGY_STATUS, &msr ) < 0 ) {
-            printf( "Error: PWR RAPL device read failed\n" );
+            fprintf( stderr, "Error: PWR RAPL device read failed\n" );
             return -1;
         }
         *energy = (double)msr * units.energy;
 
         if( rapldev_read( fd, MSR_PP0_POLICY_STATUS, &msr ) < 0 ) {
-            printf( "Error: PWR RAPL device read failed\n" );
+            fprintf( stderr, "Error: PWR RAPL device read failed\n" );
             return -1;
         }
         *policy = (int)(MSR(msr, PP0_POLICY_SHIFT, PP0_POLICY_MASK));
@@ -280,7 +280,7 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
         if( cpu_model == CPU_MODEL_SANDY_EP ||
             cpu_model == CPU_MODEL_IVY_EP ) {
             if( rapldev_read( fd, MSR_PP0_PERF_STATUS, &msr ) < 0 ) {
-                printf( "Error: PWR RAPL device read failed\n" );
+                fprintf( stderr, "Error: PWR RAPL device read failed\n" );
                 return -1;
             }
             *time = (double)msr * units.time;
@@ -291,20 +291,20 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
             cpu_model == CPU_MODEL_IVY    ||
             cpu_model == CPU_MODEL_HASWELL ) {
             if( rapldev_read( fd, MSR_PP1_ENERGY_STATUS, &msr ) < 0 ) {
-                printf( "Error: PWR RAPL device read failed\n" );
+                fprintf( stderr, "Error: PWR RAPL device read failed\n" );
                 return -1;
             }
             *energy = (double)msr * units.energy;
 
             if( rapldev_read( fd, MSR_PP1_POLICY_STATUS, &msr ) < 0 ) {
-                printf( "Error: PWR RAPL device read failed\n" );
+                fprintf( stderr, "Error: PWR RAPL device read failed\n" );
                 return -1;
             }
             *policy = (int)(MSR(msr, PP1_POLICY_SHIFT, PP1_POLICY_MASK));
         }
         else {
             if( rapldev_read( fd, MSR_DRAM_ENERGY_STATUS, &msr ) < 0 ) {
-                printf( "Error: PWR RAPL device read failed\n" );
+                fprintf( stderr, "Error: PWR RAPL device read failed\n" );
                 return -1;
             }
             *energy = (double)msr * units.energy;
@@ -328,23 +328,23 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     DBGP( "Info: PWR RAPL device open\n" );
 
     if( rapldev_parse( initstr, &core, (int *)(&(PWR_RAPLDEV(dev->private_data)->layer)) ) < 0 ) {
-        printf( "Error: PWR RAPL device initialization string %s invalid\n", initstr );
+        fprintf( stderr, "Error: PWR RAPL device initialization string %s invalid\n", initstr );
         return 0x0;
     }
 
     if( rapldev_identify( &(PWR_RAPLDEV(dev->private_data)->cpu_model) ) < 0 ) {
-        printf( "Error: PWR RAPL device model identification failed\n" );
+        fprintf( stderr, "Error: PWR RAPL device model identification failed\n" );
         return 0x0;
     }
 
-    sprintf( file, "/dev/cpu/%d/msr", core );
+    sfprintf( stderr, file, "/dev/cpu/%d/msr", core );
     if( (PWR_RAPLDEV(dev->private_data)->fd=open( file, O_RDONLY )) < 0 ) {
-        printf( "Error: PWR RAPL device open failed\n" );
+        fprintf( stderr, "Error: PWR RAPL device open failed\n" );
         return 0x0;
     }
 
     if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_RAPL_POWER_UNIT, &msr ) < 0 ) {
-        printf( "Error: PWR RAPL device read failed\n" );
+        fprintf( stderr, "Error: PWR RAPL device read failed\n" );
         return 0x0;
     }
     PWR_RAPLDEV(dev->private_data)->units.power = 
@@ -359,7 +359,7 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     DBGP( "Info: units.time     - %g\n", PWR_RAPLDEV(dev->private_data)->units.time );
 
     if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_POWER_INFO, &msr ) < 0 ) {
-        printf( "Error: PWR RAPL device read failed\n" );
+        fprintf( stderr, "Error: PWR RAPL device read failed\n" );
         return 0x0;
     }
     PWR_RAPLDEV(dev->private_data)->power.thermal =
@@ -377,7 +377,7 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
     DBGP( "Info: power.window   - %g\n", PWR_RAPLDEV(dev->private_data)->power.window );
 
     if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_POWER_LIMIT, &msr ) < 0 ) {
-        printf( "Error: PWR RAPL device read failed\n" );
+        fprintf( stderr, "Error: PWR RAPL device read failed\n" );
         return 0x0;
     }
     PWR_RAPLDEV(dev->private_data)->limit.power1 =
@@ -445,7 +445,7 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     DBGP( "Info: PWR RAPL device read\n" );
 
     if( len != sizeof(double) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+        fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
@@ -454,7 +454,7 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
                         (PWR_RAPLFD(fd)->dev)->layer,
                         (PWR_RAPLFD(fd)->dev)->units,
                         &energy, &time, &policy ) < 0 ) {
-        printf( "Error: PWR RAPL device gather failed\n" );
+        fprintf( stderr, "Error: PWR RAPL device gather failed\n" );
         return -1;
     }
 
@@ -463,7 +463,7 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             *((double *)value) = energy;
             break;
         default:
-            printf( "Warning: unknown PWR reading attr requested\n" );
+            fprintf( stderr, "Warning: unknown PWR reading attr requested\n" );
             break;
     }
     *timestamp = (unsigned int)time*1000000000ULL + 

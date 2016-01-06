@@ -90,7 +90,7 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
     *saddr = 0;
     while( shift >= 0 ) {
         if( (token = strtok( (shift!=24) ? NULL : (char *)initstr, (shift!=0) ? "." : ":" )) == 0x0 ) {
-            printf( "Error: invalid server IP address in initialization string %s\n", initstr );
+            fprintf( stderr, "Error: invalid server IP address in initialization string %s\n", initstr );
             return -1;
         }
         *saddr |= ( atoi(token) << shift );
@@ -98,7 +98,7 @@ static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *
     }
 
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        printf( "Error: missing server port separator in initialization string %s\n", initstr );
+        fprintf( stderr, "Error: missing server port separator in initialization string %s\n", initstr );
         return -1;
     }
     *sport = atoi(token);
@@ -121,12 +121,12 @@ plugin_devops_t *pwr_pidev_init( const char *initstr )
     DBGP( "Info: initializing PWR PowerInsight device\n" );
 
     if( initstr == 0x0 || pidev_parse(initstr, &saddr, &sport) < 0 ) {
-        printf( "Error: invalid monitor and control hardware initialization string\n" );
+        fprintf( stderr, "Error: invalid monitor and control hardware initialization string\n" );
         return 0x0;
     }
 
     if( piapi_init( &(PWR_PIDEV(dev->private_data)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport, 0 ) < 0 ) {
-        printf( "Error: powerinsight hardware initialization failed\n" );
+        fprintf( stderr, "Error: powerinsight hardware initialization failed\n" );
         return 0x0;
     }
 
@@ -138,7 +138,7 @@ int pwr_pidev_final( plugin_devops_t *dev )
     DBGP( "Info: finaling PWR PowerInsight device\n" );
 
     if( piapi_destroy( &(PWR_PIDEV(dev->private_data)->cntx) ) < 0 ) {
-        printf( "Error: powerinsight hardware finalization failed\n" );
+        fprintf( stderr, "Error: powerinsight hardware finalization failed\n" );
         return -1;
     }
 
@@ -160,7 +160,7 @@ pwr_fd_t pwr_pidev_open( plugin_devops_t *dev, const char *openstr )
     PWR_PIFD(fd)->dev = PWR_PIDEV(dev->private_data);
 
     if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
-        printf( "Error: missing sensor port separator in initialization string %s\n", openstr );
+        fprintf( stderr, "Error: missing sensor port separator in initialization string %s\n", openstr );
         return 0x0;
     }
     PWR_PIFD(fd)->port = atoi(token);
@@ -186,13 +186,13 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     pidev_reading = 1;
     DBGP( "Info: reading counter for port %d\n", PWR_PIFD(fd)->port );
     if( piapi_counter( (PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
-        printf( "Error: powerinsight hardware read failed\n" );
+        fprintf( stderr, "Error: powerinsight hardware read failed\n" );
         return -1;
     }
     while( pidev_reading ) sched_yield();
 
     if( len != sizeof(double) ) {
-        printf( "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
+        fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
         return -1;
     }
 
@@ -216,7 +216,7 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
             *((double *)value) = (double)pidev_counter.energy;
             break;
         default:
-            printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
     *timestamp = pidev_counter.time_sec*1000000000ULL + 
@@ -232,7 +232,7 @@ int pwr_pidev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 {
     switch( attr ) {
         default:
-            printf( "Warning: unknown PWR writing attr (%u) requested\n", attr );
+            fprintf( stderr, "Warning: unknown PWR writing attr (%u) requested\n", attr );
             break;
     }
 
@@ -251,7 +251,7 @@ int pwr_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
     pidev_reading = 1;
     DBGP( "Info: reading counter for port %d\n", PWR_PIFD(fd)->port );
     if( piapi_counter( (PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
-        printf( "Error: powerinsight hardware read failed\n" );
+        fprintf( stderr, "Error: powerinsight hardware read failed\n" );
         return -1;
     }
     while( pidev_reading ) sched_yield();
@@ -277,7 +277,7 @@ int pwr_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
                 *((double *)values+i) = (double)pidev_counter.energy;
                 break;
             default:
-                printf( "Warning: unknown PWR reading attr (%u) requested\n", attrs[i] );
+                fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attrs[i] );
                 break;
         }
         timestamp[i] = pidev_counter.time_sec*1000000000ULL + 

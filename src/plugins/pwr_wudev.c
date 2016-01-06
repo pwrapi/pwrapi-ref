@@ -55,13 +55,13 @@ static int wudev_parse( const char *initstr, char *port, int *baud )
     DBGP( "Info: received initialization string %s\n", initstr );
 
     if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
-        printf( "Error: missing serial port seperator in initialization string %s\n", initstr );
+        fprintf( stderr, "Error: missing serial port seperator in initialization string %s\n", initstr );
         return -1;
     }
     strcpy( port, token );
 
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        printf( "Error: missing serial baud seperator in initialization string %s\n", initstr );
+        fprintf( stderr, "Error: missing serial baud seperator in initialization string %s\n", initstr );
         return -1;
     }
     *baud = atoi(token);
@@ -103,7 +103,7 @@ static int wudev_open( const char *port, int baud )
             rate = B115200;
             break;
         default:
-            printf( "Error: unsupported baud rate of %d\n", baud );
+            fprintf( stderr, "Error: unsupported baud rate of %d\n", baud );
             return -1;
     }
 
@@ -191,12 +191,12 @@ plugin_devops_t *pwr_wudev_init( const char *initstr )
     DBGP( "Info: initializing PWR Wattsup device\n" );
 
     if( initstr == 0x0 || wudev_parse( initstr, port, &baud ) < 0 ) {
-        printf( "Error: invalid monitor and control hardware initialization string\n" );
+        fprintf( stderr, "Error: invalid monitor and control hardware initialization string\n" );
         return 0x0;
     }
 
     if( (PWR_WUDEV(dev->private_data)->fd = wudev_open( port, baud )) < 0 ) {
-        printf( "Error: wattsup hardware initialization failed\n" );
+        fprintf( stderr, "Error: wattsup hardware initialization failed\n" );
         return 0x0;
     }
 
@@ -244,12 +244,12 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
     DBGP( "Info: reading from PWR Wattsup device\n" );
  
     if( wudev_write( (PWR_WUFD(fd)->dev)->fd, "#L,W,3,E,0,1;" ) == -1 ) {
-        printf( "Error: command write to Wattsup device failed\n" );
+        fprintf( stderr, "Error: command write to Wattsup device failed\n" );
         return -1;
     }
 
     if( wudev_read( (PWR_WUFD(fd)->dev)->fd, buf, ';' ) != 0 ) {
-        printf( "Error: reading from Wattsup device failed\n" );
+        fprintf( stderr, "Error: reading from Wattsup device failed\n" );
         return -1;
     }
 
@@ -270,7 +270,7 @@ int pwr_wudev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
                 *((double *)value) = wudev_extract( buf, 7 ) / 10.0 * 3600;
                 break;
             default:
-                printf( "Warning: unknown PWR reading attr (%u) requested\n", attr );
+                fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
                 break;
         }
         gettimeofday( &tv, NULL );
@@ -286,7 +286,7 @@ int pwr_wudev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
 
     switch( attr ) {
         default:
-            printf( "Warning: unknown PWR reading attr (%u)\n", attr );
+            fprintf( stderr, "Warning: unknown PWR reading attr (%u)\n", attr );
             break;
 
         DBGP( "Info: setting of type %u with value %lf\n",
