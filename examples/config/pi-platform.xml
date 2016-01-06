@@ -3,11 +3,11 @@
 <System>
 
 <Devices>
-    <dev name="PowerInsight" lib="libpwr_pidev.so"/>
+    <dev name="PowerInsight" lib="libpwr_pidev"/>
 </Devices>
 
 <Devices>
-    <dev name="CPU" lib="libcpudev.so"/>
+    <dev name="CPU" lib="libcpudev"/>
 </Devices>
 
 <Objects>
