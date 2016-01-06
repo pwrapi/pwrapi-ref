@@ -3,7 +3,7 @@
 <System>
 
 <Plugins>
-    <plugin name="PowerInsight" lib="libpwr_pidev.so"/>
+    <plugin name="PowerInsight" lib="libpwr_pidev"/>
 </Plugins>
 
 <Devices>
