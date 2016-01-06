@@ -15,7 +15,7 @@
 #include "pwrdev.h"
 
 #ifdef USE_DEBUG
-#define DBGP(X,...) printf(X, ## __VA_ARGS__ )
+#define DBGP(X,...) fprintf( stderr, X, ## __VA_ARGS__ )
 #else
 #define DBGP(X,...)
 #endif
