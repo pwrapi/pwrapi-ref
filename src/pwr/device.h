@@ -52,12 +52,12 @@ class Device {
 
     virtual int getValue( PWR_AttrName name, void* ptr, size_t len,
 														PWR_Time* ts ){
-        DBGX("%p\n",this);
+        DBGX("\n");
         return m_ops->read( m_fd, name, ptr, len, ts );
     }
 
     virtual int setValue( PWR_AttrName name, void* ptr, size_t len ) {
-        DBGX("%p\n",this);
+        DBGX("\n");
         return m_ops->write( m_fd, name, ptr, len );
     }
 
