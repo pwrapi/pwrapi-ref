@@ -29,8 +29,19 @@ int main( int argc, char* argv[] )
     double       value;
     PWR_Time ts;
 	PWR_Status  status;
+	int count = 1;
+	int forever = 0;
 
-	assert( argc == 3 );	
+	assert( argc == 3 || argc == 2 );	
+
+	if ( 3 == argc ) {
+ 		count = atoi(argv[2]);
+	}
+
+	if ( 0 == count ) {
+		forever = 1;	
+	}
+
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
     assert( PWR_NULL != cntxt   );
@@ -52,13 +63,24 @@ int main( int argc, char* argv[] )
     assert( children );
 #endif
 
-	int count = atoi(argv[2]);
-	while ( count-- ) {	
+	grp = PWR_GrpCreate(cntxt,"");
+	assert( grp );
+
+	assert( PWR_RET_SUCCESS == PWR_GrpAddObj( grp, obj ) );
+
+	status = PWR_StatusCreate();
+
+	while ( forever || count-- ) {	
+			
+		PWR_AttrName names[] = { PWR_ATTR_ENERGY} ;
+    	retval = PWR_GrpAttrGetValues( grp, 1, names, &value, &ts, status );
+#if 0
     	retval = PWR_ObjAttrGetValue( obj, PWR_ATTR_ENERGY, &value, &ts );
+#endif
     	assert( retval == PWR_RET_SUCCESS );
 
 		printf("%s: value=%f\n",argv[0], value);
-		//sleep(1);
+		sleep(1);
 	}
 	PWR_CntxtDestroy( cntxt );
     return 0;
