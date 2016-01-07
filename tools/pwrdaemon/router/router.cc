@@ -77,7 +77,7 @@ void Router::initRouteTable( std::string file )
 	DBGX("%s\n",file.c_str());
 	fs.open( file.c_str(), std::ifstream::in  );
 	if ( fs.fail() ) {
-		printf("can't read route file %s\n", file.c_str());	
+		printf("can't read route file `%s`\n", file.c_str());	
 		assert(0);
 	}
 
