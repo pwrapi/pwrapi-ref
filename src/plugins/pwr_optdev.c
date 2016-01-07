@@ -30,26 +30,26 @@
 #define MSR_OPT_VENDOR_MASK              0xffff
 
 /* D18F3xE8[31:29] */
-#define MSR_OPT_MULTI_NODE_REG           0x3
-#define MSR_OPT_MULTI_NODE_OFFSET        0x30e8
+#define MSR_OPT_MULTINODE_REG            0x3
+#define MSR_OPT_MULTINODE_OFFSET         0xe8
 #define MSR_OPT_MULTINODE_BIT            29
 #define MSR_OPT_INTERNAL_BIT1            30
 #define MSR_OPT_INTERNAL_BIT2            31
 
 /* D18F4x1B8[15:0] */
 #define MSR_OPT_PROC_TDP_REG             0x4
-#define MSR_OPT_PROC_TDP_OFFSET          0x41b8
+#define MSR_OPT_PROC_TDP_OFFSET          0x1b8
 #define MSR_OPT_PROC_TDP_MASK            0xffff
 #define MSR_OPT_BASE_TDP_SHIFT           16
 
 /* D18F5xE0[3:0] */
 #define MSR_OPT_RUN_AVG_RANGE_REG        0x5
-#define MSR_OPT_RUN_AVG_RANGE_OFFSET     0x50e0
+#define MSR_OPT_RUN_AVG_RANGE_OFFSET     0xe0
 #define MSR_OPT_RUN_AVG_RANGE_MASK       0x000f
 
 /* D18F5xE8[15:0] */
 #define MSR_OPT_TDP_TO_WATT_REG          0x5
-#define MSR_OPT_TDP_TO_WATT_OFFSET       0x50e8
+#define MSR_OPT_TDP_TO_WATT_OFFSET       0xe8
 #define MSR_OPT_TDP_TO_WATT_HI_MASK      0x03ff
 #define MSR_OPT_TDP_TO_WATT_LO_MASK      0xfc00
 #define MSR_OPT_TDP_TO_WATT_HI_SHIFT     10
@@ -57,13 +57,13 @@
  
 /* D18F5xE8[28:16] */
 #define MSR_OPT_APM_TDP_LIMIT_REG        0x5
-#define MSR_OPT_APM_TDP_LIMIT_OFFSET     0x50e8
+#define MSR_OPT_APM_TDP_LIMIT_OFFSET     0xe8
 #define MSR_OPT_APM_TDP_LIMIT_MASK       0x1fffffff
 #define MSR_OPT_APM_TDP_LIMIT_SHIFT      16
 
 /* D18F5xE8[25:4] */
 #define MSR_OPT_RUN_AVG_ACC_CAP_REG      0x5
-#define MSR_OPT_RUN_AVG_ACC_CAP_OFFSET   0x50e0
+#define MSR_OPT_RUN_AVG_ACC_CAP_OFFSET   0xe0
 #define MSR_OPT_RUN_AVG_ACC_CAP_MASK     0x03ffffff
 #define MSR_OPT_RUN_AVG_ACC_CAP_SHIFT    4
 #define MSR_OPT_RUN_AVG_ACC_CAP_NEG      0x00200000
@@ -190,7 +190,8 @@ static int optdev_read( unsigned short node, unsigned short reg, unsigned short 
     uint64_t value;
     char cmd[255] = "";
 
-    sprintf( cmd, "setpci -s 0:%u.%u %u.l", node+MSR_OPT_CORE_OFFSET, reg, offset );  
+    sprintf( cmd, "setpci -s 0:%x.%x 0x%x.l 2>&1", node+MSR_OPT_CORE_OFFSET, reg, offset );
+    DBGP( "Info: %s\n", cmd );
     if( (value = system( cmd )) < 0 ) {
         perror(0x0);
         fprintf( stderr, "Error: OPT read failed with error %d\n", errno );
@@ -258,7 +259,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
         }
 
         if( (unsigned short)(MSR(msr, MSR_OPT_VENDOR_MASK, 0)) == MSR_OPT_VENDOR_ID ) {
-            if( optdev_read( i, MSR_OPT_CORE_REG, MSR_OPT_CORE_OFFSET, &msr ) < 0 ) {
+            if( optdev_read( i, MSR_OPT_MULTINODE_REG, MSR_OPT_MULTINODE_OFFSET, &msr ) < 0 ) {
                 fprintf( stderr, "Error: PWR OPT device read failed\n" );
                 return 0x0;
             }
