@@ -3,7 +3,7 @@
 <System>
 
 <Plugins>
-    <plugin name="RAPL" lib="libpwr_rapldev.so"/>
+    <plugin name="RAPL" lib="libpwr_rapldev"/>
 </Plugins>
 
 <Devices>

@@ -56,7 +56,7 @@ static int cpudev_read( int cpu, const char *name, double *val )
     int offset = 0;
     int fd;
 
-    sfprintf( stderr, path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+    sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
     fd = open( path, O_RDONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open CPU file at %s\n", path );
@@ -80,14 +80,14 @@ static int cpudev_write( int cpu, const char *name, double val )
     char path[256] = "", strval[20] = "";
     int fd;
 
-    sfprintf( stderr, path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+    sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
     fd = open( path, O_WRONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open CPU file at %s\n", path );
         return -1;
     }
 
-    sfprintf( stderr, strval, "%lf", val );
+    sprintf( strval, "%lf", val );
     if( write( fd, strval, strlen(strval) ) < 0 ) {
         fprintf( stderr, "Error: unable to write PM counter\n" );
         close( fd );
@@ -105,7 +105,7 @@ static int cpudev_avail_freq( int cpu, int freq[], int *count )
     char val[20] = "";
     int offset = 0;
 
-    sfprintf( stderr, freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq/scaling_available_frequencies", cpu );
+    sprintf( freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq/scaling_available_frequencies", cpu );
     fd = open( freqpath, O_RDONLY );
 
     while( read( fd, val+offset, 1 ) != EOF ) {

@@ -54,7 +54,7 @@ static int xtpmdev_read( const char *name, double *val )
     int offset = 0;
     int fd;
 
-    sfprintf( stderr, path, "/sys/cray/pm_counters/%s", name );
+    sprintf( path, "/sys/cray/pm_counters/%s", name );
     fd = open( path, O_RDONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open counter file at %s\n", path );
@@ -80,14 +80,14 @@ static int xtpmdev_write( const char *name, double val )
     char path[256] = "", strval[20] = "";
     int fd;
 
-    sfprintf( stderr, path, "/sys/cray/pm_counters/%s", name );
+    sprintf( path, "/sys/cray/pm_counters/%s", name );
     fd = open( path, O_WRONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open PM counter file at %s\n", path );
         return -1;
     }
 
-    sfprintf( stderr, strval, "%lf", val ); 
+    sprintf( strval, "%lf", val ); 
     if( write( fd, strval, strlen(strval) ) < 0 ) {
         fprintf( stderr, "Error: unable to write PM counter\n" );
         close( fd );
