@@ -73,7 +73,8 @@ bool XmlConfig::hasObject( const std::string name )
 
 PWR_ObjType XmlConfig::objType( const std::string name )
 {
-	return getType( findObject( name ) );
+	XMLElement* elm =findObject( name );
+	return elm ?  getType( elm ) : PWR_OBJ_INVALID;
 }
 
 PWR_ObjType XmlConfig::getType( XMLElement* elm )
