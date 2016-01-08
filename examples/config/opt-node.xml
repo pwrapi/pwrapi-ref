@@ -15,7 +15,7 @@
 <obj name="plat" type="Platform">
 
     <attributes>
-        <attr name="ENERGY" op="SUM">
+        <attr name="POWER" op="SUM">
             <src type="child" name="node" />
         </attr>
     </attributes>
@@ -29,7 +29,7 @@
 <obj name="plat.node" type="Node" >
 
     <attributes>
-        <attr name="ENERGY" op="SUM" >
+        <attr name="POWER" op="SUM" >
             <src type="child" name="socket" />
         </attr>
     </attributes>
@@ -47,7 +47,7 @@
     </devices>
 
     <attributes>
-        <attr name="ENERGY" op="SUM">
+        <attr name="POWER" op="SUM">
             <src type="device" name="optdev" />
         </attr>
     </attributes>

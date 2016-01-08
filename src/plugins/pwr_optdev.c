@@ -357,7 +357,7 @@ int pwr_optdev_close( pwr_fd_t fd )
 
 int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
-    double energy = 0.0;
+    double power = 0.0;
     double time = 0.0;
     int policy = 0;
 
@@ -368,14 +368,14 @@ int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
         return -1;
     }
 
-    if( optdev_gather( (PWR_OPTFD(fd)->dev)->node[(PWR_OPTFD(fd)->dev)->core], &energy, &time ) < 0 ) {
+    if( optdev_gather( (PWR_OPTFD(fd)->dev)->node[(PWR_OPTFD(fd)->dev)->core], &power, &time ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device gather failed\n" );
         return -1;
     }
 
     switch( attr ) {
-        case PWR_ATTR_ENERGY:
-            *((double *)value) = energy;
+        case PWR_ATTR_POWER:
+            *((double *)value) = power;
             break;
         default:
             fprintf( stderr, "Warning: unknown PWR reading attr requested\n" );
