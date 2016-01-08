@@ -1,16 +1,12 @@
 SUBDIRS = pwrdaemon
 DIST_SUBDRIS = pwrdaemon
 
-bin_PROGRAMS = pwrapi pwrgrp pwrgen pwrdmp
+bin_PROGRAMS = pwrapi pwrgen pwrdmp
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
 pwrapi_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrapi_LDADD = $(top_builddir)/src/pwr/libpwr.la
-
-pwrgrp_SOURCES = pwrgrp.c
-pwrgrp_CFLAGS = -I$(top_srcdir)/src/pwr
-pwrgrp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 pwrgen_SOURCES = pwrgen.cc
 pwrgen_CPPFLAGS = -I$(top_srcdir)/src/tinyxml2
@@ -20,7 +16,7 @@ pwrdmp_SOURCES = pwrdmp.c
 pwrdmp_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrdmp_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
-man_MANS = pwrapi.8 pwrgrp.8 pwrgen.8 pwrdmp.8
+man_MANS = pwrapi.8 pwrgen.8 pwrdmp.8
 
 if HAVE_XMLRPC
 bin_PROGRAMS += pwrsrv
