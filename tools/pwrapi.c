@@ -11,7 +11,6 @@
 
 #include "pwr.h"
 
-#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,30 +20,27 @@
 #define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
 
-int get_type_objects( PWR_Obj self, PWR_ObjType type, PWR_Grp outGroup )
+void get_type_objects( PWR_Obj obj, PWR_ObjType type, PWR_Grp outGroup )
 {
     unsigned int i;
     size_t size;
     PWR_Grp cgrp;
-    PWR_Obj obj;
 
-    if( (cgrp=PWR_ObjGetChildren( self )) == PWR_NULL  ) {
-        printf( "Error: getting child objects from PowerAPI context failed\n" );
-        return -1;
+    if( PWR_ObjGetType( obj ) == type ) {
+        if( PWR_GrpAddObj( outGroup, obj ) == PWR_RET_FAILURE ) {
+            printf( "Error: failed\n" );
+            return;
+        }
+    }
+
+    if( (cgrp=PWR_ObjGetChildren( obj )) == PWR_NULL  ) {
+        return;
     }
 
     size = PWR_GrpGetNumObjs( cgrp );
     for( i = 0; i < size; i++ ) {
-        obj = PWR_GrpGetObjByIndx( cgrp, i );
-        if( PWR_ObjGetType( obj ) == type ) {
-            printf("add %s object\n",PWR_ObjGetName(obj));
-            int rc = PWR_GrpAddObj( outGroup, obj );
-            assert( rc!=PWR_RET_FAILURE );
-        }
-        int rc = get_type_objects( obj, type, outGroup );
-        if ( rc != 0 ) return rc;
+        get_type_objects( PWR_GrpGetObjByIndx( cgrp, i), type, outGroup );
     }
-    return 0;
 }
 
 int main( int argc, char* argv[] )
@@ -59,8 +55,8 @@ int main( int argc, char* argv[] )
     unsigned long tdiff;
 
     int option;
-    unsigned int i, j, samples = 1, freq = 1, numattrs = 0;
-    PWR_ObjType type = PWR_OBJ_INVALID;
+    unsigned int i, j, k, samples = 1, freq = 1, numobjs = 0, numattrs = 0;
+    PWR_ObjType type = PWR_OBJ_SOCKET;
 
     PWR_AttrName attrs[100];
     PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
@@ -157,11 +153,14 @@ int main( int argc, char* argv[] )
         return -1;
     }
 
-    grp = PWR_GrpCreate( cntxt, "tmp" );
-    assert( PWR_NULL != grp );
+    if( (grp = PWR_GrpCreate( cntxt, "tmp" )) == PWR_NULL ) {
+        printf( "Error: creating a group from PowerAPI failed\n" );
+        return -1;
+    }
 
-    if( type != PWR_OBJ_INVALID && 0 != get_type_objects( self, type, grp ) ) {
-        printf( "Error: getting core objects failed\n" );
+    get_type_objects( self, type, grp );
+    if( !(numobjs=PWR_GrpGetNumObjs( grp )) ) {
+        printf( "Error: getting type objects failed\n" );
         return -1;
     }
 
@@ -182,24 +181,28 @@ int main( int argc, char* argv[] )
             return -1;
         }
 
-        for( j = 0; j < numattrs; j++ ) {
-            if( !i && attrs[j] == PWR_ATTR_ENERGY ) {
-                start = vals[j];
-                start_ts = vals_ts[j];
+        for( j = 0; j < numobjs; j++ ) {
+            printf( "%s: ", PWR_ObjGetName( PWR_GrpGetObjByIndx( grp, j ) ) );
+
+            for( k = 0; k < numattrs; k++ ) {
+                if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
+                    start = vals[k];
+                    start_ts = vals_ts[k];
+                }
+                if( !k ) time = vals_ts[k] - start_ts;
+                if( attrs[k] == PWR_ATTR_ENERGY )
+                    printf( "%lf ", vals[k] - start );
+                printf( "%lf ", vals[k] );
             }
-            if( !j ) time = vals_ts[j] - start_ts;
-            if( attrs[j] == PWR_ATTR_ENERGY )
-                printf( "%lf ", vals[j] - start );
-            printf( "%lf ", vals[j] );
+            printf( "%lf\n", time/1000000000.0 );
+
+            gettimeofday( &t1, 0x0 );
+            tdiff = t1.tv_sec - t0.tv_sec +
+                (t1.tv_usec - t0.tv_usec) / 1000000.0;
+
+            if( tdiff < 1000000.0 / freq )
+                usleep( 1000000.0 / freq - tdiff );
         }
-        printf( "%lf\n", time/1000000000.0 );
-
-        gettimeofday( &t1, 0x0 );
-        tdiff = t1.tv_sec - t0.tv_sec +
-            (t1.tv_usec - t0.tv_usec) / 1000000.0;
-
-        if( tdiff < 1000000.0 / freq )
-            usleep( 1000000.0 / freq - tdiff );
     }
 
     return 0;
