@@ -226,7 +226,7 @@ static int optdev_gather( node_t node, double *power, double *time )
     }
     run_avg_acc_cap =
         (unsigned long)(MSR(msr, MSR_OPT_RUN_AVG_ACC_CAP_MASK, MSR_OPT_RUN_AVG_ACC_CAP_SHIFT));
-    DBGP( "Info: node[%d].run_avg_acc_cap   - %g\n", node, run_avg_acc_cap );
+    DBGP( "Info: node[%d].run_avg_acc_cap - %g\n", node, run_avg_acc_cap );
 
     if( run_avg_acc_cap >= MSR_OPT_RUN_AVG_ACC_CAP_NEG )
         run_avg_acc_cap = 
@@ -259,7 +259,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
         fprintf( stderr, "Error: PWR OPT device model identification failed\n" );
         return 0x0;
     }
-    DBGP( "Info: cpu_model             - %d\n", PWR_OPTDEV(dev->private_data)->cpu_model );
+    DBGP( "Info: cpu_model                 - %d\n", PWR_OPTDEV(dev->private_data)->cpu_model );
 
     for( i=0; i<OPT_NODE_MAX; i++ ) {
         if( optdev_read( i, MSR_OPT_VENDOR_REG, MSR_OPT_VENDOR_OFFSET, &msr ) < 0 ) {
@@ -286,7 +286,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
             DBGP( "Info: Vendor ID not supported\n" );
         }
     }
-    DBGP( "Info: node_count            - %d\n", PWR_OPTDEV(dev->private_data)->node_count );
+    DBGP( "Info: node_count                - %d\n", PWR_OPTDEV(dev->private_data)->node_count );
 
     for( i=0; i<PWR_OPTDEV(dev->private_data)->node_count; i++ ) {
         DBGP( "Info: node[%d].number            - %d\n", i, PWR_OPTDEV(dev->private_data)->node[i].number );
