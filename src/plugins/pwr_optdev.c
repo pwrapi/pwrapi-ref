@@ -218,7 +218,7 @@ static int optdev_gather( node_t node, double *power, double *time )
     }
     apm_tdp_limit =
         (unsigned long)(MSR(msr, MSR_OPT_APM_TDP_LIMIT_MASK, MSR_OPT_APM_TDP_LIMIT_SHIFT));
-    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", i, node, apm_tdp_limit );
+    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", node, apm_tdp_limit );
 
     if( optdev_read( node.number, MSR_OPT_RUN_AVG_ACC_CAP_REG, MSR_OPT_RUN_AVG_ACC_CAP_OFFSET, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device read failed\n" );
@@ -226,14 +226,14 @@ static int optdev_gather( node_t node, double *power, double *time )
     }
     run_avg_acc_cap =
         (unsigned long)(MSR(msr, MSR_OPT_RUN_AVG_ACC_CAP_MASK, MSR_OPT_RUN_AVG_ACC_CAP_SHIFT));
-    DBGP( "Info: node[%d].run_avg_acc_cap   - %g\n", i, node, run_avg_acc_cap );
+    DBGP( "Info: node[%d].run_avg_acc_cap   - %g\n", node, run_avg_acc_cap );
 
     if( run_avg_acc_cap >= MSR_OPT_RUN_AVG_ACC_CAP_NEG )
         run_avg_acc_cap = 
             -((~(run_avg_acc_cap & MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK) & MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK) + 1);
 
     *power = (apm_tdp_limit - (run_avg_acc_cap / node.avg_divide_by)) * node.tdp_to_watt;
-    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", i, node, apm_tdp_limit );
+    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", node, apm_tdp_limit );
 
     return 0;
 }
