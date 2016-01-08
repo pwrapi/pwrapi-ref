@@ -13,6 +13,7 @@
 #define PWR_DEV_H 
 
 #include "pwrdev.h"
+#include "pwr_config.h"
 
 #ifdef USE_DEBUG
 #define DBGP(X,...) fprintf( stderr, X, ## __VA_ARGS__ ); fflush( stderr )
