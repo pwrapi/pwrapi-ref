@@ -57,8 +57,9 @@
 #define MSR_OPT_TDP_TO_WATT_OFFSET       0xe8
 #define MSR_OPT_TDP_TO_WATT_HI_MASK      0x03ff
 #define MSR_OPT_TDP_TO_WATT_LO_MASK      0xfc00
-#define MSR_OPT_TDP_TO_WATT_HI_SHIFT     10
-#define MSR_OPT_TDP_TO_WATT_LO_SHIFT     6
+#define MSR_OPT_TDP_TO_WATT_HI_SHIFT     6
+#define MSR_OPT_TDP_TO_WATT_LO_SHIFT     10
+#define MSR_OPT_TDP_TO_WATT_DIVIDE_BY    65536
  
 /* D18F5xE8[28:16] */
 #define MSR_OPT_APM_TDP_LIMIT_REG        0x5
@@ -75,7 +76,7 @@
 #define MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK 0x001fffff
 
 #define MSR(X,Y,Z) ((X&Y)>>Z)
-#define RMSR(X,Y,Z) ((X&Y)<<Z)
+#define LMSR(X,Y,Z) ((X&Y)<<Z)
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
 #define OPT_NODE_MAX 8
@@ -190,7 +191,7 @@ static int optdev_identify( int *cpu_model )
     return retval;
 }
 
-static int optdev_read( unsigned short node, unsigned short reg, unsigned short offset, unsigned short *msr )
+static int optdev_read( unsigned long node, unsigned long reg, unsigned long offset, unsigned long *msr )
 {
     uint64_t value;
     char cmd[255] = "", buf[255] = "";
@@ -209,16 +210,17 @@ static int optdev_read( unsigned short node, unsigned short reg, unsigned short 
 
 static int optdev_gather( node_t node, double *power, double *time )
 {
-    unsigned short msr;
-    unsigned long apm_tdp_limit, run_avg_acc_cap;
+    unsigned long msr;
+    double apm_tdp_limit;
+    unsigned long run_avg_acc_cap;
 
     if( optdev_read( node.number, MSR_OPT_APM_TDP_LIMIT_REG, MSR_OPT_APM_TDP_LIMIT_OFFSET, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device read failed\n" );
         return -1;
     }
     apm_tdp_limit =
-        (unsigned long)(MSR(msr, MSR_OPT_APM_TDP_LIMIT_MASK, MSR_OPT_APM_TDP_LIMIT_SHIFT));
-    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", node, apm_tdp_limit );
+        (double)(MSR(msr, MSR_OPT_APM_TDP_LIMIT_MASK, MSR_OPT_APM_TDP_LIMIT_SHIFT));
+    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", node.number, apm_tdp_limit );
 
     if( optdev_read( node.number, MSR_OPT_RUN_AVG_ACC_CAP_REG, MSR_OPT_RUN_AVG_ACC_CAP_OFFSET, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device read failed\n" );
@@ -226,14 +228,14 @@ static int optdev_gather( node_t node, double *power, double *time )
     }
     run_avg_acc_cap =
         (unsigned long)(MSR(msr, MSR_OPT_RUN_AVG_ACC_CAP_MASK, MSR_OPT_RUN_AVG_ACC_CAP_SHIFT));
-    DBGP( "Info: node[%d].run_avg_acc_cap - %g\n", node, run_avg_acc_cap );
 
     if( run_avg_acc_cap >= MSR_OPT_RUN_AVG_ACC_CAP_NEG )
         run_avg_acc_cap = 
             -((~(run_avg_acc_cap & MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK) & MSR_OPT_RUN_AVG_ACC_CAP_NEG_MASK) + 1);
+    DBGP( "Info: node[%d].run_avg_acc_cap   - %u\n", node.number, run_avg_acc_cap );
 
     *power = (apm_tdp_limit - (run_avg_acc_cap / node.avg_divide_by)) * node.tdp_to_watt;
-    DBGP( "Info: node[%d].apm_tdp_limit     - %g\n", node, apm_tdp_limit );
+    DBGP( "Info: node[%d].power             - %g\n", node.number, *power );
 
     return 0;
 }
@@ -242,7 +244,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
 {
     char file[80] = "";
     int core = 0, i;
-    unsigned short msr;
+    unsigned long msr;
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
     *dev = devops;
 
@@ -267,15 +269,15 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
             return 0x0;
         }
 
-        if( (unsigned short)(MSR(msr, MSR_OPT_VENDOR_MASK, MSR_OPT_VENDOR_SHIFT)) == MSR_OPT_VENDOR_ID ) {
+        if( (unsigned long)(MSR(msr, MSR_OPT_VENDOR_MASK, MSR_OPT_VENDOR_SHIFT)) == MSR_OPT_VENDOR_ID ) {
             DBGP( "Info: Vendor ID verified\n" );
             if( optdev_read( i, MSR_OPT_MULTINODE_REG, MSR_OPT_MULTINODE_OFFSET, &msr ) < 0 ) {
                 fprintf( stderr, "Error: PWR OPT device read failed\n" );
                 return 0x0;
             }
-            if( (unsigned short)(MSR_BIT(msr, MSR_OPT_MULTINODE_BIT)) ) {
-                if( (unsigned short)(MSR_BIT(msr, MSR_OPT_INTERNAL_BIT1)) == 0 &&
-                    (unsigned short)(MSR_BIT(msr, MSR_OPT_INTERNAL_BIT2)) == 0 ) {
+            if( (unsigned long)(MSR_BIT(msr, MSR_OPT_MULTINODE_BIT)) ) {
+                if( (unsigned long)(MSR_BIT(msr, MSR_OPT_INTERNAL_BIT1)) == 0 &&
+                    (unsigned long)(MSR_BIT(msr, MSR_OPT_INTERNAL_BIT2)) == 0 ) {
                     PWR_OPTDEV(dev->private_data)->node[PWR_OPTDEV(dev->private_data)->node_count++].number = i;
                 }
                 DBGP( "Info: Ignored multinode\n" );
@@ -296,26 +298,26 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
             return 0x0;
         }
         PWR_OPTDEV(dev->private_data)->node[i].tdp_to_watt =
-            (unsigned short)(MSR(msr, MSR_OPT_TDP_TO_WATT_HI_MASK, MSR_OPT_TDP_TO_WATT_HI_SHIFT)) |
-            (unsigned short)(RMSR(msr, MSR_OPT_TDP_TO_WATT_LO_MASK, MSR_OPT_TDP_TO_WATT_LO_SHIFT));
+            (double)((unsigned long)(LMSR(msr, MSR_OPT_TDP_TO_WATT_HI_MASK, MSR_OPT_TDP_TO_WATT_HI_SHIFT)) |
+            (unsigned long)(MSR(msr, MSR_OPT_TDP_TO_WATT_LO_MASK, MSR_OPT_TDP_TO_WATT_LO_SHIFT))) / MSR_OPT_TDP_TO_WATT_DIVIDE_BY;
         DBGP( "Info: node[%d].tdp_to_watt       - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].tdp_to_watt );
 
-        if( optdev_read( PWR_OPTDEV(dev->private_data)->node[i].number, MSR_OPT_CORE_REG, MSR_OPT_CORE_OFFSET, &msr ) < 0 ) {
+        if( optdev_read( PWR_OPTDEV(dev->private_data)->node[i].number, MSR_OPT_RUN_AVG_RANGE_REG, MSR_OPT_RUN_AVG_RANGE_OFFSET, &msr ) < 0 ) {
             fprintf( stderr, "Error: PWR OPT device read failed\n" );
             return 0x0;
         }
         PWR_OPTDEV(dev->private_data)->node[i].run_avg_range =
-            (unsigned short)(MSR(msr, MSR_OPT_RUN_AVG_RANGE_MASK, 0));
+            (unsigned long)(MSR(msr, MSR_OPT_RUN_AVG_RANGE_MASK, 0));
         PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by =
             pow( PWR_OPTDEV(dev->private_data)->node[i].run_avg_range + 1, 2.0 );
         DBGP( "Info: node[%d].run_avg_range     - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range );
 
-        if( optdev_read( PWR_OPTDEV(dev->private_data)->node[i].number, MSR_OPT_CORE_REG, MSR_OPT_CORE_OFFSET, &msr ) < 0 ) {
+        if( optdev_read( PWR_OPTDEV(dev->private_data)->node[i].number, MSR_OPT_PROC_TDP_REG, MSR_OPT_PROC_TDP_OFFSET, &msr ) < 0 ) {
             fprintf( stderr, "Error: PWR OPT device read failed\n" );
             return 0x0;
         }
         PWR_OPTDEV(dev->private_data)->node[i].proc_tdp =
-            (unsigned short)(MSR(msr, MSR_OPT_PROC_TDP_MASK, 0));
+            (unsigned long)(MSR(msr, MSR_OPT_PROC_TDP_MASK, 0));
         DBGP( "Info: node[%d].avg_divide_by     - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by );
 
         /* TODO - unnecessary values to read in but possibly useful */
