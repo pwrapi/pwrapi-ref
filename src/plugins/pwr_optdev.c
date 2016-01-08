@@ -78,12 +78,12 @@
 typedef struct {
     int number;
 
-    unsigned short tdp_to_watt;
-    unsigned short run_avg_range;
-    unsigned short avg_divide_by;
-    unsigned short proc_tdp;
-    unsigned short base_tdp;
-    unsigned short off_core_pwr_watt;
+    double tdp_to_watt;
+    double run_avg_range;
+    double avg_divide_by;
+    double proc_tdp;
+    double base_tdp;
+    double off_core_pwr_watt;
 } node_t;
 
 typedef struct {
@@ -185,41 +185,41 @@ static int optdev_identify( int *cpu_model )
     return retval;
 }
 
-static int optdev_read( unsigned short node, unsigned short reg, unsigned short offset, long long *msr )
+static int optdev_read( unsigned short node, unsigned short reg, unsigned short offset, unsigned short *msr )
 {
     uint64_t value;
-    char cmd[255] = "";
+    char cmd[255] = "", buf[255] = "";
+    FILE *pipe = 0x0;
 
-    sprintf( cmd, "setpci -s 0:%x.%x 0x%x.l 2>&1", node+MSR_OPT_CORE_OFFSET, reg, offset );
+    sprintf( cmd, "setpci -f -s 0:%x.%x 0x%x.l 2>&1", node+MSR_OPT_CORE_OFFSET, reg, offset );
     DBGP( "Info: %s\n", cmd );
-    if( (value = system( cmd )) < 0 ) {
-        perror(0x0);
-        fprintf( stderr, "Error: OPT read failed with error %d\n", errno );
-        return -1;
+
+    if( (pipe = popen( cmd, "r" )) && fgets( buf, 255, pipe ) ) {
+        sscanf( buf, "%x", msr );
+        DBGP( "Info: 0x%08x\n", *msr );
     }
  
-    *msr = (long long)value;
     return 0;
 }
 
 static int optdev_gather( node_t node, double *power, double *time )
 {
-    long long msr;
-    unsigned short apm_tdp_limit, run_avg_acc_cap;
+    unsigned short msr;
+    unsigned long apm_tdp_limit, run_avg_acc_cap;
 
     if( optdev_read( node.number, MSR_OPT_APM_TDP_LIMIT_REG, MSR_OPT_APM_TDP_LIMIT_OFFSET, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device read failed\n" );
         return -1;
     }
     apm_tdp_limit =
-        (unsigned short)(MSR(msr, MSR_OPT_APM_TDP_LIMIT_MASK, MSR_OPT_APM_TDP_LIMIT_SHIFT));
+        (unsigned long)(MSR(msr, MSR_OPT_APM_TDP_LIMIT_MASK, MSR_OPT_APM_TDP_LIMIT_SHIFT));
 
     if( optdev_read( node.number, MSR_OPT_RUN_AVG_ACC_CAP_REG, MSR_OPT_RUN_AVG_ACC_CAP_OFFSET, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device read failed\n" );
         return -1;
     }
     run_avg_acc_cap =
-        (unsigned short)(MSR(msr, MSR_OPT_RUN_AVG_ACC_CAP_MASK, MSR_OPT_RUN_AVG_ACC_CAP_SHIFT));
+        (unsigned long)(MSR(msr, MSR_OPT_RUN_AVG_ACC_CAP_MASK, MSR_OPT_RUN_AVG_ACC_CAP_SHIFT));
 
     if( run_avg_acc_cap >= MSR_OPT_RUN_AVG_ACC_CAP_NEG )
         run_avg_acc_cap = 
@@ -234,7 +234,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
 {
     char file[80] = "";
     int core = 0, i;
-    long long msr;
+    unsigned short msr;
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
     *dev = devops;
 
@@ -273,6 +273,8 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
             }
         }
     }
+    DBGP( "Info: cpu_model             - %d\n", i, PWR_OPTDEV(dev->private_data)->cpu_model );
+    DBGP( "Info: node_count            - %d\n", i, PWR_OPTDEV(dev->private_data)->node_count );
 
     for( i=0; i<PWR_OPTDEV(dev->private_data)->node_count; i++ ) {
         if( optdev_read( PWR_OPTDEV(dev->private_data)->node[i].number, MSR_OPT_TDP_TO_WATT_REG, MSR_OPT_TDP_TO_WATT_OFFSET, &msr ) < 0 ) {
