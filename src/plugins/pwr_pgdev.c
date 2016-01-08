@@ -9,6 +9,8 @@
  * distribution.
 */
 
+#define USE_SYSTIME
+
 #include "pwr_pgdev.h"
 #include "pwr_dev.h"
 

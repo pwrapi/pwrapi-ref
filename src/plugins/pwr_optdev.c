@@ -208,7 +208,7 @@ static int optdev_read( unsigned long node, unsigned long reg, unsigned long off
     return 0;
 }
 
-static int optdev_gather( node_t node, double *power, double *time )
+static int optdev_gather( node_t node, double *power )
 {
     unsigned long msr;
     double apm_tdp_limit;
@@ -358,8 +358,7 @@ int pwr_optdev_close( pwr_fd_t fd )
 int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
     double power = 0.0;
-    double time = 0.0;
-    int policy = 0;
+    struct timeval tv;
 
     DBGP( "Info: PWR OPT device read\n" );
 
@@ -368,7 +367,7 @@ int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
         return -1;
     }
 
-    if( optdev_gather( (PWR_OPTFD(fd)->dev)->node[(PWR_OPTFD(fd)->dev)->core], &power, &time ) < 0 ) {
+    if( optdev_gather( (PWR_OPTFD(fd)->dev)->node[(PWR_OPTFD(fd)->dev)->core], &power ) < 0 ) {
         fprintf( stderr, "Error: PWR OPT device gather failed\n" );
         return -1;
     }
@@ -381,8 +380,8 @@ int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int l
             fprintf( stderr, "Warning: unknown PWR reading attr requested\n" );
             break;
     }
-    *timestamp = (unsigned int)time*1000000000ULL + 
-                 (time-(unsigned int)time)*1000000000ULL;
+    gettimeofday( &tv, NULL );
+    *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
     return 0;
 }

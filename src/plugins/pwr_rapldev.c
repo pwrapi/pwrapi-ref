@@ -9,6 +9,8 @@
  * distribution.
 */
 
+#define USE_SYSTIME
+
 #include "pwr_rapldev.h"
 #include "pwr_dev.h"
 
@@ -18,6 +20,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <math.h>
+#ifndef USE_SYSTIME
+#include <sys/time.h>
+#endif
 
 #define CPU_MODEL_SANDY    42
 #define CPU_MODEL_SANDY_EP 45
@@ -441,6 +446,9 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     double energy = 0.0;
     double time = 0.0;
     int policy = 0;
+#ifndef USE_SYSTIME
+    struct timeval tv;
+#endif
 
     DBGP( "Info: PWR RAPL device read\n" );
 
@@ -466,8 +474,13 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
             fprintf( stderr, "Warning: unknown PWR reading attr requested\n" );
             break;
     }
+#ifndef USE_SYSTIME
+    gettimeofday( &tv, NULL );
+    *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
+#else
     *timestamp = (unsigned int)time*1000000000ULL + 
                  (time-(unsigned int)time)*1000000000ULL;
+#endif
 
     return 0;
 }
