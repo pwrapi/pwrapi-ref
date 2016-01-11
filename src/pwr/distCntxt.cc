@@ -1,4 +1,6 @@
+#if HAVE_PYTHON
 #include "pyConfig.h"
+#endif
 #include <stdlib.h>
 #include <string>
 #include <assert.h>
@@ -65,8 +67,10 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
     }
     if ( 0 == configFile.compare(pos,4,".xml") ) {
         m_config = new XmlConfig( configFile );
+#if HAVE_PYTHON
     } else if ( 0 == configFile.compare(pos,3,".py") ) {
         m_config = new PyConfig( configFile );
+#endif
     } else {
 		assert(0);
 	}

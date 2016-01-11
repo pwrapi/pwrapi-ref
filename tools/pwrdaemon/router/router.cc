@@ -1,5 +1,6 @@
-
+#ifdef HAVE_PYTHON
 #include "pyConfig.h"
+#endif
 #include <string>
 #include <fstream>
 #include <debug.h>
@@ -30,8 +31,10 @@ Router::Router( int argc, char* argv[] ) :
 	size_t pos = m_args.pwrApiConfig.find_last_of( "." );
 	if ( 0 == m_args.pwrApiConfig.compare(pos,4,".xml") ) {	
 		m_config = new PowerAPI::XmlConfig( m_args.pwrApiConfig );
+#ifdef HAVE_PYTHON
 	} else if ( 0 == m_args.pwrApiConfig.compare(pos,3,".py") ) {
 		m_config = new PowerAPI::PyConfig( m_args.pwrApiConfig );
+#endif
 	} else {
 		assert(0);
 	}
