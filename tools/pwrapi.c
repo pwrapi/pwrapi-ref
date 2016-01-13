@@ -58,6 +58,7 @@ int main( int argc, char* argv[] )
     unsigned int i, j, k, samples = 1, freq = 1, numobjs = 0, numattrs = 0;
     PWR_ObjType type = PWR_OBJ_SOCKET;
 
+    PWR_AttrAccessError error; 
     PWR_AttrName attrs[100];
     PWR_Time *vals_ts = 0x0;
     double *vals = 0x0;
@@ -171,42 +172,35 @@ int main( int argc, char* argv[] )
         gettimeofday( &t0, 0x0 );
 
         if( PWR_GrpAttrGetValues( grp, numattrs, attrs, vals, vals_ts, stats ) 
-                != PWR_RET_SUCCESS ) 
-        {
-            PWR_AttrAccessError error; 
-            int rc = PWR_StatusPopError( stats, &error );  
+                == PWR_RET_SUCCESS ) {
+            for( j = 0; j < numobjs; j++ ) {
+                printf( "%s: ", PWR_ObjGetName( PWR_GrpGetObjByIndx( grp, j ) ) );
 
+                for( k = 0; k < numattrs; k++ ) {
+                    if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
+                        start = vals[k];
+                        start_ts = vals_ts[k];
+                    }
+                    if( !k ) time = vals_ts[k] - start_ts;
+                    if( attrs[k] == PWR_ATTR_ENERGY )
+                        printf( "%lf ", vals[k] - start );
+                    printf( "%lf ", vals[k] );
+                }
+                printf( "%lf\n", time/1000000000.0 );
+
+                gettimeofday( &t1, 0x0 );
+                tdiff = t1.tv_sec - t0.tv_sec +
+                    (t1.tv_usec - t0.tv_usec) / 1000000.0;
+
+                if( tdiff < 1000000.0 / freq )
+                    usleep( 1000000.0 / freq - tdiff );
+            }
+        } else {
+            PWR_StatusPopError( stats, &error );  
             printf("Error: reading of `%s` failed for object `%s` with error %d\n",
                     PWR_AttrGetTypeString( error.name), 
                     PWR_ObjGetName(error.obj), error.error );
-
-            free( vals_ts );
-            free( vals );
-
-            return -1;
-        }
-
-        for( j = 0; j < numobjs; j++ ) {
-            printf( "%s: ", PWR_ObjGetName( PWR_GrpGetObjByIndx( grp, j ) ) );
-
-            for( k = 0; k < numattrs; k++ ) {
-                if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
-                    start = vals[k];
-                    start_ts = vals_ts[k];
-                }
-                if( !k ) time = vals_ts[k] - start_ts;
-                if( attrs[k] == PWR_ATTR_ENERGY )
-                    printf( "%lf ", vals[k] - start );
-                printf( "%lf ", vals[k] );
-            }
-            printf( "%lf\n", time/1000000000.0 );
-
-            gettimeofday( &t1, 0x0 );
-            tdiff = t1.tv_sec - t0.tv_sec +
-                (t1.tv_usec - t0.tv_usec) / 1000000.0;
-
-            if( tdiff < 1000000.0 / freq )
-                usleep( 1000000.0 / freq - tdiff );
+            break;
         }
     }
 
