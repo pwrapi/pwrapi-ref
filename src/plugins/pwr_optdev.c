@@ -204,7 +204,7 @@ static int optdev_read( unsigned long node, unsigned long reg, unsigned long off
         sscanf( buf, "%x", msr );
         DBGP( "Info: 0x%08x\n", *msr );
     } else {
-        fprintf( stderr, "Error: call to setpci failed\n" );
+        DBGP( "Info: call to setpci failed\n" );
         return -1;
     }
  
@@ -268,8 +268,8 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
 
     for( i=0; i<OPT_NODE_MAX; i++ ) {
         if( optdev_read( i, MSR_OPT_VENDOR_REG, MSR_OPT_VENDOR_OFFSET, &msr ) < 0 ) {
-            fprintf( stderr, "Error: PWR OPT device read failed\n" );
-            return 0x0;
+            DBGP( "Info: Unknown vendor for node %u\n", i );
+            continue;
         }
 
         if( (unsigned long)(MSR(msr, MSR_OPT_VENDOR_MASK, MSR_OPT_VENDOR_SHIFT)) == MSR_OPT_VENDOR_ID ) {
