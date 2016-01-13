@@ -204,7 +204,7 @@ static int optdev_read( unsigned long node, unsigned long reg, unsigned long off
         sscanf( buf, "%x", msr );
         DBGP( "Info: 0x%08x\n", *msr );
     } else {
-        DBGP( "Info: call to setpci failed\n" );
+        DBGP( "Warning: call to setpci failed\n" );
         return -1;
     }
  
@@ -283,12 +283,12 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
                     (unsigned long)(MSR_BIT(msr, MSR_OPT_INTERNAL_BIT2)) == 0 ) {
                     PWR_OPTDEV(dev->private_data)->node[PWR_OPTDEV(dev->private_data)->node_count++].number = i;
                 }
-                DBGP( "Info: Ignored multinode\n" );
+                DBGP( "Info: Ignored multinode for node %u\n", i );
             } else {
                 PWR_OPTDEV(dev->private_data)->node[PWR_OPTDEV(dev->private_data)->node_count++].number = i;
             }
         } else {
-            DBGP( "Info: Vendor ID not supported\n" );
+            DBGP( "Info: Vendor ID not supported for node %u\n", i );
         }
     }
     DBGP( "Info: node_count                - %d\n", PWR_OPTDEV(dev->private_data)->node_count );
