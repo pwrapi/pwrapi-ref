@@ -180,6 +180,9 @@ int main( int argc, char* argv[] )
                     PWR_AttrGetTypeString( error.name), 
                     PWR_ObjGetName(error.obj), error.error );
 
+            free( vals_ts );
+            free( vals );
+
             return -1;
         }
 
