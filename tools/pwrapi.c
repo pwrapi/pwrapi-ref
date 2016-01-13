@@ -59,8 +59,8 @@ int main( int argc, char* argv[] )
     PWR_ObjType type = PWR_OBJ_SOCKET;
 
     PWR_AttrName attrs[100];
-    PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
-    double vals[NUM_ATTR(attrs)*1000];
+    PWR_Time *vals_ts = 0x0;
+    double *vals = 0x0;
     static char usage[] =
         "usage: %s [-s samples] [-f freq] [-a attr] [-h]\n";
 
@@ -163,6 +163,8 @@ int main( int argc, char* argv[] )
         printf( "Error: getting type objects failed\n" );
         return -1;
     }
+    vals_ts = malloc( numobjs * numattrs * sizeof(PWR_Time) );
+    vals = malloc( numobjs * numattrs * sizeof(double) );
 
     PWR_Status stats = PWR_StatusCreate();
     for( i = 0; i < samples; i++ ) {
@@ -204,6 +206,9 @@ int main( int argc, char* argv[] )
                 usleep( 1000000.0 / freq - tdiff );
         }
     }
+
+    free( vals_ts );
+    free( vals );
 
     return 0;
 }
