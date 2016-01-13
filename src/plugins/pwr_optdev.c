@@ -207,6 +207,7 @@ static int optdev_read( unsigned long node, unsigned long reg, unsigned long off
         DBGP( "Warning: call to setpci failed\n" );
         return -1;
     }
+    pclose( pipe );
  
     return 0;
 }
