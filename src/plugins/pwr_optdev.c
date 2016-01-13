@@ -203,6 +203,9 @@ static int optdev_read( unsigned long node, unsigned long reg, unsigned long off
     if( (pipe = popen( cmd, "r" )) && fgets( buf, 255, pipe ) ) {
         sscanf( buf, "%x", msr );
         DBGP( "Info: 0x%08x\n", *msr );
+    } else {
+        fprintf( stderr, "Error: call to setpci failed\n" );
+        return -1;
     }
  
     return 0;
