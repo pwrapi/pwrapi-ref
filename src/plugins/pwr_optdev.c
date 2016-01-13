@@ -309,7 +309,7 @@ plugin_devops_t *pwr_optdev_init( const char *initstr )
         PWR_OPTDEV(dev->private_data)->node[i].run_avg_range =
             (unsigned long)(MSR(msr, MSR_OPT_RUN_AVG_RANGE_MASK, 0));
         PWR_OPTDEV(dev->private_data)->node[i].avg_divide_by =
-            pow( PWR_OPTDEV(dev->private_data)->node[i].run_avg_range + 1, 2.0 );
+            pow( 2.0, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range + 1 );
         DBGP( "Info: node[%d].run_avg_range     - %g\n", i, PWR_OPTDEV(dev->private_data)->node[i].run_avg_range );
 
         if( optdev_read( PWR_OPTDEV(dev->private_data)->node[i].number, MSR_OPT_PROC_TDP_REG, MSR_OPT_PROC_TDP_OFFSET, &msr ) < 0 ) {
