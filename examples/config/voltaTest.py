@@ -3,7 +3,7 @@
 import os
 os.environ['PYTHONPATH']='/home/mjleven/pwrTest'
 os.environ['POWERAPI_DEBUG']='15'
-os.environ['SLURM_NODELIST']='nid001'
+os.environ['SLURM_NODELIST']='nid[0-7]'
 os.environ['SLURM_JOB_NUM_NODES']='1'
 import volta
 	
