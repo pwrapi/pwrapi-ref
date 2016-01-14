@@ -3,8 +3,7 @@
 from pyConfig import * 
 import os,string, batchUtil
 
-
-nidList = os.environ['SLURM_NODELIST'].split(',')
+nidList = os.environ['SLURM_NODELIST']
 
 tmp = int(os.environ['POWERAPI_DEBUG']) 
 
@@ -15,7 +14,7 @@ if tmp & 2 :
 Debug( 'PYTHONPATH=\'{0}\''.format(os.environ['PYTHONPATH']) )
 Debug( 'POWERAPI_DEBUG=\'{0}\''.format( tmp ) )
 
-nidMap = batchUtil.createNidMap( nidList )
+nidMap = batchUtil.createNidMap2( nidList )
 
 #print 'nidMap=', nidMap
 
@@ -99,12 +98,12 @@ def genRouteFile( fileName ):
 	for i in xrange( numBoards ):
 		pos = 0
 
-		f.write('plat.cab0.board{0}:{0}:1\n'.format( i, pos ) );
+		f.write('plat.cab0.board{0}:{0}:{1}\n'.format( i, pos ) );
 		pos += 1 
 
 		for j in xrange( nodesPerBoard ):
 			if i * nodesPerBoard + j < numNodes:
-				f.write('plat.cab0.board0.node{0}:{1}:{2}\n'.\
+				f.write('plat.cab0.board{1}.node{0}:{1}:{2}\n'.\
 										format( j, i, pos ) );
 				pos += 1
 
@@ -117,6 +116,5 @@ for i in xrange( numNodes ):
 
 for i in xrange( map['board'].foo() ):
     tmp = 'plat.cab0.board%d' % i
-    if not i % nodesPerBoard:
-        setLocation( tmp, tmp + '-daemon' )
+    setLocation( tmp, tmp + '-daemon' )
 
