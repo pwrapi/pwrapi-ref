@@ -1,3 +1,6 @@
+
+#include "pwr_config.h"
+
 #if HAVE_PYTHON
 #include "pyConfig.h"
 #endif
