@@ -129,6 +129,8 @@ int pwr_pmcdev_final( plugin_devops_t *dev )
 
 pwr_fd_t pwr_pmcdev_open( plugin_devops_t *dev, const char *openstr )
 {
+    char *token;
+
     pwr_fd_t *fd = malloc( sizeof(pwr_pmcfd_t) );
     bzero( fd, sizeof(pwr_pmcfd_t) );
 
