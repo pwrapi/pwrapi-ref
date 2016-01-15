@@ -1,11 +1,30 @@
 #!/usr/bin/python
 
 from pyConfig import * 
-import os,string, batchUtil
+import os,string
 
-nidList = os.environ['SLURM_NODELIST']
+#print 'volta.py start' 
 
-tmp = int(os.environ['POWERAPI_DEBUG']) 
+if not os.environ.has_key('POWERRT_NUMNODES'):
+	print 'POWERRT_NUMNODES is not set'
+	sys.exit() 
+
+if not os.environ.has_key('POWERRT_NODES_PER_BOARD'):
+	print 'POWERRT_NODES_PER_BOARD is not set'
+	sys.exit()
+
+if not os.environ.has_key('POWERRT_BOARDS_PER_CAB'):
+	print 'POWERRT_BOARDS_PER_CAB is not set'
+	sys.exit() 
+
+numNodes = int( os.environ['POWERRT_NUMNODES'] )
+nodesPerBoard = int( os.environ['POWERRT_NODES_PER_BOARD'] )
+boardsPerCab = int( os.environ['POWERRT_BOARDS_PER_CAB'] )
+
+
+tmp = 0
+if os.environ.has_key('POWERAPI_DEBUG'):
+    tmp = int(os.environ['POWERAPI_DEBUG'])
 
 if tmp & 2 :
 	logging.basicConfig( format='%(levelname)s: %(message)s', \
@@ -13,12 +32,8 @@ if tmp & 2 :
 
 Debug( 'PYTHONPATH=\'{0}\''.format(os.environ['PYTHONPATH']) )
 Debug( 'POWERAPI_DEBUG=\'{0}\''.format( tmp ) )
-
-nidMap = batchUtil.createNidMap2( nidList )
-
-#print 'nidMap=', nidMap
-
-numNodes = len( nidMap )
+Debug( 'numNodes={0} nodesPerBoard={1} boardsPerCab={2}'.\
+				format(numNodes, nodesPerBoard, boardsPerCab) )
 
 plugins['CrayXTPM'] = 'libpwr_xtpmdev'
 devices['XTPM-node'] = ['CrayXTPM','']
@@ -44,14 +59,11 @@ node.setAttr( Energy, nodeEnergy )
 node.setAttr( Voltage, nodeVoltage )
 node.setAttr( Current, nodeCurrent )
 
-nodesPerBoard = 4
-boardsPerCab = 4
-
 map = {} 
 
 map['board'] = Foo( numNodes, nodesPerBoard )
 map['cab'] = Foo( map['board'].foo(), boardsPerCab, map['board'] )
-map['plat'] = Foo( 1, map['cab'].foo(), map['cab'] )  
+map['plat'] = Foo( map['cab'].foo(), map['cab'].foo(), map['cab'] )  
 
 def calcAttrSrc( name ):
 	Debug("calcAttrSrc() name=\'{1}\'".format( "", name ) )
@@ -80,7 +92,8 @@ def calcNumChildren( name ):
         num = int(num)
 
     if not map.has_key( objType): 
-        sys.exit( "ERROR: can't find objType \'{0}\'".format( objType ) )
+        print "ERROR: can't find objType \'{0}\'".format( objType )
+        sys.exit()
 
     return map[objType].calc(num) 
 
@@ -118,3 +131,4 @@ for i in xrange( map['board'].foo() ):
     tmp = 'plat.cab0.board%d' % i
     setLocation( tmp, tmp + '-daemon' )
 
+#print 'volta.py end' 
