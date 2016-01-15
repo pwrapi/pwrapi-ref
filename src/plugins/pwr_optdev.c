@@ -21,7 +21,8 @@
 #include <math.h>
 
 #define OPT_CPU_MODEL_6272               1
-#define OPT_CPU_MODEL_A10_5800           16
+#define OPT_CPU_MODEL_A10_5800K          16
+#define OPT_CPU_MODEL_A10_7850K          48
 
 /* D18F0x0[15:0] */
 #define MSR_OPT_CORE_REG                 0x0
@@ -177,7 +178,8 @@ static int optdev_identify( int *cpu_model )
 
             switch( *cpu_model ) {
                 case OPT_CPU_MODEL_6272:
-                case OPT_CPU_MODEL_A10_5800:
+                case OPT_CPU_MODEL_A10_5800K:
+                case OPT_CPU_MODEL_A10_7850K:
                     break;
                 default:
                     fprintf( stderr, "Warning: Unsupported model %d\n", *cpu_model );
