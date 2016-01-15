@@ -63,6 +63,10 @@ int main( int argc, char* argv[] )
     assert( children );
 #endif
 
+	char* xxx = getenv("WAIT");
+	if ( xxx ) {
+		sleep(atoi(xxx));
+	}
 	grp = PWR_GrpCreate(cntxt,"");
 	assert( grp );
 
