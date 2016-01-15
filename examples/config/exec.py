@@ -1,57 +1,59 @@
 #! /usr/bin/python
 
-import os, daemon, batchUtil, sys
+#print 'exec.py start'
 
 daemonDebug = 0 
 clientDebug = 0 
 apiroot= 'plat'
 
-home='/home/mjleven'
-root = home + '/pwrGIT/working'
+numNodes = 10
+machine = __import__('volta',fromlist=[''])
+daemon = __import__('daemon',fromlist=[''])
+xxx = __import__('createNidMap',fromlist=[''])
 
-nidList = os.environ['SLURM_NODELIST']
-#print "nidlist \'{0}\'".format( nidList)
+def initClientEnv( config, nidlist, nidMap ):
+	clientEnv = ''
+	clientEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
+	clientEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
+	clientEnv += 'POWERRT_BOARDS_PER_CAB={0} '.format(machine.boardsPerCab)
+	clientEnv += 'POWERAPI_DEBUG={0} '.format(clientDebug) 
+	clientEnv += 'SLURM_NODELIST={0} '.format(nidlist)
+	clientEnv += 'POWERAPI_CONFIG={0} '.format(config) 
+	clientEnv += 'POWERAPI_ROOT={0} '.format(apiroot)
+	clientEnv += 'POWERAPI_SERVER={0} '.format(nidMap[0])
+	clientEnv += 'POWERAPI_SERVER_PORT={0} '.format(15000)
+	clientEnv += 'WAIT={0} '.format(2)
+	return clientEnv
 
-os.environ['PYTHONPATH'] = root + '/examples/config'
-os.environ['POWERAPI_DEBUG'] = str(0)
+	#daemonEnv += 'POWERRT_NUMNODES={0}'.format(machine.numNodes)
 
-#print os.environ['PYTHONPATH']
+def initDaemonEnv( nidlist ):
+	daemonEnv = ''
+	daemonEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
+	daemonEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
+	daemonEnv += 'POWERRT_BOARDS_PER_CAB={0} '.format(machine.boardsPerCab)
+	daemonEnv += 'POWERAPI_DEBUG={0} '.format(daemonDebug) 
+	daemonEnv += 'SLURM_NODELIST={0} '.format(nidlist)
+	return daemonEnv
 
-import volta
+def GetApps( rank, config, nidlist, routeFile ):
+	print 'GetApps {0}, {1}, {2}, {3}'.format( rank, config, nidlist, routeFile )
 
-sys.path += [ os.environ['PYTHONPATH'] ]
+	nidMap = xxx.createNidMap( nidlist )
+	machine.genRouteFile( routeFile )
 
-nidMap = batchUtil.createNidMap2( nidList )
-#print "nidMap", nidMap
-
-config = root + '/examples/config/volta.py'
-routeFile = home + '/pwrTest/routeTable.txt'
-
-volta.genRouteFile( routeFile )
-
-clientEnv = ''
-clientEnv += 'POWERAPI_DEBUG={0} '.format(clientDebug) 
-clientEnv += 'SLURM_NODELIST={0} '.format(nidList)
-clientEnv += 'POWERAPI_CONFIG={0} '.format(config) 
-clientEnv += 'POWERAPI_ROOT={0} '.format(apiroot)
-clientEnv += 'POWERAPI_SERVER={0} '.format(nidMap[0])
-clientEnv += 'POWERAPI_SERVER_PORT={0} '.format(15000)
-clientEnv += 'WAIT={0} '.format(2)
-
-daemonEnv = ''
-daemonEnv += 'POWERAPI_DEBUG={0} '.format(daemonDebug) 
-daemonEnv += 'SLURM_NODELIST={0} '.format(nidList)
-
-def GetApps( rank ):
-	print "GetApps ", rank	
 	ret = []
-	exe = daemon.initDaemon( rank, nidMap, config, routeFile ).split(' ')
-	env = daemonEnv.split(' ') 
+
+	exe = daemon.initDaemon( rank, nidMap, config, routeFile, machine.nodesPerBoard, machine.boardsPerCab ).split(' ')
+	env = initDaemonEnv( nidlist ).split(' ') 
 	ret += [ [ exe, env ]  ] 
 
 	if 0 == int(rank):
 		exe = daemon.initClient( rank, nidMap, config, routeFile ).split(' ')
-		env = clientEnv.split(' ') 
+		env = initClientEnv( config, nidlist, nidMap ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
 	return ret 
+
+#GetApps( 0, "config", "nid[00061]", "routefile")
+#print 'exec.py end'
