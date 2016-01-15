@@ -18,14 +18,16 @@ compilable on most linux based systems.
 Currently supported:
   libpwr_pidev		Penguin PowerInsight
   libpwr_rapldev	Intel Running Average Power Limit (RAPL)
-  libpwr_pgdev	    Intel Power Gadget API
+  libpwr_pgdev	        Intel Power Gadget API
   libpwr_wudev		WattsUp
   libpwr_xtpmdev	Cray XC30 Power Manager
-  libpwr_cpudev	    System level CPU adjustments
+  libpwr_cpudev	        System level CPU adjustments
+  libpwr_optdev         AMD Average Power
+  libpwr_pmcdev         IBM Power8 Power Management
 
-Attributes  PI  RAPL  WU  XTPM  CPU
-----------  --  ----  --  ----  ---
-  power     G   G     G   G	
+Attributes  PI  RAPL  WU  XTPM  CPU  OPT  PMC
+----------  --  ----  --  ----  ---  ---  ---
+  power     G   G     G   G	     G    G
   energy    G   G     G   G
   voltage   G         G
   current   G         G
