@@ -1,13 +1,20 @@
 #! /usr/bin/python
 
+import sys, os
+
 #print 'exec.py start'
 
 daemonDebug = 0 
 clientDebug = 0 
 apiroot= 'plat'
 
-numNodes = 10
-machine = __import__('volta',fromlist=[''])
+if not os.environ.has_key('POWERRT_MACHINE'):
+	print 'POWERRT_MACHINE is not set'
+	sys.exit()
+
+machineName = os.environ['POWERRT_MACHINE'];
+
+machine = __import__(machineName,fromlist=[''])
 daemon = __import__('daemon',fromlist=[''])
 xxx = __import__('createNidMap',fromlist=[''])
 
@@ -25,8 +32,6 @@ def initClientEnv( config, nidlist, nidMap ):
 	clientEnv += 'WAIT={0} '.format(2)
 	return clientEnv
 
-	#daemonEnv += 'POWERRT_NUMNODES={0}'.format(machine.numNodes)
-
 def initDaemonEnv( nidlist ):
 	daemonEnv = ''
 	daemonEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
@@ -36,15 +41,16 @@ def initDaemonEnv( nidlist ):
 	daemonEnv += 'SLURM_NODELIST={0} '.format(nidlist)
 	return daemonEnv
 
+
 def GetApps( rank, config, nidlist, routeFile ):
-	print 'GetApps {0}, {1}, {2}, {3}'.format( rank, config, nidlist, routeFile )
+	#print 'GetApps {0}, {1}, {2}, {3}'.format( rank, config, nidlist, routeFile )
 
 	nidMap = xxx.createNidMap( nidlist )
 	machine.genRouteFile( routeFile )
 
 	ret = []
 
-	exe = daemon.initDaemon( rank, nidMap, config, routeFile, machine.nodesPerBoard, machine.boardsPerCab ).split(' ')
+	exe = daemon.initDaemon( rank, nidMap, config, routeFile ).split(' ')
 	env = initDaemonEnv( nidlist ).split(' ') 
 	ret += [ [ exe, env ]  ] 
 
