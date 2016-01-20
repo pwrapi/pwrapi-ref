@@ -22,7 +22,7 @@ Currently supported:
   libpwr_wudev		WattsUp
   libpwr_xtpmdev	Cray XC30 Power Manager
   libpwr_cpudev	        System level CPU adjustments
-  libpwr_optdev         AMD Average Power
+  libpwr_apmdev         AMD Average Power Management
   libpwr_pmcdev         IBM Power8 Power Management
 
 Attributes  PI  RAPL  WU  XTPM  CPU  OPT  PMC
