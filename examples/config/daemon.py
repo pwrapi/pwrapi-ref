@@ -46,14 +46,28 @@ def calcTree( myRank, nidMap, nodesPerBoard ):
 
 	return ret
 
-def calcNodeRoot( myRank, nodesPerBoard, boardsPerCab ):
-	cab = myRank / ( nodesPerBoard * boardsPerCab )
-	board = myRank / nodesPerBoard  
-	node = myRank % nodesPerBoard 
-	return 'plat.cab{0}.board{1}.node{2}'.format(cab,board,node)
+def calcBoardRoot( myRank, numRanks, nodesPerBoard, boardsPerCab ):
 
-def calcBoardRoot( myRank, nodesPerBoard ):
-	return 'plat.cab0.board'+str(myRank/nodesPerBoard)
+	cab = (myRank / (nodesPerBoard * boardsPerCab ) )
+
+	board = (myRank / nodesPerBoard ) % boardsPerCab 
+
+	#print "{0} cab={1} board={2}".format(myRank,cab,board)
+
+	tmp = 'plat.cab{0}.board{1}'.format(cab,board)
+	#print 'calcBoardRoot rank={0} {1}'.format( myRank, tmp)
+	return tmp 
+
+def calcNodeRoot( myRank, numRanks, nodesPerBoard, boardsPerCab ):
+	ret = calcBoardRoot( myRank, numRanks, nodesPerBoard, boardsPerCab ) 
+
+	node = myRank % nodesPerBoard 
+
+	tmp = ret + '.node{0}'.format(node)
+
+	#print 'calcNodedRoot rank={0} {1}'.format(myRank, tmp)
+	return tmp 
+
 
 def configRtr( myRank, nidMap, config, routeFile, nodesPerBoard ):
 	tmp = ""
@@ -69,14 +83,14 @@ def configRtr( myRank, nidMap, config, routeFile, nodesPerBoard ):
 		tmp += ' --rtr.pwrApiConfig=' + config
 	return tmp
 
-def configBoard( myRank, nidMap, config, nodesPerBoard  ):
+def configBoard( myRank, nidMap, config, nodesPerBoard, boardsPerCab  ):
 	tmp = ""
 	if not myRank % nodesPerBoard:
 		tmp += ' --srvr0.name=srv0'	
 		tmp += ' --srvr0.rtrHost=' + nidMap[ myRank/nodesPerBoard * nodesPerBoard  ]
 		tmp += ' --srvr0.rtrPort=15001'
 		tmp += ' --srvr0.pwrApiConfig=' + config 
-		tmp += ' --srvr0.pwrApiRoot=' + calcBoardRoot( myRank, nodesPerBoard )
+		tmp += ' --srvr0.pwrApiRoot=' + calcBoardRoot( myRank, len(nidMap), nodesPerBoard, boardsPerCab )
 		tmp += ' --srvr0.pwrApiServer=' + nidMap[ myRank/nodesPerBoard * nodesPerBoard]
 		tmp += ' --srvr0.pwrApiServerPort=15000'
 	return tmp
@@ -88,7 +102,7 @@ def configNode( myRank, nidMap, config, nodesPerBoard, boardsPerCab ):
 	tmp += ' --srvr.rtrHost=' + nidMap[ myRank/nodesPerBoard * nodesPerBoard ]
 	tmp += ' --srvr.rtrPort=15001'
 	tmp += ' --srvr.pwrApiConfig=' + config
-	tmp += ' --srvr.pwrApiRoot=' + calcNodeRoot( myRank, nodesPerBoard, boardsPerCab )
+	tmp += ' --srvr.pwrApiRoot=' + calcNodeRoot( myRank, len(nidMap), nodesPerBoard, boardsPerCab )
 	return  tmp
 
 def initDaemon( myRank, nidMap, config, routeFile ):
@@ -101,18 +115,16 @@ def initDaemon( myRank, nidMap, config, routeFile ):
 
 	tmp += configRtr( myRank, nidMap, config, routeFile,nodesPerBoard )
 	tmp += configNode( myRank, nidMap, config, nodesPerBoard, boardsPerCab )
-	tmp += configBoard( myRank, nidMap, config, nodesPerBoard )
+	tmp += configBoard( myRank, nidMap, config, nodesPerBoard, boardsPerCab )
 
 	return tmp	
 
 
-def initClient( myRank, nidMap, config, routeFile ):
-	tmp = "/home/mjleven/pwrGIT/working/build/examples/simpleTest"
-	tmp += " plat"
-	#tmp += " plat.cab0"
-	#tmp += " plat.cab0.board0"
-	#tmp += " plat.cab0.board0.node0"
-	tmp += " 0"
+def initClient( myRank, nidMap, config, routeFile, object ):
+	tmp  = '/home/mjleven/pwrGIT/working/build/examples/simpleTest '
+	tmp += object 
+	tmp += ' 0'
+	print tmp
 	return tmp
 
 #print "daemon.py end"
