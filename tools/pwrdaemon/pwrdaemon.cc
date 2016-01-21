@@ -79,19 +79,19 @@ int main( int argc, char* argv[] )
 	} 
 
 	while ( srvrThreads.size() ) {
-		printf("wait for server thread to exit\n");
+		//printf("wait for server thread to exit\n");
 		rc = pthread_join( srvrThreads.back(), NULL );
 		srvrThreads.pop_back();
 		assert(0==rc);
 	}
 
 	if ( rtrThread ) {
-		printf("wait for router thread to exit\n");
+		//printf("wait for router thread to exit\n");
 		rc = pthread_join( rtrThread, NULL );
 		assert(0==rc);
 	}
 
-	printf("%s exit\n",argv[0]);
+	//printf("%s exit\n",argv[0]);
 
 	return 0;
 }
