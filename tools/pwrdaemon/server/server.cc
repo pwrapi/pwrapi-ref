@@ -19,6 +19,7 @@ Server::Server( int argc, char* argv[] )
 	setenv( (m_args.name + "POWERAPI_ROOT").c_str(), 
 				m_args.pwrApiRoot.c_str(), 0 );  
 
+	DBGX("name=%s\n",m_args.name.c_str());
 	DBGX("config=%s\n",m_args.pwrApiConfig.c_str());
 	DBGX("root=%s\n",m_args.pwrApiRoot.c_str());
 	
