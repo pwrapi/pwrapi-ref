@@ -1,11 +1,11 @@
 #! /usr/bin/python
 
-import sys, os
+import sys, os, platform
 
 #print 'exec.py start'
 
-daemonDebug = 0 
-clientDebug = 0 
+daemonDebug = 0
+clientDebug = 0
 apiroot= 'plat'
 
 if not os.environ.has_key('POWERRT_MACHINE'):
@@ -46,6 +46,10 @@ def GetApps( rank, config, nidlist, routeFile, object ):
 	#print 'GetApps {0}, {1}, {2}, {3}'.format( rank, config, nidlist, routeFile )
 
 	nidMap = xxx.createNidMap( nidlist )
+	if nidMap[rank] != platform.node():
+		print 'ERROR: exec.py, bad nidMap', nidMap[rank],  '!=', platform.node() 
+		sys.exit(-1)
+
 	machine.genRouteFile( routeFile )
 
 	ret = []
