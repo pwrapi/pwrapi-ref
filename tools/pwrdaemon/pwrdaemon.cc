@@ -99,7 +99,7 @@ int main( int argc, char* argv[] )
 void* startRtrThread( void * _args)
 {
 	Args& args = *(Args*)_args;
-	printf("start router\n");
+	//printf("start router\n");
 
 	PWR_Router::Router rtr(args.argc, &args.argv[0] );
 
@@ -113,7 +113,7 @@ void* startSrvrThread( void * _args)
 {
 	Args& args = *(Args*)_args;
 
-	printf("start server\n");
+	//printf("start server\n");
 
 	PWR_Server::Server srvr(args.argc, &args.argv[0] );
 
