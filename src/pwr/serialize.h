@@ -12,6 +12,7 @@
 #ifndef _SERIALIZE_H
 #define _SERIALIZE_H
 
+#include <sstream>
 #include <assert.h>
 #include <vector>
 #include <stdio.h>
@@ -77,19 +78,19 @@ struct SerialBuf {
 
 		uint64_t tmp = (uint64_t) t;
 
-		out(tmp); 
+		out(tmp,sizeof(T)); 
         return *this;
 	}
 
     SerialBuf& operator<<( const double t ) {
 
 		uint64_t tmp = *(uint64_t*) &t;
-		out(tmp);
+		out(tmp,sizeof(t));
         return *this;
 	}
 
-	void out( uint64_t tmp ) { 
-        for ( unsigned int i = 0; i < sizeof(tmp) ; i++ ) {
+	void out( uint64_t tmp, size_t len ) { 
+        for ( unsigned int i = 0; i < len ; i++ ) {
 			unsigned char c = tmp >> (8 * i ) & 0xff;
             buf.push_back( c );
         }
@@ -97,20 +98,20 @@ struct SerialBuf {
 
     template<typename T> SerialBuf& operator>>( T& t ) {
 		assert( sizeof( T ) <= sizeof(uint64_t) );
-		t =	(T) in();
+		t =	(T) in(sizeof(T));
 		return *this; 
 	}	
 
     SerialBuf& operator>>( double& t ) {
 				
-		uint64_t tmp = in();
+		uint64_t tmp = in(sizeof(t));
 		t = *(double*) &tmp;			
         return *this;
 	}
 
-	uint64_t in() { 
+	uint64_t in(size_t len ) { 
         uint64_t tmp = 0;
-        for ( unsigned int i = sizeof(uint64_t); i > 0 ; i-- ) {
+        for ( unsigned int i = len; i > 0 ; i-- ) {
 			uint64_t c = buf.back();
             buf.pop_back();
 			tmp |= (c << (8 * (i-1)) );
