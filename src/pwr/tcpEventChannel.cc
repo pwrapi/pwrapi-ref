@@ -218,9 +218,13 @@ Event* TcpEventChannel::getEvent( bool blocking )
 	assert( nbytes == buf.length() );
 	print( (unsigned char*) buf.addr(), nbytes );
 
-	DBGX2(DBG_EC,"%s length=%lu \n",getName().c_str(), length);
 
-    return m_allocFunc( type, buf );
+	Event* ev =m_allocFunc( type, buf );
+
+	DBGX2(DBG_EC2,"%s event type %d, length=%lu \n",getName().c_str(), 
+						ev->type, length);
+
+    return ev; 
 }
 
 bool TcpEventChannel::sendEvent( Event* event )
@@ -246,7 +250,8 @@ bool TcpEventChannel::sendEvent( Event* event )
 	assert( nbytes == buf.length() );
 	print( (unsigned char*) buf.addr(), nbytes );
 
-	DBGX2(DBG_EC,"%s length=%lu \n",getName().c_str(), length);
+	DBGX2(DBG_EC2,"%s event type %d, length=%lu \n",getName().c_str(), 
+						event->type, length);
 
     return true;
 }
@@ -293,9 +298,9 @@ ChannelSelect::Data* TcpChannelSelect::wait()
 		while ( iter != m_chanMap.end() ) {
     		int fd = static_cast<TcpEventChannel*>(iter->first)->getSelectFd();
 
-			DBGX2(DBG_EC,"fd=%d %s\n",fd, 
-				static_cast<TcpEventChannel*>(iter->first)->getName().c_str());
 			if ( fd > -1 ) {
+				DBGX2(DBG_EC,"fd=%d %s\n",fd, 
+					static_cast<TcpEventChannel*>(iter->first)->getName().c_str());
     			fdmax = fd > fdmax ? fd : fdmax; 
     			FD_SET( fd, &read_fds );
     			FD_SET( fd, &write_fds );

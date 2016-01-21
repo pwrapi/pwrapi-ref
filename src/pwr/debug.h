@@ -21,6 +21,7 @@ extern unsigned int _DbgFlags;
 
 #define DBG_CONFIG (1<<1)
 #define DBG_EC (1<<2)
+#define DBG_EC2 (1<<3)
 
 #ifdef USE_DEBUG
 
