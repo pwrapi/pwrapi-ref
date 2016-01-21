@@ -1,3 +1,4 @@
+lib_LTLIBRARIES = libpwrrt.la
 
 bin_PROGRAMS = pwrdaemon
 
@@ -23,6 +24,11 @@ pwrdaemon_LDADD = $(top_builddir)/src/pwr/libpwr.la \
 				  $(top_builddir)/src/tinyxml2/libtinyxml2.la
 
 pwrdaemon_LDFLAGS = -lpthread
+
+
+libpwrrt_la_SOURCES = powerrt.cc
+libpwrrt_la_LDFLAGS = $(PYTHON_LDFLAGS) 
+libpwrrt_la_CPPFLAGS = $(PYTHON_CPPFLAGS) $(MPI_CPPFLAGS)
 
 if HAVE_PYTHON
 pwrdaemon_CPPFLAGS += $(PYTHON_CPPFLAGS)
