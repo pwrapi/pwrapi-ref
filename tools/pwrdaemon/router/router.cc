@@ -13,6 +13,7 @@
 #ifdef HAVE_PYTHON
 #include "pyConfig.h"
 #endif
+#include <sys/utsname.h>
 #include <string>
 #include <fstream>
 #include <debug.h>
@@ -55,7 +56,11 @@ Router::Router( int argc, char* argv[] ) :
 
 	Args& args= m_args;
 
-    DBGX("rtrId=%d\n", args.rtrId );
+    struct utsname buf;
+    int rc = uname( &buf );
+    assert( 0 == rc );
+
+    DBGX("rtrId=%d hostname=%s\n", args.rtrId, buf.nodename );
     DBGX("client=%s server=%s\n", args.clientPort.c_str(), 
 												args.serverPort.c_str() );
 
