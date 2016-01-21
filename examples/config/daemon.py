@@ -13,10 +13,9 @@ machineName = os.environ['POWERRT_MACHINE'];
 machine = __import__(machineName,fromlist=[''])
 
 def calcTree( myRank, nidMap, nodesPerBoard ):
-	#print "calcTree( {0} {1})".format( myRank, len(nidMap) )
 
 	routerID = myRank/nodesPerBoard
-	#print 'routerID={0}'.format( routerID )
+	#print "calcTree( {0} {1} {2})".format( myRank, len(nidMap), routerID )
 
 	ret = '' 
 
@@ -25,14 +24,18 @@ def calcTree( myRank, nidMap, nodesPerBoard ):
 
 	if 0 == routerID:
 		otherHostPort = 16000
-		numLinks = len(nidMap) / nodesPerBoard + len(nidMap) % nodesPerBoard
+		#print 'len nidMap {0} nodesPerBoard {1}'.format( len(nidMap), nodesPerBoard) 
+		numLinks = len(nidMap) / nodesPerBoard 
+		if len(nidMap) % nodesPerBoard: 
+			numLinks += 1
+
 		for i in xrange( 1, numLinks ):
-			#print 'link', i
 			myListenPort = 16000 + i
 			other = i * nodesPerBoard
 			otherHost = nidMap[other]
-			ret += ' --rtr.routerInfo={0}:{1}:{2}:{3}:{4}:{5}'.\
+			tmp = ' --rtr.routerInfo={0}:{1}:{2}:{3}:{4}:{5}'.\
 					format( i, myListenPort, otherHost, otherHostPort, i, i)
+			ret += tmp
 	else:
 		
 		myListenPort = 16000
@@ -42,7 +45,7 @@ def calcTree( myRank, nidMap, nodesPerBoard ):
 		ret += ' --rtr.routerInfo={0}:{1}:{2}:{3}'.\
 					format( 0, myListenPort, otherHost, otherHostPort )
 
-	#print 'calcTree', ret
+	#print 'calcTree(',myRank,')', ret
 
 	return ret
 
@@ -81,6 +84,8 @@ def configRtr( myRank, nidMap, config, routeFile, nodesPerBoard ):
 		tmp += ' --rtr.routerId=' + str( myRank/nodesPerBoard )
 		tmp += ' --rtr.routeTable=' + routeFile
 		tmp += ' --rtr.pwrApiConfig=' + config
+
+
 	return tmp
 
 def configBoard( myRank, nidMap, config, nodesPerBoard, boardsPerCab  ):
@@ -93,6 +98,9 @@ def configBoard( myRank, nidMap, config, nodesPerBoard, boardsPerCab  ):
 		tmp += ' --srvr0.pwrApiRoot=' + calcBoardRoot( myRank, len(nidMap), nodesPerBoard, boardsPerCab )
 		tmp += ' --srvr0.pwrApiServer=' + nidMap[ myRank/nodesPerBoard * nodesPerBoard]
 		tmp += ' --srvr0.pwrApiServerPort=15000'
+
+	#print 'configBoard(',myRank,')',tmp 
+
 	return tmp
 
 
@@ -103,6 +111,7 @@ def configNode( myRank, nidMap, config, nodesPerBoard, boardsPerCab ):
 	tmp += ' --srvr.rtrPort=15001'
 	tmp += ' --srvr.pwrApiConfig=' + config
 	tmp += ' --srvr.pwrApiRoot=' + calcNodeRoot( myRank, len(nidMap), nodesPerBoard, boardsPerCab )
+	#print 'configNode(',myRank,')',tmp 
 	return  tmp
 
 def initDaemon( myRank, nidMap, config, routeFile ):
@@ -117,6 +126,7 @@ def initDaemon( myRank, nidMap, config, routeFile ):
 	tmp += configNode( myRank, nidMap, config, nodesPerBoard, boardsPerCab )
 	tmp += configBoard( myRank, nidMap, config, nodesPerBoard, boardsPerCab )
 
+	#print 'initDaemon(',myRank,')',tmp
 	return tmp	
 
 
@@ -124,7 +134,7 @@ def initClient( myRank, nidMap, config, routeFile, object ):
 	tmp  = '/home/mjleven/pwrGIT/working/build/examples/simpleTest '
 	tmp += object 
 	tmp += ' 0'
-	print tmp
+	#print tmp
 	return tmp
 
 #print "daemon.py end"
