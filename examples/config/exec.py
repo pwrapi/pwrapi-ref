@@ -4,8 +4,8 @@ import sys, os, platform
 
 #print 'exec.py start'
 
-daemonDebug = 0
-clientDebug = 0
+daemonDebug = 0#8 
+clientDebug = 0#8 
 apiroot= 'plat'
 
 if not os.environ.has_key('POWERRT_MACHINE'):
@@ -42,24 +42,24 @@ def initDaemonEnv( nidlist ):
 	return daemonEnv
 
 
-def GetApps( rank, config, nidlist, routeFile, object ):
-	#print 'GetApps {0}, {1}, {2}, {3}'.format( rank, config, nidlist, routeFile )
+def GetApps( node, config, nidlist, routeFile, object ):
+	#print 'GetApps {0}, {1}, {2}, {3}'.format( node, config, nidlist, routeFile )
 
 	nidMap = xxx.createNidMap( nidlist )
-	if nidMap[rank] != platform.node():
-		print 'ERROR: exec.py, bad nidMap', nidMap[rank],  '!=', platform.node() 
+	if nidMap[node] != platform.node():
+		print 'ERROR: exec.py, bad nidMap', nidMap[node], '!=', platform.node() 
 		sys.exit(-1)
 
 	machine.genRouteFile( routeFile )
 
 	ret = []
 
-	exe = daemon.initDaemon( rank, nidMap, config, routeFile ).split(' ')
+	exe = daemon.initDaemon( node, nidMap, config, routeFile ).split(' ')
 	env = initDaemonEnv( nidlist ).split(' ') 
 	ret += [ [ exe, env ]  ] 
 
-	if 0 == int(rank):
-		exe = daemon.initClient( rank, nidMap, config, routeFile, object ).split(' ')
+	if 0 == int(node):
+		exe = daemon.initClient( node, nidMap, config, routeFile, object ).split(' ')
 		env = initClientEnv( config, nidlist, nidMap ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
