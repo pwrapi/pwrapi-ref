@@ -9,6 +9,8 @@
  * distribution.
 */
 
+#include <sys/types.h>
+#include <signal.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
@@ -77,6 +79,10 @@ int main( int argc, char* argv[] )
 
 		++count;
 	} 
+
+	rc = pthread_mutex_lock(&mutex);	
+	assert(0==rc);
+	kill(getppid(),SIGUSR1);
 
 	while ( srvrThreads.size() ) {
 		//printf("wait for server thread to exit\n");
