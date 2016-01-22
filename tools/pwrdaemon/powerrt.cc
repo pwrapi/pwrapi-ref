@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <signal.h>
 #include <sys/utsname.h>
 
 #include <string>
@@ -13,44 +14,65 @@
 
 #include <mpi.h>
 
+static int _debug = 0;
+
 struct Data {
 	std::vector<int> child;
 };
 
 Data* __data = NULL;
 
-static std::string createNidList( int rank, int& numNodes, int& myNid ); 
+static void sighandler( int sig )
+{
+	if ( _debug ) {
+		printf("PWRRT: got signale=%d\n",sig);
+	}
+}
 
-static int _debug = 0;
+static std::string createNidList( int& numNodes, int& myNid ); 
+static Data* runtimeInit( int *argc, char ***argv, 
+				const std::string& nidList, int numNodes, int myNid );
+
 int MPI_Init( int *argc, char ***argv )
 {
-	int mpi_retval;
-    int my_rank;
-	int numRanks;
 	int numNodes; 
 	int myNid;
-	int rc;
- 	mpi_retval = PMPI_Init( argc, argv );
+
+	int mpi_retval = PMPI_Init( argc, argv );
 	if ( mpi_retval != MPI_SUCCESS ) {
 		return mpi_retval;
 	}
 
-    rc =  MPI_Comm_rank( MPI_COMM_WORLD,&my_rank);
-	assert( MPI_SUCCESS == rc );
-
-    rc =  MPI_Comm_size( MPI_COMM_WORLD,&numRanks);
-	assert( MPI_SUCCESS == rc );
-
-	std::string nidList = createNidList( my_rank, numNodes, myNid );
-
-	if ( nidList.empty() ) {
-		return mpi_retval;
-	}
+	std::string nidList = createNidList( numNodes, myNid );
 
 	if ( _debug ) {
 		printf("PWRRT: numNodes=%d myNid=%d nidlist `%s`\n",
 						numNodes,myNid,nidList.c_str());
 	}
+
+
+	if ( ! nidList.empty() ) {
+		__data = runtimeInit( argc, argv, nidList, numNodes, myNid );
+	}
+
+	return mpi_retval;
+}
+
+Data* runtimeInit( int *argc, char ***argv, 
+			const std::string& nidList, int numNodes, int myNid )
+{
+    int my_rank;
+	int numRanks;
+	int rc;
+
+	signal( SIGUSR1, sighandler );
+
+	assert( 0 == rc );
+    rc =  MPI_Comm_rank( MPI_COMM_WORLD,&my_rank);
+	assert( MPI_SUCCESS == rc );
+
+    rc =  MPI_Comm_size( MPI_COMM_WORLD,&numRanks);
+	assert( MPI_SUCCESS == rc );
 
 	std::stringstream ret;
 	ret << numNodes;
@@ -60,7 +82,7 @@ int MPI_Init( int *argc, char ***argv )
 	setenv( "POWERRT_MACHINE","volta", 1 );
 
  	assert( ! __data );
-	Data* data = __data = new Data;
+	Data* data = new Data;
 
 	char* tmp = getenv("POWERRT_SCRIPT");
 	if ( ! tmp ) {
@@ -116,6 +138,7 @@ int MPI_Init( int *argc, char ***argv )
 
 	std::string logFile = "";
 	std::string object = "plat";
+
 	for ( unsigned i = 0; i < *argc; i++ ) {
 		if ( ! strncmp( (*argv)[i], "--pwr_rt_obj=", 13 ) ) {
 			object = (*argv)[i] + 13; 
@@ -197,6 +220,9 @@ int MPI_Init( int *argc, char ***argv )
 		} else {
 			assert(0);
 		}
+		if (_debug ) printf("PWRRT: wait for child\n");
+		pause();
+		if (_debug ) printf("PWRRT: child is ready\n");
 
 #if 0
 		// this is causing a failure for some reason
@@ -209,7 +235,7 @@ int MPI_Init( int *argc, char ***argv )
     Py_DECREF(pArgs);
     Py_DECREF(pFunc);
     Py_DECREF(pRetval);
-	return mpi_retval;
+	return data; 
 }
 
 int MPI_Finalize()
@@ -231,10 +257,14 @@ int MPI_Finalize()
 	return PMPI_Finalize();
 }
 
-static std::string createNidList(  int my_rank, int& numNodes, int& myNid )
+static std::string createNidList(  int& numNodes, int& myNid )
 {
 	int rc;
+	int my_rank;
 	int numRanks;
+
+    rc =  MPI_Comm_rank( MPI_COMM_WORLD,&my_rank);
+	assert( MPI_SUCCESS == rc );
 
     rc =  MPI_Comm_size( MPI_COMM_WORLD,&numRanks);
 	assert( MPI_SUCCESS == rc );
