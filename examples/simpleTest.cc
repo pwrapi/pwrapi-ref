@@ -9,6 +9,8 @@
  * distribution.
 */
 
+#include <sys/types.h>
+#include <signal.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -86,9 +88,11 @@ int main( int argc, char* argv[] )
 		}
 	}
 
-	fprintf(_logFP,"sleep %d\n",delay);
-	sleep(delay);
-	fprintf(_logFP,"lets go\n");
+	if ( delay ) {
+		fprintf(_logFP,"sleep %d\n",delay);
+		sleep(delay);
+		fprintf(_logFP,"lets go\n");
+	}
 
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
@@ -99,6 +103,8 @@ int main( int argc, char* argv[] )
 
 	std::string arg0 = argv[0];
 	std::string exe = arg0.substr(arg0.find_last_of("/")+1); 
+
+	kill( getppid(), SIGUSR1 );
 	while ( forever || count-- ) {	
 			
 		PWR_AttrName names[] = { PWR_ATTR_ENERGY} ;
