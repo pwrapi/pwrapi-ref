@@ -100,7 +100,7 @@ int MPI_Init( int *argc, char ***argv )
     PyObject* pFunc = PyObject_GetAttrString( module, "GetApps" );
     assert(pFunc);
 
-    PyObject* pArgs = PyTuple_New( 5 );
+    PyObject* pArgs = PyTuple_New( 6 );
     assert(pArgs);
 
 	std::string routeFile = "/home/mjleven/pwrTest/routeTable.txt"; 
@@ -114,12 +114,20 @@ int MPI_Init( int *argc, char ***argv )
     PyTuple_SetItem( pArgs, 2, PyString_FromString( nidList.c_str() ) );
     PyTuple_SetItem( pArgs, 3, PyString_FromString( routeFile.c_str() ) );
 
+	std::string logFile = "";
 	std::string object = "plat";
-	if ( ! strncmp( (*argv)[*argc-1], "--pwr_rt_obj=", 13 ) ) {
-		object = (*argv)[*argc-1] + 13; 
-	}	
+	for ( unsigned i = 0; i < *argc; i++ ) {
+		if ( ! strncmp( (*argv)[i], "--pwr_rt_obj=", 13 ) ) {
+			object = (*argv)[i] + 13; 
+		}	
+		if ( ! strncmp( (*argv)[i], "--pwr_rt_file=", 14 ) ) {
+			logFile = (*argv)[i] + 14; 
+		}	
+	}
 
     PyTuple_SetItem( pArgs, 4, PyString_FromString( object.c_str() ) );
+    PyTuple_SetItem( pArgs, 5, PyString_FromString( logFile.c_str() ) );
+
 
     PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
     assert(pRetval);

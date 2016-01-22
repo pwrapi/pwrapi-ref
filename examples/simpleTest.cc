@@ -16,6 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <string>
+#include <getopt.h>
 
 #include <pwr.h> 
 
@@ -29,42 +30,71 @@ double getTime() {
     return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
 }
 
+static FILE* _logFP = stdout; 	
 int main( int argc, char* argv[] )
 {
-    PWR_Grp     grp;
     PWR_Obj     self;
     PWR_Cntxt   cntxt;
-    time_t      time;
     int         retval;
-    double       value;
-    PWR_Time ts;
-	PWR_Status  status;
+    double      value;
+    PWR_Time 	ts;
 	int count = 1;
 	int forever = 0;
+	int delay = 0;
 
-	assert( argc == 3 || argc == 2 );	
+	std::string logfile;	
+	std::string object;
 
-	if ( 3 == argc ) {
- 		count = atoi(argv[2]);
+    int opt = 0;
+    int long_index = 0;
+    enum { LOG_FILE, OBJECT, COUNT, DELAY };
+    static struct option long_options[] = {
+        {"delay"          , optional_argument, NULL, DELAY },
+        {"count"          , optional_argument, NULL, COUNT },
+        {"logfile"        , optional_argument, NULL, LOG_FILE },
+        {"object"         , required_argument, NULL, OBJECT },
+        {0,0,0,0}
+    };
+
+    optind = 1;
+
+    while ( ( opt = getopt_long( argc, argv, "", long_options, &long_index ) ) != -1 ) {
+        switch(opt) {
+		  case LOG_FILE:
+			logfile = optarg;
+			break;
+		  case OBJECT:
+			object = optarg;
+		    break;
+		  case COUNT:
+			count = atoi(optarg);
+			break;
+		  case DELAY:
+			delay = atoi(optarg);
+			break;
+		}
 	}
 
 	if ( 0 == count ) {
 		forever = 1;	
 	}
-
-	char* xxx = getenv("WAIT");
-	if ( xxx ) {
-		int sec = atoi(xxx);
-		printf("sleep %d\n",sec);
-		sleep(sec);
-		printf("lets go\n");
+	if ( ! logfile.empty() ) {
+		_logFP = fopen(logfile.c_str(), "w" );
+		if ( ! _logFP ) {
+			printf("ERROR: could not open %s\n",logfile.c_str());
+			exit(-1);
+		}
 	}
+
+	fprintf(_logFP,"sleep %d\n",delay);
+	sleep(delay);
+	fprintf(_logFP,"lets go\n");
 
     // Get a context
     cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
     assert( PWR_NULL != cntxt   );
 
-	PWR_Obj obj = PWR_CntxtGetObjByName( cntxt, argv[1] );
+	PWR_Obj obj = PWR_CntxtGetObjByName( cntxt, object.c_str() );
     assert( PWR_NULL != obj   );
 
 	std::string arg0 = argv[0];
@@ -79,7 +109,9 @@ int main( int argc, char* argv[] )
 		double stop = getTime();
     	assert( retval == PWR_RET_SUCCESS );
 
-		printf("%s: \'%s\' value=%.1lf, latency %f\n",exe.c_str(), argv[1], value/1000000, stop - start);
+		fprintf(_logFP,"%s: \'%s\' value=%.1lf, latency %f\n",
+					exe.c_str(), object.c_str(), value/1000000, stop - start);
+		fflush(_logFP);
 		sleep(1);
 	}
 	PWR_CntxtDestroy( cntxt );

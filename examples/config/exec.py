@@ -42,7 +42,7 @@ def initDaemonEnv( nidlist ):
 	return daemonEnv
 
 
-def GetApps( node, config, nidlist, routeFile, object ):
+def GetApps( node, config, nidlist, routeFile, object, logfile ):
 	#print 'GetApps {0}, {1}, {2}, {3}'.format( node, config, nidlist, routeFile )
 
 	nidMap = xxx.createNidMap( nidlist )
@@ -59,7 +59,8 @@ def GetApps( node, config, nidlist, routeFile, object ):
 	ret += [ [ exe, env ]  ] 
 
 	if 0 == int(node):
-		exe = daemon.initClient( node, nidMap, config, routeFile, object ).split(' ')
+		exe = daemon.initClient( node, nidMap, config, routeFile, \
+										object,logfile ).split(' ')
 		env = initClientEnv( config, nidlist, nidMap ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
