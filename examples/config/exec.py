@@ -18,18 +18,16 @@ machine = __import__(machineName,fromlist=[''])
 daemon = __import__('daemon',fromlist=[''])
 xxx = __import__('createNidMap',fromlist=[''])
 
-def initClientEnv( config, nidlist, nidMap ):
+def initClientEnv( config, nidMap, apiroot, serverHost, serverPort ):
 	clientEnv = ''
 	clientEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
 	clientEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
 	clientEnv += 'POWERRT_BOARDS_PER_CAB={0} '.format(machine.boardsPerCab)
 	clientEnv += 'POWERAPI_DEBUG={0} '.format(clientDebug) 
-	clientEnv += 'SLURM_NODELIST={0} '.format(nidlist)
 	clientEnv += 'POWERAPI_CONFIG={0} '.format(config) 
 	clientEnv += 'POWERAPI_ROOT={0} '.format(apiroot)
-	clientEnv += 'POWERAPI_SERVER={0} '.format(nidMap[0])
-	clientEnv += 'POWERAPI_SERVER_PORT={0} '.format(15000)
-	clientEnv += 'WAIT={0} '.format(2)
+	clientEnv += 'POWERAPI_SERVER={0} '.format(serverHost )
+	clientEnv += 'POWERAPI_SERVER_PORT={0} '.format(serverPort)
 	return clientEnv
 
 def initDaemonEnv( nidlist ):
@@ -38,7 +36,6 @@ def initDaemonEnv( nidlist ):
 	daemonEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
 	daemonEnv += 'POWERRT_BOARDS_PER_CAB={0} '.format(machine.boardsPerCab)
 	daemonEnv += 'POWERAPI_DEBUG={0} '.format(daemonDebug) 
-	daemonEnv += 'SLURM_NODELIST={0} '.format(nidlist)
 	return daemonEnv
 
 
@@ -59,9 +56,8 @@ def GetApps( node, config, nidlist, routeFile, object, logfile ):
 	ret += [ [ exe, env ]  ] 
 
 	if 0 == int(node):
-		exe = daemon.initClient( node, nidMap, config, routeFile, \
-										object,logfile ).split(' ')
-		env = initClientEnv( config, nidlist, nidMap ).split(' ') 
+		exe = daemon.initClient( object, logfile ).split(' ')
+		env = initClientEnv( config, nidMap, apiroot, nidMap[0], 15000 ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
 	return ret 
