@@ -7,9 +7,9 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <set>
 
 #include <mpi.h>
 
@@ -19,13 +19,16 @@ struct Data {
 
 Data* __data = NULL;
 
-static std::string createNidList( int rank ); 
+static std::string createNidList( int rank, int& numNodes, int& myNid ); 
 
 static int _debug = 0;
 int MPI_Init( int *argc, char ***argv )
 {
 	int mpi_retval;
     int my_rank;
+	int numRanks;
+	int numNodes; 
+	int myNid;
 	int rc;
  	mpi_retval = PMPI_Init( argc, argv );
 	if ( mpi_retval != MPI_SUCCESS ) {
@@ -35,19 +38,22 @@ int MPI_Init( int *argc, char ***argv )
     rc =  MPI_Comm_rank( MPI_COMM_WORLD,&my_rank);
 	assert( MPI_SUCCESS == rc );
 
-	int numRanks;
-
     rc =  MPI_Comm_size( MPI_COMM_WORLD,&numRanks);
 	assert( MPI_SUCCESS == rc );
 
-	std::string nidList = createNidList( my_rank );
+	std::string nidList = createNidList( my_rank, numNodes, myNid );
 
-	if ( _debug && 0 == my_rank ) {
-		printf("PWRRT: nidlist `%s`\n",nidList.c_str());
+	if ( nidList.empty() ) {
+		return mpi_retval;
+	}
+
+	if ( _debug ) {
+		printf("PWRRT: numNodes=%d myNid=%d nidlist `%s`\n",
+						numNodes,myNid,nidList.c_str());
 	}
 
 	std::stringstream ret;
-	ret << numRanks;
+	ret << numNodes;
 	setenv( "POWERRT_NUMNODES", &ret.str().c_str()[0], 1 );
 	setenv( "POWERRT_NODES_PER_BOARD", "5", 1 );
 	setenv( "POWERRT_BOARDS_PER_CAB", "2", 1 );
@@ -78,14 +84,16 @@ int MPI_Init( int *argc, char ***argv )
     moduleName = moduleName.substr(0, moduleName.find_last_of('.' ) );
 
 	if ( _debug && 0 == my_rank ) {
-    	printf( "PWRRT: path=`%s` module=`%s`\n", path.c_str(), moduleName.c_str() );
+    	printf( "PWRRT: path=`%s` module=`%s`\n", path.c_str(),
+											moduleName.c_str() );
 	}
 
 	Py_Initialize();
 
 	PyObject* module = PyImport_ImportModule( moduleName.c_str() ) ;
 	if ( ! module ) {
-		fprintf(stderr, "ERROR: PyImport_ImportModule( `%s` ) failed\n", moduleName.c_str());
+		fprintf(stderr, "ERROR: PyImport_ImportModule( `%s` ) failed\n",
+											moduleName.c_str());
 		exit(1);
 	}
 
@@ -101,7 +109,7 @@ int MPI_Init( int *argc, char ***argv )
 		printf("ERROR: POWERAPI_CONFIG is not set\n");
 		exit(-1);
 	} 
-    PyTuple_SetItem( pArgs, 0, PyInt_FromLong( my_rank ) );
+    PyTuple_SetItem( pArgs, 0, PyInt_FromLong( myNid ) );
     PyTuple_SetItem( pArgs, 1, PyString_FromString( config ) );
     PyTuple_SetItem( pArgs, 2, PyString_FromString( nidList.c_str() ) );
     PyTuple_SetItem( pArgs, 3, PyString_FromString( routeFile.c_str() ) );
@@ -183,7 +191,8 @@ int MPI_Init( int *argc, char ***argv )
 		}
 
 #if 0
-		// this is cause a failure for some reason
+		// this is causing a failure for some reason
+		// it's a small memory leak
         Py_DECREF( pyTmp );
         Py_DECREF( pyArgs );
         Py_DECREF( pyEnv );
@@ -198,21 +207,23 @@ int MPI_Init( int *argc, char ***argv )
 int MPI_Finalize()
 {
 	Data* data = __data;
-	assert ( data );
+	
+	if ( data ) {
 
-	for ( unsigned i =0; i < data->child.size(); i++ ) {
-		if ( _debug ) {
-			printf("PWRRT: kill child %d\n", data->child[i]);
+		for ( unsigned i =0; i < data->child.size(); i++ ) {
+			if ( _debug ) {
+				printf("PWRRT: kill child %d\n", data->child[i]);
+			}
+			kill( data->child[i], SIGKILL );
+			waitpid( data->child[i],NULL, 0  );
 		}
-		kill( data->child[i], SIGKILL );
-		waitpid( data->child[i],NULL, 0  );
+		delete data;
 	}
-	delete data;
 
 	return PMPI_Finalize();
 }
 
-static std::string createNidList(  int my_rank )
+static std::string createNidList(  int my_rank, int& numNodes, int& myNid )
 {
 	int rc;
 	int numRanks;
@@ -224,29 +235,72 @@ static std::string createNidList(  int my_rank )
 	rc = uname( &buf );
 	assert( 0 == rc );
 	
-	int nodeid = atoi(getenv("SLURM_NODEID"));
-	if ( 0 == my_rank ) {
-		printf("PWRRT: my_rank=%d %s nodeId=%d\n",my_rank,buf.nodename, nodeid );
-	}
+	std::string procName;
+	procName.resize(MPI_MAX_PROCESSOR_NAME);
+	int len;
+	MPI_Get_processor_name( &procName[0], &len );
+	procName.resize(len);
 
+	int pos = 0;
+	while ( ! isdigit( procName[pos] ) ) { ++pos; }
+
+	int nodeid = atoi( &procName[3] );
+	if ( _debug ) {
+		printf("PWRRT: my_rank=%d procName=%s nodeid=%d\n",
+						my_rank, procName.c_str(), nodeid );
+	}
+	
 	std::vector<int> rbuf( numRanks );
 
-	rc = MPI_Allgather( &nodeid, 1, MPI_INT, &rbuf[0], 1, MPI_INT, MPI_COMM_WORLD );
+	rc = MPI_Allgather( &nodeid, 1, MPI_INT, &rbuf[0], 1, 
+											MPI_INT, MPI_COMM_WORLD );
 	assert( MPI_SUCCESS == rc ); 
 
+	int launcherRank = -1; 
+	for ( int i = 0; i < numRanks; i++ ) {
+		if ( rbuf[i] == nodeid && launcherRank == -1 ) {
+			launcherRank = i;
+			break;
+		}
+	}
+
 	std::stringstream ret;
-	std::string prefix="nid";
+
+	if ( my_rank != launcherRank ) {
+		return ret.str();
+	} 
+
+	if ( _debug ) {
+		printf( "Rank %d is a launcher\n", my_rank );
+	}
+
+	std::string prefix=procName.substr(0,pos);
 
 	ret << std::setw(1) << prefix;
 	ret << std::setw(1) << "[";
+	
+	std::set< int > nodes;
 
+	numNodes = 0;
 	for ( unsigned i = 0; i < rbuf.size(); i++ ) {
-		if ( _debug && 0 == my_rank ) {
-			printf("PWRRT: rank %d -> node %d\n",i,rbuf[i]);
+		if ( nodes.find( rbuf[i] ) == nodes.end() ) {
+			nodes.insert( rbuf[i] );
+
+			if ( rbuf[i] == nodeid ) {
+				myNid = numNodes; 
+			} 
+			++numNodes;
+			if ( _debug && 0 == my_rank ) {
+				printf("PWRRT: rank %d -> node %d\n",i,rbuf[i]);
+			}
+
+			if ( i > 0 ) {
+				ret << std::setw(1) << ","; 		
+			}
+
+			ret << std::setw( procName.size() - pos) << 
+									std::setfill('0') << rbuf[i];
 		}
-		ret << std::setw(5) << std::setfill('0') << rbuf[i];
-		if ( i + 1 < rbuf.size() ) 
-			ret << std::setw(1) << ","; 		
 	}
 
 	ret << std::setw(1) << "]";
