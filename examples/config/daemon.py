@@ -130,11 +130,11 @@ def initDaemon( myNode, nidMap, config, routeFile ):
 	return tmp	
 
 
-def initClient( myNode, nidMap, config, routeFile, object, logfile ):
+def initClient( object, logfile ):
 	tmp  = '/home/mjleven/pwrGIT/working/build/examples/simpleTest '
 	tmp += ' --object=' + object
 	tmp += ' --count=0'
-	tmp += ' --delay=2'
+	#tmp += ' --delay=2'
 	if logfile:
 		tmp += ' --logfile=' + logfile
 	#print tmp
