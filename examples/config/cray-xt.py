@@ -2,7 +2,7 @@
 
 from machine import * 
 
-#print 'volta.py start' 
+#print 'cray-xt.py start' 
 
 plugins['CrayXTPM'] = 'libpwr_xtpmdev'
 devices['XTPM-node'] = ['CrayXTPM','']
@@ -45,4 +45,4 @@ platform.setChild( cabinet, calcNumChildren )
 cabinet.setChild( board, calcNumChildren )
 board.setChild( node, calcNumChildren )
 	
-#print 'volta.py end' 
+#print 'cray-xt.py end' 
