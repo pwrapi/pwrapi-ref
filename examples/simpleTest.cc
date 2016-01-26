@@ -26,6 +26,7 @@ char* myctime(const time_t *timep);
 
 #ifdef __MACH__
 #include <sys/time.h>
+#define CLOCK_REALTIME 0
 //clock_gettime is not implemented on OSX
 int clock_gettime(int /*clk_id*/, struct timespec* t) {
     struct timeval now;
