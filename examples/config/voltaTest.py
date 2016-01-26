@@ -12,7 +12,7 @@ os.environ['POWERRT_NODES_PER_BOARD']='4'
 os.environ['POWERRT_BOARDS_PER_CAB']='3'
 os.environ['POWERAPI_DEBUG']='15'
 
-machine = __import__('volta',fromlist=[''])
+machine = __import__('cray-xt',fromlist=[''])
 
 #print volta.findChildren( "plat" )
 
