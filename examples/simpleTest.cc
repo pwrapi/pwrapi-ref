@@ -24,6 +24,19 @@
 
 char* myctime(const time_t *timep);
 
+#ifdef __MACH__
+#include <sys/time.h>
+//clock_gettime is not implemented on OSX
+int clock_gettime(int /*clk_id*/, struct timespec* t) {
+    struct timeval now;
+    int rv = gettimeofday(&now, NULL);
+    if (rv) return rv;
+    t->tv_sec  = now.tv_sec;
+    t->tv_nsec = now.tv_usec * 1000;
+    return 0;
+}
+#endif
+
 double getTime() {
 	struct timespec spec;
 	int rc = clock_gettime( CLOCK_REALTIME, &spec );
@@ -31,6 +44,7 @@ double getTime() {
 
     return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
 }
+
 
 static FILE* _logFP = stdout; 	
 int main( int argc, char* argv[] )
