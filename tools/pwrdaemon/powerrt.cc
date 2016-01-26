@@ -67,7 +67,6 @@ Data* runtimeInit( int *argc, char ***argv,
 
 	signal( SIGUSR1, sighandler );
 
-	assert( 0 == rc );
     rc =  MPI_Comm_rank( MPI_COMM_WORLD,&my_rank);
 	assert( MPI_SUCCESS == rc );
 
@@ -279,7 +278,7 @@ static std::string createNidList(  int& numNodes, int& myNid )
 	int pos = 0;
 	while ( ! isdigit( procName[pos] ) ) { ++pos; }
 
-	int nodeid = atoi( &procName[3] );
+	int nodeid = atoi( &procName[pos] );
 	if ( _debug ) {
 		printf("PWRRT: my_rank=%d procName=%s nodeid=%d\n",
 						my_rank, procName.c_str(), nodeid );
