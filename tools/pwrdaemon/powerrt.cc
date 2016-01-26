@@ -77,9 +77,6 @@ Data* runtimeInit( int *argc, char ***argv,
 	std::stringstream ret;
 	ret << numNodes;
 	setenv( "POWERRT_NUMNODES", &ret.str().c_str()[0], 1 );
-	setenv( "POWERRT_NODES_PER_BOARD", "5", 1 );
-	setenv( "POWERRT_BOARDS_PER_CAB", "2", 1 );
-	setenv( "POWERRT_MACHINE","volta", 1 );
 
  	assert( ! __data );
 	Data* data = new Data;
