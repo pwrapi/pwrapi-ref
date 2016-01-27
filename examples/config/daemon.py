@@ -114,13 +114,13 @@ def configNode( myNode, nidMap, config, nodesPerBoard, boardsPerCab ):
 	#print 'configNode(',myNode,')',tmp 
 	return  tmp
 
-def initDaemon( myNode, nidMap, config, routeFile ):
+def initDaemon( exe, myNode, nidMap, config, routeFile ):
 	#print "nidmap={0} myNode={1}".format( nidMap, myNode)
 
 	nodesPerBoard = machine.nodesPerBoard 
 	boardsPerCab = machine.boardsPerCab 
 
-	tmp = '/home/mjleven/pwrGIT/working/build/install/bin/pwrdaemon'
+	tmp = exe + ' '
 
 	tmp += configRtr( myNode, nidMap, config, routeFile,nodesPerBoard )
 	tmp += configNode( myNode, nidMap, config, nodesPerBoard, boardsPerCab )
@@ -130,11 +130,11 @@ def initDaemon( myNode, nidMap, config, routeFile ):
 	return tmp	
 
 
-def initClient( object, logfile ):
-	tmp  = '/home/mjleven/pwrGIT/working/build/examples/simpleTest '
+def initClient( exe, object, logfile ):
+	tmp = exe
 	tmp += ' --object=' + object
 	tmp += ' --count=0'
-	#tmp += ' --delay=2'
+	tmp += ' --delay=2'
 	if logfile:
 		tmp += ' --logfile=' + logfile
 	#print tmp

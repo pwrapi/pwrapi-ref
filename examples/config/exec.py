@@ -43,9 +43,8 @@ def initDaemonEnv( nidlist ):
 	return daemonEnv
 
 
-def GetApps( node, config, nidlist, routeFile, object, logfile ):
+def GetApps(node, config, nidlist, routeFile, object, logfile, daemonExe, clientExe):
 	#print 'GetApps {0}, {1}, {2}, {3}'.format( node, config, nidlist, routeFile )
-
 	nidMap = xxx.createNidMap( nidlist )
 	if nidMap[node] != platform.node():
 		print 'ERROR: exec.py, bad nidMap', nidMap[node], '!=', platform.node() 
@@ -55,12 +54,12 @@ def GetApps( node, config, nidlist, routeFile, object, logfile ):
 
 	ret = []
 
-	exe = daemon.initDaemon( node, nidMap, config, routeFile ).split(' ')
+	exe = daemon.initDaemon( daemonExe, node, nidMap, config, routeFile ).split(' ')
 	env = initDaemonEnv( nidlist ).split(' ') 
 	ret += [ [ exe, env ]  ] 
 
 	if 0 == int(node):
-		exe = daemon.initClient( object, logfile ).split(' ')
+		exe = daemon.initClient( clientExe, object, logfile ).split(' ')
 		env = initClientEnv( config, nidMap, apiroot, nidMap[0], 15000 ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
