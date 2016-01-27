@@ -16,8 +16,11 @@
 
 static int _debug = 0;
 
-struct Data {
-	std::vector<int> child;
+struct Data 
+{
+	Data() : client(-1), daemon(-1) {} 
+	pid_t client;	
+	pid_t daemon;	
 };
 
 Data* __data = NULL;
@@ -170,7 +173,6 @@ Data* runtimeInit( int *argc, char ***argv,
     PyTuple_SetItem( pArgs, 6, PyString_FromString( daemon.c_str() ) );
     PyTuple_SetItem( pArgs, 7, PyString_FromString( client.c_str() ) );
 
-
     PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
     assert(pRetval);
 
@@ -218,7 +220,6 @@ Data* runtimeInit( int *argc, char ***argv,
 		}
        	envp.push_back( 0 );
 
-	//if ( 1 ) {
 	if ( _debug ) {
 		printf("PWRRT: rank=%d launch\n",my_rank);
 		for ( unsigned j = 0; j < argv.size(); j++ ) {
@@ -228,10 +229,15 @@ Data* runtimeInit( int *argc, char ***argv,
 
 		int child;
 		if ( ( child = fork() ) ) {
-			data->child.push_back(child);	
+			if ( i == 0 ) {
+				data->daemon = child;
+			} else if ( i == 1 ) {
+				data->client = child;
+			} else {
+				assert(0);
+			}
 		} else if ( 0 == child )  {
 			int rc = execve( argv[0], &argv[0], &envp[0] );
-			//int rc = execv( argv[0], &argv[0]  );
 			if ( -1 == rc ) {
 				fprintf(stderr,"execve failed %s\n",strerror(errno));
 				exit(-1);
@@ -263,14 +269,24 @@ int MPI_Finalize()
 	
 	if ( data ) {
 
-		for ( int i = data->child.size() - 1; i >= 0 ; i-- ) {
+		if ( data->client > -1 ) {
 			if ( _debug ) {
-				printf("PWRRT: kill child %d\n", data->child[i]);
+				printf("PWRRT: kill client %d\n", data->client);
 			}
-			kill( data->child[i], SIGKILL );
-			waitpid( data->child[i],NULL, 0  );
+			kill( data->client, SIGKILL );
+			waitpid( data->client,NULL, 0  );
+		}
+		MPI_Barrier( MPI_COMM_WORLD );
+		if ( data->daemon > -1 ) {
+			if ( _debug ) {
+				printf("PWRRT: kill daemon %d\n", data->daemon);
+			}
+			kill( data->daemon, SIGKILL );
+			waitpid( data->daemon,NULL, 0  );
 		}
 		delete data;
+	} else {
+		MPI_Barrier( MPI_COMM_WORLD );
 	}
 
 	return PMPI_Finalize();
@@ -313,11 +329,20 @@ static std::string createNidList(  int& numNodes, int& myNid )
 											MPI_INT, MPI_COMM_WORLD );
 	assert( MPI_SUCCESS == rc ); 
 
+	std::vector<int> rbuf2( numRanks );
+	int nameLen = procName.size();
+	rc = MPI_Allgather( &nameLen, 1, MPI_INT, &rbuf2[0], 1, 
+											MPI_INT, MPI_COMM_WORLD );
+	assert( MPI_SUCCESS == rc ); 
+
 	int launcherRank = -1; 
 	for ( int i = 0; i < numRanks; i++ ) {
 		if ( rbuf[i] == nodeid && launcherRank == -1 ) {
 			launcherRank = i;
 			break;
+		}
+		if ( nameLen == procName.size() && rbuf2[i] != nameLen ) {
+			nameLen = rbuf2[i];
 		}
 	}
 
@@ -355,12 +380,12 @@ static std::string createNidList(  int& numNodes, int& myNid )
 				ret << std::setw(1) << ","; 		
 			}
 
-#if 0
-			ret << std::setw( procName.size() - pos) << 
+			if ( nameLen == procName.size() ) {
+				ret << std::setw( procName.size() - pos) << 
 									std::setfill('0') << rbuf[i];
-#else
-			ret << rbuf[i];
-#endif
+			} else {
+				ret << rbuf[i];
+			}
 		}
 	}
 
