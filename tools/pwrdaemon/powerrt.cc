@@ -138,16 +138,17 @@ Data* runtimeInit( int *argc, char ***argv,
     PyTuple_SetItem( pArgs, 2, PyString_FromString( nidList.c_str() ) );
     PyTuple_SetItem( pArgs, 3, PyString_FromString( routeFile.str().c_str() ) );
 
-	std::string logFile = "";
 	std::string object = "plat";
 
 	for ( unsigned i = 0; i < *argc; i++ ) {
 		if ( ! strncmp( (*argv)[i], "--pwr_rt_obj=", 13 ) ) {
 			object = (*argv)[i] + 13; 
 		}	
-		if ( ! strncmp( (*argv)[i], "--pwr_rt_file=", 14 ) ) {
-			logFile = (*argv)[i] + 14; 
-		}	
+	}
+
+	std::string logFile = "";
+	if ( getenv("POWERRT_LOGFILE") ) { 
+		logFile = getenv("POWERRT_LOGFILE");
 	}
 
 	if ( ! getenv("POWERRT_DAEMON") ) { 
