@@ -18,6 +18,8 @@ machine = __import__(machineName,fromlist=[''])
 daemon = __import__('daemon',fromlist=[''])
 xxx = __import__('createNidMap',fromlist=[''])
 
+ldLibraryPath = os.environ['LD_LIBRARY_PATH']
+
 def initClientEnv( config, nidMap, apiroot, serverHost, serverPort ):
 	clientEnv = ''
 	clientEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
@@ -28,6 +30,7 @@ def initClientEnv( config, nidMap, apiroot, serverHost, serverPort ):
 	clientEnv += 'POWERAPI_ROOT={0} '.format(apiroot)
 	clientEnv += 'POWERAPI_SERVER={0} '.format(serverHost )
 	clientEnv += 'POWERAPI_SERVER_PORT={0} '.format(serverPort)
+	clientEnv += 'LD_LIBRARY_PATH={0} '.format(ldLibraryPath) 
 	return clientEnv
 
 def initDaemonEnv( nidlist ):
@@ -36,6 +39,7 @@ def initDaemonEnv( nidlist ):
 	daemonEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
 	daemonEnv += 'POWERRT_BOARDS_PER_CAB={0} '.format(machine.boardsPerCab)
 	daemonEnv += 'POWERAPI_DEBUG={0} '.format(daemonDebug) 
+	daemonEnv += 'LD_LIBRARY_PATH={0} '.format(ldLibraryPath) 
 	return daemonEnv
 
 
