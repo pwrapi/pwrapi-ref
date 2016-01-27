@@ -127,8 +127,13 @@ int main( int argc, char* argv[] )
 		struct timeval tvStart,tvEnd;
 		double start = getTime();
     	retval = PWR_ObjAttrGetValue( obj, PWR_ATTR_ENERGY, &value, &ts );
+	
 		double stop = getTime();
-    	assert( retval == PWR_RET_SUCCESS );
+    	if( retval != PWR_RET_SUCCESS ) {
+			fprintf(stderr,"ERROR: PWR_ObjAttrGetValue() failed, retval=%d\n",retval);
+			exit(-1);
+		}
+
 
 		fprintf(_logFP,"%s: \'%s\' value=%.1lf, latency %f\n",
 					exe.c_str(), object.c_str(), value/1000000, stop - start);
