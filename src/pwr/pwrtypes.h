@@ -37,6 +37,8 @@ typedef void (*Callback)(void* data, int status);
 #define PWR_RET_LENGTH -5
 #define PWR_RET_OP_NOT_ATTEMPTED -6
 #define PWR_RET_NO_PERM -7
+#define PWR_RET_IPC -8
+#define PWR_RET_STATUS -9
 
 typedef int64_t PWR_Time; 
 #define PWR_TIME_NOT_SET 0

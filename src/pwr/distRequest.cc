@@ -45,6 +45,9 @@ int DistRequest::wait( Status* status )
 
 	while ( ! m_commReqs.empty() ) {	
 		Event* ev = ec->getEvent();
+		if ( ! ev ) {
+			return PWR_RET_IPC;	
+		}
 		assert(ev);
 		CommReq* req = (CommReq*)ev->id;
 		req->process( ev );

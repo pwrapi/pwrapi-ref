@@ -87,7 +87,7 @@ int Object::attrGetValues( int count, PWR_AttrName names[], void* buf,
 		}
 	}
 
-	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_FAILURE;
+	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
 }
 
 int Object::attrGetValuesDevice( AttrInfo& info, PWR_AttrName name,
@@ -135,7 +135,7 @@ int Object::attrSetValues( int count, PWR_AttrName names[], void* buf,
 		}
 	}
 
-	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_FAILURE;
+	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
 }
 
 int Object::attrSetValuesDevice( AttrInfo& info, PWR_AttrName name,
