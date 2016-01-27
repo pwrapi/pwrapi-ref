@@ -38,6 +38,9 @@ int MPI_Init( int *argc, char ***argv )
 	int numNodes; 
 	int myNid;
 
+	if ( getenv( "POWERRT_DEBUG" ) ) {
+		_debug = atoi(getenv( "POWERRT_DEBUG" ) );
+	}
 	int mpi_retval = PMPI_Init( argc, argv );
 	if ( mpi_retval != MPI_SUCCESS ) {
 		return mpi_retval;
@@ -121,7 +124,10 @@ Data* runtimeInit( int *argc, char ***argv,
     PyObject* pArgs = PyTuple_New( 6 );
     assert(pArgs);
 
-	std::string routeFile = "/home/mjleven/pwrTest/routeTable.txt"; 
+	std::stringstream routeFile;
+	// create a unique name for the route file
+	routeFile << "routeTable." << getpid() << "." << myNid;
+
 	char* config = getenv("POWERAPI_CONFIG"); 
 	if ( ! config ) {
 		printf("ERROR: POWERAPI_CONFIG is not set\n");
@@ -130,7 +136,7 @@ Data* runtimeInit( int *argc, char ***argv,
     PyTuple_SetItem( pArgs, 0, PyInt_FromLong( myNid ) );
     PyTuple_SetItem( pArgs, 1, PyString_FromString( config ) );
     PyTuple_SetItem( pArgs, 2, PyString_FromString( nidList.c_str() ) );
-    PyTuple_SetItem( pArgs, 3, PyString_FromString( routeFile.c_str() ) );
+    PyTuple_SetItem( pArgs, 3, PyString_FromString( routeFile.str().c_str() ) );
 
 	std::string logFile = "";
 	std::string object = "plat";
@@ -240,7 +246,7 @@ int MPI_Finalize()
 	
 	if ( data ) {
 
-		for ( unsigned i =0; i < data->child.size(); i++ ) {
+		for ( int i = data->child.size() - 1; i >= 0 ; i-- ) {
 			if ( _debug ) {
 				printf("PWRRT: kill child %d\n", data->child[i]);
 			}
@@ -332,8 +338,12 @@ static std::string createNidList(  int& numNodes, int& myNid )
 				ret << std::setw(1) << ","; 		
 			}
 
+#if 0
 			ret << std::setw( procName.size() - pos) << 
 									std::setfill('0') << rbuf[i];
+#else
+			ret << rbuf[i];
+#endif
 		}
 	}
 
