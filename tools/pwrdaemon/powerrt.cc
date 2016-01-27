@@ -121,7 +121,7 @@ Data* runtimeInit( int *argc, char ***argv,
     PyObject* pFunc = PyObject_GetAttrString( module, "GetApps" );
     assert(pFunc);
 
-    PyObject* pArgs = PyTuple_New( 6 );
+    PyObject* pArgs = PyTuple_New( 8 );
     assert(pArgs);
 
 	std::stringstream routeFile;
@@ -150,8 +150,24 @@ Data* runtimeInit( int *argc, char ***argv,
 		}	
 	}
 
+	if ( ! getenv("POWERRT_DAEMON") ) { 
+		printf("ERROR: POWERRT_DAEMON is not set\n");
+		exit(-1);
+	}
+
+	std::string daemon = getenv("POWERRT_DAEMON");
+
+	if ( ! getenv("POWERRT_CLIENT") ) { 
+		printf("ERROR: POWERRT_CLIENT is not set\n");
+		exit(-1);
+	}
+
+	std::string client = getenv("POWERRT_CLIENT");
+
     PyTuple_SetItem( pArgs, 4, PyString_FromString( object.c_str() ) );
     PyTuple_SetItem( pArgs, 5, PyString_FromString( logFile.c_str() ) );
+    PyTuple_SetItem( pArgs, 6, PyString_FromString( daemon.c_str() ) );
+    PyTuple_SetItem( pArgs, 7, PyString_FromString( client.c_str() ) );
 
 
     PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
