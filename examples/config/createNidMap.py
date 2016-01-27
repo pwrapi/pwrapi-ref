@@ -49,5 +49,6 @@ def createNidMap( nidlist):
 #print ''
 #print createNidMap( 'nid000[08-11]' )
 #print createNidMap( 'nid000[8-11]' )
+#print createNidMap( 'chama[47-48,1171-1172]' )
 
 #print "createNidMap.py end"
