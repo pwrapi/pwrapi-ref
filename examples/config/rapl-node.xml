@@ -35,14 +35,12 @@
     </attributes>
 
     <children>
-        <child name="socket.pkg" />
-        <child name="socket.pp0" />
-        <child name="socket.dram" />
+        <child name="socket" />
     </children>
 
 </obj>
 
-<obj name="plat.node.socket.pkg" type="Socket" >
+<obj name="plat.node.socket" type="Socket" >
 
     <devices>
         <dev name="rapldev" device="RAPL-node" openString="pkg" /> 
@@ -54,9 +52,14 @@
         </attr>
     </attributes>
 
+    <children>
+        <child name="socket.pp0" />
+        <child name="socket.dram" />
+    </children>
+
 </obj>
 
-<obj name="plat.node.socket.pp0" type="Socket" >
+<obj name="plat.node.socket.pp0" type="PowerPlane" >
 
     <devices>
         <dev name="rapldev" device="RAPL-node" openString="pp0" /> 
@@ -70,7 +73,7 @@
 
 </obj>
 
-<obj name="plat.node.socket.dram" type="Socket" >
+<obj name="plat.node.socket.dram" type="PowerPlane" >
 
     <devices>
         <dev name="rapldev" device="RAPL-node" openString="dram" /> 
