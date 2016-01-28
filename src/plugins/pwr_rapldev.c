@@ -24,11 +24,13 @@
 #include <sys/time.h>
 #endif
 
-#define CPU_MODEL_SANDY    42
-#define CPU_MODEL_SANDY_EP 45
-#define CPU_MODEL_IVY      58
-#define CPU_MODEL_IVY_EP   62
-#define CPU_MODEL_HASWELL  60
+#define CPU_MODEL_SANDY        42
+#define CPU_MODEL_SANDY_EP     45
+#define CPU_MODEL_IVY          58
+#define CPU_MODEL_IVY_EP       62
+#define CPU_MODEL_HASWELL      60
+#define CPU_MODEL_HASWELL_EP   63
+#define CPU_MODEL_BROADWELL    61
 
 #define MSR_RAPL_POWER_UNIT    0x606
 
