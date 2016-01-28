@@ -93,7 +93,7 @@
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
 typedef enum {
-    INTEL_LAYER_PKG,
+    INTEL_LAYER_PKG = 0,
     INTEL_LAYER_PP0,
     INTEL_LAYER_PP1,
     INTEL_LAYER_DRAM = INTEL_LAYER_PP1
@@ -127,7 +127,6 @@ typedef struct {
     int fd;
 
     int cpu_model;
-    layer_t layer;
 
     units_t units;
     power_t power;
@@ -137,6 +136,7 @@ typedef struct {
 
 typedef struct {
     pwr_rapldev_t *dev;
+    layer_t layer;
 } pwr_raplfd_t;
 #define PWR_RAPLFD(X) ((pwr_raplfd_t *)(X))
 
@@ -158,7 +158,7 @@ static plugin_devops_t devops = {
     .private_data = 0x0
 };
 
-static int rapldev_parse( const char *initstr, int *core, int *layer )
+static int rapldev_parse_init( const char *initstr, int *core )
 {
     char *token;
 
@@ -170,13 +170,30 @@ static int rapldev_parse( const char *initstr, int *core, int *layer )
     }
     *core = atoi(token);
 
+    DBGP( "Info: extracted initialization string (CORE=%d)\n", *core );
+
+    return 0;
+}
+
+static int rapldev_parse_open( const char *openstr, layer_t *layer )
+{
+    char *token;
+
+    DBGP( "Info: received open string %s\n", openstr );
     if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        fprintf( stderr, "Error: missing layer separator in initialization string %s\n", initstr );
+        fprintf( stderr, "Error: missing layer separator in open string %s\n", openstr );
         return -1;
     }
-    *layer = atoi(token);
+    if( !strcmp( token, "pkg" ) ) *layer = INTEL_LAYER_PKG;
+    else if( !strcmp( token, "pp0" ) ) *layer = INTEL_LAYER_PP0;
+    else if( !strcmp( token, "pp1" ) ) *layer = INTEL_LAYER_PP1;
+    else if( !strcmp( token, "dram" ) ) *layer = INTEL_LAYER_DRAM;
+    else {
+        fprintf( stderr, "Error: unknown layer specification in open string %s\n", openstr );
+        return -1;
+    }
  
-    DBGP( "Info: extracted initialization string (CORE=%d, layer=%d)\n", *core, *layer );
+    DBGP( "Info: extracted open string (layer=%d)\n", *layer );
 
     return 0;
 }
@@ -332,7 +349,7 @@ plugin_devops_t *pwr_rapldev_init( const char *initstr )
 
     DBGP( "Info: PWR RAPL device open\n" );
 
-    if( rapldev_parse( initstr, &core, (int *)(&(PWR_RAPLDEV(dev->private_data)->layer)) ) < 0 ) {
+    if( rapldev_parse_init( initstr, &core ) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device initialization string %s invalid\n", initstr );
         return 0x0;
     }
@@ -430,6 +447,11 @@ pwr_fd_t pwr_rapldev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_raplfd_t) );
     PWR_RAPLFD(fd)->dev = PWR_RAPLDEV(dev->private_data);
 
+    if( rapldev_parse_open( openstr, (layer_t *)(&(PWR_RAPLFD(fd)->layer)) ) < 0 ) {
+        fprintf( stderr, "Error: PWR RAPL device open string %s invalid\n", openstr );
+        return 0x0;
+    }
+
     return fd;
 }
 
@@ -459,7 +481,7 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
 
     if( rapldev_gather( (PWR_RAPLFD(fd)->dev)->fd,
                         (PWR_RAPLFD(fd)->dev)->cpu_model,
-                        (PWR_RAPLFD(fd)->dev)->layer,
+                        PWR_RAPLFD(fd)->layer,
                         (PWR_RAPLFD(fd)->dev)->units,
                         &energy, &time, &policy ) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device gather failed\n" );

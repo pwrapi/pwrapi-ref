@@ -7,7 +7,7 @@
 </Plugins>
 
 <Devices>
-    <device name="RAPL-node" plugin="RAPL" initString="0:0"/>
+    <device name="RAPL-node" plugin="RAPL" initString="0"/>
 </Devices>
 
 <Objects>
@@ -35,15 +35,45 @@
     </attributes>
 
     <children>
-        <child name="socket" />
+        <child name="socket.pkg" />
+        <child name="socket.pp0" />
+        <child name="socket.dram" />
     </children>
 
 </obj>
 
-<obj name="plat.node.socket" type="Socket" >
+<obj name="plat.node.socket.pkg" type="Socket" >
 
     <devices>
-        <dev name="rapldev" device="RAPL-node" openString="1" /> 
+        <dev name="rapldev" device="RAPL-node" openString="pkg" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="rapldev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.node.socket.pp0" type="Socket" >
+
+    <devices>
+        <dev name="rapldev" device="RAPL-node" openString="pp0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="rapldev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.node.socket.dram" type="Socket" >
+
+    <devices>
+        <dev name="rapldev" device="RAPL-node" openString="dram" /> 
     </devices>
 
     <attributes>
