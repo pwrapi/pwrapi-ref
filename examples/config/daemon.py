@@ -129,6 +129,24 @@ def initDaemon( exe, myNode, nidMap, config, routeFile ):
 	#print 'initDaemon(',myNode,')',tmp
 	return tmp	
 
+def initLogger( config, apiroot, serverHost, serverPort, object, logfile ):
+
+	nodesPerBoard = machine.nodesPerBoard 
+	boardsPerCab = machine.boardsPerCab 
+
+	tmp = ''
+	tmp += ' --lgr.name=lgr'
+	tmp += ' --lgr.pwrApiServer=' + serverHost
+	tmp += ' --lgr.pwrApiServerPort=' + str(serverPort)
+	tmp += ' --lgr.pwrApiConfig=' + config
+	tmp += ' --lgr.pwrApiRoot=' + apiroot
+	tmp += ' --lgr.object=' + object
+	tmp += ' --lgr.count=0'
+	tmp += ' --lgr.delay=2'
+	if logfile:
+		tmp += ' --lgr.logfile=' + logfile
+	print tmp
+	return tmp
 
 def initClient( exe, object, logfile ):
 	tmp = exe

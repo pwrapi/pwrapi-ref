@@ -20,7 +20,7 @@ xxx = __import__('createNidMap',fromlist=[''])
 
 ldLibraryPath = os.environ['LD_LIBRARY_PATH']
 
-def initClientEnv( config, nidMap, apiroot, serverHost, serverPort ):
+def initClientEnv( config, apiroot, serverHost, serverPort ):
 	clientEnv = ''
 	clientEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
 	clientEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
@@ -54,16 +54,20 @@ def GetApps(node, config, nidlist, routeFile, object, logfile, daemonExe, client
 
 	ret = []
 
-	exe = daemon.initDaemon( daemonExe, node, nidMap, config, routeFile ).split(' ')
+	exe = daemon.initDaemon( daemonExe, node, nidMap, config, routeFile )
+	if not clientExe and  0 == int(node):
+		exe += daemon.initLogger( config, apiroot, nidMap[0], 15000, object, logfile )
+
+	exe = exe.split(' ')
+
 	env = initDaemonEnv( nidlist ).split(' ') 
 	ret += [ [ exe, env ]  ] 
 
-	if 0 == int(node):
+	if clientExe and 0 == int(node):
 		exe = daemon.initClient( clientExe, object, logfile ).split(' ')
-		env = initClientEnv( config, nidMap, apiroot, nidMap[0], 15000 ).split(' ') 
+		env = initClientEnv( config, apiroot, nidMap[0], 15000 ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
 	return ret 
 
-#GetApps( 0, "config", "nid[00061]", "routefile")
 #print 'exec.py end'
