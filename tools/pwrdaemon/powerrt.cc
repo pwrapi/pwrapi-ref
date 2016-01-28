@@ -56,7 +56,6 @@ int MPI_Init( int *argc, char ***argv )
 						numNodes,myNid,nidList.c_str());
 	}
 
-
 	if ( ! nidList.empty() ) {
 		__data = runtimeInit( argc, argv, nidList, numNodes, myNid );
 	}
@@ -161,12 +160,10 @@ Data* runtimeInit( int *argc, char ***argv,
 
 	std::string daemon = getenv("POWERRT_DAEMON");
 
-	if ( ! getenv("POWERRT_CLIENT") ) { 
-		printf("ERROR: POWERRT_CLIENT is not set\n");
-		exit(-1);
+	std::string client = "";
+	if ( getenv("POWERRT_CLIENT") ) { 
+		client = getenv("POWERRT_CLIENT");
 	}
-
-	std::string client = getenv("POWERRT_CLIENT");
 
     PyTuple_SetItem( pArgs, 4, PyString_FromString( object.c_str() ) );
     PyTuple_SetItem( pArgs, 5, PyString_FromString( logFile.c_str() ) );
@@ -220,12 +217,12 @@ Data* runtimeInit( int *argc, char ***argv,
 		}
        	envp.push_back( 0 );
 
-	if ( _debug ) {
-		printf("PWRRT: rank=%d launch\n",my_rank);
-		for ( unsigned j = 0; j < argv.size(); j++ ) {
-			printf("PWRRT:    %s\n",argv[j] );
+		if ( _debug ) {
+			printf("PWRRT: rank=%d launch\n",my_rank);
+			for ( unsigned j = 0; j < argv.size(); j++ ) {
+				printf("PWRRT:    %s\n",argv[j] );
+			}
 		}
-	}
 
 		int child;
 		if ( ( child = fork() ) ) {
