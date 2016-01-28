@@ -15,11 +15,13 @@ pwrdaemon_SOURCES = \
 	router/client.cc \
 	router/commCreateEvent.cc \
 	server/server.cc \
-	server/allocEvent.cc
+	server/allocEvent.cc \
+	logger/logger.cc
 
 pwrdaemon_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/pwr \
 				   -I$(top_srcdir)/tools/pwrdaemon/router \
 				   -I$(top_srcdir)/tools/pwrdaemon/server \
+				   -I$(top_srcdir)/tools/pwrdaemon/logger \
 				   -I$(top_srcdir)/src/tinyxml2 -Wall -fno-strict-aliasing    
 
 pwrdaemon_LDADD = $(top_builddir)/src/pwr/libpwr.la \
