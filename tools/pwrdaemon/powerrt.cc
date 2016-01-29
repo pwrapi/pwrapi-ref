@@ -21,6 +21,7 @@ struct Data
 	Data() : client(-1), daemon(-1) {} 
 	pid_t client;	
 	pid_t daemon;	
+	std::string routeFile;
 };
 
 Data* __data = NULL;
@@ -135,6 +136,7 @@ Data* runtimeInit( int *argc, char ***argv,
 		printf("ERROR: POWERAPI_CONFIG is not set\n");
 		exit(-1);
 	} 
+	data->routeFile = routeFile.str();
     PyTuple_SetItem( pArgs, 0, PyInt_FromLong( myNid ) );
     PyTuple_SetItem( pArgs, 1, PyString_FromString( config ) );
     PyTuple_SetItem( pArgs, 2, PyString_FromString( nidList.c_str() ) );
@@ -266,6 +268,8 @@ int MPI_Finalize()
 	
 	if ( data ) {
 
+		unlink( data->routeFile.c_str() );
+	
 		if ( data->client > -1 ) {
 			if ( _debug ) {
 				printf("PWRRT: kill client %d\n", data->client);
