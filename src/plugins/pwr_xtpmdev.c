@@ -172,7 +172,7 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
                 return -1;
             }
             break;
-        case PWR_ATTR_MAX_POWER:
+        case PWR_ATTR_POWER_LIMIT_MAX:
             if( xtpmdev_read( "power_cap", (double *)value) < 0 ) {
                 fprintf( stderr, "Error: unable to read power_cap counter\n" );
                 return -1;
@@ -209,7 +209,7 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
     }
 
     switch( attr ) {
-        case PWR_ATTR_MAX_POWER:
+        case PWR_ATTR_POWER_LIMIT_MAX:
             if( xtpmdev_write( "power_cap", *((double *)value) ) < 0 ) {
                 fprintf( stderr, "Error: unable to write power_cap counter\n" );
                 return -1;

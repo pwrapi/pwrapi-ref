@@ -31,12 +31,12 @@ class Stat {
 															double hz ) 
 	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), m_attrName( name ), 
 	    opPtr( ptr ), m_period( 1 / hz ),
-		m_startTime(PWR_TIME_NOT_SET), m_stopTime(PWR_TIME_NOT_SET) { }
+		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) { }
 
 	Stat( Cntxt* ctx, Grp* grp, PWR_AttrName name, OpFuncPtr ptr, double hz ) 
 	  : m_ctx( ctx), m_obj(NULL), m_grp(grp), m_attrName( name ),
 	    opPtr( ptr ), m_period( 1/ hz), 
-		m_startTime(PWR_TIME_NOT_SET), m_stopTime(PWR_TIME_NOT_SET) { }
+		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) { }
 	virtual ~Stat() {}
 
 	virtual int start() = 0;

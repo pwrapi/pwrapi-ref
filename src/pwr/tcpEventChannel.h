@@ -37,7 +37,6 @@ class TcpEventChannel : public EventChannel {
 	int initServer( std::string port );
     int setupRecv( int port );
 	int xx();
-    int         m_chan;
     int         m_fd;
 	std::string m_clientServer;
 	std::string m_clientServerPort;

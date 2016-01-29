@@ -369,6 +369,7 @@ int PWR_AppHint( PWR_Obj obj, PWR_RegionHint hint)
         case PWR_REGION_MEM_BOUND:
             return PWR_RET_SUCCESS;
 		case PWR_REGION_DEFAULT:
+        default:
 			assert(0);	
     }
 

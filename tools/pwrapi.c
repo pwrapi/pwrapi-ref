@@ -88,7 +88,7 @@ int main( int argc, char* argv[] )
                         attrs[numattrs++] = PWR_ATTR_TEMP;
                         break;
                     case 'M':
-                        attrs[numattrs++] = PWR_ATTR_MAX_POWER;
+                        attrs[numattrs++] = PWR_ATTR_POWER_LIMIT_MAX;
                         break;
                     case 'V':
                         attrs[numattrs++] = PWR_ATTR_VOLTAGE;

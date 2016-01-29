@@ -44,7 +44,7 @@ typedef struct {
 } buffer_t;
 
 typedef struct {
-	buffer_t buffers[PWR_ATTR_NOT_SPECIFIED];
+	buffer_t buffers[PWR_NUM_ATTR_NAMES];
 } dummyFdInfo_t;
 
 static double getTime() {

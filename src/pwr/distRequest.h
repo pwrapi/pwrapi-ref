@@ -16,8 +16,8 @@
 #include <request.h>
 
 
-class CommRespEvent;
-class CommGetSamplesRespEvent;
+struct CommRespEvent;
+struct CommGetSamplesRespEvent;
 
 namespace PowerAPI {
 

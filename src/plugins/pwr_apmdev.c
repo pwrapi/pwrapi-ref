@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <string.h>
 #include <math.h>
+#include <sys/time.h>
 
 #define APM_CPU_MODEL_6272               1
 #define APM_CPU_MODEL_A10_5800K          16
@@ -199,11 +200,11 @@ static int apmdev_read( unsigned long node, unsigned long reg, unsigned long off
     char cmd[255] = "", buf[255] = "";
     FILE *pipe = 0x0;
 
-    sprintf( cmd, "setpci -f -s 0:%x.%x 0x%x.l 2>&1", node+MSR_APM_CORE_OFFSET, reg, offset );
+    sprintf( cmd, "setpci -f -s 0:%lx.%lx 0x%lx.l 2>&1", node+MSR_APM_CORE_OFFSET, reg, offset );
     DBGP( "Info: %s\n", cmd );
 
     if( (pipe = popen( cmd, "r" )) && fgets( buf, 255, pipe ) ) {
-        sscanf( buf, "%x", msr );
+        sscanf( buf, "%lx", msr );
         DBGP( "Info: 0x%08x\n", *msr );
     } else {
         DBGP( "Warning: call to setpci failed\n" );

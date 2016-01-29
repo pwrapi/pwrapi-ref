@@ -116,7 +116,7 @@ int DeviceStat::objGetValue( Object* obj, double* value,
 								m_period, &nSamples, &values[0] );
 	statTimes->start = m_startTime;
 	statTimes->stop = now;
-	statTimes->instant = PWR_TIME_NOT_SET;
+	statTimes->instant = PWR_TIME_UNINIT;
 	*value = opPtr( values );
 	return retval;
 }

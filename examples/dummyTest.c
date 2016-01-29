@@ -130,7 +130,7 @@ int main( int argc, char* argv[] )
    	printf("PWR_StatGetValue(PWR_ATTR_POWER) stop=%llu\n",
                                     (long long) statTimes.stop );
 
-	if ( statTimes.instant != PWR_TIME_NOT_SET ) {
+	if ( statTimes.instant != PWR_TIME_UNINIT ) {
     	printf("PWR_StatGetValue(PWR_ATTR_POWER) instant=%llu\n",
 									(long long )statTimes.instant );
 	}

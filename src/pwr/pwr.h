@@ -19,7 +19,7 @@
 
 
 #ifdef __cplusplus
-struct EventChannel;
+class EventChannel;
 extern "C" {
 #else
 typedef void EventChannel;
