@@ -94,8 +94,10 @@ int Logger::work()
 {
     if ( m_delay ) {
         fprintf(m_logFP,"sleep %d\n",m_delay);
+        fflush(m_logFP);
         sleep(m_delay);
         fprintf(m_logFP,"lets go\n");
+        fflush(m_logFP);
     }
 	while( 1 ) {
         double value = 0;
@@ -132,7 +134,7 @@ static void initArgs( int argc, char* argv[], Args* args )
 			OBJECT, LOGFILE, COUNT, DELAY  };
     static struct option long_options[] = {
         {"object"           , required_argument, NULL, OBJECT },
-        {"logFile"          , required_argument, NULL, LOGFILE },
+        {"logfile"          , required_argument, NULL, LOGFILE },
         {"name"             , required_argument, NULL, NAME },
         {"count"            , required_argument, NULL, COUNT },
         {"delay"            , required_argument, NULL, DELAY },
