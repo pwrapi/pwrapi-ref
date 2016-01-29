@@ -38,7 +38,7 @@ class Cntxt {
 	virtual Object* getSelf();
 	virtual Grp*    getGrp( PWR_ObjType );
 	virtual Grp* 	getGrpByName( std::string name );
-	virtual Grp* 	groupCreate( std::string name );
+	virtual Grp* 	groupCreate( std::string );
 	virtual int  	groupDestroy( Grp* );
 	virtual Stat* 	createStat( Object*, PWR_AttrName, PWR_AttrStat );
 	virtual Stat* 	createStat( Grp*, PWR_AttrName, PWR_AttrStat );

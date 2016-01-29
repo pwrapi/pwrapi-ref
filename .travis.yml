@@ -1,0 +1,28 @@
+sudo: true
+language: c
+compiler:
+    - gcc
+os:
+    - linux
+before_install:
+install:
+        - git clone https://github.com/pwrapi/pwrapi-ref
+        - cd pwrapi-ref
+        - ./autogen.sh
+        - mkdir build
+        - cd build
+        - ../configure --prefix=`pwd`/../install/
+        - make
+        - make install
+script:
+        - cd ../install
+        - export POWERAPI_CONFIG=`pwd`/share/doc/pwrapi/examples/config/dummySystem.xml
+        - export POWERAPI_ROOT=plat
+        - cd bin
+        - ./pwrapi -a P -t P
+notifications:
+    email:
+        recipients:
+            - ddeboni@sandia.gov
+        on_success: [change]
+        on_failure: [always] 
