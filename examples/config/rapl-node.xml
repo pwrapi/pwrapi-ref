@@ -59,7 +59,7 @@
 
 </obj>
 
-<obj name="plat.node.socket.pp0" type="PowerPlane" >
+<obj name="plat.node.socket.pp0" type="Power Plane" >
 
     <devices>
         <dev name="rapldev" device="RAPL-node" openString="pp0" /> 
@@ -73,7 +73,7 @@
 
 </obj>
 
-<obj name="plat.node.socket.dram" type="PowerPlane" >
+<obj name="plat.node.socket.dram" type="Power Plane" >
 
     <devices>
         <dev name="rapldev" device="RAPL-node" openString="dram" /> 
