@@ -13,6 +13,7 @@
 
 #include <assert.h>
 
+#include "util.h"
 #include "debug.h"
 
 using namespace PowerAPI;
@@ -430,18 +431,7 @@ std::string PyConfig::findObjLocation( std::string name )
 
 std::string PyConfig::objTypeToString( PWR_ObjType type )
 {
-    switch( type ) {
-    case PWR_OBJ_PLATFORM: return "Platform";
-    case PWR_OBJ_CABINET:  return "Cabinet";
-    case PWR_OBJ_BOARD:    return "Board";
-    case PWR_OBJ_NODE:     return "Node";
-    case PWR_OBJ_SOCKET:   return "Socket";
-    case PWR_OBJ_CORE:     return "Core";
-    case PWR_OBJ_NIC:      return "Nic";
-    case PWR_OBJ_MEM:      return "Memory";
-    case PWR_OBJ_INVALID:  return "Invalid";
-    default: return "";
-    }
+    return objTypeToString( type );
 }
 
 PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
@@ -450,6 +440,8 @@ PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
         return  PWR_OBJ_PLATFORM;
     } else if ( 0 == name.compare( "Cabinet" ) ) {
         return PWR_OBJ_CABINET;
+    } else if ( 0 == name.compare( "Chassis" ) ) {
+        return PWR_OBJ_CHASSIS;
     } else if ( 0 == name.compare( "Board" ) ) {
         return PWR_OBJ_BOARD;
     } else if ( 0 == name.compare( "Node" ) ) {
@@ -458,26 +450,17 @@ PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
         return PWR_OBJ_SOCKET;
     } else if ( 0 == name.compare( "Core" ) ) {
         return PWR_OBJ_CORE;
+    } else if ( 0 == name.compare( "Power Plane" ) ) {
+        return PWR_OBJ_CORE;
+    } else if ( 0 == name.compare( "Memory" ) ) {
+        return PWR_OBJ_CORE;
+    } else if ( 0 == name.compare( "Nic" ) ) {
+        return PWR_OBJ_CORE;
     }
     return PWR_OBJ_INVALID;
 }
 
 std::string PyConfig::attrNameToString( PWR_AttrName name )
 {
-    switch( name ){
-    case PWR_ATTR_NAME: return "Name";
-    case PWR_ATTR_FREQ: return "FREQ";
-    case PWR_ATTR_TEMP: return "TEMP";
-    case PWR_ATTR_PSTATE: return "PSTATE";
-    case PWR_ATTR_MAX_POWER: return "MAX_POWER";
-    case PWR_ATTR_MIN_POWER: return "MIN_POWER";
-    case PWR_ATTR_AVG_POWER: return "AVG_POWER";
-    case PWR_ATTR_POWER: return "POWER";
-    case PWR_ATTR_VOLTAGE: return "VOLTAGE";
-    case PWR_ATTR_CURRENT: return "CURRENT";
-    case PWR_ATTR_ENERGY: return "ENERGY";
-    case PWR_ATTR_INVALID: return "Invalid";
-    default: return "????";
-    }
-    return NULL;
+    return attrNameToString( name );
 }
