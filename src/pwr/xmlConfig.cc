@@ -12,7 +12,6 @@
 #include <assert.h>
 
 #include "xmlConfig.h"
-#include "util.h"
 #include "debug.h"
 
 using namespace PowerAPI;
@@ -428,7 +427,18 @@ XMLNode* XmlConfig::findNode( XMLNode* node, const std::string name )
 
 std::string XmlConfig::objTypeToString( PWR_ObjType type )
 {
-    return objTypeToString( type );
+    switch( type ) {
+    case PWR_OBJ_PLATFORM: return "Platform";
+    case PWR_OBJ_CABINET:  return "Cabinet";
+    case PWR_OBJ_BOARD:    return "Board";
+    case PWR_OBJ_NODE:     return "Node";
+    case PWR_OBJ_SOCKET:   return "Socket";
+    case PWR_OBJ_CORE:     return "Core";
+    case PWR_OBJ_NIC:      return "Nic";
+    case PWR_OBJ_MEM:      return "Memory";
+    case PWR_OBJ_INVALID:  return "Invalid";
+    }
+    return NULL;
 }
 
 PWR_ObjType XmlConfig::objTypeStrToInt( const std::string name )
@@ -459,5 +469,18 @@ PWR_ObjType XmlConfig::objTypeStrToInt( const std::string name )
 
 std::string XmlConfig::attrNameToString( PWR_AttrName name )
 {
-    return attrNameToString( name );
+    switch( name ){
+    case PWR_ATTR_FREQ: return "FREQ";
+    case PWR_ATTR_TEMP: return "TEMP";
+    case PWR_ATTR_PSTATE: return "PSTATE";
+    case PWR_ATTR_POWER_LIMIT_MAX: return "MAX_POWER";
+    case PWR_ATTR_POWER_LIMIT_MIN: return "MIN_POWER";
+    case PWR_ATTR_POWER: return "POWER";
+    case PWR_ATTR_VOLTAGE: return "VOLTAGE";
+    case PWR_ATTR_CURRENT: return "CURRENT";
+    case PWR_ATTR_ENERGY: return "ENERGY";
+    case PWR_ATTR_INVALID: return "Invalid";
+    default: return "????";
+    }
+    return NULL;
 }
