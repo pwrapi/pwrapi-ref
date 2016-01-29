@@ -145,7 +145,7 @@ def initLogger( config, apiroot, serverHost, serverPort, object, logfile ):
 	tmp += ' --lgr.delay=2'
 	if logfile:
 		tmp += ' --lgr.logfile=' + logfile
-	print tmp
+	#print tmp
 	return tmp
 
 def initClient( exe, object, logfile ):
