@@ -154,7 +154,7 @@ int main( int argc, char* argv[] )
         return -1;
     }
 
-    if( (grp = PWR_GrpCreate( cntxt, "tmp" )) == PWR_NULL ) {
+    if( (grp = PWR_GrpCreate( cntxt )) == PWR_NULL ) {
         printf( "Error: creating a group from PowerAPI failed\n" );
         return -1;
     }
