@@ -3,11 +3,11 @@
 <System>
 
 <Plugins>
-    <plugin name="RAPL" lib="libpwr_rapldev.so"/>
+    <plugin name="RAPL" lib="libpwr_rapldev"/>
 </Plugins>
 
 <Devices>
-    <device name="RAPL-node" plugin="RAPL" initString="0:0"/>
+    <device name="RAPL-node" plugin="RAPL" initString="0"/>
 </Devices>
 
 <Objects>
@@ -43,7 +43,40 @@
 <obj name="plat.node.socket" type="Socket" >
 
     <devices>
-        <dev name="rapldev" device="RAPL-node" openString="1" /> 
+        <dev name="rapldev" device="RAPL-node" openString="pkg" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="rapldev" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="socket.pp0" />
+        <child name="socket.dram" />
+    </children>
+
+</obj>
+
+<obj name="plat.node.socket.pp0" type="Power Plane" >
+
+    <devices>
+        <dev name="rapldev" device="RAPL-node" openString="pp0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM">
+            <src type="device" name="rapldev" />
+        </attr>
+    </attributes>
+
+</obj>
+
+<obj name="plat.node.socket.dram" type="Power Plane" >
+
+    <devices>
+        <dev name="rapldev" device="RAPL-node" openString="dram" /> 
     </devices>
 
     <attributes>

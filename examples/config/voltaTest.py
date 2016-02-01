@@ -1,24 +1,37 @@
 #!/usr/bin/python
 
 import os
-os.environ['PYTHONPATH']='/home/mjleven/pwrTest'
+#os.environ['PYTHONPATH']='/home/mjleven/pwrTest'
+#os.environ['POWERAPI_DEBUG']='15'
+#os.environ['SLURM_NODELIST']='nid[0-7]'
+#os.environ['SLURM_JOB_NUM_NODES']='1'
+
+
+os.environ['POWERRT_NUMNODES']='29'
+os.environ['POWERRT_NODES_PER_BOARD']='4'
+os.environ['POWERRT_BOARDS_PER_CAB']='3'
 os.environ['POWERAPI_DEBUG']='15'
-os.environ['SLURM_NODELIST']='nid001'
-os.environ['SLURM_JOB_NUM_NODES']='1'
-import volta
-	
+
+machine = __import__('cray-xt',fromlist=[''])
+
 #print volta.findChildren( "plat" )
 
 #print volta.findPlugins()
 #print volta.findSysDevs()
 
-volta.genRouteFile( 'foobar' )
+#print machine.calcNumChildren( 'plat' )
+#print machine.calcNumChildren( 'plat.cab0' )
+#print machine.calcNumChildren( 'plat.cab101' )
+print machine.calcNumChildren( 'plat.cab2.board0' )
+#print machine.calcNumChildren( 'plat.cab1.board3.node0' )
+
+machine.genRouteFile( 'voltaTestRoute.txt' )
 #print getObjType( "plat.cab0" )
 
 #print findChildren( "plat.cab0" )
 #print findParent("plat.cab0" )
 #print findObjLocation("plat.cab0.board0" )
-print volta.findAttrDevs("plat.cab0.board0.node0",volta.Energy )
+#print machine.findAttrDevs("plat.cab0.board0.node0",machine.Energy )
 #print volta.findAttrChildren("plat.cab0",volta.Energy )
 #print volta.findAttrChildren("plat.cab0.board0",volta.Energy )
 #print findAttrOp("plat.cab0",Energy )

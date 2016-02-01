@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -9,8 +9,8 @@
  * distribution.
 */
 
-#ifndef PWR_OPTDEV_H 
-#define PWR_OPTDEV_H 
+#ifndef PWR_APMDEV_H 
+#define PWR_APMDEV_H 
 
 #include "pwrdev.h"
 
@@ -18,24 +18,24 @@
 extern "C" {
 #endif
 
-plugin_devops_t *pwr_optdev_init( const char *initstr );
-int pwr_optdev_final( plugin_devops_t *dev );
+plugin_devops_t *pwr_apmdev_init( const char *initstr );
+int pwr_apmdev_final( plugin_devops_t *dev );
 
-pwr_fd_t pwr_optdev_open( plugin_devops_t *dev, const char *openstr );
-int pwr_optdev_close( pwr_fd_t fd );
+pwr_fd_t pwr_apmdev_open( plugin_devops_t *dev, const char *openstr );
+int pwr_apmdev_close( pwr_fd_t fd );
 
-int pwr_optdev_read( pwr_fd_t fd, PWR_AttrName attr,
+int pwr_apmdev_read( pwr_fd_t fd, PWR_AttrName attr,
     void *value, unsigned int len, PWR_Time *timestamp );
-int pwr_optdev_write( pwr_fd_t fd, PWR_AttrName attr,
+int pwr_apmdev_write( pwr_fd_t fd, PWR_AttrName attr,
     void *value, unsigned int len );
 
-int pwr_optdev_readv( pwr_fd_t fd, unsigned int arraysize,
+int pwr_apmdev_readv( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, PWR_Time timestamp[], int status[] );
-int pwr_optdev_writev( pwr_fd_t fd, unsigned int arraysize,
+int pwr_apmdev_writev( pwr_fd_t fd, unsigned int arraysize,
     const PWR_AttrName attrs[], void *values, int status[] );
 
-int pwr_optdev_time( pwr_fd_t fd, PWR_Time *timestamp );
-int pwr_optdev_clear( pwr_fd_t fd );
+int pwr_apmdev_time( pwr_fd_t fd, PWR_Time *timestamp );
+int pwr_apmdev_clear( pwr_fd_t fd );
 
 #ifdef __cplusplus
 }

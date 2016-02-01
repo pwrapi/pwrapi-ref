@@ -1,4 +1,19 @@
+/* 
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
+ * by or on behalf of the U.S. Government. Export of this program may require
+ * a license from the United States Government.
+ *
+ * This file is part of the Power API Prototype software package. For license
+ * information, see the LICENSE file in the top level directory of the
+ * distribution.
+*/
+
+#include "pwr_config.h"
+
+#if HAVE_PYTHON
 #include "pyConfig.h"
+#endif
 #include <stdlib.h>
 #include <string>
 #include <assert.h>
@@ -65,8 +80,10 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
     }
     if ( 0 == configFile.compare(pos,4,".xml") ) {
         m_config = new XmlConfig( configFile );
+#if HAVE_PYTHON
     } else if ( 0 == configFile.compare(pos,3,".py") ) {
         m_config = new PyConfig( configFile );
+#endif
     } else {
 		assert(0);
 	}

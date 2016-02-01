@@ -3,7 +3,7 @@
 <System>
 
 <Plugins>
-    <plugin name="CPU" lib="libpwr_cpudev.so"/>
+    <plugin name="CPU" lib="libpwr_cpudev"/>
 </Plugins>
 
 <Devices>

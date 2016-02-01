@@ -9,14 +9,15 @@ dummyTest_SOURCES = dummyTest.c
 dummyTest_CFLAGS = -I$(top_srcdir)/src/pwr
 dummyTest_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
-simpleTest_SOURCES = simpleTest.c
-simpleTest_CFLAGS = -I$(top_srcdir)/src/pwr
+simpleTest_SOURCES = simpleTest.cc
+simpleTest_CPPFLAGS = -I$(top_srcdir)/src/pwr
 simpleTest_LDADD = $(top_builddir)/src/pwr/libpwr.la
+simpleTest_LDFLAGS = -lrt
 
 examplesdir = $(docdir)/examples
 examples_configdir = $(examplesdir)/config
 examples_scriptdir = $(examplesdir)/script
-examples_DATA = snippet.c snippet.py dummyTest.c dummyTest.py simpleTest.c
+examples_DATA = snippet.c snippet.py dummyTest.c dummyTest.py simpleTest.cc
 examples_config_DATA =	config/cpu-node.xml \
 			config/dummySystem.xml \
 			config/pg-node.xml \

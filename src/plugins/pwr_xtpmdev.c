@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -54,7 +54,7 @@ static int xtpmdev_read( const char *name, double *val )
     int offset = 0;
     int fd;
 
-    sfprintf( stderr, path, "/sys/cray/pm_counters/%s", name );
+    sprintf( path, "/sys/cray/pm_counters/%s", name );
     fd = open( path, O_RDONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open counter file at %s\n", path );
@@ -80,14 +80,14 @@ static int xtpmdev_write( const char *name, double val )
     char path[256] = "", strval[20] = "";
     int fd;
 
-    sfprintf( stderr, path, "/sys/cray/pm_counters/%s", name );
+    sprintf( path, "/sys/cray/pm_counters/%s", name );
     fd = open( path, O_WRONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open PM counter file at %s\n", path );
         return -1;
     }
 
-    sfprintf( stderr, strval, "%lf", val ); 
+    sprintf( strval, "%lf", val ); 
     if( write( fd, strval, strlen(strval) ) < 0 ) {
         fprintf( stderr, "Error: unable to write PM counter\n" );
         close( fd );
@@ -172,7 +172,7 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
                 return -1;
             }
             break;
-        case PWR_ATTR_MAX_POWER:
+        case PWR_ATTR_POWER_LIMIT_MAX:
             if( xtpmdev_read( "power_cap", (double *)value) < 0 ) {
                 fprintf( stderr, "Error: unable to read power_cap counter\n" );
                 return -1;
@@ -209,7 +209,7 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
     }
 
     switch( attr ) {
-        case PWR_ATTR_MAX_POWER:
+        case PWR_ATTR_POWER_LIMIT_MAX:
             if( xtpmdev_write( "power_cap", *((double *)value) ) < 0 ) {
                 fprintf( stderr, "Error: unable to write power_cap counter\n" );
                 return -1;

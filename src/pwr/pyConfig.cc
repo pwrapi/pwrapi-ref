@@ -1,5 +1,5 @@
 /* 
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -440,8 +440,8 @@ std::string PyConfig::objTypeToString( PWR_ObjType type )
     case PWR_OBJ_NIC:      return "Nic";
     case PWR_OBJ_MEM:      return "Memory";
     case PWR_OBJ_INVALID:  return "Invalid";
-    default: return "";
     }
+    return NULL;
 }
 
 PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
@@ -450,6 +450,8 @@ PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
         return  PWR_OBJ_PLATFORM;
     } else if ( 0 == name.compare( "Cabinet" ) ) {
         return PWR_OBJ_CABINET;
+    } else if ( 0 == name.compare( "Chassis" ) ) {
+        return PWR_OBJ_CHASSIS;
     } else if ( 0 == name.compare( "Board" ) ) {
         return PWR_OBJ_BOARD;
     } else if ( 0 == name.compare( "Node" ) ) {
@@ -458,6 +460,12 @@ PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
         return PWR_OBJ_SOCKET;
     } else if ( 0 == name.compare( "Core" ) ) {
         return PWR_OBJ_CORE;
+    } else if ( 0 == name.compare( "Power Plane" ) ) {
+        return PWR_OBJ_CORE;
+    } else if ( 0 == name.compare( "Memory" ) ) {
+        return PWR_OBJ_CORE;
+    } else if ( 0 == name.compare( "Nic" ) ) {
+        return PWR_OBJ_CORE;
     }
     return PWR_OBJ_INVALID;
 }
@@ -465,13 +473,11 @@ PWR_ObjType PyConfig::objTypeStrToInt( const std::string name )
 std::string PyConfig::attrNameToString( PWR_AttrName name )
 {
     switch( name ){
-    case PWR_ATTR_NAME: return "Name";
     case PWR_ATTR_FREQ: return "FREQ";
     case PWR_ATTR_TEMP: return "TEMP";
     case PWR_ATTR_PSTATE: return "PSTATE";
-    case PWR_ATTR_MAX_POWER: return "MAX_POWER";
-    case PWR_ATTR_MIN_POWER: return "MIN_POWER";
-    case PWR_ATTR_AVG_POWER: return "AVG_POWER";
+    case PWR_ATTR_POWER_LIMIT_MAX: return "MAX_POWER";
+    case PWR_ATTR_POWER_LIMIT_MIN: return "MIN_POWER";
     case PWR_ATTR_POWER: return "POWER";
     case PWR_ATTR_VOLTAGE: return "VOLTAGE";
     case PWR_ATTR_CURRENT: return "CURRENT";

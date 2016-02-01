@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -206,10 +206,10 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
         case PWR_ATTR_POWER:
             *((double *)value) = (double)pidev_counter.raw.watts;
             break;
-        case PWR_ATTR_MIN_POWER:
+        case PWR_ATTR_POWER_LIMIT_MIN:
             *((double *)value) = (double)pidev_counter.min.watts;
             break;
-        case PWR_ATTR_MAX_POWER:
+        case PWR_ATTR_POWER_LIMIT_MAX:
             *((double *)value) = (double)pidev_counter.max.watts;
             break;
         case PWR_ATTR_ENERGY:
@@ -267,10 +267,10 @@ int pwr_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
             case PWR_ATTR_POWER:
                 *((double *)values+i) = (double)pidev_counter.raw.watts;
                 break;
-            case PWR_ATTR_MIN_POWER:
+            case PWR_ATTR_POWER_LIMIT_MIN:
                 *((double *)values+i) = (double)pidev_counter.min.watts;
                 break;
-            case PWR_ATTR_MAX_POWER:
+            case PWR_ATTR_POWER_LIMIT_MAX:
                 *((double *)values+i) = (double)pidev_counter.max.watts;
                 break;
             case PWR_ATTR_ENERGY:

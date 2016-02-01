@@ -1,5 +1,5 @@
 /* 
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -109,9 +109,9 @@ int PWR_ObjAttrGetValue_NB( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time*
     return OBJECT(obj)->attrGetValue( type, ptr, ts, REQUEST(req) );
 }
 
-int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, void* ptr )
+int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, const void* ptr )
 {
-    return OBJECT(obj)->attrSetValue( type, ptr );
+    return OBJECT(obj)->attrSetValue( type, (void*)ptr );
 }
 
 int PWR_ObjAttrSetValue_NB( PWR_Obj obj, PWR_AttrName attr, void* buf,
@@ -120,10 +120,10 @@ int PWR_ObjAttrSetValue_NB( PWR_Obj obj, PWR_AttrName attr, void* buf,
     return OBJECT(obj)->attrSetValue( attr, buf, REQUEST(req) );
 }
 
-int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
+int PWR_ObjAttrGetValues( PWR_Obj obj, int num, const PWR_AttrName attrs[],
                     void* values, PWR_Time ts[], PWR_Status status )
 {
-    return OBJECT(obj)->attrGetValues( num, attrs, values, ts, STATUS(status) );
+    return OBJECT(obj)->attrGetValues( num, (PWR_AttrName*)attrs, values, ts, STATUS(status) );
 }
 
 int PWR_ObjAttrSetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
@@ -169,9 +169,9 @@ int PWR_ObjAttrGetSamples_NB( PWR_Obj obj, PWR_AttrName name,
 * Subset of API that works on Grp
 */
 
-PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx, const char* name )
+PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx )
 {
-    return CNTXT(ctx)->groupCreate( name );
+    return CNTXT(ctx)->groupCreate( "" );
 }
 
 int PWR_GrpDestroy( PWR_Grp group )
@@ -222,10 +222,10 @@ int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf, 
     return GRP(grp)->attrSetValues( num, attr, buf, STATUS(status) ); 
 }
 
-int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrName attr[],
+int PWR_GrpAttrGetValues( PWR_Grp grp, int num, const PWR_AttrName attr[],
                                   void* buf, PWR_Time ts[], PWR_Status status)
 {
-    return GRP(grp)->attrGetValues( num, attr, buf, ts, STATUS(status) ); 
+    return GRP(grp)->attrGetValues( num, (PWR_AttrName*)attr, buf, ts, STATUS(status) ); 
 }
 
 
@@ -369,6 +369,7 @@ int PWR_AppHint( PWR_Obj obj, PWR_RegionHint hint)
         case PWR_REGION_MEM_BOUND:
             return PWR_RET_SUCCESS;
 		case PWR_REGION_DEFAULT:
+        default:
 			assert(0);	
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -34,7 +34,7 @@ void dump_type_objects( PWR_Obj self, PWR_ObjType type )
         if( type == PWR_OBJ_INVALID || PWR_ObjGetType( obj ) == type ) {
             printf( "%s %s", PWR_ObjGetName( obj ),
                     PWR_ObjGetTypeString( type ) );
-            for( j = 0; j < TOTAL_NUM_PWR_ATTRS; j++ ) {
+            for( j = 0; j < PWR_NUM_ATTR_NAMES; j++ ) {
                 printf( " %s", PWR_AttrGetTypeString( j ) );
             }
             printf( "\n" );

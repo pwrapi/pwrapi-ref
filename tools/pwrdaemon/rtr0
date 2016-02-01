@@ -3,7 +3,7 @@
 
 export POWERAPI_DEBUG=15
 
-CONFIG=/home/mjleven/pwrGIT/working/examples/config/xtpmNode.py
+CONFIG=${HOME}/pwrGIT/working/examples/config/xtpmNode.py
 
 pwrdaemon \
 --rtr.clientPort=15000 \

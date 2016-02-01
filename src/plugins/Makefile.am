@@ -1,6 +1,7 @@
 lib_LTLIBRARIES =	libpwr_rapldev.la \
-			libpwr_optdev.la \
+			libpwr_apmdev.la \
 			libpwr_xtpmdev.la \
+			libpwr_pmcdev.la \
 			libpwr_wudev.la \
 			libpwr_cpudev.la \
 			libdummy_dev.la
@@ -26,13 +27,17 @@ libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
 libpwr_rapldev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_rapldev_la_LDFLAGS = -version-info 1:0:1
 
-libpwr_optdev_la_SOURCES = pwr_dev.c pwr_optdev.c
-libpwr_optdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
-libpwr_optdev_la_LDFLAGS = -version-info 1:0:1
+libpwr_apmdev_la_SOURCES = pwr_dev.c pwr_apmdev.c
+libpwr_apmdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_apmdev_la_LDFLAGS = -version-info 1:0:1
 
 libpwr_xtpmdev_la_SOURCES = pwr_dev.c pwr_xtpmdev.c
 libpwr_xtpmdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_xtpmdev_la_LDFLAGS = -version-info 1:0:1
+
+libpwr_pmcdev_la_SOURCES = pwr_dev.c pwr_pmcdev.c
+libpwr_pmcdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_pmcdev_la_LDFLAGS = -version-info 1:0:1
 
 libpwr_wudev_la_SOURCES = pwr_dev.c pwr_wudev.c
 libpwr_wudev_la_CFLAGS = -I$(top_srcdir)/src/pwr

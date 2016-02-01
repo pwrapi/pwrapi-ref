@@ -1,5 +1,5 @@
 /* 
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -31,12 +31,12 @@ class Stat {
 															double hz ) 
 	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), m_attrName( name ), 
 	    opPtr( ptr ), m_period( 1 / hz ),
-		m_startTime(PWR_TIME_NOT_SET), m_stopTime(PWR_TIME_NOT_SET) { }
+		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) { }
 
 	Stat( Cntxt* ctx, Grp* grp, PWR_AttrName name, OpFuncPtr ptr, double hz ) 
 	  : m_ctx( ctx), m_obj(NULL), m_grp(grp), m_attrName( name ),
 	    opPtr( ptr ), m_period( 1/ hz), 
-		m_startTime(PWR_TIME_NOT_SET), m_stopTime(PWR_TIME_NOT_SET) { }
+		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) { }
 	virtual ~Stat() {}
 
 	virtual int start() = 0;

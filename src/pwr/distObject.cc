@@ -1,3 +1,14 @@
+/* 
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
+ * by or on behalf of the U.S. Government. Export of this program may require
+ * a license from the United States Government.
+ *
+ * This file is part of the Power API Prototype software package. For license
+ * information, see the LICENSE file in the top level directory of the
+ * distribution.
+*/
+
 #include "distObject.h"
 #include "attrInfo.h"
 #include "distRequest.h"
@@ -15,7 +26,7 @@ int DistObject::attrGetValue( PWR_AttrName attr, void* buf,
     DBGX("\n");
 
 	retval = attrGetValues( 1, &attr, buf, ts, &status );
-	if ( retval != PWR_RET_SUCCESS ) {
+	if ( retval == PWR_RET_STATUS ) {
         PWR_AttrAccessError error;
         retval = status.pop( &error );
         assert( retval == PWR_RET_SUCCESS );
@@ -32,7 +43,7 @@ int DistObject::attrSetValue( PWR_AttrName attr, void* buf )
     DBGX("\n");
 
 	retval = attrSetValues( 1, &attr, buf, &status );
-	if ( retval != PWR_RET_SUCCESS ) {
+	if ( retval == PWR_RET_STATUS ) {
         PWR_AttrAccessError error;
         retval = status.pop( &error );
         assert( retval == PWR_RET_SUCCESS );
@@ -54,9 +65,11 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
 	attrGetValues( count, names, buf, ts, status, &req );
 
 	retval = req.wait( status );
-	assert( retval == PWR_RET_SUCCESS );
+	if( retval != PWR_RET_SUCCESS ) {
+		return retval;
+	}
 
-    return status->empty() ? PWR_RET_SUCCESS : PWR_RET_FAILURE; 
+    return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS; 
 }
 
 int DistObject::attrSetValues( int count, PWR_AttrName names[],
@@ -71,9 +84,11 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 	attrSetValues( count, names, buf, status, &req );
 
 	retval = req.wait( status );
-	assert( retval == PWR_RET_SUCCESS );
+	if( retval != PWR_RET_SUCCESS ) {
+		return retval;
+	}
 
-    return status->empty() ? PWR_RET_SUCCESS : PWR_RET_FAILURE; 
+    return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS; 
 }
 
 //=============================================================================
@@ -85,7 +100,7 @@ int DistObject::attrGetValue( PWR_AttrName attr, void* buf,
 	Status status;
     DBGX("\n");
 	retval = attrGetValues( 1, &attr, buf, ts, &status, req );
-	if ( retval != PWR_RET_SUCCESS ) {
+	if ( retval == PWR_RET_STATUS ) {
         PWR_AttrAccessError error;
         retval = status.pop( &error );
         assert( retval == PWR_RET_SUCCESS );
@@ -100,7 +115,7 @@ int DistObject::attrSetValue( PWR_AttrName attr, void* buf, Request* req )
 	Status status;
     DBGX("\n");
 	retval = attrSetValues( 1, &attr, buf, &status, req );
-	if ( retval != PWR_RET_SUCCESS ) {
+	if ( retval == PWR_RET_STATUS ) {
         PWR_AttrAccessError error;
         retval = status.pop( &error );
         assert( retval == PWR_RET_SUCCESS );
@@ -132,7 +147,7 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
 		}
 	}
 
-	retval = status->empty() ? PWR_RET_SUCCESS : PWR_RET_FAILURE; 
+	retval = status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS; 
 
 	// Need to sort or the relationsip between a Status and Request. If the function has
 	// a Request argument shoud the Status object be included in the Request object and
@@ -167,7 +182,7 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 			info->comm->setValue( names[i], buf, commReq );
 		}
 	}
-	retval = status->empty() ? PWR_RET_SUCCESS : PWR_RET_FAILURE; 
+	retval = status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS; 
 	if ( retval == PWR_RET_SUCCESS && distReq->finished() ) {
 		if ( distReq->execCallback( ) ) {
 			delete distReq;

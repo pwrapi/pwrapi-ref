@@ -1,14 +1,30 @@
+/*
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
+ * by or on behalf of the U.S. Government. Export of this program may require
+ * a license from the United States Government.
+ *
+ * This file is part of the Power API Prototype software package. For license
+ * information, see the LICENSE file in the top level directory of the
+ * distribution.
+*/
 
+#include <sys/types.h>
+#include <signal.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
 #include "router.h"
 #include "server.h"
+#include "logger.h"
 #include <sstream>
+#include <utmpx.h>
+#include <sched.h>
 
 
 void* startRtrThread( void *);
 void* startSrvrThread( void *);
+void* startLgrThread( void *);
 
 struct Args {
 	int argc;
@@ -23,7 +39,9 @@ int main( int argc, char* argv[] )
 {
 	int rc;
 	struct Args rtrArgs;
+	struct Args lgrArgs;
 	pthread_t rtrThread = 0;
+	pthread_t lgrThread = 0;
 
 	std::deque<pthread_t> srvrThreads;
 	
@@ -68,20 +86,34 @@ int main( int argc, char* argv[] )
 		++count;
 	} 
 
+	lgrArgs.argv.push_back( argv[0] );
+	findArgs( "lgr", argc, argv, lgrArgs );
+
+	if ( lgrArgs.argv.size() > 2 ) {
+		rc = pthread_mutex_lock(&mutex);	
+		assert(0==rc);
+		rc = pthread_create( &lgrThread, NULL, startLgrThread, &lgrArgs );  
+		assert(0==rc);
+	}
+
+	rc = pthread_mutex_lock(&mutex);	
+	assert(0==rc);
+	kill(getppid(),SIGUSR1);
+
 	while ( srvrThreads.size() ) {
-		printf("wait for server thread to exit\n");
+		//printf("wait for server thread to exit\n");
 		rc = pthread_join( srvrThreads.back(), NULL );
 		srvrThreads.pop_back();
 		assert(0==rc);
 	}
 
 	if ( rtrThread ) {
-		printf("wait for router thread to exit\n");
+		//printf("wait for router thread to exit\n");
 		rc = pthread_join( rtrThread, NULL );
 		assert(0==rc);
 	}
 
-	printf("%s exit\n",argv[0]);
+	//printf("%s exit\n",argv[0]);
 
 	return 0;
 }
@@ -89,7 +121,7 @@ int main( int argc, char* argv[] )
 void* startRtrThread( void * _args)
 {
 	Args& args = *(Args*)_args;
-	printf("start router\n");
+	//printf("start router\n");
 
 	PWR_Router::Router rtr(args.argc, &args.argv[0] );
 
@@ -103,7 +135,7 @@ void* startSrvrThread( void * _args)
 {
 	Args& args = *(Args*)_args;
 
-	printf("start server\n");
+	//printf("start server\n");
 
 	PWR_Server::Server srvr(args.argc, &args.argv[0] );
 
@@ -111,6 +143,20 @@ void* startSrvrThread( void * _args)
 	assert(0==rc);
 
 	return (void*) (unsigned long)srvr.work();
+}
+
+void* startLgrThread( void * _args)
+{
+	Args& args = *(Args*)_args;
+
+	//printf("start logger\n");
+
+	PWR_Logger::Logger logger(args.argc, &args.argv[0] );
+
+	int rc = pthread_mutex_unlock(&mutex);	
+	assert(0==rc);
+
+	return (void*) (unsigned long)logger.work();
 }
 
 void findArgs( std::string prefix, int argc, char* argv[], Args& args )

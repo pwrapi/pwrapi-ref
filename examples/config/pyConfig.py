@@ -30,31 +30,33 @@ def funcName():
 	return 'PY::'+sys._getframe().f_back.f_code.co_name
 
 class Foo:
-    def __init__(self, x, y, child = None):
-        self.x = x
-        self.y = y
-        self.child = child
+    def __init__(self, name, total, per, child = None ):
+        #print 'name={0} total={1} per={2}'.format(name,total,per)
+        self.name = name
+        self.total = total 
+        self.per = per 
+        self.child = child 
 
-    def calc(self, x ):
-        if x == self.x/self.y:
-            return self.x % self.y
-        elif x < self.x/self.y:
-            return self.y
-        else:
+    def getTotal(self):
+        return self.total		
+
+    def getChildrenPer(self):
+		return self.per
+
+    def getLeafCount(self, stop):
+        #print 'getLeafCount(): name={0} per={1} stop={2}'.format(self.name, self.per, stop)
+        if not self.child or self.name == stop:
             return -1
+             
+        if self.child.name == stop:
+            return self.per
+        else:
+            return self.child.getLeafCount( stop ) * self.per
 
-    def foo(self):
-        tmp = self.x / self.y
-        if self.x % self.y:
-            tmp += 1
-        return tmp
-
-    def tree( self ):
-        ret = 1
+    def getTotalChildren( self ):
         if self.child:
-            ret = self.child.tree()
-
-        return ret * self.y
+            return self.child.getTotal() 
+        return 0
 
 class Attr:
 	def __init__(self, op = None, type = None ):

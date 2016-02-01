@@ -1,5 +1,19 @@
+/*
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
+ * by or on behalf of the U.S. Government. Export of this program may require
+ * a license from the United States Government.
+ *
+ * This file is part of the Power API Prototype software package. For license
+ * information, see the LICENSE file in the top level directory of the
+ * distribution.
+*/
 
+#include "pwr_config.h"
+#ifdef HAVE_PYTHON
 #include "pyConfig.h"
+#endif
+#include <sys/utsname.h>
 #include <string>
 #include <fstream>
 #include <debug.h>
@@ -30,8 +44,10 @@ Router::Router( int argc, char* argv[] ) :
 	size_t pos = m_args.pwrApiConfig.find_last_of( "." );
 	if ( 0 == m_args.pwrApiConfig.compare(pos,4,".xml") ) {	
 		m_config = new PowerAPI::XmlConfig( m_args.pwrApiConfig );
+#ifdef HAVE_PYTHON
 	} else if ( 0 == m_args.pwrApiConfig.compare(pos,3,".py") ) {
 		m_config = new PowerAPI::PyConfig( m_args.pwrApiConfig );
+#endif
 	} else {
 		assert(0);
 	}
@@ -40,7 +56,11 @@ Router::Router( int argc, char* argv[] ) :
 
 	Args& args= m_args;
 
-    DBGX("rtrId=%d\n", args.rtrId );
+    struct utsname buf;
+    int rc = uname( &buf );
+    assert( 0 == rc );
+
+    DBGX("rtrId=%d hostname=%s\n", args.rtrId, buf.nodename );
     DBGX("client=%s server=%s\n", args.clientPort.c_str(), 
 												args.serverPort.c_str() );
 
@@ -77,7 +97,7 @@ void Router::initRouteTable( std::string file )
 	DBGX("%s\n",file.c_str());
 	fs.open( file.c_str(), std::ifstream::in  );
 	if ( fs.fail() ) {
-		printf("can't read route file %s\n", file.c_str());	
+		printf("can't read route file `%s`\n", file.c_str());	
 		assert(0);
 	}
 

@@ -1,5 +1,5 @@
 /* 
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -18,7 +18,7 @@
 #include "pwrdev.h"
 #include "util.h"
 
-#if 1
+#if 0 
 
 #define DBGX( fmt, args... ) \
 {\
@@ -44,7 +44,7 @@ typedef struct {
 } buffer_t;
 
 typedef struct {
-	buffer_t buffers[PWR_ATTR_NOT_SPECIFIED];
+	buffer_t buffers[PWR_NUM_ATTR_NAMES];
 } dummyFdInfo_t;
 
 static double getTime() {
@@ -60,6 +60,7 @@ static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
     dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
     tmp->buffers[PWR_ATTR_POWER].values[0] = 10.1234;
+    tmp->buffers[PWR_ATTR_ENERGY].values[0] = 100000000;
     DBGX("`%s` ptr=%p\n",openstr,tmp);
     return tmp;
 }
@@ -78,7 +79,6 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
     *(double*)ptr = ((dummyFdInfo_t*) fd)->buffers[type].values[0];
 
     DBGX("%p type=%s %f\n", fd, attrNameToString(type),*(double*)ptr);
-
 
     if ( ts ) {
 		*ts = getTime();

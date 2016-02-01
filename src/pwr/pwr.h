@@ -1,5 +1,5 @@
 /* 
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -15,11 +15,9 @@
 #include <time.h>
 
 #include "pwrtypes.h"
-//#include "eventChannel.h"
-
 
 #ifdef __cplusplus
-struct EventChannel;
+class EventChannel;
 extern "C" {
 #else
 typedef void EventChannel;
@@ -29,20 +27,18 @@ int PWR_GetMajorVersion();
 int PWR_GetMinorVersion();
 
 /*
-* Subset of API that works on Cntxt
-*/
+ * Subset of API for initialization
+ */
 
-PWR_Cntxt PWR_CntxtInit( PWR_CntxtType, PWR_Role, const char* name );
-int       PWR_CntxtDestroy( PWR_Cntxt );
-PWR_Obj   PWR_CntxtGetEntryPoint( PWR_Cntxt );
-PWR_Grp   PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );
-PWR_Grp   PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name );
-
-PWR_Obj PWR_CntxtGetObjByName( PWR_Cntxt, const char* name );
+PWR_Cntxt   PWR_CntxtInit( PWR_CntxtType, PWR_Role, const char* name );
+int         PWR_CntxtDestroy( PWR_Cntxt );
 
 /*
-* Subset of API that works on Obj 
-*/
+ * Subset of API for navigation
+ */
+
+PWR_Obj     PWR_CntxtGetEntryPoint( PWR_Cntxt );
+PWR_Obj     PWR_CntxtGetObjByName( PWR_Cntxt, const char* name );
 
 PWR_ObjType PWR_ObjGetType( PWR_Obj );
 const char* PWR_ObjGetName( PWR_Obj );
@@ -52,79 +48,94 @@ PWR_Grp     PWR_ObjGetChildren( PWR_Obj );
 PWR_Grp     PWR_ObjGetDescendantsByType( PWR_Obj, PWR_ObjType );
 PWR_Obj     PWR_ObjGetAncestorByType( PWR_Obj, PWR_ObjType );
 
-int PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName name );
-
-int PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrName name, void* buf, PWR_Time * );
-int PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, void* buf );
-
-int PWR_ObjAttrGetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status  );
-int PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Status );
-
-int PWR_ObjAttrStartLog( PWR_Obj, PWR_AttrName name );
-int PWR_ObjAttrStopLog( PWR_Obj, PWR_AttrName name );
-int PWR_ObjAttrGetSamples( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
-											unsigned int count, void* buf );
-
-int PWR_ObjAttrStartLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
-int PWR_ObjAttrStopLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
-int PWR_ObjAttrGetSamples_NB( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
-											unsigned int* count, void* buf,  PWR_Request );
 /*
-* Subset of API that works on Grp 
-*/
+ * Subset of API for groups
+ */
 
-// note that PWR_GrpDestroy() pairs with PWR_CntxtCreateGrp() but it 
-// does not take a context as an argument, should it? 
-
-PWR_Grp     PWR_GrpCreate( PWR_Cntxt, const char* name );
+PWR_Grp     PWR_GrpCreate( PWR_Cntxt );
 int         PWR_GrpDestroy( PWR_Grp );
-PWR_Grp     PWR_GrpDuplicate( PWR_Grp, const char* name );
+PWR_Grp     PWR_GrpDuplicate( PWR_Grp );
 
 PWR_Grp     PWR_GrpUnion( PWR_Grp, PWR_Grp );
 PWR_Grp     PWR_GrpIntersection( PWR_Grp, PWR_Grp );
 PWR_Grp     PWR_GrpDifference( PWR_Grp, PWR_Grp );
 
-PWR_Grp     PWR_GrpFilterByAttrName( PWR_Grp, PWR_AttrName );
-PWR_Grp     PWR_GrpFilterByObjType( PWR_Grp, PWR_ObjType );
-
-const char* PWR_GrpGetName( PWR_Grp );
 int         PWR_GrpGetNumObjs( PWR_Grp );
 PWR_Obj     PWR_GrpGetObjByIndx( PWR_Grp, int );
 int         PWR_GrpAddObj( PWR_Grp, PWR_Obj );
 int         PWR_GrpRemoveObj( PWR_Grp, PWR_Obj );
 
-int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName name, void* buf, PWR_Status );
+PWR_Grp     PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name );
+
+/*
+ * Subset of API for attributes
+ */
+
+int         PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrName name, void* buf, PWR_Time * );
+int         PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, const void* buf );
+
+PWR_Status  PWR_StatusCreate();
+int         PWR_StatusDestroy( PWR_Status );
+int         PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
+int         PWR_StatusClear( PWR_Status );
+
+int         PWR_ObjAttrGetValues( PWR_Obj, int count, const PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status  );
+int         PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* buf, PWR_Status );
+
+int         PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName name );
+
 int         PWR_GrpAttrGetValue( PWR_Grp, PWR_AttrName name, void* buf, PWR_Time ts[], PWR_Status );
+int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName name, void* buf, PWR_Status );
 
-int         PWR_GrpAttrSetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Status );
-int         PWR_GrpAttrGetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status );
-
-PWR_Status PWR_StatusCreate();
-int PWR_StatusDestroy( PWR_Status );
-int PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
-int PWR_StatusClear( PWR_Status );
+int         PWR_GrpAttrGetValues( PWR_Grp, int count, const PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status );
+int         PWR_GrpAttrSetValues( PWR_Grp, int count, const PWR_AttrName names[], const void* buf, PWR_Status );
 
 /*
- * Statistics
+ * Subset of API for metadata
  */
 
+int         PWR_ObjAttrGetMeta( PWR_Obj obj, PWR_AttrName attr, PWR_MetaName meta, void* value );
+int         PWR_ObjAttrSetMeta( PWR_Obj obj, PWR_AttrName attr, PWR_MetaName meta, const void* value );
+int         PWR_MetaValueAtIndex( PWR_Obj obj, PWR_AttrName attr, unsigned int index, void* value, char* value_str );
 
-PWR_Stat PWR_ObjCreateStat( PWR_Obj, PWR_AttrName name, PWR_AttrStat stat );
-PWR_Stat PWR_GrpCreateStat( PWR_Grp, PWR_AttrName name, PWR_AttrStat stat );
-
-int PWR_StatDestroy( PWR_Stat );
-
-int PWR_StatStart( PWR_Stat );
-int PWR_StatStop( PWR_Stat );
-int PWR_StatClear( PWR_Stat );
-
-
-int PWR_StatGetValue( PWR_Stat, double* value, PWR_StatTimes* statTimes );
 /*
- * size of array passed in is derived by the function
+ * Subset of API for statistics
  */
-int PWR_StatGetValues( PWR_Stat, double values[],
-                                            PWR_StatTimes statTimes[] );
+
+PWR_Stat    PWR_ObjCreateStat( PWR_Obj, PWR_AttrName name, PWR_AttrStat stat );
+PWR_Stat    PWR_GrpCreateStat( PWR_Grp, PWR_AttrName name, PWR_AttrStat stat );
+
+int         PWR_StatStart( PWR_Stat );
+int         PWR_StatStop( PWR_Stat );
+int         PWR_StatClear( PWR_Stat );
+
+int         PWR_StatGetValue( PWR_Stat, double* value, PWR_StatTimes* statTimes );
+int         PWR_StatGetValues( PWR_Stat, double values[], PWR_StatTimes statTimes[] );
+
+int         PWR_StatGetReduce( PWR_Stat, double* value, PWR_StatTimes* statTimes );
+
+int         PWR_StatDestroy( PWR_Stat );
+
+/*
+ * Subset of API for report functions
+ */
+
+int         PWR_GetReportByID( PWR_Cntxt, const char* id, PWR_ID, PWR_AttrName, PWR_AttrStat, double*, PWR_TimePeriod* );
+
+/*
+ * Subset of API for role / system interfaces
+ */
+
+int         PWR_StateTransitDelay( PWR_Obj, PWR_OperState, PWR_OperState, PWR_Time* );
+int         PWR_AppTuningHint( PWR_Obj, PWR_RegionHint, PWR_RegionIntensity );
+int         PWR_SetSleepStateLimit( PWR_Obj, PWR_SleepState );
+int         PWR_WakeUpLatency( PWR_Obj, PWR_SleepState, PWR_Time );
+int         PWR_RecommendSleepState( PWR_Obj, PWR_Time, PWR_SleepState* );
+int         PWR_SetPerfState( PWR_Obj, PWR_PerfState );
+int         PWR_GetPerfState( PWR_Obj, PWR_PerfState* );
+int         PWR_GetSleepState( PWR_Obj, PWR_SleepState* );
+
+/* Extensions not in the specifications */
 
 EventChannel* PWR_CntxtGetEventChannel( PWR_Cntxt ctx );
 int PWR_CntxtMakeProgress( PWR_Cntxt ctx );
@@ -141,7 +152,6 @@ int PWR_ObjAttrGetValue_NB( PWR_Obj, PWR_AttrName name, void* buf,
 
 int PWR_ObjAttrSetValue_NB( PWR_Obj, PWR_AttrName name, void* buf,
 		                                            PWR_Request );
-
 /*
 *  Utility Functions
 */
@@ -152,10 +162,21 @@ const char* PWR_ObjGetName( PWR_Obj );
 
 int PWR_TimeConvert( PWR_Time time, time_t* );
 
-/*
- * Operating System -> Application Interface
- */
-int PWR_AppHint( PWR_Obj, PWR_RegionHint );
+int PWR_ObjAttrStartLog( PWR_Obj, PWR_AttrName name );
+int PWR_ObjAttrStopLog( PWR_Obj, PWR_AttrName name );
+int PWR_ObjAttrGetSamples( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
+											unsigned int count, void* buf );
+
+int PWR_ObjAttrStartLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
+int PWR_ObjAttrStopLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
+int PWR_ObjAttrGetSamples_NB( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
+											unsigned int* count, void* buf,  PWR_Request );
+
+
+PWR_Grp     PWR_GrpFilterByAttrName( PWR_Grp, PWR_AttrName );
+PWR_Grp     PWR_GrpFilterByObjType( PWR_Grp, PWR_ObjType );
+PWR_Grp     PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );
+
 #ifdef __cplusplus
 }
 #endif

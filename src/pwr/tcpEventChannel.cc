@@ -1,3 +1,14 @@
+/* 
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
+ * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
+ * by or on behalf of the U.S. Government. Export of this program may require
+ * a license from the United States Government.
+ *
+ * This file is part of the Power API Prototype software package. For license
+ * information, see the LICENSE file in the top level directory of the
+ * distribution.
+*/
+
 #include <sys/socket.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -207,9 +218,13 @@ Event* TcpEventChannel::getEvent( bool blocking )
 	assert( nbytes == buf.length() );
 	print( (unsigned char*) buf.addr(), nbytes );
 
-	DBGX2(DBG_EC,"%s length=%lu \n",getName().c_str(), length);
 
-    return m_allocFunc( type, buf );
+	Event* ev =m_allocFunc( type, buf );
+
+	DBGX2(DBG_EC2,"%s event type %d, length=%lu \n",getName().c_str(), 
+						ev->type, length);
+
+    return ev; 
 }
 
 bool TcpEventChannel::sendEvent( Event* event )
@@ -235,7 +250,8 @@ bool TcpEventChannel::sendEvent( Event* event )
 	assert( nbytes == buf.length() );
 	print( (unsigned char*) buf.addr(), nbytes );
 
-	DBGX2(DBG_EC,"%s length=%lu \n",getName().c_str(), length);
+	DBGX2(DBG_EC2,"%s event type %d, length=%lu \n",getName().c_str(), 
+						event->type, length);
 
     return true;
 }
@@ -282,9 +298,9 @@ ChannelSelect::Data* TcpChannelSelect::wait()
 		while ( iter != m_chanMap.end() ) {
     		int fd = static_cast<TcpEventChannel*>(iter->first)->getSelectFd();
 
-			DBGX2(DBG_EC,"fd=%d %s\n",fd, 
-				static_cast<TcpEventChannel*>(iter->first)->getName().c_str());
 			if ( fd > -1 ) {
+				DBGX2(DBG_EC,"fd=%d %s\n",fd, 
+					static_cast<TcpEventChannel*>(iter->first)->getName().c_str());
     			fdmax = fd > fdmax ? fd : fdmax; 
     			FD_SET( fd, &read_fds );
     			FD_SET( fd, &write_fds );

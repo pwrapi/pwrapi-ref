@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Sandia Corporation. Under the terms of Contract
+ * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
  * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
  * by or on behalf of the U.S. Government. Export of this program may require
  * a license from the United States Government.
@@ -11,7 +11,6 @@
 
 #include "pwr.h"
 
-#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,30 +20,27 @@
 #define NUM_ATTR(X) (sizeof(X)/sizeof(PWR_AttrName))
 
 
-int get_type_objects( PWR_Obj self, PWR_ObjType type, PWR_Grp outGroup )
+void get_type_objects( PWR_Obj obj, PWR_ObjType type, PWR_Grp outGroup )
 {
     unsigned int i;
     size_t size;
     PWR_Grp cgrp;
-    PWR_Obj obj;
 
-    if( (cgrp=PWR_ObjGetChildren( self )) == PWR_NULL  ) {
-        printf( "Error: getting child objects from PowerAPI context failed\n" );
-        return -1;
+    if( PWR_ObjGetType( obj ) == type ) {
+        if( PWR_GrpAddObj( outGroup, obj ) == PWR_RET_FAILURE ) {
+            printf( "Error: failed\n" );
+            return;
+        }
+    }
+
+    if( (cgrp=PWR_ObjGetChildren( obj )) == PWR_NULL  ) {
+        return;
     }
 
     size = PWR_GrpGetNumObjs( cgrp );
     for( i = 0; i < size; i++ ) {
-        obj = PWR_GrpGetObjByIndx( cgrp, i );
-        if( PWR_ObjGetType( obj ) == type ) {
-            printf("add %s object\n",PWR_ObjGetName(obj));
-            int rc = PWR_GrpAddObj( outGroup, obj );
-            assert( rc!=PWR_RET_FAILURE );
-        }
-        int rc = get_type_objects( obj, type, outGroup );
-        if ( rc != 0 ) return rc;
+        get_type_objects( PWR_GrpGetObjByIndx( cgrp, i), type, outGroup );
     }
-    return 0;
 }
 
 int main( int argc, char* argv[] )
@@ -59,12 +55,13 @@ int main( int argc, char* argv[] )
     unsigned long tdiff;
 
     int option;
-    unsigned int i, j, samples = 1, freq = 1, numattrs = 0;
-    PWR_ObjType type = PWR_OBJ_INVALID;
+    unsigned int i, j, k, samples = 1, freq = 1, numobjs = 0, numattrs = 0;
+    PWR_ObjType type = PWR_OBJ_SOCKET;
 
+    PWR_AttrAccessError error; 
     PWR_AttrName attrs[100];
-    PWR_Time vals_ts[NUM_ATTR(attrs)*1000];
-    double vals[NUM_ATTR(attrs)*1000];
+    PWR_Time *vals_ts = 0x0;
+    double *vals = 0x0;
     static char usage[] =
         "usage: %s [-s samples] [-f freq] [-a attr] [-h]\n";
 
@@ -91,7 +88,7 @@ int main( int argc, char* argv[] )
                         attrs[numattrs++] = PWR_ATTR_TEMP;
                         break;
                     case 'M':
-                        attrs[numattrs++] = PWR_ATTR_MAX_POWER;
+                        attrs[numattrs++] = PWR_ATTR_POWER_LIMIT_MAX;
                         break;
                     case 'V':
                         attrs[numattrs++] = PWR_ATTR_VOLTAGE;
@@ -157,50 +154,58 @@ int main( int argc, char* argv[] )
         return -1;
     }
 
-    grp = PWR_GrpCreate( cntxt, "tmp" );
-    assert( PWR_NULL != grp );
-
-    if( type != PWR_OBJ_INVALID && 0 != get_type_objects( self, type, grp ) ) {
-        printf( "Error: getting core objects failed\n" );
+    if( (grp = PWR_GrpCreate( cntxt )) == PWR_NULL ) {
+        printf( "Error: creating a group from PowerAPI failed\n" );
         return -1;
     }
+
+    get_type_objects( self, type, grp );
+    if( !(numobjs=PWR_GrpGetNumObjs( grp )) ) {
+        printf( "Error: getting type objects failed\n" );
+        return -1;
+    }
+    vals_ts = malloc( numobjs * numattrs * sizeof(PWR_Time) );
+    vals = malloc( numobjs * numattrs * sizeof(double) );
 
     PWR_Status stats = PWR_StatusCreate();
     for( i = 0; i < samples; i++ ) {
         gettimeofday( &t0, 0x0 );
 
         if( PWR_GrpAttrGetValues( grp, numattrs, attrs, vals, vals_ts, stats ) 
-                != PWR_RET_SUCCESS ) 
-        {
-            PWR_AttrAccessError error; 
-            int rc = PWR_StatusPopError( stats, &error );  
+                == PWR_RET_SUCCESS ) {
+            for( j = 0; j < numobjs; j++ ) {
+                printf( "%s: ", PWR_ObjGetName( PWR_GrpGetObjByIndx( grp, j ) ) );
 
+                for( k = 0; k < numattrs; k++ ) {
+                    if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
+                        start = vals[k];
+                        start_ts = vals_ts[k];
+                    }
+                    if( !k ) time = vals_ts[k] - start_ts;
+                    if( attrs[k] == PWR_ATTR_ENERGY )
+                        printf( "%lf ", vals[k] - start );
+                    printf( "%lf ", vals[k] );
+                }
+                printf( "%lf\n", time/1000000000.0 );
+
+                gettimeofday( &t1, 0x0 );
+                tdiff = t1.tv_sec - t0.tv_sec +
+                    (t1.tv_usec - t0.tv_usec) / 1000000.0;
+
+                if( tdiff < 1000000.0 / freq )
+                    usleep( 1000000.0 / freq - tdiff );
+            }
+        } else {
+            PWR_StatusPopError( stats, &error );  
             printf("Error: reading of `%s` failed for object `%s` with error %d\n",
                     PWR_AttrGetTypeString( error.name), 
                     PWR_ObjGetName(error.obj), error.error );
-
-            return -1;
+            break;
         }
-
-        for( j = 0; j < numattrs; j++ ) {
-            if( !i && attrs[j] == PWR_ATTR_ENERGY ) {
-                start = vals[j];
-                start_ts = vals_ts[j];
-            }
-            if( !j ) time = vals_ts[j] - start_ts;
-            if( attrs[j] == PWR_ATTR_ENERGY )
-                printf( "%lf ", vals[j] - start );
-            printf( "%lf ", vals[j] );
-        }
-        printf( "%lf\n", time/1000000000.0 );
-
-        gettimeofday( &t1, 0x0 );
-        tdiff = t1.tv_sec - t0.tv_sec +
-            (t1.tv_usec - t0.tv_usec) / 1000000.0;
-
-        if( tdiff < 1000000.0 / freq )
-            usleep( 1000000.0 / freq - tdiff );
     }
+
+    free( vals_ts );
+    free( vals );
 
     return 0;
 }
