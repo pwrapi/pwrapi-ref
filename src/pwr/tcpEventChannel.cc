@@ -9,6 +9,7 @@
  * distribution.
 */
 
+#include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -93,6 +94,10 @@ int TcpEventChannel::initClient( std::string hostname, std::string portStr )
 	fd = socket( AF_INET, SOCK_STREAM, 0 );
 	assert( fd >= 0 );
 
+    int flag = 1;
+    int rc = setsockopt( fd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag) );
+    assert( rc == 0 );
+
 	he = gethostbyname( hostname.c_str() );
 	assert( he );
 
@@ -158,6 +163,10 @@ EventChannel* TcpEventChannel::accept( )
    	int cliFd = ::accept( m_fd, NULL, NULL );
 	DBGX2(DBG_EC,"fd=%d\n",cliFd);
 	assert( cliFd >= 0 );
+
+    int flag = 1;
+    int rc = setsockopt( cliFd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag) );
+    assert( rc == 0 );
 	
 	return new TcpEventChannel( m_allocFunc, cliFd, getName() + "-recv" );
 }
