@@ -34,16 +34,6 @@ using namespace PowerAPI;
 #define STAT(ptr) 	     ((Stat*) ptr) 
 #define REQUEST(ptr)     ((Request*) ptr) 
 
-int PWR_GetMajorVersion()
-{
-	assert(0);
-}
-
-int PWR_GetMinorVersion()
-{
-	assert(0);
-}
-
 PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
 {
 	return new DistCntxt( type, role, name );

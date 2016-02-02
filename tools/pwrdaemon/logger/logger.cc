@@ -43,10 +43,10 @@ Logger::Logger( int argc, char* argv[] ) :
                 m_args.pwrApiServerPort.c_str(), 0 );
     }
 
-    m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , m_args.name.c_str() );
+    PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , m_args.name.c_str(), m_ctx );
     assert(m_ctx);
 
-    m_obj = PWR_CntxtGetObjByName( m_ctx, m_args.objectName.c_str() );
+    PWR_CntxtGetObjByName( m_ctx, m_args.objectName.c_str(), m_obj );
     assert( PWR_NULL != m_obj );
 
 	if ( ! m_args.delay.empty() ) {
