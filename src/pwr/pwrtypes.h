@@ -15,35 +15,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define PWR_NULL NULL
-
 typedef void* PWR_Cntxt;
 typedef void* PWR_Grp;
 typedef void* PWR_Obj;
 typedef void* PWR_Status;
 typedef void* PWR_Stat;
-typedef void* PWR_Request;
 
-typedef int PWR_CntxtState;
+#define VENDOR_MAX_STRING_LEN 1024
 
-typedef void (*Callback)(void* data, int status);
-
-#define PWR_RET_WARN_DEPRECATED 2
-#define PWR_RET_WARN_NOT_OPTIMIZED 1
-#define PWR_RET_SUCCESS 0
-#define PWR_RET_FAILURE -1
-#define PWR_RET_NOT_IMPLEMENTED -2
-#define PWR_RET_EMPTY -3
-#define PWR_RET_INVALID -4
-#define PWR_RET_LENGTH -5
-#define PWR_RET_NO_ATTRIB -6
-#define PWR_RET_NO_META -7
-#define PWR_RET_READ_ONLY -8
-#define PWR_RET_BAD_VALUE -9
-#define PWR_RET_BAD_INDEX -10
-#define PWR_RET_OP_NOT_ATTEMPTED -11
-#define PWR_RET_NO_PERM -12
-#define PWR_RET_OUT_OF_RANGE -13
+#define PWR_MAJOR_VERSION 1
+#define PWR_MINOR_VERSION 1
+#define PWR_MAX_STRING_LEN VENDOR_MAX_STRING_LEN
 
 typedef int PWR_CntxtType;
 #define PWR_CNTXT_DEFAULT 0
@@ -82,23 +64,23 @@ typedef enum {
 } PWR_ObjType;
 
 typedef enum {
-    PWR_ATTR_PSTATE,	      /* Required Int    */
-    PWR_ATTR_CSTATE,	      /* Required Int    */
-    PWR_ATTR_CSTATE_LIMIT,    /* Required Int    */
-    PWR_ATTR_SSTATE,	      /* Required Int    */
-    PWR_ATTR_CURRENT,         /* Required Float  */
-    PWR_ATTR_VOLTAGE,         /* Required Float  */
-    PWR_ATTR_POWER,           /* Required Float  */
-    PWR_ATTR_POWER_LIMIT_MIN, /* Required Float  */
-    PWR_ATTR_POWER_LIMIT_MAX, /* Required Float  */
-    PWR_ATTR_FREQ,	      /* Required Float  */
-    PWR_ATTR_FREQ_LIMIT_MIN,  /* Required Float  */
-    PWR_ATTR_FREQ_LIMIT_MAX,  /* Required Float  */
-    PWR_ATTR_ENERGY,          /* Required Float  */
-    PWR_ATTR_TEMP,            /* Required Float  */
-    PWR_ATTR_OS_ID,           /* Required Float  */
-    PWR_ATTR_THROTTLED_TIME,  /* double, Hz    */
-    PWR_ATTR_THROTTLED_COUNT, /* double, Hz    */
+    PWR_ATTR_PSTATE,	      /* uint64_t */
+    PWR_ATTR_CSTATE,	      /* uint64_t */
+    PWR_ATTR_CSTATE_LIMIT,    /* uint64_t */
+    PWR_ATTR_SSTATE,	      /* uint64_t */
+    PWR_ATTR_CURRENT,         /* double, amps */
+    PWR_ATTR_VOLTAGE,         /* double, volts */
+    PWR_ATTR_POWER,           /* double, watts */
+    PWR_ATTR_POWER_LIMIT_MIN, /* double, watts */
+    PWR_ATTR_POWER_LIMIT_MAX, /* double, watts */
+    PWR_ATTR_FREQ,	          /* double, Hz */
+    PWR_ATTR_FREQ_LIMIT_MIN,  /* double, Hz */
+    PWR_ATTR_FREQ_LIMIT_MAX,  /* double, Hz */
+    PWR_ATTR_ENERGY,          /* double, joules */
+    PWR_ATTR_TEMP,            /* double, degrees Celsius */
+    PWR_ATTR_OS_ID,           /* uint64_t */
+    PWR_ATTR_THROTTLED_TIME,  /* uint64_t */
+    PWR_ATTR_THROTTLED_COUNT, /* uint64_t */
     PWR_NUM_ATTR_NAMES,
     /* */
     PWR_ATTR_INVALID = -1,
@@ -113,6 +95,12 @@ typedef enum {
     PWR_ATTR_DATA_INVALID = -1,
     PWR_ATTR_DATA_NOT_SPECIFIED = -2
 } PWR_AttrDataType;
+
+typedef struct {
+    PWR_Obj      obj;
+    PWR_AttrName name;
+    int          error;
+} PWR_AttrAccessError;
 
 typedef enum {
        PWR_MD_NUM = 0,         /* uint64_t */
@@ -140,6 +128,26 @@ typedef enum {
        PWR_MD_NOT_SPECIFIED = -2
 } PWR_MetaName;
 
+#define PWR_RET_WARN_NO_GRP_BY_NAME 5
+#define PWR_RET_WARN_NO_OBJ_AT_INDEX 4
+#define PWR_RET_WARN_NO_CHILDREN 3
+#define PWR_RET_WARN_NO_PARENT 2
+#define PWR_RET_WARN_NOT_OPTIMIZED 1
+#define PWR_RET_SUCCESS 0
+#define PWR_RET_FAILURE -1
+#define PWR_RET_NOT_IMPLEMENTED -2
+#define PWR_RET_EMPTY -3
+#define PWR_RET_INVALID -4
+#define PWR_RET_LENGTH -5
+#define PWR_RET_NO_ATTRIB -6
+#define PWR_RET_NO_META -7
+#define PWR_RET_READ_ONLY -8
+#define PWR_RET_BAD_VALUE -9
+#define PWR_RET_BAD_INDEX -10
+#define PWR_RET_OP_NOT_ATTEMPTED -11
+#define PWR_RET_NO_PERM -12
+#define PWR_RET_OUT_OF_RANGE -13
+
 typedef int64_t PWR_Time; 
 #define PWR_TIME_UNINIT  0
 #define PWR_TIME_UNKNOWN 0
@@ -156,6 +164,7 @@ typedef enum {
     PWR_ATTR_STAT_AVG,
     PWR_ATTR_STAT_STDEV,
     PWR_ATTR_STAT_CV,
+    PWR_ATTR_STAT_SUM,
     PWR_NUM_ATTR_STATS,
     /* */
     PWR_ATTR_STAT_INVALID = -1,
@@ -171,12 +180,6 @@ typedef enum {
     PWR_ID_INVALID = -1,
     PWR_ID_NOT_SPECIFIED = -2
 } PWR_ID;
-
-typedef struct {
-    PWR_Time    start;
-    PWR_Time    stop;
-    PWR_Time    instant;
-} PWR_StatTimes;
 
 typedef struct {
     uint64_t c_state_num;
@@ -212,7 +215,6 @@ typedef enum {
 
 typedef enum {
     PWR_SLEEP_NO = 0,
-    PWR_SLEEP_NO_TIL_BROOKLYN = PWR_SLEEP_NO,
     PWR_SLEEP_SHALLOW,
     PWR_SLEEP_MEDIUM,
     PWR_SLEEP_DEEP,
@@ -237,13 +239,21 @@ typedef enum {
 
 /* Extensions to the Specification */
 
+#define PWR_NULL NULL
+
 #define PWR_RET_IPC -14
 #define PWR_RET_STATUS -15
 
 typedef struct {
-    PWR_Obj      obj;
-    PWR_AttrName name;
-    int          error;
-} PWR_AttrAccessError;
+    PWR_Time    start;
+    PWR_Time    stop;
+    PWR_Time    instant;
+} PWR_StatTimes;
+
+typedef void* PWR_Request;
+
+typedef int PWR_CntxtState;
+
+typedef void (*Callback)(void* data, int status);
 
 #endif
