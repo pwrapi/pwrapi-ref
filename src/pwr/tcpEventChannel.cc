@@ -25,9 +25,6 @@
 #include "events.h"
 #include "debug.h"
 
-
-std::map<int,TcpEventChannel*> TcpEventChannel::m_chanFdMap;
-
 static void split( const std::string &str, 
             std::map<std::string,std::string>& foo );
 
@@ -156,14 +153,6 @@ int TcpEventChannel::setupRecv( int port )
     return fd; 
 }
 
-TcpEventChannel* TcpEventChannel::selected( int fd )
-{
-	DBG2(DBG_EC,"fd=%d\n",fd);
-	assert( m_chanFdMap.find(fd ) != m_chanFdMap.end() );
-
-	return m_chanFdMap[fd];
-}
-
 EventChannel* TcpEventChannel::accept( )
 {
    	int cliFd = ::accept( m_fd, NULL, NULL );
@@ -282,6 +271,33 @@ bool TcpChannelSelect::delChannel( EventChannel* chan )
     return false;
 }
 
+
+int TcpChannelSelect::select(int nfds, fd_set* readfds, fd_set* writefds,
+		fd_set* errorfds, struct timeval* abc )
+{
+	struct timeval timeout;			
+	timeout.tv_sec = 0;	
+	timeout.tv_usec = 1;	
+	int rc; 	
+	while ( 1 ) {
+		fd_set xx;
+		
+		for ( int i = 0; i < nfds; i++ ) {
+			FD_SET(i,&xx);
+		} 
+		rc = ::select( nfds, &xx, writefds, errorfds, &timeout );
+		if ( rc != 0 ) {
+			FD_ZERO(readfds);
+			for ( int i = 0; i < nfds; i++ ) {
+				if ( FD_ISSET(i,&xx) ) {
+					FD_SET(i,readfds);
+				}
+			} 
+			return rc;
+		}
+	} 
+}
+
 ChannelSelect::Data* TcpChannelSelect::wait()
 {
     int     fdmax = 0;;
@@ -289,6 +305,7 @@ ChannelSelect::Data* TcpChannelSelect::wait()
     fd_set  write_fds;
 	EventChannel* chan;
 
+	std::map< int, EventChannel* > fdMap;
 	do {
     	FD_ZERO( &read_fds );
     	FD_ZERO( &write_fds );
@@ -296,7 +313,7 @@ ChannelSelect::Data* TcpChannelSelect::wait()
 		std::map<EventChannel*,Data*>::iterator iter = m_chanMap.begin();
 
 		while ( iter != m_chanMap.end() ) {
-    		int fd = static_cast<TcpEventChannel*>(iter->first)->getSelectFd();
+    		int fd = static_cast<TcpEventChannel*>(iter->first)->getFd();
 
 			if ( fd > -1 ) {
 				DBGX2(DBG_EC,"fd=%d %s\n",fd, 
@@ -304,19 +321,20 @@ ChannelSelect::Data* TcpChannelSelect::wait()
     			fdmax = fd > fdmax ? fd : fdmax; 
     			FD_SET( fd, &read_fds );
     			FD_SET( fd, &write_fds );
+				fdMap[ fd ] = iter->first;
 			}
 			++iter;
 		}
 
 		DBGX2(DBG_EC,"calling select\n");
 
-    	int ret = select( fdmax+1, &read_fds, NULL, NULL, NULL );
+    	int ret = ::select( fdmax+1, &read_fds, NULL, NULL, NULL );
     	assert( ret > 0 );
 
     	for ( int i = 0; i <= fdmax; i++ ) {
         	if ( FD_ISSET( i, &read_fds ) ) {
 				DBGX2(DBG_EC,"selected %d\n",i);
-				chan = TcpEventChannel::selected( i );
+				chan = fdMap[i];
 				break;
         	}
     	} 

@@ -29,8 +29,8 @@ class TcpEventChannel : public EventChannel {
 	EventChannel *accept(  );
 	void close();
 
-    int getSelectFd( ) { return m_fd; } 
-    static TcpEventChannel* selected( int fd ); 
+    int getFd( ) { return m_fd; } 
+    //TcpEventChannel* selected( int fd ); 
 
   private:
 	int initClient( std::string hostname, std::string port);
@@ -41,7 +41,7 @@ class TcpEventChannel : public EventChannel {
 	std::string m_clientServer;
 	std::string m_clientServerPort;
 
-    static std::map<int,TcpEventChannel*> m_chanFdMap;
+    std::map<int,TcpEventChannel*> m_chanFdMap;
 };
 
 class TcpChannelSelect : public ChannelSelect {
@@ -52,6 +52,8 @@ class TcpChannelSelect : public ChannelSelect {
     virtual Data* wait();
 
   private:
+	int select(int nfds, fd_set* readfds, fd_set* writefds,
+					fd_set* errorfds,struct timeval * timeout);
     std::map<EventChannel*,Data*> m_chanMap;
 };
 
