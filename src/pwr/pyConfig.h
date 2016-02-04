@@ -56,7 +56,7 @@ class PyConfig : public Config {
 	}
 
     static pthread_mutex_t	m_mutex;
-    PyObject* m_pModule;
+    static PyObject* m_pModule;
 };
 
 }
