@@ -25,26 +25,36 @@ void get_type_objects( PWR_Obj obj, PWR_ObjType type, PWR_Grp outGroup )
     unsigned int i;
     size_t size;
     PWR_Grp cgrp;
+	PWR_ObjType objType;
+	PWR_ObjGetType( obj, &objType );
 
-    if( PWR_ObjGetType( obj ) == type ) {
+    if( objType == type ) {
         if( PWR_GrpAddObj( outGroup, obj ) == PWR_RET_FAILURE ) {
             printf( "Error: failed\n" );
             return;
         }
     }
 
-    if( (cgrp=PWR_ObjGetChildren( obj )) == PWR_NULL  ) {
-        return;
+	int rc = PWR_ObjGetChildren( obj, &cgrp );
+    if ( PWR_RET_SUCCESS != rc ) {  
+        printf( "Error: failed\n" );
+		return;
     }
+	if ( NULL == cgrp ) {
+		return;
+	}
 
     size = PWR_GrpGetNumObjs( cgrp );
     for( i = 0; i < size; i++ ) {
-        get_type_objects( PWR_GrpGetObjByIndx( cgrp, i), type, outGroup );
+		PWR_Obj tmp;
+		PWR_GrpGetObjByIndx( cgrp, i, &tmp), 
+        get_type_objects( tmp, type, outGroup );
     }
 }
 
 int main( int argc, char* argv[] )
 {
+	int rc;
     PWR_Obj self;
     PWR_Cntxt cntxt;
     PWR_Grp grp;
@@ -143,18 +153,20 @@ int main( int argc, char* argv[] )
         exit( 1 );
     } 
 
-    if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application" )) == 0x0 ) {
+	rc = PWR_CntxtInit(PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt);
+    if( PWR_RET_SUCCESS != rc ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
     }
 
-
-    if( (self=PWR_CntxtGetEntryPoint( cntxt ) ) == 0x0 ) {
+	rc = PWR_CntxtGetEntryPoint( cntxt, &self ) ;
+    if( PWR_RET_SUCCESS != rc ) {
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }
 
-    if( (grp = PWR_GrpCreate( cntxt )) == PWR_NULL ) {
+	rc = PWR_GrpCreate( cntxt, &grp );
+    if( PWR_RET_SUCCESS != rc ) {
         printf( "Error: creating a group from PowerAPI failed\n" );
         return -1;
     }
@@ -167,14 +179,19 @@ int main( int argc, char* argv[] )
     vals_ts = malloc( numobjs * numattrs * sizeof(PWR_Time) );
     vals = malloc( numobjs * numattrs * sizeof(double) );
 
-    PWR_Status stats = PWR_StatusCreate();
+    PWR_Status stats;
+	PWR_StatusCreate( &stats );
     for( i = 0; i < samples; i++ ) {
         gettimeofday( &t0, 0x0 );
 
         if( PWR_GrpAttrGetValues( grp, numattrs, attrs, vals, vals_ts, stats ) 
                 == PWR_RET_SUCCESS ) {
             for( j = 0; j < numobjs; j++ ) {
-                printf( "%s: ", PWR_ObjGetName( PWR_GrpGetObjByIndx( grp, j ) ) );
+				const char* name; 
+				PWR_Obj obj;
+				PWR_GrpGetObjByIndx( grp, j, &obj ), 
+				PWR_ObjGetName( obj, &name );
+                printf( "%s: ", name );
 
                 for( k = 0; k < numattrs; k++ ) {
                     if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
@@ -197,9 +214,10 @@ int main( int argc, char* argv[] )
             }
         } else {
             PWR_StatusPopError( stats, &error );  
+			const char* name;
+            PWR_ObjGetName(error.obj, &name );
             printf("Error: reading of `%s` failed for object `%s` with error %d\n",
-                    PWR_AttrGetTypeString( error.name), 
-                    PWR_ObjGetName(error.obj), error.error );
+                    PWR_AttrGetTypeString( error.name), name, error.error );
             break;
         }
     }
