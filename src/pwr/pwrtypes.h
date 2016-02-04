@@ -24,7 +24,7 @@ typedef void* PWR_Stat;
 #define VENDOR_MAX_STRING_LEN 1024
 
 #define PWR_MAJOR_VERSION 1
-#define PWR_MINOR_VERSION 1
+#define PWR_MINOR_VERSION 2
 #define PWR_MAX_STRING_LEN VENDOR_MAX_STRING_LEN
 
 typedef int PWR_CntxtType;
