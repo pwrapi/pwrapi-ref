@@ -110,11 +110,12 @@ int main( int argc, char* argv[] )
 	}
 
     // Get a context
-    cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
-    assert( PWR_NULL != cntxt   );
+	retval = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
+    assert( PWR_RET_SUCCESS != retval );
 
-	PWR_Obj obj = PWR_CntxtGetObjByName( cntxt, object.c_str() );
-    assert( PWR_NULL != obj   );
+	PWR_Obj obj;
+	retval = PWR_CntxtGetObjByName( cntxt, object.c_str(), &obj );
+    assert( PWR_RET_SUCCESS != retval );
 
 	std::string arg0 = argv[0];
 	std::string exe = arg0.substr(arg0.find_last_of("/")+1); 

@@ -39,13 +39,16 @@ int main( int argc, char** argv )
                 return -1;
         }
 
-    PWR_Cntxt cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
+    PWR_Cntxt cntxt;
+ 	PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
+
     if( cntxt == 0x0 ) {
         printf( "ABORT - error occured when initializing context\n" );
         exit( 0 );
     }
 
-    PWR_Obj self = PWR_CntxtGetEntryPoint( cntxt );
+    PWR_Obj self; 
+	PWR_CntxtGetEntryPoint( cntxt, &self );
     if( self == 0x0 ) {
         printf( "ABORT - error occured when getting entry point\n" );
         exit( 0 );

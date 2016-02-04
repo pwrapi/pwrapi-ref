@@ -25,36 +25,46 @@ int main( int argc, char* argv[] )
     PWR_Obj     self;
     PWR_Cntxt   cntxt;
     time_t      time;
-    int         retval;
+    int         rc;
     double       value;
     PWR_Time ts;
 	PWR_Status  status;
 
     // Get a context
-    cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
-    assert( cntxt );
-    self = PWR_CntxtGetEntryPoint( cntxt );
-    assert( self );
+    rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
+    assert( PWR_RET_SUCCESS != rc );
+    rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    assert( PWR_RET_SUCCESS != rc );
     
-    printf("I'm a `%s`\n", PWR_ObjGetTypeString( PWR_ObjGetType( self ) ) ); 
+	PWR_ObjType objType;
+	PWR_ObjGetType( self, &objType );
+    printf("I'm a `%s`\n", PWR_ObjGetTypeString( objType ) ); 
 
-    PWR_Obj parent = PWR_ObjGetParent( self );
+    PWR_Obj parent;
+	rc = PWR_ObjGetParent( self, &parent );
+	assert( PWR_RET_SUCCESS != rc );	
     assert( ! parent );
 
-    PWR_Grp children = PWR_ObjGetChildren( self );
+    PWR_Grp children;
+	rc = PWR_ObjGetChildren( self, &children );
+	assert( PWR_RET_SUCCESS != rc );	
     assert( children );
 
     int i;
     for ( i = 0; i < PWR_GrpGetNumObjs(children); i++ ) {
-        printf("child %s\n", PWR_ObjGetName( 
-                        PWR_GrpGetObjByIndx( children, i ) ) );
+		const char* name;
+		PWR_Obj obj;
+        PWR_GrpGetObjByIndx( children, i, &obj );
+		PWR_ObjGetName( obj, &name );
+ 
+        printf("child %s\n", name );
     }
 
-    retval = PWR_ObjAttrGetValue( self, PWR_ATTR_VOLTAGE, &value, &ts );
-    assert( retval == PWR_RET_INVALID );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_VOLTAGE, &value, &ts );
+    assert( rc == PWR_RET_INVALID );
 
-    retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
+    assert( rc == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
     printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
@@ -62,15 +72,16 @@ int main( int argc, char* argv[] )
     
     value = 25.812;
     printf("PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=%f\n",value);
-    retval = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, &value );
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, &value );
+    assert( rc == PWR_RET_SUCCESS );
 
     PWR_AttrName name = PWR_ATTR_POWER;
      
-    status = PWR_StatusCreate();
+	rc =  PWR_StatusCreate( &status );
+	assert( PWR_RET_SUCCESS != rc );
 
-    retval = PWR_ObjAttrGetValues( self, 1, &name, &value, &ts, status );  
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrGetValues( self, 1, &name, &value, &ts, status );  
+    assert( rc == PWR_RET_SUCCESS );
 
     PWR_TimeConvert( ts, &time );
     printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", 
@@ -78,11 +89,11 @@ int main( int argc, char* argv[] )
 
     value = 100.10;
     printf("PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=%f\n",value);
-    retval = PWR_ObjAttrSetValues( self, 1, &name, &value, status );  
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrSetValues( self, 1, &name, &value, status );  
+    assert( rc == PWR_RET_SUCCESS );
 
-    retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
+    assert( rc == PWR_RET_SUCCESS );
 
 
     PWR_TimeConvert( ts, &time );
@@ -90,17 +101,18 @@ int main( int argc, char* argv[] )
 													value,myctime(&time));
     assert( value == 200.20 );
 
-    grp = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE );
+    rc = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE, &grp );
+    assert( rc == PWR_RET_SUCCESS );
     assert( grp );
 	assert( PWR_GrpGetNumObjs( grp ) );
 
     value = 0.1;
     printf("PWR_GrpAttrSetValue(PWR_ATTR_POWER) value=%f\n", value);
-    retval = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
+    assert( rc == PWR_RET_SUCCESS );
 
-    retval = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( retval == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
+    assert( rc == PWR_RET_SUCCESS );
 
     assert( value == 0.2 );
 
@@ -108,20 +120,23 @@ int main( int argc, char* argv[] )
     printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
 													value,myctime(&time));
 
-	PWR_Obj* core = PWR_GrpGetObjByIndx( grp, 0 );
-	assert( core );
+	PWR_Obj core;
+	rc = PWR_GrpGetObjByIndx( grp, 0, &core );
+	assert( PWR_RET_SUCCESS != rc );
 
-	PWR_Stat coreStat = PWR_ObjCreateStat( core, PWR_ATTR_POWER,
-				PWR_ATTR_STAT_AVG );
-	assert( coreStat );
+	PWR_Stat coreStat;
+	rc = PWR_ObjCreateStat( core, PWR_ATTR_POWER, 
+						PWR_ATTR_STAT_AVG, &coreStat );
+	assert( PWR_RET_SUCCESS != rc );
 
-	retval = PWR_StatStart( coreStat );
-    assert( retval == PWR_RET_SUCCESS );
+	rc = PWR_StatStart( coreStat );
+    assert( rc == PWR_RET_SUCCESS );
 
 	sleep(1);
-	PWR_StatTimes statTimes;
-	retval = PWR_StatGetValue( coreStat, &value, &statTimes);
-    assert( retval == PWR_RET_SUCCESS );
+	PWR_TimePeriod statTimes;
+
+	rc = PWR_StatGetValue( coreStat, &value, &statTimes);
+    assert( rc == PWR_RET_SUCCESS );
 
     printf("PWR_StatGetValue(PWR_ATTR_POWER) value=%f\n", value );
     printf("PWR_StatGetValue(PWR_ATTR_POWER) start=%llu\n", 
@@ -136,19 +151,19 @@ int main( int argc, char* argv[] )
 	}
 	PWR_StatDestroy( coreStat );
 
-	PWR_Stat coresStat = PWR_GrpCreateStat( grp, PWR_ATTR_POWER,
-				PWR_ATTR_STAT_AVG );
-	assert( coresStat );
+	PWR_Stat coresStat;
+	rc = PWR_GrpCreateStat( grp, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, &coreStat);
+	assert( PWR_RET_SUCCESS != rc );
 
-	retval = PWR_StatStart( coresStat );
-	assert( retval == PWR_RET_SUCCESS );
+	rc = PWR_StatStart( coresStat );
+	assert( rc == PWR_RET_SUCCESS );
 
 	sleep(1);
-	PWR_StatTimes statTimes2[2];
+	PWR_TimePeriod statTimes2[2];
 	double values[2];
 
-	retval = PWR_StatGetValues( coresStat, &values[0], &statTimes2[0]);
-	assert( retval == PWR_RET_SUCCESS );
+	rc = PWR_StatGetValues( coresStat, &values[0], &statTimes2[0]);
+	assert( rc == PWR_RET_SUCCESS );
 
 	PWR_StatDestroy( coresStat );
 
