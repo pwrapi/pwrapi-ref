@@ -14,12 +14,9 @@
 
 #include "pwrdev.h"
 #include "pwr_config.h"
+#include "debug.h"
 
-#ifdef USE_DEBUG
-#define DBGP(X,...) fprintf( stderr, X, ## __VA_ARGS__ ); fflush( stderr )
-#else
-#define DBGP(X,...)
-#endif
+#define DBGP(X, ... ) DBG3( DBG_PLUGGIN, "Plugin", X, ##__VA_ARGS__ )
 
 #ifdef __cplusplus
 extern "C" {
