@@ -31,15 +31,15 @@ class DeviceStat : public Stat {
 	virtual int start();
 	virtual int stop();
 	virtual int clear();
-	virtual int getValue( double* value, PWR_StatTimes* statTimes );
-	virtual int getValues( double value[], PWR_StatTimes statTimes[] );
+	virtual int getValue( double* value, PWR_TimePeriod* statTimes );
+	virtual int getValues( double value[], PWR_TimePeriod statTimes[] );
 
   private:
 	int startObj();
 	int startGrp();
 	int stopObj();
 	int stopGrp();
-	int objGetValue( Object*, double* value, PWR_StatTimes* statTimes );
+	int objGetValue( Object*, double* value, PWR_TimePeriod* statTimes );
 	bool m_isLogging;
 };
 

@@ -42,8 +42,8 @@ class Stat {
 	virtual int start() = 0;
 	virtual int stop() = 0; 
 	virtual int clear() = 0;
-	virtual int getValue( double* value, PWR_StatTimes* statTimes ) = 0;
-	virtual int getValues( double value[], PWR_StatTimes statTimes[] ) = 0;
+	virtual int getValue( double* value, PWR_TimePeriod* statTimes ) = 0;
+	virtual int getValues( double value[], PWR_TimePeriod statTimes[] ) = 0;
 
 	Cntxt* getCtx() {
 		return m_ctx;

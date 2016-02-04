@@ -37,8 +37,8 @@ int         PWR_CntxtDestroy( PWR_Cntxt );
 int         PWR_CntxtGetEntryPoint( PWR_Cntxt, PWR_Obj* );
 int         PWR_CntxtGetObjByName( PWR_Cntxt, const char* name, PWR_Obj* );
 
-int         PWR_ObjGetType( PWR_Obj, PWR_ObjType );
-int         PWR_ObjGetName( PWR_Obj, const char* name );
+int         PWR_ObjGetType( PWR_Obj, PWR_ObjType* );
+int         PWR_ObjGetName( PWR_Obj, const char** name );
 int         PWR_ObjGetParent( PWR_Obj, PWR_Obj* parent );
 int         PWR_ObjGetChildren( PWR_Obj, PWR_Grp* );
 
@@ -73,16 +73,16 @@ int         PWR_StatusDestroy( PWR_Status );
 int         PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
 int         PWR_StatusClear( PWR_Status );
 
-int         PWR_ObjAttrGetValues( PWR_Obj, int count, const PWR_AttrName names[], void* vals, PWR_Time ts[], PWR_Status* );
-int         PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* vals, PWR_Status* );
+int         PWR_ObjAttrGetValues( PWR_Obj, int count, const PWR_AttrName names[], void* vals, PWR_Time ts[], PWR_Status );
+int         PWR_ObjAttrSetValues( PWR_Obj, int count, PWR_AttrName names[], void* vals, PWR_Status );
 
 int         PWR_ObjAttrIsValid( PWR_Obj, PWR_AttrName );
 
-int         PWR_GrpAttrGetValue( PWR_Grp, PWR_AttrName, void* vals, PWR_Time ts[], PWR_Status* );
-int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName, void* val, PWR_Status* );
+int         PWR_GrpAttrGetValue( PWR_Grp, PWR_AttrName, void* vals, PWR_Time ts[], PWR_Status );
+int         PWR_GrpAttrSetValue( PWR_Grp, PWR_AttrName, void* val, PWR_Status );
 
-int         PWR_GrpAttrGetValues( PWR_Grp, int count, const PWR_AttrName[], void* vals, PWR_Time ts[], PWR_Status* );
-int         PWR_GrpAttrSetValues( PWR_Grp, int count, const PWR_AttrName[], const void* vals, PWR_Status* );
+int         PWR_GrpAttrGetValues( PWR_Grp, int count, const PWR_AttrName[], void* vals, PWR_Time ts[], PWR_Status );
+int         PWR_GrpAttrSetValues( PWR_Grp, int count, const PWR_AttrName[], const void* vals, PWR_Status );
 
 /*
  * Subset of API for metadata
@@ -176,9 +176,9 @@ int PWR_ObjAttrGetSamples_NB( PWR_Obj, PWR_AttrName name, PWR_Time*, double peri
 											unsigned int* count, void* buf,  PWR_Request );
 
 
-PWR_Grp     PWR_GrpFilterByAttrName( PWR_Grp, PWR_AttrName );
-PWR_Grp     PWR_GrpFilterByObjType( PWR_Grp, PWR_ObjType );
-PWR_Grp     PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType );
+int PWR_GrpFilterByAttrName( PWR_Grp, PWR_AttrName, PWR_Grp* );
+int PWR_GrpFilterByObjType( PWR_Grp, PWR_ObjType, PWR_Grp* );
+int PWR_CntxtGetGrpByType( PWR_Cntxt, PWR_ObjType, PWR_Grp* );
 
 #ifdef __cplusplus
 }
