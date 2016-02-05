@@ -454,6 +454,7 @@ std::string PyConfig::objTypeToString( PWR_ObjType type )
     case PWR_OBJ_NIC:      return "Nic";
     case PWR_OBJ_MEM:      return "Memory";
     case PWR_OBJ_INVALID:  return "Invalid";
+    default:               return "????";
     }
     return NULL;
 }
