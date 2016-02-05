@@ -10,6 +10,7 @@
 */
 
 #include <sys/types.h>
+#include <sys/time.h>
 #include <signal.h>
 #include <time.h>
 #include <stdlib.h>
@@ -24,24 +25,12 @@
 
 char* myctime(const time_t *timep);
 
-#ifdef __MACH__
-#include <sys/time.h>
-#define CLOCK_REALTIME 0
-//clock_gettime is not implemented on OSX
-int clock_gettime(int /*clk_id*/, struct timespec* t) {
-    struct timeval now;
-    int rv = gettimeofday(&now, NULL);
-    if (rv) return rv;
-    t->tv_sec  = now.tv_sec;
-    t->tv_nsec = now.tv_usec * 1000;
-    return 0;
-}
-#endif
-
 double getTime() {
 	struct timespec spec;
-	int rc = clock_gettime( CLOCK_REALTIME, &spec );
+	int rc = gettimeofday( &spec, NULL );
 	assert( 0 == rc );
+    spec->tv_sec  = now.tv_sec;
+    spec->tv_nsec = now.tv_usec * 1000;
 
     return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
 }
