@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libpwr.la
 
-include_HEADERS = pwr.h pwrtypes.h pwrdev.h eventChannel.h events.h event.h eventType.h serialize.h tcpEventChannel.h util.h xmlConfig.h config.h
+include_HEADERS = pwr.h pwrtypes.h pwrdev.h eventChannel.h events.h event.h eventType.h serialize.h tcpEventChannel.h util.h xmlConfig.h config.h debug.h
 
 # Power API Framework
 libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc object.cc xmlConfig.cc deviceStat.cc
