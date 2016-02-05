@@ -27,10 +27,12 @@ char* myctime(const time_t *timep);
 
 double getTime() {
 	struct timespec spec;
-	int rc = gettimeofday( &spec, NULL );
+    struct timeval now;
+
+	int rc = gettimeofday( &now, NULL );
 	assert( 0 == rc );
-    spec->tv_sec  = now.tv_sec;
-    spec->tv_nsec = now.tv_usec * 1000;
+    spec.tv_sec  = now.tv_sec;
+    spec.tv_nsec = now.tv_usec * 1000;
 
     return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
 }
