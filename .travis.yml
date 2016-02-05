@@ -5,13 +5,14 @@ compiler:
 os:
     - linux
 before_install:
+        - sudo apt-get install libcr-dev mpich2
 install:
         - git clone https://github.com/pwrapi/pwrapi-ref
         - cd pwrapi-ref
         - ./autogen.sh
         - mkdir build
         - cd build
-        - ../configure --prefix=`pwd`/../install/ --without-mpi
+        - ../configure --prefix=`pwd`/../install
         - make
         - make install
 script:
