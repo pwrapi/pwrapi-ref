@@ -5,7 +5,7 @@ compiler:
 os:
     - linux
 before_install:
-        - sudo apt-get install openmpi-bin libopenmpi-dev
+        - sudo apt-get install mpich2
 install:
         - git clone https://github.com/pwrapi/pwrapi-ref
         - cd pwrapi-ref
