@@ -7,6 +7,7 @@ from machine import *
 plugins['CrayXTPM'] = 'libpwr_xtpmdev'
 devices['XTPM-node'] = ['CrayXTPM','']
 
+
 energy = Attr( Sum, Float )
 
 platform = Object( Platform, 'plat' )
@@ -20,21 +21,17 @@ board.setAttr( Energy, energy )
 
 node = Object( Node, 'node', board )
 
-nodeVoltage = Attr( None, Float )
-nodeCurrent = Attr( None, Float )
-nodeEnergy = Attr( Sum, Float )
-
-node.setAttr( Energy, nodeEnergy )
-node.setAttr( Voltage, nodeVoltage )
-node.setAttr( Current, nodeCurrent )
+node.setAttr( Energy, Attr( Sum, Float ) )
+node.setAttr( Power, Attr( Sum, Float ) )
+node.setAttr( MaxPower, Attr( Sum, Float ) )
 
 def calcAttrSrc( name ):
 	Debug("calcAttrSrc() name=\'{1}\'".format( "", name ) )
 	return [ [ "XTPM-node", "" ] ] 
 			
-node.addAttrDevice( Voltage, calcAttrSrc ) 
-node.addAttrDevice( Current, calcAttrSrc )
-node.addAttrDevice( Energy, calcAttrSrc )
+node.addAttrDevice( Energy, calcAttrSrc ) 
+node.addAttrDevice( Power, calcAttrSrc )
+node.addAttrDevice( MaxPower, calcAttrSrc )
 
 objectMap['plat'] = platform
 objectMap['cab'] = cabinet
