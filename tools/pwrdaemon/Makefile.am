@@ -1,5 +1,7 @@
 if HAVE_PYTHON
+if HAVE_MPI
 lib_LTLIBRARIES = libpwrrt.la
+endif
 endif
 
 bin_PROGRAMS = pwrdaemon
@@ -30,9 +32,11 @@ pwrdaemon_LDADD = $(top_builddir)/src/pwr/libpwr.la \
 pwrdaemon_LDFLAGS = -lpthread
 
 if HAVE_PYTHON
+if HAVE_MPI
 libpwrrt_la_SOURCES = powerrt.cc
 libpwrrt_la_LDFLAGS = $(PYTHON_LDFLAGS) 
 libpwrrt_la_CPPFLAGS = $(PYTHON_CPPFLAGS) $(MPI_CPPFLAGS)
+endif
 endif
 
 if HAVE_PYTHON
