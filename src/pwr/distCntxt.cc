@@ -234,17 +234,17 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 			vOp = INT_AVG;
 		}
     }
-    assert(vOp != NO_OP );
-    assert(opFunc);
 
 	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp, vOp );
 
-   	std::set<Object*> remote;
-	traverse( obj->name(), attrName, attrInfo->devices, remote );
+	if ( vOp != NO_OP ) {
+   		std::set<Object*> remote;
+		traverse( obj->name(), attrName, attrInfo->devices, remote );
 
-	DBGX("%lu %lu\n", attrInfo->devices.size(), remote.size() );
-	if ( ! remote.empty() ) {
-		attrInfo->comm = getCommunicator( remote );
+		DBGX("%lu %lu\n", attrInfo->devices.size(), remote.size() );
+		if ( ! remote.empty() ) {
+			attrInfo->comm = getCommunicator( remote );
+		}
 	}
 
 	return attrInfo;
