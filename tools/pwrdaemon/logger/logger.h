@@ -31,19 +31,24 @@ struct Args {
     std::string logfile;
     std::string count;
     std::string delay;
+    std::string attr;
 };
+
+class Work;
 
 class Logger {
   public:
 	Logger( int, char* [] );
 	~Logger();
 	int work();
+
   private:
-	Args	m_args;
-	PWR_Cntxt m_ctx;
-	PWR_Obj   m_obj;
-	FILE*	m_logFP;
-	int     m_delay;
+	Work*     	m_work;
+	Args		m_args;
+	PWR_Cntxt 	m_ctx;
+	PWR_Obj   	m_obj;
+	FILE*		m_logFP;
+	int     	m_delay;
 };
 
 }

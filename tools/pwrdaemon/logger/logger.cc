@@ -15,6 +15,8 @@
 #include <assert.h>
 #include "logger.h"
 #include "debug.h"
+#include "power.h"
+#include "energy.h"
 
 using namespace PWR_Logger;
 
@@ -60,13 +62,24 @@ Logger::Logger( int argc, char* argv[] ) :
             exit(-1);
         }
     }
+    fprintf(m_logFP, "obj %s, attr %s\n",
+				m_args.objectName.c_str(),m_args.attr.c_str());
 
+	if ( 0 == m_args.attr.compare("power") ) {
+		m_work = new Power;
+	} else if ( 0 == m_args.attr.compare("energy") ) {
+		m_work = new Energy;
+	} else {
+	    assert(0);	
+	}
 }
+
 Logger::~Logger()
 {
 	PWR_CntxtDestroy(m_ctx);
 }
 
+#if 0
 //#ifdef __MACH__
 #include <sys/time.h>
 #define CLOCK_REALTIME 0
@@ -89,35 +102,19 @@ static double getTime() {
     return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
 }
 
+#endif
 
 int Logger::work()
 {
     if ( m_delay ) {
-        fprintf(m_logFP,"sleep %d\n",m_delay);
+        fprintf(m_logFP,"sleep %d ... ",m_delay);
         fflush(m_logFP);
         sleep(m_delay);
-        fprintf(m_logFP,"lets go\n");
+        fprintf(m_logFP,"go\n");
         fflush(m_logFP);
     }
-	while( 1 ) {
-        double value = 0;
-		PWR_Time ts;
-        double start = getTime();
-        int retval = PWR_ObjAttrGetValue( m_obj, PWR_ATTR_ENERGY, &value, &ts );
 
-        double stop = getTime();
-        if( retval != PWR_RET_SUCCESS ) {
-            fprintf(stderr,"ERROR: PWR_ObjAttrGetValue() failed, retval=%d\n",retval);
-            exit(-1);
-        }
-
-
-        fprintf(m_logFP,"Logger: \'%s\' value=%.1lf, latency %f\n",
-                     m_args.objectName.c_str(), value/1000000, stop - start);
-        fflush(m_logFP);
-        sleep(1);
-	}
-	return 0;
+	return m_work->work( m_ctx, m_obj, m_logFP );
 }
 
 static void print_usage() {
@@ -131,9 +128,10 @@ static void initArgs( int argc, char* argv[], Args* args )
     enum { RTR_PORT, RTR_HOST,
             PWRAPI_CONFIG, PWRAPI_ROOT,
             PWRAPI_SERVER, PWRAPI_SERVER_PORT, NAME,
-			OBJECT, LOGFILE, COUNT, DELAY  };
+			OBJECT, ATTR, LOGFILE, COUNT, DELAY  };
     static struct option long_options[] = {
         {"object"           , required_argument, NULL, OBJECT },
+        {"attr"             , required_argument, NULL, ATTR },
         {"logfile"          , required_argument, NULL, LOGFILE },
         {"name"             , required_argument, NULL, NAME },
         {"count"            , required_argument, NULL, COUNT },
@@ -154,6 +152,9 @@ static void initArgs( int argc, char* argv[], Args* args )
             break;
           case OBJECT:
             args->objectName = optarg;
+            break;
+          case ATTR:
+            args->attr = optarg;
             break;
           case NAME:
             args->name = optarg;
