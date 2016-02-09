@@ -10,6 +10,7 @@
 */
 
 #include <sys/types.h>
+#include <sys/time.h>
 #include <signal.h>
 #include <time.h>
 #include <stdlib.h>
@@ -24,24 +25,14 @@
 
 char* myctime(const time_t *timep);
 
-#ifdef __MACH__
-#include <sys/time.h>
-#define CLOCK_REALTIME 0
-//clock_gettime is not implemented on OSX
-int clock_gettime(int /*clk_id*/, struct timespec* t) {
-    struct timeval now;
-    int rv = gettimeofday(&now, NULL);
-    if (rv) return rv;
-    t->tv_sec  = now.tv_sec;
-    t->tv_nsec = now.tv_usec * 1000;
-    return 0;
-}
-#endif
-
 double getTime() {
 	struct timespec spec;
-	int rc = clock_gettime( CLOCK_REALTIME, &spec );
+    struct timeval now;
+
+	int rc = gettimeofday( &now, NULL );
 	assert( 0 == rc );
+    spec.tv_sec  = now.tv_sec;
+    spec.tv_nsec = now.tv_usec * 1000;
 
     return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
 }
@@ -110,11 +101,12 @@ int main( int argc, char* argv[] )
 	}
 
     // Get a context
-    cntxt = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App" );
-    assert( PWR_NULL != cntxt   );
+	retval = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
+    assert( PWR_RET_SUCCESS != retval );
 
-	PWR_Obj obj = PWR_CntxtGetObjByName( cntxt, object.c_str() );
-    assert( PWR_NULL != obj   );
+	PWR_Obj obj;
+	retval = PWR_CntxtGetObjByName( cntxt, object.c_str(), &obj );
+    assert( PWR_RET_SUCCESS != retval );
 
 	std::string arg0 = argv[0];
 	std::string exe = arg0.substr(arg0.find_last_of("/")+1); 

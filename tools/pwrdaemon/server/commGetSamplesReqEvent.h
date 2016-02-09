@@ -32,7 +32,9 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
 		DBGX("%lu\n",commID);
 
-    	DBGX("obj='%s' attr=`%s`\n", PWR_ObjGetName(obj),
+		const char* name;
+		PWR_ObjGetName(obj,&name);
+    	DBGX("obj='%s' attr=`%s`\n", name,
                             PWR_AttrGetTypeString( attrName ) );
 		DBGX("period=%f count=%d\n", period, count );
     	m_respEvent.id = id;

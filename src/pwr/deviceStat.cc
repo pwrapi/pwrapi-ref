@@ -96,13 +96,13 @@ int DeviceStat::clear( ) {
 	return PWR_RET_SUCCESS;
 }
 
-int DeviceStat::getValue( double* value, PWR_StatTimes* statTimes ) {
+int DeviceStat::getValue( double* value, PWR_TimePeriod* statTimes ) {
 
 	return objGetValue( m_obj, value, statTimes );
 }
 
 int DeviceStat::objGetValue( Object* obj, double* value,
-								PWR_StatTimes* statTimes )
+								PWR_TimePeriod* statTimes )
 {
 	double now = getTime();
 	double windowTime = now - m_startTime;	
@@ -121,7 +121,7 @@ int DeviceStat::objGetValue( Object* obj, double* value,
 	return retval;
 }
 
-int DeviceStat::getValues( double value[], PWR_StatTimes statTimes[] ) 
+int DeviceStat::getValues( double value[], PWR_TimePeriod statTimes[] ) 
 {
 	DBGX("\n");
 	for ( int i = 0; i < m_grp->size(); i++ ) {

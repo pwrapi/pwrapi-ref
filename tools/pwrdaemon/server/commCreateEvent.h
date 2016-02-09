@@ -30,8 +30,7 @@ class SrvrCommCreateEvent: public  CommCreateEvent {
     	for ( unsigned int i = 0; i < members.size(); i++ ) {
         	std::string& name = members[i];
         	DBGX("get object %s\n", name.c_str());
-        	cInfo.objects[i] = PWR_CntxtGetObjByName( 
-												info.m_ctx, name.c_str() );
+        	PWR_CntxtGetObjByName(info.m_ctx, name.c_str(), &(cInfo.objects[i]) );
         	assert( cInfo.objects[i] );
    		}	
 		return true;

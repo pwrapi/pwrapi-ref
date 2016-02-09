@@ -32,7 +32,7 @@ Server::Server( int argc, char* argv[] )
 				m_args.pwrApiServerPort.c_str(), 0 );  
 	}
 
-	m_ctx = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , m_args.name.c_str() );
+	PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , m_args.name.c_str(), &m_ctx );
 	assert(m_ctx);
 
 	EventChannel* ctxChan = PWR_CntxtGetEventChannel( m_ctx );

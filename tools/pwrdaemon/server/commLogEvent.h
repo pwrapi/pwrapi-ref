@@ -30,8 +30,9 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
 		DBGX("commID=%lu\n",commID);
 		PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
-        DBGX("obj='%s' attr=`%s`\n", PWR_ObjGetName(obj),
-                            PWR_AttrGetTypeString( attrName ) );
+		const char* name;
+		PWR_ObjGetName(obj,&name);
+		DBGX("obj='%s' attr=`%s`\n", name, PWR_AttrGetTypeString( attrName ) );
         m_respEvent.op = op;
         m_respEvent.id = id;
 

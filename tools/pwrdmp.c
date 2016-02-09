@@ -9,6 +9,7 @@
  * distribution.
 */
 
+#include <assert.h>
 #include "pwr.h"
 
 #include <stdlib.h>
@@ -24,16 +25,26 @@ void dump_type_objects( PWR_Obj self, PWR_ObjType type )
     size_t size;
     PWR_Grp grp;
     PWR_Obj obj;
+	int rc;
 
-    if( (grp=PWR_ObjGetChildren( self )) == (PWR_Grp)0x0 )
+	rc = PWR_ObjGetChildren( self, &grp );
+    if( PWR_RET_SUCCESS != rc ) 
+		assert(0);
+	if ( PWR_NULL == grp )
         return;
 
     size = PWR_GrpGetNumObjs( grp );
     for( i = 0; i < size; i++ ) {
-        obj = PWR_GrpGetObjByIndx( grp, i );
-        if( type == PWR_OBJ_INVALID || PWR_ObjGetType( obj ) == type ) {
-            printf( "%s %s", PWR_ObjGetName( obj ),
-                    PWR_ObjGetTypeString( type ) );
+		PWR_GrpGetObjByIndx( grp, i, &obj );
+
+		PWR_ObjType objType;
+		PWR_ObjGetType( obj, &objType ); 
+        if( type == PWR_OBJ_INVALID || objType == type ) {
+
+			const char* name;
+			PWR_ObjGetName( obj, &name );
+            printf( "%s %s", name, PWR_ObjGetTypeString( type ) );
+
             for( j = 0; j < PWR_NUM_ATTR_NAMES; j++ ) {
                 printf( " %s", PWR_AttrGetTypeString( j ) );
             }
@@ -48,6 +59,7 @@ int main( int argc, char* argv[] )
     PWR_Obj self;
     PWR_Cntxt cntxt;
     PWR_Grp grp;
+	int rc; 
 
     int option;
     unsigned int i, j, samples = 1, freq = 1, numattrs = 0;
@@ -95,12 +107,14 @@ int main( int argc, char* argv[] )
                 exit( 1 );
         }
 
-    if( (cntxt=PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application" )) == 0x0 ) {
+	rc = PWR_CntxtInit(PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt);
+    if( PWR_RET_SUCCESS != rc ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
     }
 
-    if( (self=PWR_CntxtGetEntryPoint( cntxt )) == 0x0 ) {
+	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    if( PWR_RET_SUCCESS != rc ) {
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }

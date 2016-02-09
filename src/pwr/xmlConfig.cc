@@ -428,15 +428,18 @@ XMLNode* XmlConfig::findNode( XMLNode* node, const std::string name )
 std::string XmlConfig::objTypeToString( PWR_ObjType type )
 {
     switch( type ) {
-    case PWR_OBJ_PLATFORM: return "Platform";
-    case PWR_OBJ_CABINET:  return "Cabinet";
-    case PWR_OBJ_BOARD:    return "Board";
-    case PWR_OBJ_NODE:     return "Node";
-    case PWR_OBJ_SOCKET:   return "Socket";
-    case PWR_OBJ_CORE:     return "Core";
-    case PWR_OBJ_NIC:      return "Nic";
-    case PWR_OBJ_MEM:      return "Memory";
-    case PWR_OBJ_INVALID:  return "Invalid";
+    case PWR_OBJ_PLATFORM:    return "Platform";
+    case PWR_OBJ_CABINET:     return "Cabinet";
+    case PWR_OBJ_CHASSIS:     return "Chassis";
+    case PWR_OBJ_BOARD:       return "Board";
+    case PWR_OBJ_NODE:        return "Node";
+    case PWR_OBJ_SOCKET:      return "Socket";
+    case PWR_OBJ_POWER_PLANE: return "Power Plane";
+    case PWR_OBJ_CORE:        return "Core";
+    case PWR_OBJ_NIC:         return "Nic";
+    case PWR_OBJ_MEM:         return "Memory";
+    case PWR_OBJ_INVALID:     return "Invalid";
+    default:                  return "????";
     }
     return NULL;
 }

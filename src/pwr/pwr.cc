@@ -34,19 +34,11 @@ using namespace PowerAPI;
 #define STAT(ptr) 	     ((Stat*) ptr) 
 #define REQUEST(ptr)     ((Request*) ptr) 
 
-int PWR_GetMajorVersion()
+int PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, 
+						const char* name, PWR_Cntxt* ctx )
 {
-	assert(0);
-}
-
-int PWR_GetMinorVersion()
-{
-	assert(0);
-}
-
-PWR_Cntxt PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, const char* name )
-{
-	return new DistCntxt( type, role, name );
+	*ctx = new DistCntxt( type, role, name );
+	return PWR_RET_SUCCESS;
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
@@ -55,43 +47,50 @@ int PWR_CntxtDestroy( PWR_Cntxt ctx )
     return PWR_RET_SUCCESS;
 }
 
-PWR_Obj PWR_CntxtGetEntryPoint( PWR_Cntxt ctx )
+int PWR_CntxtGetEntryPoint( PWR_Cntxt ctx, PWR_Obj* obj )
 {
-    return CNTXT(ctx)->getSelf();
+	*obj = CNTXT(ctx)->getSelf();
+    return PWR_RET_SUCCESS;
 }
 
-PWR_Grp PWR_CntxtGetGrpByType( PWR_Cntxt ctx, PWR_ObjType type )
+int PWR_CntxtGetGrpByType( PWR_Cntxt ctx, PWR_ObjType type, PWR_Grp* grp )
 {
-    return CNTXT(ctx)->getGrp( type );
+	*grp = CNTXT(ctx)->getGrp( type );
+    return PWR_RET_SUCCESS;
 }
 
-PWR_Grp PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name )
+int PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name, PWR_Grp* grp )
 {
-    return CNTXT(ctx)->getGrpByName( name );
+	*grp = CNTXT(ctx)->getGrpByName( name );
+    return PWR_RET_SUCCESS;
 }
 
-PWR_Obj PWR_CntxtGetObjByName( PWR_Cntxt ctx, const char* name )
+int PWR_CntxtGetObjByName( PWR_Cntxt ctx, const char* name, PWR_Obj* obj )
 {
-    return CNTXT(ctx)->getObjByName( name );
+    *obj = CNTXT(ctx)->getObjByName( name );
+    return PWR_RET_SUCCESS;
 }
 
 /*
 * Subset of API that works on Obj
 */
 
-PWR_ObjType PWR_ObjGetType( PWR_Obj obj )
+int PWR_ObjGetType( PWR_Obj obj, PWR_ObjType* type )
 {
-    return OBJECT(obj)->type();
+    *type = OBJECT(obj)->type();
+    return PWR_RET_SUCCESS;
 }
 
-PWR_Obj PWR_ObjGetParent(PWR_Obj obj )
+int PWR_ObjGetParent(PWR_Obj obj, PWR_Obj* out )
 {
-    return OBJECT(obj)->parent();
+    *out = OBJECT(obj)->parent();
+    return PWR_RET_SUCCESS;
 }
 
-PWR_Grp PWR_ObjGetChildren( PWR_Obj obj )
+int PWR_ObjGetChildren( PWR_Obj obj, PWR_Grp* grp )
 {
-    return OBJECT(obj)->children();
+    *grp = OBJECT(obj)->children();
+    return PWR_RET_SUCCESS;
 }
 
 int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrName type )
@@ -169,9 +168,10 @@ int PWR_ObjAttrGetSamples_NB( PWR_Obj obj, PWR_AttrName name,
 * Subset of API that works on Grp
 */
 
-PWR_Grp PWR_GrpCreate( PWR_Cntxt ctx )
+int PWR_GrpCreate( PWR_Cntxt ctx, PWR_Grp* grp ) 
 {
-    return CNTXT(ctx)->groupCreate( "" );
+	*grp = CNTXT(ctx)->groupCreate( "" );
+    return PWR_RET_SUCCESS; 
 }
 
 int PWR_GrpDestroy( PWR_Grp group )
@@ -180,10 +180,12 @@ int PWR_GrpDestroy( PWR_Grp group )
     return ctx->groupDestroy( GRP(group) );
 }
 
+#if 0
 const char* PWR_GrpGetName( PWR_Grp group ) 
 {
     return &GRP(group)->name()[0];
 }
+#endif
 
 int PWR_GrpAddObj( PWR_Grp group, PWR_Obj obj )
 {
@@ -200,9 +202,10 @@ int PWR_GrpGetNumObjs( PWR_Grp group )
     return GRP(group)->size();
 }
 
-PWR_Obj PWR_GrpGetObjByIndx( PWR_Grp group, int i )
+int PWR_GrpGetObjByIndx( PWR_Grp group, int i, PWR_Obj* obj ) 
 {
-    return GRP(group)->getObj( i );
+	*obj = GRP(group)->getObj( i );
+    return PWR_RET_SUCCESS; 
 }
 
 int PWR_GrpAttrSetValue( PWR_Grp grp, PWR_AttrName type, void* ptr,
@@ -229,9 +232,10 @@ int PWR_GrpAttrGetValues( PWR_Grp grp, int num, const PWR_AttrName attr[],
 }
 
 
-PWR_Status PWR_StatusCreate()
+int PWR_StatusCreate( PWR_Status* status )
 {
-    return new Status;
+	*status = new Status;
+    return PWR_RET_SUCCESS;
 }
 
 int PWR_StatusDestroy(PWR_Status status )
@@ -250,16 +254,18 @@ int PWR_StatusClear( PWR_Status status )
     return STATUS(status)->clear();
 }
 
-PWR_Stat PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat stat )
+int PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat statOp,
+			 PWR_Stat* stat ) 
 {
-	PWR_Stat tmp = OBJECT(obj)->getCntxt()->createStat(OBJECT(obj),name,stat);
-	return tmp;
+	*stat = OBJECT(obj)->getCntxt()->createStat(OBJECT(obj),name,statOp);
+	return PWR_RET_SUCCESS;
 }
 
-PWR_Stat PWR_GrpCreateStat( PWR_Grp grp, PWR_AttrName name, PWR_AttrStat stat )
+int PWR_GrpCreateStat( PWR_Grp grp, PWR_AttrName name, PWR_AttrStat statOp,
+			 PWR_Stat* stat )
 {
-	PWR_Stat tmp =GRP(grp)->getCntxt()->createStat(GRP(grp),name,stat);
-	return tmp;
+	*stat = GRP(grp)->getCntxt()->createStat(GRP(grp),name,statOp);
+	return PWR_RET_SUCCESS; 
 }
 
 int PWR_StatDestroy( PWR_Stat stat )
@@ -282,13 +288,13 @@ int PWR_StatClear( PWR_Stat stat )
 	return STAT(stat)->stop();
 }
 
-int PWR_StatGetValue( PWR_Stat stat, double* value, PWR_StatTimes* statTimes )
+int PWR_StatGetValue( PWR_Stat stat, double* value, PWR_TimePeriod* statTimes )
 {
 	return STAT(stat)->getValue( value, statTimes );
 }
 
 int PWR_StatGetValues( PWR_Stat stat, double values[],
-										PWR_StatTimes statTimes[] )
+										PWR_TimePeriod statTimes[] )
 {
 	return STAT(stat)->getValues( values, statTimes );
 }
@@ -329,9 +335,10 @@ int PWR_ReqDestroy( PWR_Request req )
 	return PWR_RET_SUCCESS;
 }
 
-const char* PWR_ObjGetName( PWR_Obj obj )
+int PWR_ObjGetName( PWR_Obj obj, const char** str )
 {
-    return &OBJECT(obj)->name()[0];
+    *str = &OBJECT(obj)->name()[0];
+	return PWR_RET_SUCCESS;
 }
 
 const char* PWR_ObjGetTypeString( PWR_ObjType type )

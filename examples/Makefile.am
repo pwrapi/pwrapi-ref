@@ -12,7 +12,6 @@ dummyTest_LDADD = $(top_builddir)/src/pwr/libpwr.la
 simpleTest_SOURCES = simpleTest.cc
 simpleTest_CPPFLAGS = -I$(top_srcdir)/src/pwr
 simpleTest_LDADD = $(top_builddir)/src/pwr/libpwr.la
-simpleTest_LDFLAGS = -lrt
 
 examplesdir = $(docdir)/examples
 examples_configdir = $(examplesdir)/config

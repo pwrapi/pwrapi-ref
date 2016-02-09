@@ -71,7 +71,12 @@ Data* runtimeInit( int *argc, char ***argv,
 	int numRanks;
 	int rc;
 
-	signal( SIGUSR1, sighandler );
+	struct sigaction act;
+	act.sa_handler = sighandler;
+	rc = sigaction( SIGUSR1, &act, NULL );
+	assert( 0 == rc );
+	rc = sigaction( SIGCHLD, &act, NULL );
+	assert( 0 == rc );
 
     rc =  MPI_Comm_rank( MPI_COMM_WORLD,&my_rank);
 	assert( MPI_SUCCESS == rc );
@@ -238,7 +243,8 @@ Data* runtimeInit( int *argc, char ***argv,
 		} else if ( 0 == child )  {
 			int rc = execve( argv[0], &argv[0], &envp[0] );
 			if ( -1 == rc ) {
-				fprintf(stderr,"execve failed %s\n",strerror(errno));
+				fprintf(stderr,"execve '%s' failed %s\n",
+									argv[0],strerror(errno));
 				exit(-1);
 			}
 		} else {
