@@ -132,7 +132,7 @@ class Object:
 		return children
 
 	def findAttrOp(self, myName, attr):
-		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
+		Debug( "{0}(): name={1} attr={0}".format( funcName(), myName, attr ) ) 
 
 		if not self.attrs.has_key( attr ):
 			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
@@ -295,13 +295,20 @@ def findAttrChildren( name, attr ):
 #external
 def findAttrOp( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
-	return _getObject(name).findAttrOp( name, attr )
+	ret = _getObject(name).findAttrOp( name, attr )
+	if ret:
+		return ret 
+	else: 
+		return '' 
 
 #external
 def findAttrType( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
-	tmp = _getObject(name)
-	return tmp.findAttrType( name, attr )
+	ret = _getObject(name).findAttrType( name, attr )
+	if ret:
+		return ret 
+	else: 
+		return '' 
 
 # external
 def findAttrDevs( name, attr ):
