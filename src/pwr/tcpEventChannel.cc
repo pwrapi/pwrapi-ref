@@ -39,22 +39,11 @@ TcpEventChannel::TcpEventChannel( AllocFuncPtr func, std::string config, std::st
 	DBGX2(DBG_EC,"%s\n",getName().c_str());
 	if ( foo.find("server") == foo.end() ) {
 		m_fd = initServer( foo["listenPort"] );
-		m_chanFdMap[m_fd] = this;
 		DBGX2( DBG_EC, "fd=%d name=`%s`\n", m_fd, name.c_str() );
 	} else {
 		m_clientServer = foo["server"];
 		m_clientServerPort = foo["serverPort"];
 	}
-}
-
-
-void TcpEventChannel::close()
-{
-	DBGX2(DBG_EC,"%s fd=%d\n",getName().c_str(),m_fd);
-	assert( m_fd != -1 );
-	m_chanFdMap.erase(m_fd);
-	::close( m_fd );
-	m_fd = -1;
 }
 
 int TcpEventChannel::xx()
@@ -64,9 +53,6 @@ int TcpEventChannel::xx()
 	do { 
 		fd = initClient( m_clientServer, m_clientServerPort );
 	} while ( fd < 0 && count-- && sleep(1) == 0  );
-	if ( -1 != fd ) {
-		m_chanFdMap[fd] = this;
-	}
 	DBGX2(DBG_EC,"client fd=%d\n",fd);
 	return fd;
 }
@@ -75,7 +61,6 @@ TcpEventChannel::TcpEventChannel( AllocFuncPtr func, int fd, std::string name ) 
 	EventChannel( func, name ), m_fd( fd )
 {
 	DBGX2(DBG_EC,"%s fd=%d\n",getName().c_str(),m_fd);
-	m_chanFdMap[fd] = this;
 }
 
 TcpEventChannel::~TcpEventChannel( ) 

@@ -27,10 +27,8 @@ class TcpEventChannel : public EventChannel {
     virtual Event* getEvent( bool blocking = true );
     virtual bool sendEvent( Event* );
 	EventChannel *accept(  );
-	void close();
 
     int getFd( ) { return m_fd; } 
-    //TcpEventChannel* selected( int fd ); 
 
   private:
 	int initClient( std::string hostname, std::string port);
@@ -40,8 +38,6 @@ class TcpEventChannel : public EventChannel {
     int         m_fd;
 	std::string m_clientServer;
 	std::string m_clientServerPort;
-
-    std::map<int,TcpEventChannel*> m_chanFdMap;
 };
 
 class TcpChannelSelect : public ChannelSelect {
