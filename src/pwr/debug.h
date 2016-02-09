@@ -27,6 +27,12 @@ extern unsigned int _DbgFlags;
 
 #ifdef USE_DEBUG
 
+#ifndef gettid
+#include <sys/syscall.h>
+// equivalent to:  pid_t  gettid(void)
+#define getid() (pid_t)syscall(SYS_gettid)
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -38,7 +44,7 @@ extern unsigned int _DbgFlags;
 {\
     if ( flag & _DbgFlags ) {\
         char* realname = abi::__cxa_demangle(typeid(*this).name(),0,0,NULL);\
-        fprintf( stderr, "%d:%s::%s():%d: "fmt, getpid(), realname ? realname : "?????????", \
+        fprintf( stderr, "%d:%s::%s():%d: "fmt, getid(), realname ? realname : "?????????", \
                         __func__, __LINE__, ## __VA_ARGS__ );\
         fflush(stderr);\
         if ( realname ) free(realname);\
