@@ -129,7 +129,7 @@ def initDaemon( exe, myNode, nidMap, config, routeFile ):
 	#print 'initDaemon(',myNode,')',tmp
 	return tmp	
 
-def initLogger( config, apiroot, serverHost, serverPort, object, logfile ):
+def initLogger( config, apiroot, serverHost, serverPort, object, attr, logfile ):
 
 	nodesPerBoard = machine.nodesPerBoard 
 	boardsPerCab = machine.boardsPerCab 
@@ -143,6 +143,8 @@ def initLogger( config, apiroot, serverHost, serverPort, object, logfile ):
 	tmp += ' --lgr.object=' + object
 	tmp += ' --lgr.count=0'
 	tmp += ' --lgr.delay=2'
+	if attr:
+		tmp += ' --lgr.attr=' + attr 
 	if logfile:
 		tmp += ' --lgr.logfile=' + logfile
 	#print tmp
