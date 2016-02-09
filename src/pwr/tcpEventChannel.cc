@@ -109,7 +109,7 @@ int TcpEventChannel::initClient( std::string hostname, std::string portStr )
 
 	int ret = connect( fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)); 	
 
-	DBGX2(DBG_EC,"serverPort=%d fd=%d\n",port,ret);
+	DBGX2(DBG_EC,"host=%s serverPort=%d fd=%d\n",hostname.c_str(),port,ret);
 
 	return ret == 0 ? fd : -1; 
 }
