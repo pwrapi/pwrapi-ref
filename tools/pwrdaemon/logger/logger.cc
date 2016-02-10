@@ -62,8 +62,6 @@ Logger::Logger( int argc, char* argv[] ) :
             exit(-1);
         }
     }
-    fprintf(m_logFP, "obj %s, attr %s\n",
-				m_args.objectName.c_str(),m_args.attr.c_str());
 
 	if ( 0 == m_args.attr.compare("power") ) {
 		m_work = new Power;
