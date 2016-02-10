@@ -25,37 +25,37 @@ int main( int argc, char* argv[] )
     printf( "Instantiating compliance test for Section 4.1\n");
     rc |= section_4_1_test( );
     printf( "Results from compliance test for Section 4.1: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     printf( "Instantiating compliance test for Section 4.2\n");
     rc |= section_4_2_test( );
     printf( "Results from compliance test for Section 4.2: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     printf( "Instantiating compliance test for Section 4.3\n");
     rc |= section_4_3_test( );
     printf( "Results from compliance test for Section 4.3: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     printf( "Instantiating compliance test for Section 4.4\n");
     rc |= section_4_4_test( );
     printf( "Results from compliance test for Section 4.4: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     printf( "Instantiating compliance test for Section 4.5\n");
     rc |= section_4_5_test( );
     printf( "Results from compliance test for Section 4.5: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     printf( "Instantiating compliance test for Section 4.6\n");
     rc |= section_4_6_test( );
     printf( "Results from compliance test for Section 4.6: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     printf( "Instantiating compliance test for Section 4.7\n");
     rc |= section_4_7_test( );
     printf( "Results from compliance test for Section 4.7: %s\n", 
-            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+            (rc == PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
 
     return rc;
 }
