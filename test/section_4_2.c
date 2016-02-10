@@ -23,7 +23,7 @@ int section_4_2_test( void )
     PWR_Cntxt cntxt;
     PWR_Obj self, parent, obj;
 	PWR_ObjType type;
-    char name[PWR_MAX_STRING_LEN] = "";
+    char *name;
     PWR_Grp children;
 
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
@@ -44,7 +44,7 @@ int section_4_2_test( void )
         return -1;
     }
 
-	rc = PWR_ObjGetName( self, name );
+	rc = PWR_ObjGetName( self, &name );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: getting object name failed\n" );
         return -1;
