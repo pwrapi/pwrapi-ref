@@ -41,5 +41,11 @@ int section_4_3_test( void )
         return -1;
     }
 
+    rc = PWR_CntxtDestroy( cntxt );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI context failed\n" );
+        return -1;
+    }
+
     return 0;
 }
