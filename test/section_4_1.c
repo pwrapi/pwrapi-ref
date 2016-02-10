@@ -140,17 +140,5 @@ int section_4_1_test( void )
         return -1;
     }
 
-    rc = PWR_CntxtDestroy( role_inv );
-    if( rc == PWR_RET_SUCCESS ) {
-        printf( "Error: destruction of PowerAPI invalid context succeeded\n" );
-        return -1;
-    }
-
-    rc = PWR_CntxtDestroy( role_ns );
-    if( rc == PWR_RET_SUCCESS ) {
-        printf( "Error: destruction of PowerAPI not specified context succeeded\n" );
-        return -1;
-    }
-
     return 0;
 }
