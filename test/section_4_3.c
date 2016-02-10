@@ -21,19 +21,23 @@ int section_4_3_test( void )
 {
     int rc;
     PWR_Cntxt cntxt;
-    PWR_Obj self;
-	PWR_ObjType type;
-    char name[PWR_MAX_STRING_LEN] = "";
+    PWR_Grp grp;
 
-	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &role_app );
+	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
     }
 
-	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    rc = PWR_GrpCreate( cntxt, &grp );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: getting self from PowerAPI context failed\n" );
+        printf( "Error: creating a group failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpDestroy( grp );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying a group failed\n" );
         return -1;
     }
 
