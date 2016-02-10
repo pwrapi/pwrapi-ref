@@ -92,5 +92,65 @@ int section_4_1_test( void )
         return -1;
     }
 
+    rc = PWR_CntxtDestroy( role_app );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI application context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_mc );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI monitor and control context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_os );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI operating system context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_user );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI user context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_rm );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI resource manager context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_admin );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI administrator context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_mgr );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI manager context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_acc );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI accounting context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_inv );
+    if( rc == PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI invalid context succeeded\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( role_ns );
+    if( rc == PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI not specified context succeeded\n" );
+        return -1;
+    }
+
     return 0;
 }

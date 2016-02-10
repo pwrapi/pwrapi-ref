@@ -10,6 +10,7 @@
 */
 
 #include "pwr.h"
+#include "section.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,10 +20,15 @@
 
 int main( int argc, char* argv[] )
 {
-    if( section_4_1_test( cntxt ) != PWR_RET_SUCCESS ) {
-        printf( "Error: section 4.1 test failed\n" );
-        return -1;
-    }
+    int rc = PWR_RET_SUCCESS;
 
-    return 0;
+    rc |= section_4_1_test( );
+    printf( "Compliance test for Section 4.1: %s\n", 
+            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+
+    rc |= section_4_2_test( );
+    printf( "Compliance test for Section 4.2: %s\n", 
+            (rc != PWR_RET_SUCCESS ) ? "SUCCESS" : "FAILURE" );
+
+    return rc;
 }
