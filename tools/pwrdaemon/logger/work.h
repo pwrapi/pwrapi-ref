@@ -9,7 +9,7 @@ namespace PWR_Logger {
 
 class Work {
   public:
-    virtual int work( PWR_Cntxt, PWR_Obj, FILE* ) = 0;
+    virtual int work( FILE* ) = 0;
 };
 
 }

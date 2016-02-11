@@ -27,7 +27,7 @@ struct Args {
     std::string pwrApiServer;
     std::string pwrApiServerPort;
     std::string objectName;
-    std::string name;
+    std::string ctxName;
     std::string logfile;
     std::string count;
     std::string delay;
@@ -46,7 +46,7 @@ class Logger {
 	Work*     	m_work;
 	Args		m_args;
 	PWR_Cntxt 	m_ctx;
-	PWR_Obj   	m_obj;
+	//PWR_Obj   	m_obj;
 	FILE*		m_logFP;
 	int     	m_delay;
 };

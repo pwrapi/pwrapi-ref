@@ -17,6 +17,7 @@
 #include "debug.h"
 #include "power.h"
 #include "energy.h"
+#include "powerGrp.h"
 
 using namespace PWR_Logger;
 
@@ -27,29 +28,32 @@ Logger::Logger( int argc, char* argv[] ) :
 {
 	initArgs( argc, argv, &m_args );
 
-    setenv( (m_args.name + "POWERAPI_CONFIG" ).c_str(),
+    setenv( (m_args.ctxName + "POWERAPI_CONFIG" ).c_str(),
                 m_args.pwrApiConfig.c_str(), 0 );
-    setenv( (m_args.name + "POWERAPI_ROOT").c_str(),
+    setenv( (m_args.ctxName + "POWERAPI_ROOT").c_str(),
                 m_args.pwrApiRoot.c_str(), 0 );
 
-    DBGX("name=%s\n",m_args.name.c_str());
+    DBGX("name=%s\n",m_args.ctxName.c_str());
     DBGX("config=%s\n",m_args.pwrApiConfig.c_str());
     DBGX("root=%s\n",m_args.pwrApiRoot.c_str());
 
     if ( ! m_args.pwrApiServer.empty() ) {
-        setenv( (m_args.name + "POWERAPI_SERVER").c_str(),
+        setenv( (m_args.ctxName + "POWERAPI_SERVER").c_str(),
                 m_args.pwrApiServer.c_str(), 0 );
     }
     if ( ! m_args.pwrApiServerPort.empty() ) {
-        setenv( (m_args.name + "POWERAPI_SERVER_PORT").c_str(),
+        setenv( (m_args.ctxName + "POWERAPI_SERVER_PORT").c_str(),
                 m_args.pwrApiServerPort.c_str(), 0 );
     }
 
-    PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN , m_args.name.c_str(), &m_ctx );
+    PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_ADMIN,
+							m_args.ctxName.c_str(), &m_ctx );
     assert(m_ctx);
 
+#if 0
     PWR_CntxtGetObjByName( m_ctx, m_args.objectName.c_str(), &m_obj );
     assert( PWR_NULL != m_obj );
+#endif
 
 	if ( ! m_args.delay.empty() ) {
 		m_delay = atoi( m_args.delay.c_str() );
@@ -64,9 +68,15 @@ Logger::Logger( int argc, char* argv[] ) :
     }
 
 	if ( 0 == m_args.attr.compare("power") ) {
-		m_work = new Power;
+		
+		printf("%s\n",m_args.objectName.c_str());
+		if ( 0 == m_args.objectName.compare(0,5,"TYPE:") ) { 
+			m_work = new PowerGrp( m_ctx, m_args.objectName.substr(5) );
+		} else  {
+			m_work = new Power( m_ctx, m_args.objectName );
+		}
 	} else if ( 0 == m_args.attr.compare("energy") ) {
-		m_work = new Energy;
+		m_work = new Energy( m_ctx, m_args.objectName );
 	} else {
 	    assert(0);	
 	}
@@ -112,7 +122,7 @@ int Logger::work()
         fflush(m_logFP);
     }
 
-	return m_work->work( m_ctx, m_obj, m_logFP );
+	return m_work->work( m_logFP );
 }
 
 static void print_usage() {
@@ -155,7 +165,7 @@ static void initArgs( int argc, char* argv[], Args* args )
             args->attr = optarg;
             break;
           case NAME:
-            args->name = optarg;
+            args->ctxName = optarg;
             break;
           case COUNT:
             args->count = optarg;
