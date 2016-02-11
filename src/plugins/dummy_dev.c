@@ -58,7 +58,7 @@ static double getTime() {
   
 static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
-    dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
+    dummyFdInfo_t *tmp = malloc( 2*sizeof( dummyFdInfo_t ) );
     tmp->buffers[PWR_ATTR_POWER].values[0] = 10.1234;
     tmp->buffers[PWR_ATTR_ENERGY].values[0] = 100000000;
     DBGX("`%s` ptr=%p\n",openstr,tmp);
