@@ -19,11 +19,12 @@
 
 int section_4_5_test( void )
 {
-    int rc;
+    int rc, i;
     PWR_Cntxt cntxt;
     PWR_Obj self;
-	PWR_ObjType type;
-    char name[PWR_MAX_STRING_LEN] = "";
+    double val = 0.0;
+    unsigned int num_meta = 0;
+    char str[PWR_MAX_STRING_LEN];
 
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     if( rc != PWR_RET_SUCCESS ) {
@@ -36,6 +37,32 @@ int section_4_5_test( void )
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }
+
+#if 0
+    rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: getting meta data failed\n" );
+        return -1;
+    }
+
+    rc = PWR_ObjAttrSetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: setting meta data failed\n" );
+        return -1;
+    }
+
+    rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_PSTATE, PWR_MD_NUM, &num_meta );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: getting number of meta data failed\n" );
+        return -1;
+    }
+    
+    for( i=0; i<num_meta; i++ ) {
+        rc = PWR_MetaValueAtIndex( self, PWR_ATTR_POWER, i, &val, str );
+        printf( "Error: retrieval of meta data at index %d failed\n", i );
+        return -1;
+    }
+#endif
 
     rc = PWR_CntxtDestroy( cntxt );
     if( rc != PWR_RET_SUCCESS ) {
