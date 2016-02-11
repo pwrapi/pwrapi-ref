@@ -21,7 +21,7 @@
 
 int section_4_6_test( void )
 {
-    int rc;
+    int rc, i;
     PWR_Cntxt cntxt;
     PWR_Obj self;
     PWR_Stat stat;
@@ -72,6 +72,14 @@ int section_4_6_test( void )
         printf( "Error: stoping stat for object failed\n" );
         return -1;
     }
+
+#if 0
+    rc = PWR_StatGetReduce( stat, PWR_ATTR_STAT_MIN, &i, vals, tps );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: stoping stat for object failed\n" );
+        return -1;
+    }
+#endif
 
     rc = PWR_StatClear( stat );
     if( rc != PWR_RET_SUCCESS ) {
