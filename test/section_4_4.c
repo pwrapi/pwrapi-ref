@@ -27,9 +27,9 @@ int section_4_4_test( void )
     PWR_Obj self;
     double val = 0.0;
     PWR_Time ts = 0;
-    PWR_Time *tss = 0x0;
-    double *vals = 0x0;
     PWR_AttrName attrs[] = { PWR_ATTR_POWER, PWR_ATTR_ENERGY };
+    PWR_Time tss[NUM_ATTR(attrs)];
+    double vals[NUM_ATTR(attrs)];
     PWR_Status stat;
     PWR_AttrAccessError err; 
 
