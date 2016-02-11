@@ -23,6 +23,7 @@ int section_4_4_test( void )
 {
     int rc;
     PWR_Cntxt cntxt;
+    PWR_Grp grp;
     PWR_Obj self;
     double val = 0.0;
     PWR_Time ts = 0;
@@ -71,6 +72,56 @@ int section_4_4_test( void )
     rc = PWR_ObjAttrIsValid( self, PWR_ATTR_POWER );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: object attribute valid check failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpCreate( cntxt, &grp );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: creating a group failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpAddObj( grp, self );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: adding a object to a group failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpAttrGetValue( grp, PWR_ATTR_POWER, &val, &ts, &stat );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: group attribute retrieval failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &val, &stat );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: group attribute control failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpAttrGetValues( grp, NUM_ATTR(attrs), attrs, vals, tss, &stat );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: group attributes retrieval failed\n" );
+        return -1;
+    }
+
+#if 0
+    rc = PWR_GrpAttrSetValues( grp, NUM_ATTR(attrs), attrs, vals, &stat );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: group attributes control failed\n" );
+        return -1;
+    }
+#endif
+
+    rc = PWR_GrpRemoveObj( grp, self );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: removing a object to a group failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpDestroy( grp );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying a group failed\n" );
         return -1;
     }
 
