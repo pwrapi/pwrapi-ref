@@ -22,8 +22,8 @@ int section_4_4_test( void )
     int rc;
     PWR_Cntxt cntxt;
     PWR_Obj self;
-	PWR_ObjType type;
-    char name[PWR_MAX_STRING_LEN] = "";
+    double val = 0.0;
+    PWR_Time ts = 0;
 
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     if( rc != PWR_RET_SUCCESS ) {
@@ -34,6 +34,18 @@ int section_4_4_test( void )
 	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: getting self from PowerAPI context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &val, &ts );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: object attribute retrieval failed\n" );
+        return -1;
+    }
+
+    rc = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, &val );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: object attribute control failed\n" );
         return -1;
     }
 
