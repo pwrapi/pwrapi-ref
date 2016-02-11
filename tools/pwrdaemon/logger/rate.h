@@ -26,6 +26,8 @@ int Rate::work( PWR_Cntxt ctx, PWR_Obj obj, FILE* fp )
 	const char* objName;
 	PWR_ObjGetName( obj ,&objName );
 
+	sleep(10);
+
     fprintf(fp,"Logger: objName=\'%s\' attr=%s\n", objName, attrName );
 
 	int count = 1000;
