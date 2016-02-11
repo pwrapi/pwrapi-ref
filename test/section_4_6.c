@@ -25,7 +25,7 @@ int section_4_6_test( void )
 	PWR_ObjType type;
     char name[PWR_MAX_STRING_LEN] = "";
 
-	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &role_app );
+	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
@@ -34,6 +34,12 @@ int section_4_6_test( void )
 	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: getting self from PowerAPI context failed\n" );
+        return -1;
+    }
+
+    rc = PWR_CntxtDestroy( cntxt );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destruction of PowerAPI context failed\n" );
         return -1;
     }
 

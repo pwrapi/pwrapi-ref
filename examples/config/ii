@@ -1,0 +1,8 @@
+numnodes 2
+board_per_node 2
+exec.py start
+exec.py end
+rootRtr 1
+[[['daemon', '', '--rtr.serverPort=15001', '--rtr.routerType=tree', '--rtr.routerId=0', '--rtr.routerInfo=0:16000:chama1:16000', '--rtr.routeTable=routefile', '--rtr.pwrApiConfig=config', '--srvr.name=srvr', '--srvr.rtrHost=chama0', '--srvr.rtrPort=15001', '--srvr.pwrApiConfig=config', '--srvr.pwrApiRoot=plat.cab0.board0.node0', '--srvr0.name=srv0', '--srvr0.rtrHost=chama0', '--srvr0.rtrPort=15001', '--srvr0.pwrApiConfig=config', '--srvr0.pwrApiRoot=plat.cab0.board0', '--srvr0.pwrApiServer=chama0', '--srvr0.pwrApiServerPort=15000'], ['POWERRT_NUMNODES=2', 'POWERRT_NODES_PER_BOARD=2', 'POWERRT_BOARDS_PER_CAB=1', 'POWERAPI_DEBUG=5', 'LD_LIBRARY_PATH=/opt/openmpi-1.8-intel/lib:/opt/intel-12.1/compiler/lib/intel64', '']]]
+rootRtr 1
+[[['daemon', '', '--rtr.serverPort=15001', '--rtr.routerType=tree', '--rtr.clientPort=15000', '--rtr.routerId=1', '--rtr.routerInfo=0:16000:chama0:16000:0:0', '--rtr.routeTable=routefile', '--rtr.pwrApiConfig=config', '--srvr.name=srvr', '--srvr.rtrHost=chama0', '--srvr.rtrPort=15001', '--srvr.pwrApiConfig=config', '--srvr.pwrApiRoot=plat.cab0.board0.node1', '--lgr.name=lgr', '--lgr.pwrApiServer=chama1', '--lgr.pwrApiServerPort=15000', '--lgr.pwrApiConfig=config', '--lgr.pwrApiRoot=plat', '--lgr.object=', '--lgr.count=0', '--lgr.delay=2', '--lgr.logfile=logfile'], ['POWERRT_NUMNODES=2', 'POWERRT_NODES_PER_BOARD=2', 'POWERRT_BOARDS_PER_CAB=1', 'POWERAPI_DEBUG=5', 'LD_LIBRARY_PATH=/opt/openmpi-1.8-intel/lib:/opt/intel-12.1/compiler/lib/intel64', '']]]

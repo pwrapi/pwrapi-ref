@@ -37,8 +37,12 @@ using namespace PowerAPI;
 int PWR_CntxtInit( PWR_CntxtType type, PWR_Role role, 
 						const char* name, PWR_Cntxt* ctx )
 {
-	*ctx = new DistCntxt( type, role, name );
-	return PWR_RET_SUCCESS;
+    if( role != PWR_ROLE_INVALID && role != PWR_ROLE_NOT_SPECIFIED ) {
+	    *ctx = new DistCntxt( type, role, name );
+	    return PWR_RET_SUCCESS;
+    }
+    else
+        return PWR_RET_FAILURE;
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )

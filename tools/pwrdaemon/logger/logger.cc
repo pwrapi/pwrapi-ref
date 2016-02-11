@@ -18,6 +18,7 @@
 #include "power.h"
 #include "energy.h"
 #include "powerGrp.h"
+#include "rate.h"
 
 using namespace PWR_Logger;
 
@@ -77,6 +78,8 @@ Logger::Logger( int argc, char* argv[] ) :
 		}
 	} else if ( 0 == m_args.attr.compare("energy") ) {
 		m_work = new Energy( m_ctx, m_args.objectName );
+	} else if ( 0 == m_args.attr.compare("rate") ) {
+		m_work = new Rate( m_ctx, m_args.objectName );
 	} else {
 	    assert(0);	
 	}

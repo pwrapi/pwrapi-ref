@@ -54,6 +54,7 @@ AC_CONFIG_FILES([Makefile
                  src/plugins/Makefile
                  tools/Makefile
                  tools/pwrdaemon/Makefile
-                 examples/Makefile])
+                 examples/Makefile
+                 test/Makefile])
 
 AC_OUTPUT
