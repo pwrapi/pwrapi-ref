@@ -46,26 +46,33 @@ def initDaemonEnv( nidlist ):
 def GetApps(node, config, nidlist, routeFile, object, logfile, daemonExe, clientExe):
 	#print 'GetApps {0}, {1}, {2}, {3}'.format( node, config, nidlist, routeFile )
 	nidMap = xxx.createNidMap( nidlist )
-	if nidMap[node] != platform.node():
-		print 'ERROR: exec.py, bad nidMap', nidMap[node], '!=', platform.node() 
-		sys.exit(-1)
+	#if nidMap[node] != platform.node():
+		#print 'ERROR: exec.py, bad nidMap', nidMap[node], '!=', platform.node() 
+		#sys.exit(-1)
 
 	machine.genRouteFile( routeFile )
 
+	rootRtr = machine.nodesPerBoard
+	if len(nidMap) < machine.nodesPerBoard:
+		rootRtr = len(nidMap)
+
+	rootRtr -= 1
+
 	ret = []
 
-	exe = daemon.initDaemon( daemonExe, node, nidMap, config, routeFile )
-	if not clientExe and  0 == int(node):
-		exe += daemon.initLogger( config, apiroot, nidMap[0], 15000, object, logfile )
+	exe = daemon.initDaemon( daemonExe, node, nidMap, config, routeFile, rootRtr )
+
+	if not clientExe and  node == rootRtr:
+		exe += daemon.initLogger( node, nidMap, config, apiroot, object, logfile )
 
 	exe = exe.split(' ')
 
 	env = initDaemonEnv( nidlist ).split(' ') 
 	ret += [ [ exe, env ]  ] 
 
-	if clientExe and 0 == int(node):
+	if clientExe and len(nidMap)-1 == int(node):
 		exe = daemon.initClient( clientExe, object, logfile ).split(' ')
-		env = initClientEnv( config, apiroot, nidMap[0], 15000 ).split(' ') 
+		env = initClientEnv( config, apiroot, len(nidMap)-1, 15000 ).split(' ') 
 		ret += [ [ exe, env ]  ] 
 
 	return ret 
