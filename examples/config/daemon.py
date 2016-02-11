@@ -161,7 +161,7 @@ def initDaemon( exe, myNode, nidMap, config, routeFile, rootRtr ):
 	#print 'initDaemon(',myNode,')',tmp
 	return tmp	
 
-def initLogger( myNode, nidMap, config, apiroot, object, logfile ):
+def initLogger( myNode, nidMap, config, apiroot, object, attr, logfile ):
 
 	serverHost = nidMap[myNode]
 	serverPort = 15000

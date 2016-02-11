@@ -63,7 +63,7 @@ def GetApps(node, config, nidlist, routeFile, object, attr, logfile, daemonExe, 
 	exe = daemon.initDaemon( daemonExe, node, nidMap, config, routeFile, rootRtr )
 
 	if not clientExe and  node == rootRtr:
-		exe += daemon.initLogger( node, nidMap, config, apiroot, object, logfile )
+		exe += daemon.initLogger( node, nidMap, config, apiroot, object, attr, logfile )
 
 	exe = exe.split(' ')
 
