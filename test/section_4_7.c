@@ -20,26 +20,16 @@
 int section_4_7_test( void )
 {
     int rc;
-    PWR_Cntxt cntxt;
-    PWR_Obj self;
-	PWR_ObjType type;
-    char name[PWR_MAX_STRING_LEN] = "";
 
-	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
+	rc = PWR_GetMajorVersion( );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: initialization of PowerAPI context failed\n" );
+        printf( "Error: retrieving PowerAPI major version failed\n" );
         return -1;
     }
 
-	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+	rc = PWR_GetMinorVersion( );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: getting self from PowerAPI context failed\n" );
-        return -1;
-    }
-
-    rc = PWR_CntxtDestroy( cntxt );
-    if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destruction of PowerAPI context failed\n" );
+        printf( "Error: retrieving PowerAPI minor version failed\n" );
         return -1;
     }
 
