@@ -295,7 +295,6 @@ std::string PyConfig::findAttrType( std::string name, PWR_AttrName attr )
 	PyObject* pArgs = PyTuple_New( 2 );
 	assert(pArgs);
 
-
 	PyTuple_SetItem( pArgs, 0, PyString_FromString( name.c_str() ) );
 
 	PyTuple_SetItem( pArgs, 1, 
@@ -306,7 +305,7 @@ std::string PyConfig::findAttrType( std::string name, PWR_AttrName attr )
 
 	retval = PyString_AsString(pRetval );
 
-	DBGX2(DBG_CONFIG,"%s \n", retval.c_str() );
+	DBGX2(DBG_CONFIG,"'%s'\n", retval.c_str() );
 
 	Py_DECREF( pRetval );
 	Py_DECREF( pFunc );
@@ -341,9 +340,9 @@ std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
 	assert(pRetval);
 
-	//PyObject_Print( pRetval, stderr, Py_PRINT_RAW ); printf("\n");
-
 	retval = PyString_AsString( pRetval );
+
+	DBGX2(DBG_CONFIG,"'%s'\n", retval.c_str() );
 
 	Py_DECREF( pRetval );
 	Py_DECREF( pFunc );

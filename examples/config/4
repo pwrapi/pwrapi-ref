@@ -1,0 +1,24 @@
+#! /usr/bin/python
+
+
+numnodes = 3  
+nidlist = 'chama[0-'+str(numnodes-1)+']'
+#nidlist = 'chama0'
+
+import os
+os.environ['POWERRT_MACHINE']='dummy'
+os.environ['POWERRT_NUMNODES']=str(numnodes)
+os.environ['POWERRT_NODES_PER_BOARD']='4'
+os.environ['POWERRT_BOARDS_PER_CAB']='4'
+os.environ['PYTHONPATH']='pwrGIT/chama/examples/config'
+
+
+
+import yy
+
+print yy.GetApps( 0, 'config', nidlist, 'routefile', '', 'logfile','daemon', ''  )
+
+#print yy.GetApps( 1, 'config', nidlist, 'routefile', '', 'logfile','daemon', ''  )
+#print yy.GetApps( 4, 'config', nidlist, 'routefile', '', 'logfile','daemon', ''  )
+#print yy.GetApps( 5, 'config', nidlist, 'routefile', '', 'logfile','daemon', ''  )
+#print yy.GetApps( numnodes-1, 'config', nidlist, 'routefile', 'plat.cab0', 'logfile','daemon', ''  )

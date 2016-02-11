@@ -174,7 +174,30 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 		ev = rev;
 	}
 
-	ec->sendEvent( ev );
+	if ( ! ec ) {
+		m_pendingEvents[srvrID].push_back( ev );
+		DBGX("add pending %d\n",srvrID);
+	} else {
+		ec->sendEvent( ev );
+	}
+}
+
+void Router::doPending( ServerID id )
+{
+	if ( m_pendingEvents.find( id ) == m_pendingEvents.end() ) {
+		return;
+	}
+
+	EventChannel* ec = findServerChan( id ); 
+	assert(ec);
+
+	DBGX("have pending for server %d\n",id);
+	while ( ! m_pendingEvents[id].empty() ) {
+		DBGX("sent pending %d\n",id);
+		ec->sendEvent( m_pendingEvents[id].front() );	
+		m_pendingEvents[id].pop_front();
+	}
+	m_pendingEvents.erase(id);
 }
 
 AppID Router::findDestApp( ObjID id ) {

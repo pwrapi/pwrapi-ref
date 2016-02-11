@@ -25,7 +25,7 @@ AC_DEFUN([PWRAPI_CHECK_MPI], [
   CPPFLAGS="$MPI_CPPFLAGS $CPPFLAGS"
 
   AC_LANG_PUSH(C++)
-  AC_CHECK_HEADERS([MPI.h], [pwrapi_check_mpi_happy="yes"], [pwrapi_check_mpi_happy="no"])
+  AC_CHECK_HEADERS([mpi.h], [pwrapi_check_mpi_happy="yes"], [pwrapi_check_mpi_happy="no"])
   AC_LANG_POP(C++)
 
   CPPFLAGS="$CPPFLAGS_saved"

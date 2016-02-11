@@ -176,7 +176,9 @@ def initLogger( myNode, nidMap, config, apiroot, object, logfile ):
 	tmp += ' --lgr.pwrApiRoot=' + apiroot
 	tmp += ' --lgr.object=' + object
 	tmp += ' --lgr.count=0'
-	tmp += ' --lgr.delay=10'
+	tmp += ' --lgr.delay=0'
+	if attr:
+		tmp += ' --lgr.attr=' + attr 
 	if logfile:
 		tmp += ' --lgr.logfile=' + logfile
 	#print tmp

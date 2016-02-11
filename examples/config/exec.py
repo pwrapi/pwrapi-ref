@@ -4,8 +4,8 @@ import sys, os, platform
 
 #print 'exec.py start'
 
-daemonDebug = 0#8 
-clientDebug = 0#8 
+daemonDebug = 0
+clientDebug = 0
 apiroot= 'plat'
 
 if not os.environ.has_key('POWERRT_MACHINE'):
@@ -43,7 +43,7 @@ def initDaemonEnv( nidlist ):
 	return daemonEnv
 
 
-def GetApps(node, config, nidlist, routeFile, object, logfile, daemonExe, clientExe):
+def GetApps(node, config, nidlist, routeFile, object, attr, logfile, daemonExe, clientExe):
 	#print 'GetApps {0}, {1}, {2}, {3}'.format( node, config, nidlist, routeFile )
 	nidMap = xxx.createNidMap( nidlist )
 	#if nidMap[node] != platform.node():

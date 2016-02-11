@@ -129,7 +129,7 @@ Data* runtimeInit( int *argc, char ***argv,
     PyObject* pFunc = PyObject_GetAttrString( module, "GetApps" );
     assert(pFunc);
 
-    PyObject* pArgs = PyTuple_New( 8 );
+    PyObject* pArgs = PyTuple_New( 9 );
     assert(pArgs);
 
 	std::stringstream routeFile;
@@ -148,11 +148,13 @@ Data* runtimeInit( int *argc, char ***argv,
     PyTuple_SetItem( pArgs, 3, PyString_FromString( routeFile.str().c_str() ) );
 
 	std::string object = "plat";
+	if ( getenv("POWERRT_OBJECT") ) { 
+		object = getenv("POWERRT_OBJECT");
+	}
 
-	for ( unsigned i = 0; i < *argc; i++ ) {
-		if ( ! strncmp( (*argv)[i], "--pwr_rt_obj=", 13 ) ) {
-			object = (*argv)[i] + 13; 
-		}	
+	std::string attr = "";
+	if ( getenv("POWERRT_ATTR") ) { 
+		attr = getenv("POWERRT_ATTR");
 	}
 
 	std::string logFile = "";
@@ -173,9 +175,10 @@ Data* runtimeInit( int *argc, char ***argv,
 	}
 
     PyTuple_SetItem( pArgs, 4, PyString_FromString( object.c_str() ) );
-    PyTuple_SetItem( pArgs, 5, PyString_FromString( logFile.c_str() ) );
-    PyTuple_SetItem( pArgs, 6, PyString_FromString( daemon.c_str() ) );
-    PyTuple_SetItem( pArgs, 7, PyString_FromString( client.c_str() ) );
+    PyTuple_SetItem( pArgs, 5, PyString_FromString( attr.c_str() ) );
+    PyTuple_SetItem( pArgs, 6, PyString_FromString( logFile.c_str() ) );
+    PyTuple_SetItem( pArgs, 7, PyString_FromString( daemon.c_str() ) );
+    PyTuple_SetItem( pArgs, 8, PyString_FromString( client.c_str() ) );
 
     PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
     assert(pRetval);

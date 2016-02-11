@@ -102,7 +102,7 @@ class Router : public EventGenerator {
 
 	Router( int, char* [] );
 
-	void addServer( std::string name, EventChannel* ec ) {
+	ServerID addServer( std::string name, EventChannel* ec ) {
 		AppID id = findRoute( name );
 
 		DBGX("rootObj=`%s` rtrId=%d serverId=%d\n",
@@ -112,6 +112,7 @@ class Router : public EventGenerator {
 
 		m_localMap[ SERVER_ID(id) ] = ec;
 		m_serverMap[ ec ]->initName(name);
+		return SERVER_ID(id);
 	}
 
 	void delServer( std::string name ) {
@@ -137,6 +138,8 @@ class Router : public EventGenerator {
 	Chan m_router;
 
 	ChannelSelect& chanSelect() { return *m_chanSelect; }
+
+	void doPending( ServerID );
 
   private:
 
@@ -183,6 +186,7 @@ class Router : public EventGenerator {
 
 	void initRouteTable( std::string file );
 
+
   private:
 	PowerAPI::Config*               m_config;
 	ChannelSelect* 			 		m_chanSelect;
@@ -193,6 +197,7 @@ class Router : public EventGenerator {
 	std::map<ServerID,EventChannel*> m_localMap;
 	RouterCore* 					m_routerCore;
 	std::map< std::string, AppID >  m_routeTable;
+	std::map< AppID, std::deque< Event*> > 	m_pendingEvents;
 };
 
 struct CommReqInfo {

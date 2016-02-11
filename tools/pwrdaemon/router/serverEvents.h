@@ -25,8 +25,9 @@ class RtrServerConnectEvent: public  ServerConnectEvent {
 
 	bool process( EventGenerator* _rtr, EventChannel* ec ) {
         Router& rtr = *static_cast<Router*>(_rtr);
-		rtr.addServer( name, ec );
+		ServerID id = rtr.addServer( name, ec );
 
+		rtr.doPending( id );
 //        Router::Server& server = *rtr.getServer( ec );
 		DBGX("%s\n",name.c_str());
 		return false;
