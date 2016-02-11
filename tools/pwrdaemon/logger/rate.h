@@ -8,23 +8,29 @@
 namespace PWR_Logger {
 class Rate : public Work {
   public:
-    int work( PWR_Cntxt, PWR_Obj, FILE* );
+    Rate( PWR_Cntxt ctx, std::string name ) {
+        PWR_CntxtGetObjByName( ctx, name.c_str(), &m_obj );
+        assert( PWR_NULL != m_obj );
+    }
+    int work( FILE* );
+  private:
+	PWR_Obj m_obj;
 };
 
 #include <sys/time.h>
 
 static inline double getTime() {
     struct timeval now;
-    int rv = gettimeofday(&now, NULL);
+    gettimeofday(&now, NULL);
 
     return (now.tv_sec * 1000) + ((double) now.tv_usec / 1000.0);
 }
 
-int Rate::work( PWR_Cntxt ctx, PWR_Obj obj, FILE* fp )
+int Rate::work( FILE* fp )
 {
 	const char* attrName = attrNameToString( PWR_ATTR_POWER);
 	const char* objName;
-	PWR_ObjGetName( obj ,&objName );
+	PWR_ObjGetName( m_obj ,&objName );
 
 	sleep(10);
 
@@ -35,7 +41,7 @@ int Rate::work( PWR_Cntxt ctx, PWR_Obj obj, FILE* fp )
 	for ( int i = 0; i < count; i++ ) {
         double value = 0;
         PWR_Time ts;
-        int retval = PWR_ObjAttrGetValue( obj, PWR_ATTR_ENERGY, &value, &ts );
+        int retval = PWR_ObjAttrGetValue( m_obj, PWR_ATTR_ENERGY, &value, &ts );
 
         if( retval != PWR_RET_SUCCESS ) {
             fprintf(fp,"ERROR: PWR_ObjAttrGetValue( `%s`, `%s` ) failed, retval=%d\n",
