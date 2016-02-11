@@ -55,9 +55,21 @@ int section_4_3_test( void )
         return -1;
     }
 
+    rc = PWR_GrpDestroy( dup );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the duplicate group failed\n" );
+        return -1;
+    }
+
     rc = PWR_GrpUnion( grp, dup, &un );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: the union of two groups failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpDestroy( un );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the union group failed\n" );
         return -1;
     }
 
@@ -67,9 +79,21 @@ int section_4_3_test( void )
         return -1;
     }
 
+    rc = PWR_GrpDestroy( in );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the intersection group failed\n" );
+        return -1;
+    }
+
     rc = PWR_GrpDifference( grp, dup, &diff );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: the difference of two groups failed\n" );
+        return -1;
+    }
+
+    rc = PWR_GrpDestroy( diff );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the difference group failed\n" );
         return -1;
     }
 #endif
