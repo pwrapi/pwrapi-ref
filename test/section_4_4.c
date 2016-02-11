@@ -87,6 +87,7 @@ int section_4_4_test( void )
         return -1;
     }
 
+#if 0
     rc = PWR_GrpAttrGetValue( grp, PWR_ATTR_POWER, &val, &ts, &stat );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: group attribute retrieval failed\n" );
@@ -105,7 +106,6 @@ int section_4_4_test( void )
         return -1;
     }
 
-#if 0
     rc = PWR_GrpAttrSetValues( grp, NUM_ATTR(attrs), attrs, vals, &stat );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: group attributes control failed\n" );
