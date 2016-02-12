@@ -52,10 +52,10 @@ int main( int argc, char* argv[] )
 
     int i;
     for ( i = 0; i < PWR_GrpGetNumObjs(children); i++ ) {
-		const char* name;
+		char name[100];
 		PWR_Obj obj;
         PWR_GrpGetObjByIndx( children, i, &obj );
-		PWR_ObjGetName( obj, &name );
+		PWR_ObjGetName( obj, name, 100 );
  
         printf("child %s\n", name );
     }

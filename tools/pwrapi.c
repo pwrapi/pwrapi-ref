@@ -187,10 +187,10 @@ int main( int argc, char* argv[] )
         if( PWR_GrpAttrGetValues( grp, numattrs, attrs, vals, vals_ts, stats ) 
                 == PWR_RET_SUCCESS ) {
             for( j = 0; j < numobjs; j++ ) {
-				const char* name; 
+				char name[100]; 
 				PWR_Obj obj;
 				PWR_GrpGetObjByIndx( grp, j, &obj ), 
-				PWR_ObjGetName( obj, &name );
+				PWR_ObjGetName( obj, name, 100 );
                 printf( "%s: ", name );
 
                 for( k = 0; k < numattrs; k++ ) {
@@ -214,8 +214,8 @@ int main( int argc, char* argv[] )
             }
         } else {
             PWR_StatusPopError( stats, &error );  
-			const char* name;
-            PWR_ObjGetName(error.obj, &name );
+			char name[100];
+            PWR_ObjGetName(error.obj, name, 100 );
             printf("Error: reading of `%s` failed for object `%s` with error %d\n",
                     PWR_AttrGetTypeString( error.name), name, error.error );
             break;

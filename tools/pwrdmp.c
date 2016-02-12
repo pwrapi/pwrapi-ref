@@ -41,8 +41,8 @@ void dump_type_objects( PWR_Obj self, PWR_ObjType type )
 		PWR_ObjGetType( obj, &objType ); 
         if( type == PWR_OBJ_INVALID || objType == type ) {
 
-			const char* name;
-			PWR_ObjGetName( obj, &name );
+			char name[100];
+			PWR_ObjGetName( obj, name, 100 );
             printf( "%s %s", name, PWR_ObjGetTypeString( type ) );
 
             for( j = 0; j < PWR_NUM_ATTR_NAMES; j++ ) {

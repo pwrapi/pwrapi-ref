@@ -21,8 +21,8 @@ class Power : public Work {
 int Power::work( FILE* fp )
 {
 	const char* attrName = attrNameToString( PWR_ATTR_POWER);
-	const char* objName;
-	PWR_ObjGetName( m_obj ,&objName );
+	char objName[100];
+	PWR_ObjGetName( m_obj, objName, 100 );
 
     fprintf(fp,"Logger: objName=\'%s\' attr=%s\n", objName, attrName );
 
