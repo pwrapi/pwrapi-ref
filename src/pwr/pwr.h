@@ -38,7 +38,7 @@ int         PWR_CntxtGetEntryPoint( PWR_Cntxt, PWR_Obj* );
 int         PWR_CntxtGetObjByName( PWR_Cntxt, const char* name, PWR_Obj* );
 
 int         PWR_ObjGetType( PWR_Obj, PWR_ObjType* );
-int         PWR_ObjGetName( PWR_Obj, const char** name );
+int         PWR_ObjGetName( PWR_Obj, char* dest, size_t len );
 int         PWR_ObjGetParent( PWR_Obj, PWR_Obj* parent );
 int         PWR_ObjGetChildren( PWR_Obj, PWR_Grp* );
 

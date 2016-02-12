@@ -339,10 +339,14 @@ int PWR_ReqDestroy( PWR_Request req )
 	return PWR_RET_SUCCESS;
 }
 
-int PWR_ObjGetName( PWR_Obj obj, const char** str )
+int PWR_ObjGetName( PWR_Obj obj, char* str, size_t len )
 {
-    *str = &OBJECT(obj)->name()[0];
-	return PWR_RET_SUCCESS;
+	strncpy( str, &OBJECT(obj)->name()[0], len );
+	if ( OBJECT(obj)->name().size() > len - 1 ) {
+		return PWR_RET_WARN_TRUNC;
+	} else {
+		return PWR_RET_SUCCESS;
+	} 
 }
 
 const char* PWR_ObjGetTypeString( PWR_ObjType type )

@@ -128,6 +128,7 @@ typedef enum {
        PWR_MD_NOT_SPECIFIED = -2
 } PWR_MetaName;
 
+#define PWR_RET_WARN_TRUNC 6 
 #define PWR_RET_WARN_NO_GRP_BY_NAME 5
 #define PWR_RET_WARN_NO_OBJ_AT_INDEX 4
 #define PWR_RET_WARN_NO_CHILDREN 3
