@@ -303,6 +303,16 @@ int PWR_StatGetValues( PWR_Stat stat, double values[],
 	return STAT(stat)->getValues( values, statTimes );
 }
 
+int PWR_GetMajorVersion( )
+{
+    return PWR_MAJOR_VERSION;
+}
+
+int PWR_GetMinorVersion( )
+{
+    return PWR_MINOR_VERSION;
+}
+
 EventChannel* PWR_CntxtGetEventChannel( PWR_Cntxt ctx )
 {
     return DISTCNTXT(ctx)->getEventChannel();

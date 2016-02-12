@@ -62,6 +62,12 @@ int section_4_2_test( void )
         return -1;
     }
 
+    rc = PWR_GrpDestroy( children );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying a children failed\n" );
+        return -1;
+    }
+
 	rc = PWR_CntxtGetObjByName( cntxt, "plat", &obj );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: getting object by name from PowerAPI context failed\n" );
