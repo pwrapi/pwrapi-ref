@@ -19,6 +19,7 @@
 #include "energy.h"
 #include "powerGrp.h"
 #include "rate.h"
+#include "mult.h"
 
 using namespace PWR_Logger;
 
@@ -68,7 +69,9 @@ Logger::Logger( int argc, char* argv[] ) :
         }
     }
 
-	if ( 0 == m_args.attr.compare("power") ) {
+	if ( 0 == m_args.attr.compare(0,5,"MULT:") ) {
+		m_work = new Mult( m_ctx, m_args.objectName, m_args.attr.substr(5) );
+	} else if ( 0 == m_args.attr.compare("power") ) {
 		
 		printf("%s\n",m_args.objectName.c_str());
 		if ( 0 == m_args.objectName.compare(0,5,"TYPE:") ) { 

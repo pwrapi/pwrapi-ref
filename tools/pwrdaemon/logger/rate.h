@@ -4,6 +4,7 @@
 
 #include "work.h" 
 #include "util.h"
+#include "timeUtil.h"
 
 namespace PWR_Logger {
 class Rate : public Work {
@@ -16,15 +17,6 @@ class Rate : public Work {
   private:
 	PWR_Obj m_obj;
 };
-
-#include <sys/time.h>
-
-static inline double getTime() {
-    struct timeval now;
-    gettimeofday(&now, NULL);
-
-    return (now.tv_sec * 1000) + ((double) now.tv_usec / 1000.0);
-}
 
 int Rate::work( FILE* fp )
 {
