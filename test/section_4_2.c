@@ -64,7 +64,7 @@ int section_4_2_test( void )
 
     rc = PWR_GrpDestroy( children );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destroying a children failed\n" );
+        printf( "Error: destroying children failed\n" );
         return -1;
     }
 
