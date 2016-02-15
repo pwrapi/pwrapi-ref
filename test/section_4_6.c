@@ -33,69 +33,69 @@ int section_4_6_test( void )
 
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: initialization of PowerAPI context failed\n" );
+        printf( "\t\tError: initialization of PowerAPI context failed\n" );
         return -1;
     }
 
 	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: getting self from PowerAPI context failed\n" );
+        printf( "\t\tError: getting self from PowerAPI context failed\n" );
         return -1;
     }
 
     rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: creating stat for object failed\n" );
+        printf( "\t\tError: creating stat for object failed\n" );
         return -1;
     }
 
     rc = PWR_StatStart( stat );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: starting stat for object failed\n" );
+        printf( "\t\tError: starting stat for object failed\n" );
         return -1;
     }
 
     rc = PWR_StatStop( stat );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: stoping stat for object failed\n" );
+        printf( "\t\tError: stoping stat for object failed\n" );
         return -1;
     }
 
     rc = PWR_StatGetValue( stat, &val, &tp );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: stoping stat for object failed\n" );
+        printf( "\t\tError: stoping stat for object failed\n" );
         return -1;
     }
 
     rc = PWR_StatGetValues( stat, vals, tps );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: stoping stat for object failed\n" );
+        printf( "\t\tError: stoping stat for object failed\n" );
         return -1;
     }
 
 #if 0
     rc = PWR_StatGetReduce( stat, PWR_ATTR_STAT_MIN, &i, vals, tps );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: stoping stat for object failed\n" );
+        printf( "\t\tError: stoping stat for object failed\n" );
         return -1;
     }
 #endif
 
     rc = PWR_StatClear( stat );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: clearing stat for object failed\n" );
+        printf( "\t\tError: clearing stat for object failed\n" );
         return -1;
     }
 
     rc = PWR_StatDestroy( stat );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destruction of stat failed\n" );
+        printf( "\t\tError: destruction of stat failed\n" );
         return -1;
     }
 
     rc = PWR_CntxtDestroy( cntxt );
     if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destruction of PowerAPI context failed\n" );
+        printf( "\t\tError: destruction of PowerAPI context failed\n" );
         return -1;
     }
 
