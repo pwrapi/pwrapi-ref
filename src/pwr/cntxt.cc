@@ -71,7 +71,7 @@ Grp* Cntxt::getGrp( PWR_ObjType type )
     tmp = "internal" + tmp;
 
     if ( m_groupMap.find( tmp ) == m_groupMap.end() ) {
-        grp = groupCreate(tmp);
+        grp = createGrp(tmp);
         findAllObjType( getSelf(), type, grp );
     }
 
@@ -87,7 +87,7 @@ Grp* Cntxt::getGrpByName( std::string name )
     return m_groupMap[name];
 }
 
-Grp* Cntxt::groupCreate( std::string name ) {
+Grp* Cntxt::createGrp( std::string name ) {
     DBGX("\n");
     if ( m_groupMap.find( name ) != m_groupMap.end() ) {
         return NULL;
@@ -97,7 +97,7 @@ Grp* Cntxt::groupCreate( std::string name ) {
     return grp;
 }
 
-int Cntxt::groupDestroy( Grp* grp ) {
+int Cntxt::destroyGrp( Grp* grp ) {
     DBGX("\n");
     int retval = PWR_RET_FAILURE;
     std::map<std::string,Grp*>::iterator iter = m_groupMap.begin();
@@ -138,6 +138,7 @@ void Cntxt::findAllObjType( Object* obj, PWR_ObjType type, Grp* grp )
     if ( obj->type() == type ) {
         DBGX("add %s %s\n", obj->name().c_str(), objTypeToString(type) );
         grp->add( obj );
+		return;
     }
 
     std::deque< std::string > children = m_config->findChildren( obj->name() );

@@ -22,6 +22,7 @@ namespace PowerAPI {
 
 class Config;
 class Object;
+class Group;
 class Grp;
 class Stat;
 class AttrInfo;
@@ -38,8 +39,10 @@ class Cntxt {
 	virtual Object* getSelf();
 	virtual Grp*    getGrp( PWR_ObjType );
 	virtual Grp* 	getGrpByName( std::string name );
-	virtual Grp* 	groupCreate( std::string );
-	virtual int  	groupDestroy( Grp* );
+
+	virtual Grp* 	createGrp( std::string );
+	virtual int  	destroyGrp( Grp* );
+
 	virtual Stat* 	createStat( Object*, PWR_AttrName, PWR_AttrStat );
 	virtual Stat* 	createStat( Grp*, PWR_AttrName, PWR_AttrStat );
 	virtual int 	destroyStat( Stat* );

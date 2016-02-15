@@ -151,11 +151,11 @@ int PWR_ReqDestroy( PWR_Request );
 int PWR_ReqCheck( PWR_Request, int* status );
 int PWR_ReqWait( PWR_Request, int* status );
 
-int PWR_ObjAttrGetValue_NB( PWR_Obj, PWR_AttrName name, void* buf,
-		                                            PWR_Time *, PWR_Request );
+int PWR_ObjAttrGetValues_NB( PWR_Obj, int count, PWR_AttrName name[],
+								void* buf, PWR_Time [], PWR_Request );
 
-int PWR_ObjAttrSetValue_NB( PWR_Obj, PWR_AttrName name, void* buf,
-		                                            PWR_Request );
+int PWR_ObjAttrSetValues_NB( PWR_Obj, int count, PWR_AttrName name[],
+								void* buf, PWR_Request );
 /*
 *  Utility Functions
 */

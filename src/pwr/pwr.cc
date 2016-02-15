@@ -15,8 +15,8 @@
 #include <assert.h>
 
 #include "distCntxt.h"
-#include "distRequest.h"
 #include "distObject.h"
+#include "distRequest.h"
 
 #include "pwr.h"
 #include "group.h"
@@ -29,6 +29,7 @@ using namespace PowerAPI;
 #define CNTXT(ptr) 		 ((Cntxt*) ptr) 
 #define DISTCNTXT(ptr)   ((DistCntxt*) ptr) 
 #define OBJECT(ptr)      ((Object*) ptr)
+#define DISTOBJECT(ptr)  ((DistObject*) ptr)
 #define STATUS(ptr)      ((Status*) ptr) 
 #define GRP(ptr) 	     ((Grp*) ptr) 
 #define STAT(ptr) 	     ((Stat*) ptr) 
@@ -107,9 +108,10 @@ int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts
     return OBJECT(obj)->attrGetValue( type, ptr, ts );
 }
 
-int PWR_ObjAttrGetValue_NB( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts, PWR_Request req )
+int PWR_ObjAttrGetValues_NB( PWR_Obj obj, int count, PWR_AttrName type[],
+			void* ptr, PWR_Time ts[], PWR_Request req )
 {
-    return OBJECT(obj)->attrGetValue( type, ptr, ts, REQUEST(req) );
+    return DISTOBJECT(obj)->attrGetValues( count, type, ptr, ts, REQUEST(req) );
 }
 
 int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, const void* ptr )
@@ -117,10 +119,10 @@ int PWR_ObjAttrSetValue( PWR_Obj obj, PWR_AttrName type, const void* ptr )
     return OBJECT(obj)->attrSetValue( type, (void*)ptr );
 }
 
-int PWR_ObjAttrSetValue_NB( PWR_Obj obj, PWR_AttrName attr, void* buf,
-		                                                    PWR_Request req )
+int PWR_ObjAttrSetValues_NB( PWR_Obj obj, int count, PWR_AttrName attr[], 
+					void* buf, PWR_Request req )
 {
-    return OBJECT(obj)->attrSetValue( attr, buf, REQUEST(req) );
+    return DISTOBJECT(obj)->attrSetValues( count, attr, buf, REQUEST(req) );
 }
 
 int PWR_ObjAttrGetValues( PWR_Obj obj, int num, const PWR_AttrName attrs[],
@@ -174,14 +176,14 @@ int PWR_ObjAttrGetSamples_NB( PWR_Obj obj, PWR_AttrName name,
 
 int PWR_GrpCreate( PWR_Cntxt ctx, PWR_Grp* grp ) 
 {
-	*grp = CNTXT(ctx)->groupCreate( "" );
+	*grp = CNTXT(ctx)->createGrp( "" );
     return PWR_RET_SUCCESS; 
 }
 
 int PWR_GrpDestroy( PWR_Grp group )
 {
     Cntxt* ctx = GRP(group)->getCntxt();
-    return ctx->groupDestroy( GRP(group) );
+    return ctx->destroyGrp( GRP(group) );
 }
 
 #if 0

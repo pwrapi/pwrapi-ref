@@ -69,8 +69,8 @@ class DistComm : public Communicator {
 
 	DistComm( DistCntxt*, std::set<Object*>& );
 	~DistComm() {}
-	virtual void getValue( PWR_AttrName, ValueOp, CommReq* req );
-	virtual void setValue( PWR_AttrName, void* buf, CommReq* req );
+	virtual void getValues( int, PWR_AttrName [], ValueOp [], CommReq* req );
+	virtual void setValues( int, PWR_AttrName [], void* buf, CommReq* req );
 	virtual void startLog( PWR_AttrName, CommReq* req );
 	virtual void stopLog( PWR_AttrName, CommReq* req );
 	virtual void getSamples( PWR_AttrName attr, PWR_Time*, double period,

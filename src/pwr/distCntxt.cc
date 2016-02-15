@@ -22,6 +22,7 @@
 #include "distCntxt.h"
 #include "distRequest.h"
 #include "distObject.h"
+#include "distGroup.h"
 #include "distComm.h"
 
 #include "attrInfo.h"
@@ -180,6 +181,17 @@ Object* DistCntxt::createObject( std::string name, PWR_ObjType type,
 {
     DBGX("obj=`%s`\n",name.c_str() );
     return new DistObject( name, type, cntxt );
+}
+
+Grp* DistCntxt::createGrp( std::string name )
+{
+    return new DistGrp( this, name );
+}
+
+int DistCntxt::destroyGrp( Grp* grp )
+{
+	delete grp;
+	return PWR_RET_SUCCESS; 
 }
 
 static void sumOp( void* out, void* in, size_t num )

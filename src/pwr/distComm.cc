@@ -45,16 +45,19 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 	delete ev;
 }
 
-void DistComm::getValue( PWR_AttrName attr, ValueOp op, CommReq* req )
+void DistComm::getValues( int count, PWR_AttrName attr[],
+										ValueOp op[], CommReq* req )
 {
-	DBGX("%s\n",attrNameToString(attr));
 
 	CommReqEvent* ev = new CommReqEvent;	
 	ev->commID = m_commID;
 	ev->op = CommEvent::Get;
-	ev->valueOp = op;
+	for ( int i = 0; i < count; i++ ) {
+		DBGX("%s\n",attrNameToString(attr[i]));
+		ev->valueOp.push_back( op[i] );
+		ev->attrName.push_back( attr[i] ); 
+	}
 	ev->id = (EventId) req;	
-	ev->attrName = attr; 
 	m_ec->sendEvent( ev );
 	delete ev;
 }
@@ -64,16 +67,19 @@ void DistGetCommReq::process( Event* _ev ) {
 	m_req->getValue( this, static_cast<CommRespEvent*>(_ev) );
 }
 
-void DistComm::setValue( PWR_AttrName attr, void* buf, CommReq* req )
+void DistComm::setValues( int count, PWR_AttrName attr[], 
+						void* buf, CommReq* req )
 {
-	DBGX("%s\n",attrNameToString(attr));
 
 	CommReqEvent* ev = new CommReqEvent;	
 	ev->commID = m_commID;
 	ev->op = CommEvent::Set;
 	ev->id = (EventId) req;	
-	ev->attrName = attr; 
-	ev->value = *(uint64_t*)buf;
+	for ( int i = 0; i < count; i++ ) {
+		DBGX("%s\n",attrNameToString(attr[i]));
+		ev->attrName.push_back( attr[i] ); 
+		ev->values.push_back( ((uint64_t*)buf)[i] );
+	}
 	m_ec->sendEvent( ev );
 	delete ev;
 }

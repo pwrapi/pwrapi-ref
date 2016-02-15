@@ -82,8 +82,11 @@ void DistRequest::setStatus( DistCommReq* req, CommRespEvent* ev  )
 void DistRequest::getValue( DistCommReq* req, CommRespEvent* ev )
 {
 	retval = ev->status;
-	*timeStamp = ev->timeStamp;
-	*(uint64_t*)value = ev->value;
+
+	for ( unsigned i = 0; i <  ev->value.size(); i++ ) {
+		timeStamp[i] = ev->timeStamp[i];
+		((uint64_t*)value)[i] = ev->value[i];
+	}
 
 	m_commReqs.erase( req ); 
 }

@@ -93,13 +93,13 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 
 //=============================================================================
 
-int DistObject::attrGetValue( PWR_AttrName attr, void* buf,
-                                PWR_Time* ts, Request* req )
+int DistObject::attrGetValues( int count, PWR_AttrName attr[], void* buf,
+                                PWR_Time ts[], Request* req )
 {
 	int retval;
 	Status status;
     DBGX("\n");
-	retval = attrGetValues( 1, &attr, buf, ts, &status, req );
+	retval = attrGetValues( count, attr, buf, ts, &status, req );
 	if ( retval == PWR_RET_STATUS ) {
         PWR_AttrAccessError error;
         retval = status.pop( &error );
@@ -109,12 +109,13 @@ int DistObject::attrGetValue( PWR_AttrName attr, void* buf,
     return retval;
 }
 
-int DistObject::attrSetValue( PWR_AttrName attr, void* buf, Request* req )
+int DistObject::attrSetValues( int count, PWR_AttrName attr[], void* buf,
+								Request* req )
 {
     int retval;
 	Status status;
     DBGX("\n");
-	retval = attrSetValues( 1, &attr, buf, &status, req );
+	retval = attrSetValues( count, attr, buf, &status, req );
 	if ( retval == PWR_RET_STATUS ) {
         PWR_AttrAccessError error;
         retval = status.pop( &error );
@@ -137,14 +138,21 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
 	// flagged in the status structure
     Object::attrGetValues( count, names, buf, ts, status );
 
-	for ( int i = 0; i < count; i++ ) {
-		AttrInfo* info = m_attrInfo[ names[i] ];
-		if ( info->comm ) {
-			DistCommReq* commReq = 
-						new DistGetCommReq(static_cast<DistRequest*>(req));	
-			distReq->insert( commReq );
-			info->comm->getValue( names[i], info->valueOp, commReq );
-		}
+	AttrInfo* info = m_attrInfo[ names[0] ];
+	std::vector<ValueOp> valueOp(count);
+	valueOp[0] = info->valueOp; 
+
+	for ( int i = 1; i < count; i++ ) {
+		assert( info->comm == m_attrInfo[ names[i] ]->comm );
+		valueOp[i] = info->valueOp; 
+	}
+
+	if ( info->comm ) {
+
+		DistCommReq* commReq = 
+					new DistGetCommReq(static_cast<DistRequest*>(req));	
+		distReq->insert( commReq );
+		info->comm->getValues( count, names, &valueOp[0], commReq );
 	}
 
 	retval = status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS; 
@@ -173,15 +181,19 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 	// flagged in the status structure
     Object::attrSetValues( count, names, buf, status );
 
-	for ( int i = 0; i < count; i++ ) {
-		AttrInfo* info = m_attrInfo[ names[i] ];
-		if ( info->comm ) {
-			DistCommReq* commReq = 
-						new DistSetCommReq(static_cast<DistRequest*>(req));	
-			distReq->insert( commReq );
-			info->comm->setValue( names[i], buf, commReq );
-		}
+	AttrInfo* info = m_attrInfo[ names[0] ];
+
+	for ( int i = 1; i < count; i++ ) {
+		assert( info->comm == m_attrInfo[ names[i] ]->comm );
 	}
+
+	if ( info->comm ) {
+		DistCommReq* commReq = 
+					new DistSetCommReq(static_cast<DistRequest*>(req));	
+		distReq->insert( commReq );
+		info->comm->setValues( count, names, buf, commReq );
+	}
+
 	retval = status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS; 
 	if ( retval == PWR_RET_SUCCESS && distReq->finished() ) {
 		if ( distReq->execCallback( ) ) {
@@ -190,6 +202,12 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 	}
 
     return retval;
+}
+
+bool DistObject::isLocal(  PWR_AttrName attr )
+{
+	AttrInfo* info = m_attrInfo[ attr ];
+	return info->comm == NULL;
 }
 
 //=============================================================================

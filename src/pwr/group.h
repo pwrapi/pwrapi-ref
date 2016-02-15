@@ -29,13 +29,14 @@ class Grp {
   public:
     Grp( Cntxt* ctx, const std::string name ="" ) 
 		: m_ctx(ctx), m_name(name) {}
+	virtual ~Grp(){};
 
     long size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
 
     Object* getObj( int i ) { return m_list[i]; }
 
-    int add( Object* obj ) {
+    virtual int add( Object* obj ) {
         DBGX("%s\n",obj->name().c_str());
         for ( unsigned i = 0; i < m_list.size(); i ++ ) {
             if ( m_list[i] == obj ) {
@@ -51,7 +52,7 @@ class Grp {
         return m_name;
     }
     
-    int attrSetValue( PWR_AttrName type, void* ptr, Status* status )
+    virtual int attrSetValue( PWR_AttrName type, void* ptr, Status* status )
 	{
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
             int ret = m_list[i]->attrSetValue( type, ptr );
@@ -62,12 +63,12 @@ class Grp {
         return !status->empty() ? PWR_RET_FAILURE : PWR_RET_SUCCESS;
     }
 
-    int attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[], Status* status )
+    virtual int attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[], Status* status )
 	{
-		assert(0);
+		return attrGetValues( 1, &type, ptr, ts, status );
     }
 
-    int attrSetValues( int num, PWR_AttrName attr[], void* buf, Status* status )
+    virtual int attrSetValues( int num, PWR_AttrName attr[], void* buf, Status* status )
     {
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
@@ -76,7 +77,7 @@ class Grp {
         return !status->empty() ? PWR_RET_FAILURE : PWR_RET_SUCCESS;
     }
 
-    int attrGetValues( int num, PWR_AttrName attr[], void* buf,
+    virtual int attrGetValues( int num, PWR_AttrName attr[], void* buf,
                                    		PWR_Time ts[], Status* status)
     {
         DBGX("num=%d size=%lu\n",num,m_list.size());
@@ -84,7 +85,8 @@ class Grp {
 
         for ( unsigned int i = 0; i < m_list.size(); i++ ) {
 
-            m_list[i]->attrGetValues( num, attr, ptr + i * num, ts, status ); 
+            m_list[i]->attrGetValues( num, attr, ptr + i * num, 
+				ts + i * num, status ); 
         }
 
         return !status->empty() ? PWR_RET_FAILURE : PWR_RET_SUCCESS;
@@ -119,7 +121,7 @@ class Grp {
 
     Cntxt* getCntxt() { return m_ctx; }
 
-  private:
+  protected:
     Cntxt*   					m_ctx;
     std::string 				m_name;
     std::vector<Object*> 	m_list;

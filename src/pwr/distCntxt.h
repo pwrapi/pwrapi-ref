@@ -36,6 +36,9 @@ class DistCntxt : public Cntxt {
 	AttrInfo* initAttr( Object*, PWR_AttrName );
 	virtual Object* createObject( std::string, PWR_ObjType, Cntxt* );
 
+    virtual Grp*    createGrp( std::string );
+    virtual int     destroyGrp( Grp* );
+
   private:
 	void traverse( std::string objName, PWR_AttrName,
 					std::vector<Device*>&, std::set<Object*>& );

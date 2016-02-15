@@ -25,6 +25,7 @@ class DistObject : public Object {
 	DistObject( std::string name, PWR_ObjType type, Cntxt* ctx ) : 
 		Object( name, type, ctx ) {} 
 
+	bool isLocal( PWR_AttrName );
     virtual int attrGetValue( PWR_AttrName attr, void* buf, 
 								PWR_Time* ts );
     virtual int attrSetValue( PWR_AttrName attr, void* buf );
@@ -33,9 +34,9 @@ class DistObject : public Object {
     virtual int attrSetValues( int count, PWR_AttrName names[],
 								void* buf, Status*  );
 
-	virtual int attrGetValue( PWR_AttrName , void* buf,
-								PWR_Time*, Request* );
-	virtual int attrSetValue( PWR_AttrName , void* buf, Request* );
+	virtual int attrGetValues(int count, PWR_AttrName [], void* buf,
+								PWR_Time [], Request* );
+	virtual int attrSetValues(int count, PWR_AttrName [], void* buf, Request* );
 
 	virtual int attrGetValues( int count, PWR_AttrName names[],
 							void* buf, PWR_Time ts[], Status*, Request* );

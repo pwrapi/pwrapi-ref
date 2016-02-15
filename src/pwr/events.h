@@ -102,20 +102,20 @@ struct CommReqEvent : public CommEvent {
 		serialize_in(buf);
 	}
 
-    PWR_AttrName attrName;
-    uint64_t value;
-	ValueOp valueOp;
+    std::vector<PWR_AttrName> attrName;
+    std::vector<uint64_t> values;
+	std::vector<ValueOp> valueOp;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> valueOp;
-		buf >> value;
 		buf >> attrName;
+		buf >> values;
 		CommEvent::serialize_in(buf);
 	} 
 	virtual void serialize_out( SerialBuf& buf ) {
 		CommEvent::serialize_out(buf);
+		buf << values;
 		buf << attrName;
-		buf << value;
 		buf << valueOp;
 	} 
 };
@@ -126,8 +126,8 @@ struct CommRespEvent : public CommEvent {
 		serialize_in(buf);
 	}
 
-    PWR_Time timeStamp;
-    uint64_t value;
+    std::vector<PWR_Time> timeStamp;
+    std::vector<uint64_t> value;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> value;
