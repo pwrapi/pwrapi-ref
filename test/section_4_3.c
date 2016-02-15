@@ -24,24 +24,28 @@ int section_4_3_test( void )
     PWR_Grp grp, dup, un, in, diff;
     PWR_Obj self, obj;
 
+    printf( "\tPWR_CntxtInit - application context\n" );
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: initialization of PowerAPI context failed\n" );
         return -1;
     }
 
+    printf( "\tPWR_CntxtGetEntryPoint\n" );
 	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: getting self from PowerAPI context failed\n" );
         return -1;
     }
 
+    printf( "\tPWR_GrpCreate\n" );
     rc = PWR_GrpCreate( cntxt, &grp );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: creating a group failed\n" );
         return -1;
     }
 
+    printf( "\tPWR_GrpAddObj - self object\n" );
     rc = PWR_GrpAddObj( grp, self );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: adding a object to a group failed\n" );
@@ -49,48 +53,56 @@ int section_4_3_test( void )
     }
 
 #if 0
+    printf( "\tPWR_GrpDuplicate - self group\n" );
     rc = PWR_GrpDuplicate( grp, &dup );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: duplicating a group failed\n" );
         return -1;
     }
 
-    rc = PWR_GrpDestroy( dup );
-    if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destroying the duplicate group failed\n" );
-        return -1;
-    }
-
+    printf( "\tPWR_GrpUnion - self group and duplicate group\n" );
     rc = PWR_GrpUnion( grp, dup, &un );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: the union of two groups failed\n" );
         return -1;
     }
 
-    rc = PWR_GrpDestroy( un );
-    if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destroying the union group failed\n" );
-        return -1;
-    }
-
+    printf( "\tPWR_GrpIntersection - self group and duplicate group\n" );
     rc = PWR_GrpIntersection( grp, dup, &in );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: the intersection of two groups failed\n" );
         return -1;
     }
 
-    rc = PWR_GrpDestroy( in );
-    if( rc != PWR_RET_SUCCESS ) {
-        printf( "Error: destroying the intersection group failed\n" );
-        return -1;
-    }
-
+    printf( "\tPWR_GrpDifference - self group and duplicate group\n" );
     rc = PWR_GrpDifference( grp, dup, &diff );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: the difference of two groups failed\n" );
         return -1;
     }
 
+    printf( "\tPWR_GrpDestroy - duplicate group\n" );
+    rc = PWR_GrpDestroy( dup );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the duplicate group failed\n" );
+        return -1;
+    }
+
+    printf( "\tPWR_GrpDestroy - union group\n" );
+    rc = PWR_GrpDestroy( un );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the union group failed\n" );
+        return -1;
+    }
+
+    printf( "\tPWR_GrpDestroy - intersection group\n" );
+    rc = PWR_GrpDestroy( in );
+    if( rc != PWR_RET_SUCCESS ) {
+        printf( "Error: destroying the intersection group failed\n" );
+        return -1;
+    }
+
+    printf( "\tPWR_GrpDestroy - difference group\n" );
     rc = PWR_GrpDestroy( diff );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: destroying the difference group failed\n" );
@@ -98,6 +110,7 @@ int section_4_3_test( void )
     }
 #endif
 
+    printf( "\tPWR_GrpGetNumObjs - self group\n" );
     num = PWR_GrpGetNumObjs( grp );
     if( rc < PWR_RET_SUCCESS ) {
         printf( "Error: retrieving number of objects in a group failed\n" );
@@ -105,6 +118,7 @@ int section_4_3_test( void )
     }
 
     for( i=0; i<num; i++ ) {
+        printf( "\tPWR_GrpGetObjByIndx - index %d of group\n", i );
         rc = PWR_GrpGetObjByIndx( grp, i, &obj );
         if( rc != PWR_RET_SUCCESS ) {
             printf( "Error: retrieving object %d from a group failed\n", i );
@@ -112,6 +126,7 @@ int section_4_3_test( void )
         }
     }
 
+    printf( "\tPWR_GrpRemoveObj - self from self group\n" );
     rc = PWR_GrpRemoveObj( grp, self );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: removing a object to a group failed\n" );
@@ -120,12 +135,14 @@ int section_4_3_test( void )
 
     // TODO - PWR_CntxtGetGrpByName( cntxt, "Predefined", name );
 
+    printf( "\tPWR_GrpDestroy - self group\n" );
     rc = PWR_GrpDestroy( grp );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: destroying a group failed\n" );
         return -1;
     }
 
+    printf( "\tPWR_CntxtDestroy - application context\n" );
     rc = PWR_CntxtDestroy( cntxt );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "Error: destruction of PowerAPI context failed\n" );
