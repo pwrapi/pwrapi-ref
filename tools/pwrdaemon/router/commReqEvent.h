@@ -32,7 +32,9 @@ class RtrCommReqEvent: public  CommReqEvent {
     	info->ev = this;
     	info->id = id;
 		info->valueOp = valueOp;
-		DBGX("valueOp=%d\n",valueOp);	
+		for ( size_t i = 0; i < valueOp.size(); i++ ) {
+			DBGX("valueOp=%d\n",valueOp[i]);	
+		}
 
     	id = (EventId) info;
 
@@ -45,7 +47,9 @@ class RtrCommReqEvent: public  CommReqEvent {
     	std::vector<ObjID>::iterator iter = commList.begin();
     	for ( ; iter != commList.end(); ++iter ) {
 
-        	DBGX("%s %d\n",(*iter).c_str(), attrName );
+			for ( size_t i = 0; i < attrName.size(); i++ ) {
+        		DBGX("%s %d\n",(*iter).c_str(), attrName[i] );
+			}
 			rtr.sendEvent( (*iter), this );
     	}
 		return false;

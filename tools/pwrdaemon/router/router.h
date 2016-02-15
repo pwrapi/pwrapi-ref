@@ -13,6 +13,7 @@
 #define _ROUTER_H
 
 #include <map>
+#include <vector>
 #include <set>
 #include "routerSelect.h"
 #include "debug.h"
@@ -205,8 +206,8 @@ struct CommReqInfo {
     CommEvent*      ev;
     EventId         id;
 	size_t			num;
-	ValueOp			valueOp;
-	std::deque<CommRespEvent*> respQ; 
+	std::vector<ValueOp>		valueOp;
+	std::deque<CommRespEvent*> 	respQ; 
 };
 
 }

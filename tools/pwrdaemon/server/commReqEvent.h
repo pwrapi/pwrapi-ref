@@ -33,7 +33,12 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		char name[100];
 		PWR_ObjGetName(obj,name,100);
 
-    	DBGX("obj='%s' attr=`%s`\n", name, PWR_AttrGetTypeString( attrName ) );
+   		DBGX("obj='%s':\n", name );
+		for ( unsigned i = 0; i < attrName.size(); i++ ) {
+    		DBGX("    attr=`%s`\n", PWR_AttrGetTypeString( attrName[i] ) );
+		}
+		m_respEvent.value.resize(attrName.size());
+		m_respEvent.timeStamp.resize(attrName.size());
     	m_respEvent.op = op;
     	m_respEvent.id = id;
     	m_req = PWR_ReqCreateCallback( m_info->m_ctx, 
@@ -42,10 +47,12 @@ class SrvrCommReqEvent: public  CommReqEvent {
 
     	int ret;
     	if ( op == CommEvent::Get ) {
-        	ret = PWR_ObjAttrGetValue_NB( obj, attrName,
-           		&m_respEvent.value, &m_respEvent.timeStamp, m_req );
+        	ret = PWR_ObjAttrGetValues_NB( obj, attrName.size(), 
+				&attrName[0], &m_respEvent.value[0],
+				&m_respEvent.timeStamp[0], m_req );
     	} else {
-        	ret = PWR_ObjAttrSetValue_NB( obj, attrName, &value, m_req );
+        	ret = PWR_ObjAttrSetValues_NB( obj, attrName.size(),
+				&attrName[0], &values[0], m_req );
     	}
 
     	if ( ret != PWR_RET_SUCCESS ) {

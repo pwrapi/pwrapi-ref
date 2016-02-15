@@ -40,14 +40,21 @@ class RtrCommRespEvent: public  CommRespEvent {
 
 			CommRespEvent* resp = new CommRespEvent;
         	resp->id = info->id;
-			resp->value = 0;
+			resp->timeStamp.resize( info->valueOp.size() );
+			resp->value.resize( info->valueOp.size() );
+			for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
+				resp->value[i] = 0;
+			}
+			DBGX("num attrs %lu\n",info->valueOp.size() );
 
-			DBGX( "op=%d \n", info->valueOp );			
-			assert( FP_ADD == info->valueOp );
 			std::deque<CommRespEvent*>::iterator iter = info->respQ.begin();	
 			for ( ; iter != info->respQ.end(); ++iter ) {
-				fpAdd( &resp->value, &(*iter)->value );
-				resp->timeStamp = (*iter)->timeStamp;
+				for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
+					DBGX( "op=%d \n", info->valueOp[i] );			
+					assert( FP_ADD == info->valueOp[i] );
+					fpAdd( &resp->value[i], &(*iter)->value[i] );
+					resp->timeStamp[i] = (*iter)->timeStamp[i];
+				}
 				delete (*iter);
 			} 
 
