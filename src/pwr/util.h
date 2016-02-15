@@ -57,6 +57,17 @@ static inline const char* attrNameToString( PWR_AttrName name )
     return NULL;
 }
 
+static inline const char* attrUnitsToString( PWR_AttrName name )
+{
+    switch( name ){
+    case PWR_ATTR_POWER:           return "Watts";
+    case PWR_ATTR_ENERGY:          return "Joules";
+    case PWR_ATTR_INVALID:         return "Invalid";
+    default: return "????";
+    }
+    return NULL;
+}
+
 static inline const char* attrStatToString( PWR_AttrStat stat )
 {
 	switch( stat ) {
