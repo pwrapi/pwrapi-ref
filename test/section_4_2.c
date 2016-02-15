@@ -68,12 +68,14 @@ int section_4_2_test( void )
         return -1;
     }
 
+#if 0
     printf( "\tPWR_ObjGrpDestroy - children group\n" );
     rc = PWR_GrpDestroy( children );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "\t\tError: destroying children failed\n" );
         return -1;
     }
+#endif
 
     printf( "\tPWR_CntxtGetObjByName - \"plat\" name\n" );
 	rc = PWR_CntxtGetObjByName( cntxt, "plat", &obj );

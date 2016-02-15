@@ -23,14 +23,14 @@ int section_4_7_test( void )
 
     printf( "\tPWR_GetMajorVersion\n" );
 	rc = PWR_GetMajorVersion( );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < 0 ) {
         printf( "\t\tError: retrieving PowerAPI major version failed\n" );
         return -1;
     }
 
     printf( "\tPWR_GetMinorVersion\n" );
 	rc = PWR_GetMinorVersion( );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < 0 ) {
         printf( "\t\tError: retrieving PowerAPI minor version failed\n" );
         return -1;
     }

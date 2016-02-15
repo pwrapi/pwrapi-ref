@@ -45,6 +45,7 @@ int section_4_6_test( void )
         return -1;
     }
 
+#if 0
     printf( "\tPWR_CreateStat - PWR_ATTR_STAT_AVG of PWR_ATTR_POWER\n" );
     rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_avg );
     if( rc != PWR_RET_SUCCESS ) {
@@ -80,14 +81,12 @@ int section_4_6_test( void )
         return -1;
     }
 
-#if 0
     printf( "\tPWR_StatGetReduce - PWR_ATTR_STAT_MIN of average power\n" );
     rc = PWR_StatGetReduce( stat, PWR_ATTR_STAT_MIN, &i, vals, tps );
     if( rc != PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for object failed\n" );
         return -1;
     }
-#endif
 
     printf( "\tPWR_StatClear - maximum power and energy\n" );
     rc = PWR_StatClear( stat_avg );
@@ -144,6 +143,7 @@ int section_4_6_test( void )
         printf( "\t\tError: destruction of stat failed\n" );
         return -1;
     }
+#endif
 
     printf( "\tPWR_CntxtDestroy - application context\n" );
     rc = PWR_CntxtDestroy( cntxt );

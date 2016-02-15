@@ -61,6 +61,7 @@ int section_4_4_test( void )
         return -1;
     }
 
+#if 0
     printf( "\tPWR_ObjAttrGetValues - PWR_ATTR_POWER, PWR_ATTR_ENERGY of self\n" );
     rc = PWR_ObjAttrGetValues( self, NUM_ATTR(attrs), attrs, vals, tss, &stat );
     if( rc != PWR_RET_SUCCESS ) {
@@ -81,6 +82,7 @@ int section_4_4_test( void )
         printf( "\t\tError: object attribute valid check failed\n" );
         return -1;
     }
+#endif
 
     printf( "\tPWR_GrpCreate\n" );
     rc = PWR_GrpCreate( cntxt, &grp );
