@@ -26,9 +26,7 @@ class DistGrp : public Grp {
   public:
     DistGrp( Cntxt* ctx, const std::string name ="" ) : Grp( ctx, name ) {
 	}
-#if 0
 	virtual int add( Object* obj );
-#endif
 
 	virtual int attrSetValue( PWR_AttrName type, void* ptr, Status* status );
 	virtual int attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[],
@@ -39,10 +37,7 @@ class DistGrp : public Grp {
                                         PWR_Time ts[], Status* status);
 	
   private:
-#if 0
 	std::vector<DistObject*>  m_distObjs;
-#endif
-	
 };
 
 }

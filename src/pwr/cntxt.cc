@@ -123,13 +123,14 @@ Object* Cntxt::findObject( std::string name ) {
     DBGX("obj=`%s`\n",name.c_str());
     if ( m_objMap.find( name ) == m_objMap.end() ) {
         PWR_ObjType type = m_config->objType(name);
+        DBGX("type=`%s`\n",objTypeToString(type));
         if( type == PWR_OBJ_INVALID ) {
             return NULL;
         }
         m_objMap[name] = createObject(name, type, this );
     }
 
-    return m_objMap[name];;
+    return m_objMap[name];
 }
 
 void Cntxt::findAllObjType( Object* obj, PWR_ObjType type, Grp* grp )

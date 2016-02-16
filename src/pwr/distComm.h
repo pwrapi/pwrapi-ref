@@ -67,7 +67,7 @@ class DistComm : public Communicator {
 
   public:
 
-	DistComm( DistCntxt*, std::set<Object*>& );
+	DistComm( DistCntxt*, std::set<std::string>& );
 	~DistComm() {}
 	virtual void getValues( int, PWR_AttrName [], ValueOp [], CommReq* req );
 	virtual void setValues( int, PWR_AttrName [], void* buf, CommReq* req );

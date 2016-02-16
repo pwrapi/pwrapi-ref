@@ -27,7 +27,7 @@ static inline int gettid() {
 
 uint32_t DistComm::m_currentCommID = 1;
 
-DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
+DistComm::DistComm( DistCntxt* cntxt, std::set<std::string>& objects )
 {
 	DBGX("num objects %lu\n", objects.size() );
 	m_ec = cntxt->getEventChannel();
@@ -36,9 +36,9 @@ DistComm::DistComm( DistCntxt* cntxt, std::set<Object*>& objects )
 	CommCreateEvent* ev = new CommCreateEvent();
 	m_commID = ev->commID = ((CommID)gettid() << 32) | m_currentCommID++;
 
-	std::set<Object*>::iterator iter = objects.begin();
+	std::set<std::string>::iterator iter = objects.begin();
 	for ( ; iter != objects.end(); ++iter ) {
-		ev->members.push_back((*iter)->name());
+		ev->members.push_back((*iter));
 	}
 
 	m_ec->sendEvent( ev );

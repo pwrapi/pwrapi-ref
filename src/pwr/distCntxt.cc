@@ -143,7 +143,6 @@ DistCntxt::~DistCntxt()
 		m_commMap.erase( m_commMap.begin() );
 	}
 }
-	
 
 EventChannel* DistCntxt::initEventChannel()
 {
@@ -167,7 +166,7 @@ EventChannel* DistCntxt::initEventChannel()
 	return ::getEventChannel("TCP", ctx_allocEvent, config, "PWR_Cntxt" );
 }
 
-Communicator* DistCntxt::getCommunicator( std::set<Object*> objects )
+Communicator* DistCntxt::getCommunicator( std::set<std::string> objects )
 {
 	DBGX("\n");
 	if ( m_commMap.find( objects ) == m_commMap.end() ) {
@@ -250,7 +249,7 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp, vOp );
 
 	if ( vOp != NO_OP ) {
-   		std::set<Object*> remote;
+   		std::set<std::string> remote;
 		traverse( obj->name(), attrName, attrInfo->devices, remote );
 
 		DBGX("%lu %lu\n", attrInfo->devices.size(), remote.size() );
@@ -262,14 +261,12 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 	return attrInfo;
 }
 void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
-                    std::vector<Device*>& local, std::set<Object*>& remote )
+                std::vector<Device*>& local, std::set<std::string>& remote )
 {
 	DBGX("obj='%s' attr=%s\n",objName.c_str(),attrNameToString(attrName));
 
 	if ( m_config->hasServer( objName ) && objName.compare( m_rootName ) ) {
-    	Object* tmp = findObject( objName ); 
-        assert( tmp );
-		remote.insert( tmp );
+		remote.insert( objName );
 		return;
 	}
 

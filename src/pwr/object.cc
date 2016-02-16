@@ -23,16 +23,30 @@ using namespace PowerAPI;
 
 Object::Object( std::string name, PWR_ObjType type, Cntxt* ctx ) :
 	m_name(name), m_objType(type), m_cntxt(ctx),
-    m_parent( NULL ), m_children( NULL )
+    m_parent( NULL ), m_children( NULL ), m_attrInfo( PWR_NUM_ATTR_NAMES )
 {
 	DBGX("%s %s\n",name.c_str(), objTypeToString(type) );
+
+	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
+		m_attrInfo[ attr ] = m_cntxt->initAttr( this, (PWR_AttrName)attr );
+	}
+	// for now all attributes for an object must serviced the same way 
+	Communicator* comm = m_attrInfo[0]->comm;
+	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
+		assert( ! ( m_attrInfo[attr]->comm && 
+						! m_attrInfo[attr]->devices.empty() ) );
+		if ( ! comm ) {
+			comm = m_attrInfo[0]->comm;
+		} else if ( m_attrInfo[0]->comm ) {
+			assert( comm == m_attrInfo[attr]->comm ); 
+		}
+	}
 }
 
 Object::~Object()
 {
-	while ( ! m_attrInfo.empty() ) {
-		delete m_attrInfo.begin()->second;
-		m_attrInfo.erase( m_attrInfo.begin() );
+	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
+		delete m_attrInfo[attr];
 	} 
 }
 
@@ -58,7 +72,6 @@ Grp* Object::children()
 bool Object::attrIsValid( PWR_AttrName attr )
 {
 	DBGX("\n");
-	initAttrIfNeeded( attr );
 	return m_attrInfo[attr]->isValid();
 }
 
@@ -70,7 +83,6 @@ int Object::attrGetValues( int count, PWR_AttrName names[], void* buf,
 	DBGX("\n");
 
 	for ( int i = 0; i < count; i++ ) {
-		initAttrIfNeeded( names[i] );
 		ptr[i] = 0;
 		ts[i] = 0;
 
@@ -119,7 +131,6 @@ int Object::attrSetValues( int count, PWR_AttrName names[], void* buf,
 
 	DBGX("\n");
 	for ( int i = 0; i < count; i++ ) {
-		initAttrIfNeeded( names[i] );
 
 		if ( ! m_attrInfo[ names[i] ]->isValid() ) {
 			status->add( this, names[i], PWR_RET_INVALID );
@@ -185,7 +196,6 @@ int Object::attrSetValue( PWR_AttrName attr, void* buf ) {
 int Object::attrStartLog( PWR_AttrName name )
 {
 	DBGX("\n");
-	initAttrIfNeeded( name );
 
 	if ( ! m_attrInfo[ name ]->isValid() ) {
 		return PWR_RET_FAILURE; 
@@ -206,7 +216,6 @@ int Object::attrStartLog( PWR_AttrName name )
 int Object::attrStopLog( PWR_AttrName name )
 {
 	DBGX("\n");
-	initAttrIfNeeded( name );
 
 	if ( ! m_attrInfo[ name ]->isValid() ) {
 		return PWR_RET_FAILURE; 
@@ -227,7 +236,6 @@ int Object::attrGetSamples( PWR_AttrName name, PWR_Time* ts,
 		double period, unsigned int* count, void* buf )
 {
 	DBGX("\n");
-	initAttrIfNeeded( name );
 
 	if ( ! m_attrInfo[ name ]->isValid() ) {
 		return PWR_RET_FAILURE; 

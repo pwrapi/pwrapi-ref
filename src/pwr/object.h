@@ -48,7 +48,7 @@ class Object {
 	virtual int attrGetValues( int count, PWR_AttrName names[], void* buf,
 							PWR_Time ts[], Status* );
 	virtual int attrSetValues( int count, PWR_AttrName names[], void* buf,
-							Status*  );
+							Status* );
 
 	virtual int attrGetValues( int count, PWR_AttrName names[], void* buf,
 							PWR_Time ts[], Status*, Request*  ) {
@@ -87,18 +87,12 @@ class Object {
 	int attrGetValuesDevice( AttrInfo&, PWR_AttrName, void* buf, PWR_Time* );
 	int attrSetValuesDevice( AttrInfo&, PWR_AttrName, void* buf );	
 
-	void initAttrIfNeeded( PWR_AttrName attr ) {
-		if ( m_attrInfo.find( attr ) == m_attrInfo.end() ) {
-			m_attrInfo[ attr ] = m_cntxt->initAttr( this, attr );
-		}
-	}
-
-	std::map< PWR_AttrName, AttrInfo* > m_attrInfo; 
 	std::string     m_name;
 	PWR_ObjType	    m_objType;
 	Cntxt* 			m_cntxt;
 	Object*			m_parent;
 	Grp*			m_children;
+	std::vector< AttrInfo* > m_attrInfo; 
 };
 
 };
