@@ -11,7 +11,7 @@ install:
         - ./autogen.sh
         - mkdir build
         - cd build
-        - ../configure --prefix=`pwd`/../install --without-mpi
+        - ../configure --prefix=`pwd`/../install --without-mpi --without-powerinsight
         - make
         - make install
 script:
