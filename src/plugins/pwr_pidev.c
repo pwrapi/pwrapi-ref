@@ -122,13 +122,13 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
 
     switch( attr ) {
         case PWR_ATTR_VOLTAGE:
-            *((double *)value) = (double)raw.volts;
+            *((double *)value) = (double)raw.volt;
             break;
         case PWR_ATTR_CURRENT:
-            *((double *)value) = (double)raw.amps;
+            *((double *)value) = (double)raw.amp;
             break;
         case PWR_ATTR_POWER:
-            *((double *)value) = (double)raw.watts;
+            *((double *)value) = (double)raw.watt;
             break;
         default:
             fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
