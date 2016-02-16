@@ -11,18 +11,18 @@ AC_DEFUN([PWRAPI_CHECK_POWERINSIGHT], [
         AS_IF([test -z "$with_powerinsight"],
                 [POWERINSIGHT_CPPFLAGS=
                  POWERINSIGHT_LDFLAGS=
-                 POWERINSIGHT_LIBS="-lpiapi -lpthread"
+                 POWERINSIGHT_LIBS="-lpidev -lpthread"
                  LIBS="$LIBS $POWERINSIGHT_LIBS"],
                 [       AS_IF([test "x$with_powerinsight" = "xyes"],
                                 [POWERINSIGHT_CPPFLAGS=
                          POWERINSIGHT_LDFLAGS=
-                         POWERINSIGHT_LIBS="-lpiapi -lpthread"
+                         POWERINSIGHT_LIBS="-lpidev -lpthread"
                          LIBS="$LIBS $POWERINSIGHT_LIBS"],
                                 [POWERINSIGHT_CPPFLAGS="-I$with_powerinsight/include"
                  CPPFLAGS="$POWERINSIGHT_CPPFLAGS $CPPFLAGS"
                  POWERINSIGHT_LDFLAGS="-L$with_powerinsight/lib"
                  LDFLAGS="$POWERINSIGHT_LDFLAGS $LDFLAGS"
-                 POWERINSIGHT_LIBS="-lpiapi -lpthread"
+                 POWERINSIGHT_LIBS="-lpidev -lpthread"
                  LIBS="$LIBS $POWERINSIGHT_LIBS"]
                 )]
         )
@@ -30,7 +30,7 @@ AC_DEFUN([PWRAPI_CHECK_POWERINSIGHT], [
         AC_LANG_SAVE
         AC_LANG_CPLUSPLUS
 
-        AC_CHECK_HEADERS([piapi.h], [], [pwrapi_check_powerinsight_happy="no"])
+        AC_CHECK_HEADERS([pidev.h], [], [pwrapi_check_powerinsight_happy="no"])
         AC_LINK_IFELSE([AC_LANG_PROGRAM([], [
                         int a;
                 ])], [pwrapi_check_powerinsight_lib_happy="yes"],
