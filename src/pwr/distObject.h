@@ -22,10 +22,9 @@ class Status;
 class DistObject : public Object {
 
   public:
-	DistObject( std::string name, PWR_ObjType type, Cntxt* ctx ) : 
-		Object( name, type, ctx ) {} 
+	DistObject( std::string name, PWR_ObjType type, Cntxt* ctx );
 
-	bool isLocal( PWR_AttrName );
+	bool isLocal() { return m_local; }
     virtual int attrGetValue( PWR_AttrName attr, void* buf, 
 								PWR_Time* ts );
     virtual int attrSetValue( PWR_AttrName attr, void* buf );
@@ -51,6 +50,9 @@ class DistObject : public Object {
     virtual int attrStopLog( PWR_AttrName, Request* );
     virtual int attrGetSamples( PWR_AttrName name, PWR_Time*, double period,
                        unsigned int* count, void* buf, Request* );
+
+  private:
+	bool m_local;
 };
 
 };

@@ -18,6 +18,16 @@
 
 using namespace PowerAPI;
 
+DistObject::DistObject( std::string name, PWR_ObjType type, Cntxt* ctx ) :
+        Object( name, type, ctx ), m_local(true) 
+{
+	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) {
+		if ( m_attrInfo[ attr ]->comm ) {
+			m_local = false;
+		} 
+	}	
+}
+
 int DistObject::attrGetValue( PWR_AttrName attr, void* buf,
                                 PWR_Time* ts )
 {
@@ -202,12 +212,6 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 	}
 
     return retval;
-}
-
-bool DistObject::isLocal(  PWR_AttrName attr )
-{
-	AttrInfo* info = m_attrInfo[ attr ];
-	return info->comm == NULL;
 }
 
 //=============================================================================

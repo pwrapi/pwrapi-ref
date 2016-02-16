@@ -41,9 +41,10 @@ class DistCntxt : public Cntxt {
 
   private:
 	void traverse( std::string objName, PWR_AttrName,
-					std::vector<Device*>&, std::set<Object*>& );
+					std::vector<Device*>&, std::set<std::string>& );
 
-	Communicator* getCommunicator( std::set<Object*> objects );
+
+	Communicator* getCommunicator( std::set<std::string> objects );
 	void initPlugins( Config& cfg );
 	bool initDevice( std::string& devName );
 	plugin_dev_t* getDev( std::string lib, std::string name );
@@ -55,7 +56,7 @@ class DistCntxt : public Cntxt {
     std::map< std::string, std::pair< plugin_dev_t*, plugin_devops_t* > > m_devMap;
 	std::map< plugin_devops_t*, std::map< std::string, Device* > > m_deviceMap;
 
-	std::map< std::set< Object*>, Communicator* >	m_commMap;
+	std::map< std::set< std::string>, Communicator* >	m_commMap;
 	std::string m_rootName;	
 	std::string m_name;
 };
