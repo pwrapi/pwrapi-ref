@@ -2,6 +2,8 @@
 #include "distGroup.h"
 #include "distObject.h"
 
+#include <stdio.h>
+
 using namespace PowerAPI;
 
 #if 0
