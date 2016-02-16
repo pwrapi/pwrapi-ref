@@ -19,7 +19,7 @@
 #include <sched.h>
 
 typedef struct {
-    piapi_port_t port;
+    int port;
 } pwr_pifd_t;
 #define PWR_PIFD(X) ((pwr_pifd_t *)(X))
 
@@ -40,9 +40,6 @@ static plugin_devops_t devops = {
 #endif
     .private_data = 0x0
 };
-
-static piapi_sample_t pidev_counter;
-static int pidev_reading;
 
 plugin_devops_t *pwr_pidev_init( const char *initstr )
 {
@@ -109,6 +106,7 @@ int pwr_pidev_close( pwr_fd_t fd )
 
 int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
+    struct timeval tv;
     reading_t raw;
 
     DBGP( "Info: reading counter for port %d\n", PWR_PIFD(fd)->port );
@@ -136,8 +134,8 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
             fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
-    *timestamp = pidev_counter.time_sec*1000000000ULL + 
-            pidev_counter.time_usec*1000;
+    gettimeofday( &tv, NULL );
+    *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
     DBGP( "Info: reading of type %u at time %llu with value %lf\n",
         attr, *(unsigned long long *)timestamp, *(double *)value );
