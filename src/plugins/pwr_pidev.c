@@ -46,8 +46,8 @@ plugin_devops_t *pwr_pidev_init( const char *initstr )
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
     *dev = devops;
 
-    dev->private_data = malloc( sizeof(pwr_pidev_t) );
-    bzero( dev->private_data, sizeof(pwr_pidev_t) );
+    dev->private_data = malloc( sizeof(pwr_pifd_t) );
+    bzero( dev->private_data, sizeof(pwr_pifd_t) );
 
     DBGP( "Info: initializing PWR PowerInsight device\n" );
     if( pidev_open() < 0 ) {
