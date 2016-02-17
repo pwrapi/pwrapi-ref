@@ -91,7 +91,7 @@ void Server::fini( Event* key, Event* payload )
 	RouterEvent* re = static_cast<RouterEvent*>(m_finiMap[key].first);
 	EventChannel* ec = static_cast<EventChannel*>(m_finiMap[key].second);
 
-	DBGX("src=%#lx dest=%#lx\n",re->dest,re->src);
+	DBGX("src=%#llx dest=%#llx\n",re->dest,re->src);
     RouterEvent* ev = new RouterEvent( re->dest, re->src, payload );
     ec->sendEvent( ev );
 	

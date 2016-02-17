@@ -30,7 +30,7 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
-		DBGX("%lu\n",commID);
+		DBGX("%llu\n",commID);
 
 		char name[100];
 		PWR_ObjGetName(obj,name,100);

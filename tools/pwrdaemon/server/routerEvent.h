@@ -24,7 +24,7 @@ class SrvrRouterEvent: public RouterEvent {
 
         Server* info = static_cast<Server*>(gen);
 
-        DBGX("src=%#lx dest=%#lx\n",src,dest);
+        DBGX("src=%#llx dest=%#llx\n",src,dest);
         Event* ev = getPayload( allocReqEvent );
 
        	info->initFini( ev, this, ec );
