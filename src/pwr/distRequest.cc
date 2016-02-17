@@ -68,7 +68,7 @@ void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 		((uint64_t*)value)[i] = ev->data[i];
 	}
 	*timeStamp = ev->startTime;
-	DBGX("start time %lu, samples %d\n",*timeStamp, ev->count);
+	DBGX("start time %lld, samples %d\n",*timeStamp, ev->count);
 	m_commReqs.erase( req ); 
 }
 
