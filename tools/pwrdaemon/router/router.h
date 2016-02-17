@@ -152,7 +152,7 @@ class Router : public EventGenerator {
 		if ( m_routeTable.find(id) != m_routeTable.end() ) {
 			retval = m_routeTable[id];
 		}
-		DBGX("name=`%s` AppID=%lx\n", id.c_str(), retval  )
+		DBGX("name=`%s` AppID=%llx\n", id.c_str(), retval  )
     	return retval;
 	}
 

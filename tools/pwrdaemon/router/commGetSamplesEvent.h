@@ -34,7 +34,7 @@ class RtrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
     	id = (EventId) info;
 
-    	DBGX("commID=%lu eventId=%#lx new eventId=%p\n",
+    	DBGX("commID=%llu eventId=%#llx new eventId=%p\n",
                                 commID, id, info );
 
 		DBGX("period=%f count=%d\n",period,count);
