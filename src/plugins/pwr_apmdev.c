@@ -205,7 +205,7 @@ static int apmdev_read( unsigned long node, unsigned long reg, unsigned long off
 
     if( (pipe = popen( cmd, "r" )) && fgets( buf, 255, pipe ) ) {
         sscanf( buf, "%lx", msr );
-        DBGP( "Info: 0x%08x\n", *msr );
+        DBGP( "Info: 0x%08lx\n", *msr );
     } else {
         DBGP( "Warning: call to setpci failed\n" );
         return -1;
@@ -239,7 +239,7 @@ static int apmdev_gather( node_t node, double *power )
     if( run_avg_acc_cap >= MSR_APM_RUN_AVG_ACC_CAP_NEG )
         run_avg_acc_cap = 
             -((~(run_avg_acc_cap & MSR_APM_RUN_AVG_ACC_CAP_NEG_MASK) & MSR_APM_RUN_AVG_ACC_CAP_NEG_MASK) + 1);
-    DBGP( "Info: node[%d].run_avg_acc_cap   - %u\n", node.number, run_avg_acc_cap );
+    DBGP( "Info: node[%d].run_avg_acc_cap   - %lu\n", node.number, run_avg_acc_cap );
 
     *power = (apm_tdp_limit - (run_avg_acc_cap / node.avg_divide_by)) * node.tdp_to_watt;
     DBGP( "Info: node[%d].power             - %g\n", node.number, *power );
