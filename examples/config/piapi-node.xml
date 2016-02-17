@@ -3,11 +3,11 @@
 <System>
 
 <Plugins>
-    <plugin name="PowerInsight" lib="libpwr_pidev"/>
+    <plugin name="PowerInsight" lib="libpwr_piapidev"/>
 </Plugins>
 
 <Devices>
-    <device name="PowerInsight-socket" plugin="PowerInsight" initString=""/>
+    <device name="PIAPI-socket" plugin="PIAPI" initString="10.54.21.80:20201"/>
 </Devices>
 
 <Objects>
@@ -73,27 +73,27 @@
 <obj name="plat.node.socket" type="Socket" >
 
     <devices>
-        <dev name="pidev" device="PowerInsight-socket" openString="1" /> 
+        <dev name="piapidev" device="PIAPI-socket" openString="1" /> 
     </devices>
 
     <attributes>
         <attr name="VOLTAGE" op="AVG">
-            <src type="device" name="pidev" />
+            <src type="device" name="piapidev" />
         </attr>
         <attr name="CURRENT" op="AVG">
-            <src type="device" name="pidev" />
+            <src type="device" name="piapidev" />
         </attr>
         <attr name="POWER" op="AVG">
-            <src type="device" name="pidev" />
+            <src type="device" name="piapidev" />
         </attr>
         <attr name="MIN_POWER" op="AVG">
-            <src type="device" name="pidev" />
+            <src type="device" name="piapidev" />
         </attr>
         <attr name="MAX_POWER" op="AVG">
-            <src type="device" name="pidev" />
+            <src type="device" name="piapidev" />
         </attr>
         <attr name="ENERGY" op="SUM">
-            <src type="device" name="pidev" />
+            <src type="device" name="piapidev" />
         </attr>
     </attributes>
 
