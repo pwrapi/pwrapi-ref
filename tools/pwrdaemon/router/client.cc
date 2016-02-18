@@ -22,11 +22,11 @@ Router::Client::~Client() {
     for ( iter = m_commMap.begin(); iter != m_commMap.end(); ++iter ) {
 
    		CommCreateEvent* ev = iter->second;
-        for ( unsigned int i = 0; i < ev->members.size(); i++ ) {
-            DBGX("%s\n", ev->members[i].c_str() );
+        for ( unsigned int i = 0; i < ev->members[0].size(); i++ ) {
+            DBGX("%s\n", ev->members[0][i].c_str() );
             CommDestroyEvent* d_ev = new CommDestroyEvent;
             d_ev->commID = ev->commID;
-            m_rtr.sendEvent( ev->members[i].c_str(), d_ev );
+            m_rtr.sendEvent( ev->members[0][i].c_str(), d_ev );
             delete d_ev;
         }
 
@@ -40,5 +40,5 @@ void Router::Client::addComm( CommID id, CommCreateEvent* ev ) {
 }
 
 std::vector<ObjID>& Router::Client::getCommList( CommID id ) {
-	return  m_commMap[id]->members;
+	return  m_commMap[id]->members[0];
 }

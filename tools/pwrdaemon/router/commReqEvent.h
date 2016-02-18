@@ -27,6 +27,7 @@ class RtrCommReqEvent: public  CommReqEvent {
 		Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
 
+		DBGX("id=%lx\n",commID);
     	CommReqInfo* info = new CommReqInfo;
     	info->src = ec;
     	info->ev = this;

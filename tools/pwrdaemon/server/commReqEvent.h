@@ -37,8 +37,10 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		for ( unsigned i = 0; i < attrName.size(); i++ ) {
     		DBGX("    attr=`%s`\n", PWR_AttrGetTypeString( attrName[i] ) );
 		}
-		m_respEvent.value.resize(attrName.size());
-		m_respEvent.timeStamp.resize(attrName.size());
+		m_respEvent.value.resize(1);
+		m_respEvent.timeStamp.resize(1);
+		m_respEvent.value[0].resize(attrName.size());
+		m_respEvent.timeStamp[0].resize(attrName.size());
     	m_respEvent.op = op;
     	m_respEvent.id = id;
     	m_req = PWR_ReqCreateCallback( m_info->m_ctx, 
@@ -48,8 +50,8 @@ class SrvrCommReqEvent: public  CommReqEvent {
     	int ret;
     	if ( op == CommEvent::Get ) {
         	ret = PWR_ObjAttrGetValues_NB( obj, attrName.size(), 
-				&attrName[0], &m_respEvent.value[0],
-				&m_respEvent.timeStamp[0], m_req );
+				&attrName[0], &m_respEvent.value[0][0],
+				&m_respEvent.timeStamp[0][0], m_req );
     	} else {
         	ret = PWR_ObjAttrSetValues_NB( obj, attrName.size(),
 				&attrName[0], &values[0], m_req );
