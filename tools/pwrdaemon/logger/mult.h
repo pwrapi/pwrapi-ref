@@ -57,9 +57,6 @@ int Mult::work( FILE* fp )
 	int rc;
 
 	size_t numObjs = PWR_GrpGetNumObjs( m_grp );
-	for ( unsigned i = 0; i < numObjs; i++ ) {
-    	fprintf(fp,"Logger: objName=\'%s\'\n", getName( m_grp, i ).c_str() );
-	}  
 
     while( 1 ) {
         std::vector<double> value(m_attrs.size() * numObjs );
@@ -108,7 +105,6 @@ std::string getName( PWR_Grp grp, size_t index )
 
 PWR_AttrName getAttr( std::string name )
 {
-	printf("%s\n",name.c_str());
 	if ( ! name.compare( "energy" ) ) {
 		return PWR_ATTR_ENERGY;
 	} else if ( ! name.compare( "power" ) ) {
