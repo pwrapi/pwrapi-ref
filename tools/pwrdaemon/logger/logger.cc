@@ -52,11 +52,6 @@ Logger::Logger( int argc, char* argv[] ) :
 							m_args.ctxName.c_str(), &m_ctx );
     assert(m_ctx);
 
-#if 0
-    PWR_CntxtGetObjByName( m_ctx, m_args.objectName.c_str(), &m_obj );
-    assert( PWR_NULL != m_obj );
-#endif
-
 	if ( ! m_args.delay.empty() ) {
 		m_delay = atoi( m_args.delay.c_str() );
 	}
@@ -92,31 +87,6 @@ Logger::~Logger()
 {
 	PWR_CntxtDestroy(m_ctx);
 }
-
-#if 0
-//#ifdef __MACH__
-#include <sys/time.h>
-#define CLOCK_REALTIME 0
-
-int clock_gettime(int /*clk_id*/, struct timespec* t) {
-    struct timeval now;
-    int rv = gettimeofday(&now, NULL);
-    if (rv) return rv;
-    t->tv_sec  = now.tv_sec;
-    t->tv_nsec = now.tv_usec * 1000;
-    return 0;
-}
-//#endif
-
-static double getTime() {
-    struct timespec spec;
-    int rc = clock_gettime( CLOCK_REALTIME, &spec );
-    assert( 0 == rc );
-
-    return (spec.tv_sec * 1000) + ((double) spec.tv_nsec / 1000000.0);
-}
-
-#endif
 
 int Logger::work()
 {
