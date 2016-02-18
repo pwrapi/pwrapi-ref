@@ -15,22 +15,8 @@
 #include <string.h>
 #include <sys/time.h>
 
-#include "pwrdev.h"
+#include "pwr_dev.h"
 #include "util.h"
-
-#if 0 
-
-#define DBGX( fmt, args... ) \
-{\
-    fprintf( stderr, "DummyDev:%s():%d: "fmt, __func__, __LINE__, ##args);\
-}
-
-#else
-
-#define DBGX( fmt, args... )
-
-#endif
-
 
 typedef struct {
     char config[100];
@@ -61,13 +47,13 @@ static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
     dummyFdInfo_t *tmp = malloc( 2*sizeof( dummyFdInfo_t ) );
     tmp->buffers[PWR_ATTR_POWER].values[0] = 10.1234;
     tmp->buffers[PWR_ATTR_ENERGY].values[0] = 100000000;
-    DBGX("`%s` ptr=%p\n",openstr,tmp);
+    DBGP("`%s` ptr=%p\n",openstr,tmp);
     return tmp;
 }
 
 static int dummy_dev_close( pwr_fd_t fd )
 {
-    DBGX("\n");
+    DBGP("\n");
     free( fd );
 
     return 0;
@@ -78,7 +64,7 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
 
     *(double*)ptr = ((dummyFdInfo_t*) fd)->buffers[type].values[0];
 
-    DBGX("%p type=%s %f\n", fd, attrNameToString(type),*(double*)ptr);
+    DBGP("%p type=%s %f\n", fd, attrNameToString(type),*(double*)ptr);
 
     if ( ts ) {
 		*ts = getTime();
@@ -89,7 +75,7 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
 
 static int dummy_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len )
 {
-    DBGX("type=%s %f\n",attrNameToString(type), *(double*)ptr);
+    DBGP("type=%s %f\n",attrNameToString(type), *(double*)ptr);
 
     ((dummyFdInfo_t*) fd)->buffers[type].values[0] = *(double*)ptr;
     return PWR_RET_SUCCESS;
@@ -103,7 +89,7 @@ static int dummy_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrN
 
         ((double*)buf)[i] = ((dummyFdInfo_t*) fd)->buffers[attrs[i]].values[0];
 
-        DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
+        DBGP("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
         ts[i] = getTime();
 
@@ -115,9 +101,9 @@ static int dummy_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrN
 static int dummy_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
 {
     int i;
-    DBGX("num attributes %d\n",arraysize);
+    DBGP("num attributes %d\n",arraysize);
     for ( i = 0; i < arraysize; i++ ) {
-        DBGX("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
+        DBGP("type=%s %f\n",attrNameToString(attrs[i]), ((double*)buf)[i]);
 
         ((dummyFdInfo_t*) fd)->buffers[attrs[i]].values[0] = ((double*)buf)[i];
 
@@ -128,14 +114,14 @@ static int dummy_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_Attr
 
 static int dummy_dev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
-    DBGX("\n");
+    DBGP("\n");
 
     return 0;
 }
 
 static int dummy_dev_clear( pwr_fd_t fd )
 {
-    DBGX("\n");
+    DBGP("\n");
 
     return 0;
 }
@@ -143,7 +129,7 @@ static int dummy_dev_clear( pwr_fd_t fd )
 static int dummy_dev_log_start( pwr_fd_t fd, PWR_AttrName name )
 {
     buffer_t* ptr = &((dummyFdInfo_t*) fd)->buffers[name];
-    DBGX("\n");
+    DBGP("\n");
 	ptr->timeStamps[0] = getTime();
 	return PWR_RET_SUCCESS;
 }
@@ -157,17 +143,17 @@ static int dummy_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
 			PWR_Time* ts, double period, unsigned int* nSamples, void* buf )
 
 {
-	DBGX("period=%f samples=%d\n",period,*nSamples);
+	DBGP("period=%f samples=%d\n",period,*nSamples);
 	struct timeb tp;
 	ftime( &tp);
 	srand((unsigned) tp.millitm );
 	int i;
 	for ( i = 0; i < *nSamples; i++ ) {
 		((double*)buf)[i] = 100 + (float)rand()/(float)( RAND_MAX/2.0);
-		DBGX("%f\n",((double*)buf)[i]);
+		DBGP("%f\n",((double*)buf)[i]);
 	}	
 	*ts = getTime() - ( (*nSamples * period) * 1000000000);
-	DBGX("ts=%llu\n",*ts);	
+	DBGP("ts=%llu\n",*ts);	
 	return PWR_RET_SUCCESS;
 }
 
@@ -195,7 +181,7 @@ static plugin_devops_t* dummy_dev_init( const char *initstr )
 
 static int dummy_dev_final( plugin_devops_t *ops )
 {
-    DBGX("\n");
+    DBGP("\n");
 	free( ops->private_data );
     free( ops );
     return 0;

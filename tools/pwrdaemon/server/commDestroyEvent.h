@@ -21,7 +21,7 @@ class SrvrCommDestroyEvent: public  CommDestroyEvent {
 	bool process( EventGenerator* gen, EventChannel* ) {
 		Server& info = *static_cast<Server*>(gen);
 
-       	DBGX("commID=%lu\n", commID);
+       	DBGX("commID=%llu\n", commID);
 
 		// We have a bunch of PWR_Obj hanging off of the comm.
 		// How/should we clean them up?	

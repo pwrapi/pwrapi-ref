@@ -20,6 +20,8 @@ examples_DATA = snippet.c snippet.py dummyTest.c dummyTest.py simpleTest.cc
 examples_config_DATA =	config/cpu-node.xml \
 			config/dummySystem.xml \
 			config/pg-node.xml \
+			config/piapi-node.xml \
+			config/piapi-platform.xml \
 			config/pi-node.xml \
 			config/pi-platform.xml \
 			config/rapl-node.xml \

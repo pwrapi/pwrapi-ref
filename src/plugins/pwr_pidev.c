@@ -11,7 +11,7 @@
 
 #include "pwr_pidev.h"
 #include "pwr_dev.h"
-#include "piapi.h"
+#include "pidev.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,13 +19,7 @@
 #include <sched.h>
 
 typedef struct {
-    void *cntx;
-} pwr_pidev_t;
-#define PWR_PIDEV(X) ((pwr_pidev_t *)(X))
-
-typedef struct {
-    pwr_pidev_t *dev;
-    piapi_port_t port;
+    int port;
 } pwr_pifd_t;
 #define PWR_PIFD(X) ((pwr_pifd_t *)(X))
 
@@ -47,86 +41,21 @@ static plugin_devops_t devops = {
     .private_data = 0x0
 };
 
-static piapi_sample_t pidev_counter;
-static int pidev_reading;
-
-static void pidev_callback( piapi_sample_t *sample )
-{
-    pidev_counter = *sample;
-
-    DBGP( "Sample on port %d:\n", sample->port);
-    DBGP( "\tsample       - %u of %u\n", sample->number, sample->total );
-    DBGP( "\ttime         - %f\n", sample->time_sec+sample->time_usec/1000000.0 );
-    DBGP( "\tvolts        - %f\n", sample->raw.volts );
-    DBGP( "\tamps         - %f\n", sample->raw.amps );
-    DBGP( "\twatts        - %f\n", sample->raw.watts );
-
-    DBGP( "\tavg volts    - %f\n", sample->avg.volts );
-    DBGP( "\tavg amps     - %f\n", sample->avg.amps );
-    DBGP( "\tavg watts    - %f\n", sample->avg.watts );
-
-    DBGP( "\tmin volts    - %f\n", sample->min.volts );
-    DBGP( "\tmin amps     - %f\n", sample->min.amps );
-    DBGP( "\tmin watts    - %f\n", sample->min.watts );
-
-    DBGP( "\tmax volts    - %f\n", sample->max.volts );
-    DBGP( "\tmax amps     - %f\n", sample->max.amps );
-    DBGP( "\tmax watts    - %f\n", sample->max.watts );
-
-    DBGP( "\ttotal time   - %f\n", sample->time_total );
-    DBGP( "\ttotal energy - %f\n", sample->energy );
-	
-    if( sample->total && sample->number == sample->total )
-        pidev_reading = 0;
-}
-
-static int pidev_parse( const char *initstr, unsigned int *saddr, unsigned int *sport )
-{
-    int shift = 24;
-    char *token;
-
-    DBGP( "Info: received initialization string %s\n", initstr );
-
-    *saddr = 0;
-    while( shift >= 0 ) {
-        if( (token = strtok( (shift!=24) ? NULL : (char *)initstr, (shift!=0) ? "." : ":" )) == 0x0 ) {
-            fprintf( stderr, "Error: invalid server IP address in initialization string %s\n", initstr );
-            return -1;
-        }
-        *saddr |= ( atoi(token) << shift );
-        shift -= 8;
-    }
-
-    if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        fprintf( stderr, "Error: missing server port separator in initialization string %s\n", initstr );
-        return -1;
-    }
-    *sport = atoi(token);
-
-    DBGP( "Info: extracted initialization string (SADDR=%08x, SPORT=%u)\n", *saddr, *sport );
-
-    return 0;
-}
-
 plugin_devops_t *pwr_pidev_init( const char *initstr )
 {
-    unsigned int saddr = 0, sport = 0;
-
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
     *dev = devops;
 
-    dev->private_data = malloc( sizeof(pwr_pidev_t) );
-    bzero( dev->private_data, sizeof(pwr_pidev_t) );
+    dev->private_data = malloc( sizeof(pwr_pifd_t) );
+    bzero( dev->private_data, sizeof(pwr_pifd_t) );
 
     DBGP( "Info: initializing PWR PowerInsight device\n" );
+    if( pidev_open() < 0 ) {
+        fprintf( stderr, "Error: failed to open powerinsight device on initialization" );
 
-    if( initstr == 0x0 || pidev_parse(initstr, &saddr, &sport) < 0 ) {
-        fprintf( stderr, "Error: invalid monitor and control hardware initialization string\n" );
-        return 0x0;
-    }
+        free( dev->private_data );
+        free( dev );
 
-    if( piapi_init( &(PWR_PIDEV(dev->private_data)->cntx), PIAPI_MODE_PROXY, pidev_callback, saddr, sport, 0 ) < 0 ) {
-        fprintf( stderr, "Error: powerinsight hardware initialization failed\n" );
         return 0x0;
     }
 
@@ -135,15 +64,14 @@ plugin_devops_t *pwr_pidev_init( const char *initstr )
 
 int pwr_pidev_final( plugin_devops_t *dev )
 {
-    DBGP( "Info: finaling PWR PowerInsight device\n" );
+    if( dev->private_data) free( dev->private_data );
+    if( dev ) free( dev );
 
-    if( piapi_destroy( &(PWR_PIDEV(dev->private_data)->cntx) ) < 0 ) {
-        fprintf( stderr, "Error: powerinsight hardware finalization failed\n" );
+    DBGP( "Info: finaling PWR PowerInsight device\n" );
+    if( pidev_close() < 0 ) {
+        fprintf( stderr, "Error: failed to close powerinsight device on finalization" );
         return -1;
     }
-
-    free( dev->private_data );
-    free( dev );
 
     return 0;
 }
@@ -156,8 +84,6 @@ pwr_fd_t pwr_pidev_open( plugin_devops_t *dev, const char *openstr )
     bzero( fd, sizeof(pwr_pifd_t) );
 
     DBGP( "Info: opening PWR PowerInsight descriptor\n" );
-
-    PWR_PIFD(fd)->dev = PWR_PIDEV(dev->private_data);
 
     if( openstr == 0x0 || (token = strtok( (char *)openstr, ":" )) == 0x0 ) {
         fprintf( stderr, "Error: missing sensor port separator in initialization string %s\n", openstr );
@@ -173,8 +99,6 @@ pwr_fd_t pwr_pidev_open( plugin_devops_t *dev, const char *openstr )
 int pwr_pidev_close( pwr_fd_t fd )
 {
     DBGP( "Info: closing PWR PowerInsight descriptor\n" );
-
-    PWR_PIFD(fd)->dev = 0x0;
     free( fd );
 
     return 0;
@@ -182,14 +106,14 @@ int pwr_pidev_close( pwr_fd_t fd )
 
 int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
-    while( pidev_reading ) sched_yield();
-    pidev_reading = 1;
+    struct timeval tv;
+    reading_t raw;
+
     DBGP( "Info: reading counter for port %d\n", PWR_PIFD(fd)->port );
-    if( piapi_counter( (PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
+    if( pidev_read( PWR_PIFD(fd)->port, &raw ) < 0 ) {
         fprintf( stderr, "Error: powerinsight hardware read failed\n" );
         return -1;
     }
-    while( pidev_reading ) sched_yield();
 
     if( len != sizeof(double) ) {
         fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
@@ -198,29 +122,20 @@ int pwr_pidev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int le
 
     switch( attr ) {
         case PWR_ATTR_VOLTAGE:
-            *((double *)value) = (double)pidev_counter.raw.volts;
+            *((double *)value) = (double)raw.volt;
             break;
         case PWR_ATTR_CURRENT:
-            *((double *)value) = (double)pidev_counter.raw.amps;
+            *((double *)value) = (double)raw.amp;
             break;
         case PWR_ATTR_POWER:
-            *((double *)value) = (double)pidev_counter.raw.watts;
-            break;
-        case PWR_ATTR_POWER_LIMIT_MIN:
-            *((double *)value) = (double)pidev_counter.min.watts;
-            break;
-        case PWR_ATTR_POWER_LIMIT_MAX:
-            *((double *)value) = (double)pidev_counter.max.watts;
-            break;
-        case PWR_ATTR_ENERGY:
-            *((double *)value) = (double)pidev_counter.energy;
+            *((double *)value) = (double)raw.watt;
             break;
         default:
             fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attr );
             break;
     }
-    *timestamp = pidev_counter.time_sec*1000000000ULL + 
-            pidev_counter.time_usec*1000;
+    gettimeofday( &tv, NULL );
+    *timestamp = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
     DBGP( "Info: reading of type %u at time %llu with value %lf\n",
         attr, *(unsigned long long *)timestamp, *(double *)value );
@@ -247,47 +162,8 @@ int pwr_pidev_readv( pwr_fd_t fd, unsigned int arraysize,
 {
     unsigned int i;
 
-    while( pidev_reading ) sched_yield();
-    pidev_reading = 1;
-    DBGP( "Info: reading counter for port %d\n", PWR_PIFD(fd)->port );
-    if( piapi_counter( (PWR_PIFD(fd)->dev)->cntx, PWR_PIFD(fd)->port ) < 0 ) {
-        fprintf( stderr, "Error: powerinsight hardware read failed\n" );
-        return -1;
-    }
-    while( pidev_reading ) sched_yield();
-
-    for( i = 0; i < arraysize; i++ ) {
-        switch( attrs[i] ) {
-            case PWR_ATTR_VOLTAGE:
-                *((double *)values+i) = (double)pidev_counter.raw.volts;
-                break;
-            case PWR_ATTR_CURRENT:
-                *((double *)values+i) = (double)pidev_counter.raw.amps;
-                break;
-            case PWR_ATTR_POWER:
-                *((double *)values+i) = (double)pidev_counter.raw.watts;
-                break;
-            case PWR_ATTR_POWER_LIMIT_MIN:
-                *((double *)values+i) = (double)pidev_counter.min.watts;
-                break;
-            case PWR_ATTR_POWER_LIMIT_MAX:
-                *((double *)values+i) = (double)pidev_counter.max.watts;
-                break;
-            case PWR_ATTR_ENERGY:
-                *((double *)values+i) = (double)pidev_counter.energy;
-                break;
-            default:
-                fprintf( stderr, "Warning: unknown PWR reading attr (%u) requested\n", attrs[i] );
-                break;
-        }
-        timestamp[i] = pidev_counter.time_sec*1000000000ULL + 
-             pidev_counter.time_usec*1000;
-
-        DBGP( "Info: reading of type %u at time %llu with value %lf\n",
-            attrs[i], *((unsigned long long *)timestamp+i), *((double *)values+i) );
-
+    for( i = 0; i < arraysize; i++ )
         status[i] = pwr_pidev_read( fd, attrs[i], (double *)values+i, sizeof(double), timestamp+i );
-    }
 
     return 0;
 }

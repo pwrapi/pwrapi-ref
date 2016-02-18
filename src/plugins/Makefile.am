@@ -15,6 +15,14 @@ libpwr_pgdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(POWERGADGET_CFLAGS)
 libpwr_pgdev_la_LDFLAGS = -version-info 1:0:1 $(POWERGADGET_LDFLAGS) $(POWERGADGET_LIBS)
 endif
 
+if HAVE_PIAPI
+lib_LTLIBRARIES += libpwr_piapidev.la
+
+libpwr_piapidev_la_SOURCES = pwr_dev.c pwr_piapidev.c
+libpwr_piapidev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(PIAPI_CFLAGS)
+libpwr_piapidev_la_LDFLAGS = -version-info 1:0:1 $(PIAPI_LDFLAGS) $(PIAPI_LIBS)
+endif
+
 if HAVE_POWERINSIGHT
 lib_LTLIBRARIES += libpwr_pidev.la
 

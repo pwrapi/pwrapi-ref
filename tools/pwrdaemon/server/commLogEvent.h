@@ -27,7 +27,7 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
 	bool process( EventGenerator* gen, EventChannel* ) {
         m_info = static_cast<Server*>(gen);
 
-		DBGX("commID=%lu\n",commID);
+		DBGX("commID=%llu\n",commID);
 		PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
 		char name[100];

@@ -65,9 +65,10 @@ extern unsigned int _DbgFlags;
 #else
 
 #define DBG( fmt, ... )
-#define DBGX( fmt, args... )
+#define DBGX( fmt, ... )
 #define DBGX2( flag, fmt, ... )
-#define DBG2( fmt, args... )
+#define DBG2( fmt, ... )
+#define DBG3( flag, prefix, fmt, ... )
 #define DBG4( pre, fmt, ... )
 
 #endif

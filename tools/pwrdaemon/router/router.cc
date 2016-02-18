@@ -129,7 +129,7 @@ int Router::work()
 
 void Router::sendEvent( ObjID destObj, Event* ev ) {
 	AppID destID = findDestApp( destObj );
-	DBGX("dest=`%s` AppID=%lx\n", destObj.c_str(), destID );
+	DBGX("dest=`%s` AppID=%llx\n", destObj.c_str(), destID );
 	if ( (unsigned) -1 == destID ) {
 		printf("Could not route %s, drop event\n",destObj.c_str());
 		return;
@@ -169,7 +169,7 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 	} else {
 		DBGX("rtrId %d\n",m_args.rtrId);
 		AppID src = APP_ID( m_args.rtrId, -1 );
-		DBGX("create RouterEvent src=%#lx dest=%#lx\n",src,dest);
+		DBGX("create RouterEvent src=%#llx dest=%#llx\n",src,dest);
 		RouterEvent* rev = new RouterEvent( src, dest, ev );
 		ev = rev;
 	}

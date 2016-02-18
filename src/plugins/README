@@ -16,7 +16,8 @@ against.  However, the majority of the plugins should be at least
 compilable on most linux based systems.
 
 Currently supported:
-  libpwr_pidev		Penguin PowerInsight
+  libpwr_piapidev	PIAPI
+  libpwr_pidev   	Penguin PowerInsight
   libpwr_rapldev	Intel Running Average Power Limit (RAPL)
   libpwr_pgdev	  Intel Power Gadget API
   libpwr_wudev		WattsUp
@@ -25,17 +26,17 @@ Currently supported:
   libpwr_apmdev   AMD Average Power Management
   libpwr_pmcdev   IBM Power8 Power Management (INCOMPLETE)
 
-Attributes  PI  RAPL  WU  XTPM  CPU  APM  PMC
-----------  --  ----  --  ----  ---  ---  ---
-  power     G         G   G	     G    G
-  energy    G   G     G   G
-  voltage   G         G
-  current   G         G
-  min_power               G/S    G/S
-  max_power               G/S    G/S
-  freq                           G/S
-  temp                           G
-  pstate                         G/S
-  cstate                         G/S
-  sstate                         G/S
+Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC
+----------  -----  --  ----  --  ----  ---  ---  ---
+  power     G      G         G   G	   G    G
+  energy    G          G     G   G
+  voltage   G      G         G
+  current   G      G         G
+  min_power                      G/S   G/S
+  max_power                      G/S   G/S
+  freq                                 G/S
+  temp                                 G
+  pstate                               G/S
+  cstate                               G/S
+  sstate                               G/S
 
