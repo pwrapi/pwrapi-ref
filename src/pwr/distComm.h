@@ -12,6 +12,7 @@
 #ifndef _DIST_COMM_H
 #define _DIST_COMM_H
 
+#include <vector>
 #include <set>
 #include "communicator.h"
 #include "events.h"
@@ -68,7 +69,9 @@ class DistComm : public Communicator {
   public:
 
 	DistComm( DistCntxt*, std::set<std::string>& );
+	DistComm( DistCntxt* );
 	~DistComm() {}
+	std::vector<std::string>& getObjects() { return m_objects; }
 	virtual void getValues( int, PWR_AttrName [], ValueOp [], CommReq* req );
 	virtual void setValues( int, PWR_AttrName [], void* buf, CommReq* req );
 	virtual void startLog( PWR_AttrName, CommReq* req );
@@ -77,10 +80,15 @@ class DistComm : public Communicator {
 			                unsigned int count, CommReq* req );
 
   private:
+	EventChannel& getChannel();
+	std::vector<std::string> m_objects;
+
+  protected:
 	static uint32_t m_currentCommID;
 
+	DistCntxt*		m_ctx;
 	EventChannel* 	m_ec;
-	CommID 		m_commID;	
+	CommID 			m_commID;	
 };
 
 }

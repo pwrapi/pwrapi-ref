@@ -234,6 +234,7 @@ int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf, 
 int PWR_GrpAttrGetValues( PWR_Grp grp, int num, const PWR_AttrName attr[],
                                   void* buf, PWR_Time ts[], PWR_Status status)
 {
+	DBG("%p %p\n",buf,ts);
     return GRP(grp)->attrGetValues( num, (PWR_AttrName*)attr, buf, ts, STATUS(status) ); 
 }
 

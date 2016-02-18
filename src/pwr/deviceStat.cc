@@ -50,7 +50,7 @@ int DeviceStat::startObj( ) {
 
 int DeviceStat::startGrp( ) {
 
-	for ( int i = 0; i < m_grp->size(); i++ ) {
+	for ( unsigned i = 0; i < m_grp->size(); i++ ) {
 		Object* obj = m_grp->getObj(i);
 		DBGX("%s\n",objTypeToString(obj->type()));
 		int retval = obj->attrStartLog( m_attrName );
@@ -68,7 +68,7 @@ int DeviceStat::stopObj( ) {
 
 int DeviceStat::stopGrp( ) {
 	DBGX("\n");
-	for ( int i = 0; i < m_grp->size(); i++ ) {
+	for ( unsigned i = 0; i < m_grp->size(); i++ ) {
 		Object* obj = m_grp->getObj(i);
 		DBGX("%s\n",objTypeToString(obj->type()));
 		int retval = obj->attrStopLog( m_attrName );
@@ -124,7 +124,7 @@ int DeviceStat::objGetValue( Object* obj, double* value,
 int DeviceStat::getValues( double value[], PWR_TimePeriod statTimes[] ) 
 {
 	DBGX("\n");
-	for ( int i = 0; i < m_grp->size(); i++ ) {
+	for ( unsigned i = 0; i < m_grp->size(); i++ ) {
 		int retval  = objGetValue( m_grp->getObj(i), &value[i], &statTimes[i] );
 		if ( retval != PWR_RET_SUCCESS ) {
 			return retval;

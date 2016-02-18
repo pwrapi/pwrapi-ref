@@ -1,8 +1,13 @@
 
+#include "distCntxt.h"
 #include "distGroup.h"
 #include "distObject.h"
+#include "distGrpComm.h"
+#include "distRequest.h"
+#include "attrInfo.h"
 
 #include <stdio.h>
+
 
 using namespace PowerAPI;
 
@@ -28,12 +33,14 @@ int DistGrp::add( Object* _obj )
 
 int DistGrp::attrSetValue( PWR_AttrName type, void* ptr, Status* status )
 {
+    DBGX("\n");
 	return attrSetValues( 1, &type, ptr, status );
 }
 
 int DistGrp::attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[],
                             			Status* status ) 
 {
+    DBGX("\n");
 	return attrGetValues( 1, &type, ptr, ts, status );
 }
 
@@ -46,7 +53,10 @@ int DistGrp::attrSetValues( int num, PWR_AttrName attr[], void* buf,
 int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
                                         PWR_Time ts[], Status* status)
 {
+    DBGX("\n");
 	uint64_t* ptr = (uint64_t*) buf;
+
+
 	for ( unsigned i = 0; i < m_list.size(); i++ ) {
 
 		int rc = m_list[i]->attrGetValues( num, attr, 
@@ -55,15 +65,31 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
 			return rc;
 		}
 	}
-#if 0
-		for ( int j = 0; j < num; j++ ) {
-			DistObject* obj = static_cast<DistObject*>(m_list[i]); 
-			printf("%d %d\n",i,j);
-		}
-#endif
-
+	
 	if ( ! m_distObjs.empty() ) {
-		assert(0);
+	
+		std::vector<ValueOp> valueOp(num);
+
+		for ( int i = 0; i < num; i++ ) { 
+    		valueOp[i] = m_distObjs[0]->getAttrInfo( attr[i] ).valueOp;
+		}
+
+		DistRequest distReq( m_ctx );
+		if ( ! m_comm ) {
+			m_comm = new DistGrpComm( 
+					static_cast<DistCntxt*>(m_ctx), m_distObjs );
+		}
+		distReq.value[0] = buf; 
+		distReq.timeStamp[0] = ts;
+
+        DistCommReq* commReq = new DistGetCommReq(&distReq);
+        distReq.insert( commReq );
+
+		m_comm->getValues( num, attr, &valueOp[0], commReq ); 
+
+		int status;
+		distReq.wait( &status );
 	}
+	
 	return PWR_RET_SUCCESS;
 }

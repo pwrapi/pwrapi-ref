@@ -27,28 +27,43 @@ static inline int gettid() {
 
 uint32_t DistComm::m_currentCommID = 1;
 
-DistComm::DistComm( DistCntxt* cntxt, std::set<std::string>& objects )
+DistComm::DistComm( DistCntxt* cntxt ) :
+	m_ctx( cntxt), m_ec(NULL)
 {
+	m_commID = ((CommID)gettid() << 32) | m_currentCommID++;
+}
+
+DistComm::DistComm( DistCntxt* cntxt, std::set<std::string>& objects ) :
+	m_ctx( cntxt), m_ec(NULL)
+{
+	std::set<std::string>::iterator iter = objects.begin();
+	for ( ; iter != objects.end(); ++iter ) {
+		m_objects.push_back( *iter );
+	}
 	DBGX("num objects %lu\n", objects.size() );
-	m_ec = cntxt->getEventChannel();
+	m_commID = ((CommID)gettid() << 32) | m_currentCommID++;
+}
+
+EventChannel& DistComm::getChannel()
+{
+	if ( m_ec ) return *m_ec;
+
+	m_ec = m_ctx->getEventChannel();
 	assert(m_ec);
 
 	CommCreateEvent* ev = new CommCreateEvent();
-	m_commID = ev->commID = ((CommID)gettid() << 32) | m_currentCommID++;
+	ev->commID = m_commID;
 
-	std::set<std::string>::iterator iter = objects.begin();
-	for ( ; iter != objects.end(); ++iter ) {
-		ev->members.push_back((*iter));
-	}
+	ev->members.push_back( m_objects );
 
 	m_ec->sendEvent( ev );
 	delete ev;
+	return *m_ec;
 }
 
 void DistComm::getValues( int count, PWR_AttrName attr[],
 										ValueOp op[], CommReq* req )
 {
-
 	CommReqEvent* ev = new CommReqEvent;	
 	ev->commID = m_commID;
 	ev->op = CommEvent::Get;
@@ -58,7 +73,7 @@ void DistComm::getValues( int count, PWR_AttrName attr[],
 		ev->attrName.push_back( attr[i] ); 
 	}
 	ev->id = (EventId) req;	
-	m_ec->sendEvent( ev );
+	getChannel().sendEvent( ev );
 	delete ev;
 }
 
@@ -80,7 +95,7 @@ void DistComm::setValues( int count, PWR_AttrName attr[],
 		ev->attrName.push_back( attr[i] ); 
 		ev->values.push_back( ((uint64_t*)buf)[i] );
 	}
-	m_ec->sendEvent( ev );
+	getChannel().sendEvent( ev );
 	delete ev;
 }
 
@@ -98,7 +113,7 @@ void DistComm::startLog( PWR_AttrName attr, CommReq* req )
 	ev->op = CommEvent::Start;
 	ev->id = (EventId) req;	
 	ev->attrName = attr; 
-	m_ec->sendEvent( ev );
+	getChannel().sendEvent( ev );
 	delete ev;
 }
 
@@ -126,7 +141,7 @@ void DistComm::stopLog( PWR_AttrName attr, CommReq* req )
 	ev->op = CommEvent::Stop;
 	ev->id = (EventId) req;	
 	ev->attrName = attr; 
-	m_ec->sendEvent( ev );
+	getChannel().sendEvent( ev );
 	delete ev;
 }
 
@@ -142,6 +157,6 @@ void DistComm::getSamples( PWR_AttrName attr, PWR_Time* time,
 	ev->startTime = *time;
 	ev->period = period;
 	ev->count = count;
-	m_ec->sendEvent( ev );
+	getChannel().sendEvent( ev );
 	delete ev;
 }
