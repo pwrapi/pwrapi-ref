@@ -20,6 +20,8 @@ bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 	Router::Client* client = rtr.getClient( ec );
 	DBGX("id=%lx\n",commID);
 
+	client->addComm( commID, this );
+
    	for ( unsigned int i = 0; i < members[0].size(); i++ ) {
        	DBGX("%s\n", members[0][i].c_str() );
 		
@@ -32,8 +34,6 @@ bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 		ev->members.push_back( tmp );
 		rtr.sendEvent( members[0][i].c_str(), ev );
 	}	
-
-	client->addComm( commID, this );
 
 	return false;
 }
