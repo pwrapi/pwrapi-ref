@@ -12,28 +12,10 @@ class PowerGrp : public Work {
 
 	PowerGrp( PWR_Cntxt ctx, std::string type ) : m_grpName(type) {
 		
-		PWR_ObjType objType;	
-		if ( ! type.compare("Platform") ) {
-			objType = PWR_OBJ_PLATFORM;	
-		} else if ( ! type.compare("Cabinet") ) {
-			objType = PWR_OBJ_CABINET;	
-		} else if ( ! type.compare("Chassis") ) {
-			objType = PWR_OBJ_CHASSIS;	
-		} else if ( ! type.compare("Board") ) {
-			objType = PWR_OBJ_BOARD;	
-		} else if ( ! type.compare("Node") ) {
-			objType = PWR_OBJ_NODE;	
-		} else if ( ! type.compare("Socket") ) {
-			objType = PWR_OBJ_SOCKET;	
-		} else if ( ! type.compare("Core") ) {
-			objType = PWR_OBJ_CORE;	
-		} else {
-			assert(0);
-		}
+		PWR_ObjType objType = objStringToType( type.c_str() );	
 		
     	int rc = PWR_CntxtGetGrpByType( ctx, objType, &m_grp );
     	assert( rc == PWR_RET_SUCCESS );
-	
 	}
 
     int work( FILE* );
