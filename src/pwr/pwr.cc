@@ -186,6 +186,26 @@ int PWR_GrpDestroy( PWR_Grp group )
     return ctx->destroyGrp( GRP(group) );
 }
 
+int PWR_GrpDuplicate( PWR_Grp, PWR_Grp* dup )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_GrpUnion( PWR_Grp, PWR_Grp, PWR_Grp* result )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_GrpIntersection( PWR_Grp, PWR_Grp, PWR_Grp* result )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_GrpDifference( PWR_Grp, PWR_Grp, PWR_Grp* result )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
 #if 0
 const char* PWR_GrpGetName( PWR_Grp group ) 
 {
