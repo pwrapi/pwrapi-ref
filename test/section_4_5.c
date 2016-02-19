@@ -28,53 +28,53 @@ int section_4_5_test( void )
 
     printf( "\tPWR_CntxtInit - application context\n" );
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: initialization of PowerAPI context failed\n" );
-        return -1;
+        return rc;
     }
 
     printf( "\tPWR_CntxtGetEntryPoint\n" );
 	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting self from PowerAPI context failed\n" );
-        return -1;
+        return rc;
     }
 
 #if 0
     printf( "\tPWR_ObjAttrGetMeta - PWR_MD_SAMPLE_RATE of PWR_ATTR_POWER\n" );
     rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting meta data failed\n" );
-        return -1;
+        return rc;
     }
 
     printf( "\tPWR_ObjAttrSetMeta - PWR_MD_SAMPLE_RATE of PWR_ATTR_POWER\n" );
     rc = PWR_ObjAttrSetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: setting meta data failed\n" );
-        return -1;
+        return rc;
     }
 
     printf( "\tPWR_ObjAttrGetMeta - PWR_MD_NUM of PWR_ATTR_PSTATE\n" );
     rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_PSTATE, PWR_MD_NUM, &num_meta );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting number of meta data failed\n" );
-        return -1;
+        return rc;
     }
     
     for( i=0; i<num_meta; i++ ) {
         printf( "\tPWR_MetaValueAtIndex - PWR_MD_NUM of PWR_ATTR_PSTATE\n" );
         rc = PWR_MetaValueAtIndex( self, PWR_ATTR_PSTATE, i, &val, str );
         printf( "\t\tError: retrieval of meta data at index %d failed\n", i );
-        return -1;
+        return rc;
     }
 #endif
 
     printf( "\tPWR_CntxtDestroy - application context\n" );
     rc = PWR_CntxtDestroy( cntxt );
-    if( rc != PWR_RET_SUCCESS ) {
+    if( rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: destruction of PowerAPI context failed\n" );
-        return -1;
+        return rc;
     }
 
     return 0;
