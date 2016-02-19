@@ -281,6 +281,21 @@ int PWR_StatusClear( PWR_Status status )
     return STATUS(status)->clear();
 }
 
+int PWR_ObjAttrGetMeta( PWR_Obj, PWR_AttrName, PWR_MetaName, void* val )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_ObjAttrSetMeta( PWR_Obj, PWR_AttrName, PWR_MetaName, const void* val )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_MetaValueAtIndex( PWR_Obj, PWR_AttrName, unsigned int index, void* val, char* val_str )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
 int PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat statOp,
 			 PWR_Stat* stat ) 
 {

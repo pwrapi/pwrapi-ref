@@ -40,7 +40,6 @@ int section_4_5_test( void )
         return rc;
     }
 
-#if 0
     printf( "\tPWR_ObjAttrGetMeta - PWR_MD_SAMPLE_RATE of PWR_ATTR_POWER\n" );
     rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
     if( rc < PWR_RET_SUCCESS ) {
@@ -68,7 +67,6 @@ int section_4_5_test( void )
         printf( "\t\tError: retrieval of meta data at index %d failed\n", i );
         return rc;
     }
-#endif
 
     printf( "\tPWR_CntxtDestroy - application context\n" );
     rc = PWR_CntxtDestroy( cntxt );
