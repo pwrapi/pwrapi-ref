@@ -12,6 +12,9 @@
 #ifndef _RTR_COMM_REQ_EVENT_H
 #define _RTR_COMM_REQ_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <eventChannel.h>
 #include <debug.h>
@@ -27,31 +30,39 @@ class RtrCommReqEvent: public  CommReqEvent {
 		Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
 
-		DBGX("id=%lx\n",commID);
     	CommReqInfo* info = new CommReqInfo;
     	info->src = ec;
     	info->ev = this;
-    	info->id = id;
 		info->valueOp = valueOp;
+
 		for ( size_t i = 0; i < valueOp.size(); i++ ) {
 			DBGX("valueOp=%d\n",valueOp[i]);	
 		}
 
+
+    	DBGX("commID=%"PRIu64" eventId=%"PRIx64" new eventId=%p\n", 
+													commID, id, info );
+
+    	std::vector< std::vector< ObjID > >& commList = 
+				client.getCommList( commID );
+
+		info->grpInfo.resize( commList.size() );
+		info->respQ.resize( commList.size() );
+		info->pending = commList.size();
+        info->resp = new CommRespEvent;
+        info->resp->timeStamp.resize( commList.size() );
+        info->resp->value.resize( commList.size() );
+        info->resp->id = id;
+
     	id = (EventId) info;
 
-    	DBGX("commID=%llu eventId=%#llx new eventId=%p\n", commID, id, info );
+    	for ( unsigned int i=0; i <  commList.size(); i++ ) {
+			info->grpInfo[i] = commList[i].size();
 
-    	std::vector<ObjID>& commList= client.getCommList( commID );
-
-		info->num = commList.size(); 
-
-    	std::vector<ObjID>::iterator iter = commList.begin();
-    	for ( ; iter != commList.end(); ++iter ) {
-
-			for ( size_t i = 0; i < attrName.size(); i++ ) {
-        		DBGX("%s %d\n",(*iter).c_str(), attrName[i] );
+			grpIndex = i;
+    		for ( unsigned int j=0; j <  commList[i].size(); j++ ) {
+				rtr.sendEvent( commList[i][j], this );
 			}
-			rtr.sendEvent( (*iter), this );
     	}
 		return false;
 	}

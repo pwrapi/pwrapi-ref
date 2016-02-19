@@ -2,6 +2,9 @@
 #ifndef _SRVR_COMM_REQ_EVENT_H
 #define _SRVR_COMM_REQ_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <debug.h>
 #include "server.h"
@@ -29,7 +32,7 @@ class SrvrCommReqEvent: public  CommReqEvent {
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
-		DBGX("commID=%llu\n",commID);
+		DBGX("commID=%"PRIx64" grpIndex=%"PRIu64"\n",commID, grpIndex);
 		char name[100];
 		PWR_ObjGetName(obj,name,100);
 
@@ -43,6 +46,7 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		m_respEvent.timeStamp[0].resize(attrName.size());
     	m_respEvent.op = op;
     	m_respEvent.id = id;
+		m_respEvent.grpIndex = grpIndex;
     	m_req = PWR_ReqCreateCallback( m_info->m_ctx, 
 											(Callback)requestFini, this );
     	assert( m_req );

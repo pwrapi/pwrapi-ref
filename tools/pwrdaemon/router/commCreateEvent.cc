@@ -22,18 +22,22 @@ bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 
 	client->addComm( commID, this );
 
-   	for ( unsigned int i = 0; i < members[0].size(); i++ ) {
-       	DBGX("%s\n", members[0][i].c_str() );
+	// for each object in a group
+   	for ( unsigned int j = 0; j < members.size(); j++ ) {
+		// for each source of this object 
+   		for ( unsigned int i = 0; i < members[j].size(); i++ ) {
+       		DBGX("%s\n", members[j][i].c_str() );
 		
-		CommCreateEvent* ev = new CommCreateEvent();
-		ev->commID = commID;
+			CommCreateEvent* ev = new CommCreateEvent();
+			ev->commID = commID;
 
-		std::vector< ObjID > tmp;
+			std::vector< ObjID > tmp;
 
-		tmp.push_back( members[0][i] );
-		ev->members.push_back( tmp );
-		rtr.sendEvent( members[0][i].c_str(), ev );
-	}	
+			tmp.push_back( members[j][i] );
+			ev->members.push_back( tmp );
+			rtr.sendEvent( members[j][i], ev );
+		}	
+	}
 
 	return false;
 }

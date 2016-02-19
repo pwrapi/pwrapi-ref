@@ -76,7 +76,7 @@ class Router : public EventGenerator {
 		Client( Router& rtr );
 		~Client();
 		void addComm( CommID id, CommCreateEvent* ev );
-		std::vector<ObjID>& getCommList( CommID id );
+		std::vector< std::vector< ObjID > >& getCommList( CommID id );
 
 	  private:	  
 		std::map<CommID,CommCreateEvent* > m_commMap;
@@ -152,7 +152,7 @@ class Router : public EventGenerator {
 		if ( m_routeTable.find(id) != m_routeTable.end() ) {
 			retval = m_routeTable[id];
 		}
-		DBGX("name=`%s` AppID=%llx\n", id.c_str(), retval  )
+		DBGX("name=`%s` AppID=%lx\n", id.c_str(), retval  )
     	return retval;
 	}
 
@@ -204,10 +204,13 @@ class Router : public EventGenerator {
 struct CommReqInfo {
    	EventChannel*   src;
     CommEvent*      ev;
-    EventId         id;
-	size_t			num;
+	std::vector<size_t>	grpInfo;
+
+	size_t			pending;
+
 	std::vector<ValueOp>		valueOp;
-	std::deque<CommRespEvent*> 	respQ; 
+	std::vector< std::vector< CommRespEvent* > > 	respQ; 
+	CommRespEvent* resp;
 };
 
 }

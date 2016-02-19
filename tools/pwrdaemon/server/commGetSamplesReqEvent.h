@@ -2,6 +2,9 @@
 #ifndef _SRVR_COMM_GET_SAMPLES_REQ_EVENT_H
 #define _SRVR_COMM_GET_SAMPLES_REQ_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <eventChannel.h>
 #include <debug.h>
@@ -30,7 +33,7 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
-		DBGX("%llu\n",commID);
+		DBGX("commID=%" PRIx64 "\n",commID);
 
 		char name[100];
 		PWR_ObjGetName(obj,name,100);

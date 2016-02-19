@@ -2,6 +2,9 @@
 #ifndef _SRVR_COMM_LOG_EVENT_H
 #define _SRVR_COMM_LOG_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <debug.h> 
 #include "server.h"
@@ -27,7 +30,7 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
 	bool process( EventGenerator* gen, EventChannel* ) {
         m_info = static_cast<Server*>(gen);
 
-		DBGX("commID=%llu\n",commID);
+		DBGX("commID=%" PRIx64 "\n",commID);
 		PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
 		char name[100];
