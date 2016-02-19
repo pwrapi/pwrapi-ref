@@ -220,14 +220,11 @@ static PWR_Time timeOp( std::vector<PWR_Time> x )
 
 AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 {
-	DBGX("obj='%s' attr=%s\n",obj->name().c_str(),attrNameToString(attrName));
-	
 	ValueOp vOp = NO_OP;
 
     std::string op = m_config->findAttrOp( obj->name(),attrName );
     std::string type = m_config->findAttrType( obj->name(),attrName );
     AttrInfo::OpFuncPtr opFunc = NULL;
-    DBGX("op=%s type=%s\n",op.c_str(),type.c_str());
     if ( ! op.compare("SUM") ) {
         opFunc = sumOp;
 		if ( ! type.compare("Float") ) {
@@ -252,10 +249,17 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
    		std::set<std::string> remote;
 		traverse( obj->name(), attrName, attrInfo->devices, remote );
 
-		DBGX("%lu %lu\n", attrInfo->devices.size(), remote.size() );
+		DBGX("obj='%s' attr=`%s` op=%s type=%s\n",
+						obj->name().c_str(),attrNameToString(attrName),
+						op.c_str(),type.c_str());
+		DBGX("local devices %lu, remote devices %lu\n",
+						attrInfo->devices.size(), remote.size() );
 		if ( ! remote.empty() ) {
 			attrInfo->comm = getCommunicator( remote );
 		}
+	} else {
+		DBGX("obj='%s' attr=`%s` invalid\n",
+						obj->name().c_str(),attrNameToString(attrName));
 	}
 
 	return attrInfo;
@@ -263,7 +267,7 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
                 std::vector<Device*>& local, std::set<std::string>& remote )
 {
-	DBGX("obj='%s' attr=%s\n",objName.c_str(),attrNameToString(attrName));
+	DBGX("obj='%s' attr=`%s`\n",objName.c_str(),attrNameToString(attrName));
 
 	if ( m_config->hasServer( objName ) && objName.compare( m_rootName ) ) {
 		remote.insert( objName );

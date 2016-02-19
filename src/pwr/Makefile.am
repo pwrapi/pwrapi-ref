@@ -4,7 +4,7 @@ include_HEADERS = pwr.h pwrtypes.h pwrdev.h eventChannel.h events.h event.h even
 
 # Power API Framework
 libpwr_la_SOURCES = debug.cc pwr.cc cntxt.cc object.cc xmlConfig.cc deviceStat.cc
-libpwr_la_SOURCES += distCntxt.cc distComm.cc distRequest.cc distObject.cc eventChannel.cc tcpEventChannel.cc allocEvent.cc distGroup.cc
+libpwr_la_SOURCES += distCntxt.cc distComm.cc distRequest.cc distObject.cc eventChannel.cc tcpEventChannel.cc allocEvent.cc distGroup.cc distGrpComm.cc
 
 libpwr_la_LDFLAGS = $(LDFLAGS) -version-info 1:0:1
 libpwr_la_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/tinyxml2 -Wall -fno-strict-aliasing

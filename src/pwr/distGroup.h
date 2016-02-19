@@ -16,17 +16,27 @@
 #include <assert.h>
 
 #include "group.h"
+#include "distObject.h"
 
 namespace PowerAPI {
 
 class Cntxt;
-class DistObject;
+class DistGrpComm;
 
 class DistGrp : public Grp {
   public:
-    DistGrp( Cntxt* ctx, const std::string name ="" ) : Grp( ctx, name ) {
-	}
+    DistGrp( Cntxt* ctx, const std::string name ="" ) :
+			Grp( ctx, name ), m_comm(NULL) { }
+
 	virtual int add( Object* obj );
+	virtual size_t size() { return Grp::size() + m_distObjs.size(); }
+	virtual Object* getObj( unsigned i ) {
+
+		if ( i < Grp::size() ) {
+			return Grp::getObj(i);
+		} 
+		return static_cast<Object*>( m_distObjs[ i - Grp::size() ] );
+	}
 
 	virtual int attrSetValue( PWR_AttrName type, void* ptr, Status* status );
 	virtual int attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[],
@@ -38,6 +48,7 @@ class DistGrp : public Grp {
 	
   private:
 	std::vector<DistObject*>  m_distObjs;
+	DistGrpComm*			  m_comm;
 };
 
 }

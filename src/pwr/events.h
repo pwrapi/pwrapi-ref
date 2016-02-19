@@ -68,7 +68,7 @@ struct CommCreateEvent : public CommEvent {
 
 	CommCreateEvent(const CommCreateEvent& x) : members(x.members) {}
 
-    std::vector<ObjID> members;
+    std::vector< std::vector<ObjID > > members;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> members;
@@ -126,8 +126,8 @@ struct CommRespEvent : public CommEvent {
 		serialize_in(buf);
 	}
 
-    std::vector<PWR_Time> timeStamp;
-    std::vector<uint64_t> value;
+    std::vector< std::vector<PWR_Time> > timeStamp;
+    std::vector< std::vector<uint64_t> > value;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> value;

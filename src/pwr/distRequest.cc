@@ -63,13 +63,17 @@ int DistRequest::wait( Status* status )
 // can we use "this"
 void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 {
+	assert(0);
+#if 0
 	retval = ev->status;
+	assert(0);
 	for ( unsigned i = 0; i< ev->count; i++ ) {
-		((uint64_t*)value)[i] = ev->data[i];
+		((uint64_t*)value[0])[i] = ev->data[i];
 	}
-	*timeStamp = ev->startTime;
-	DBGX("start time %lld, samples %d\n",*timeStamp, ev->count);
+	DBGX("start time %lu, samples %d\n",*timeStamp[0], ev->count);
+	*timeStamp[0] = ev->startTime;
 	m_commReqs.erase( req ); 
+#endif
 }
 
 void DistRequest::setStatus( DistCommReq* req, CommRespEvent* ev  )
@@ -83,9 +87,12 @@ void DistRequest::getValue( DistCommReq* req, CommRespEvent* ev )
 {
 	retval = ev->status;
 
-	for ( unsigned i = 0; i <  ev->value.size(); i++ ) {
-		timeStamp[i] = ev->timeStamp[i];
-		((uint64_t*)value)[i] = ev->value[i];
+	assert( value.size() == ev->value.size() );
+	for ( unsigned i = 0; i < value.size(); i++ ) { 
+		for ( unsigned j = 0; j <  ev->value[i].size(); j++ ) {
+			((uint64_t*)value[i])[j] = ev->value[i][j];
+			timeStamp[i][j] = ev->timeStamp[i][j];
+		}
 	}
 
 	m_commReqs.erase( req ); 

@@ -18,19 +18,22 @@ using namespace PWR_Router;
 bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 	Router& rtr = *static_cast<Router*>(_rtr);
 	Router::Client* client = rtr.getClient( ec );
-	DBGX("id=%llu\n",commID);
+	DBGX("id=%lx\n",commID);
 
-   	for ( unsigned int i = 0; i < members.size(); i++ ) {
-       	DBGX("%s\n", members[i].c_str() );
+	client->addComm( commID, this );
+
+   	for ( unsigned int i = 0; i < members[0].size(); i++ ) {
+       	DBGX("%s\n", members[0][i].c_str() );
 		
 		CommCreateEvent* ev = new CommCreateEvent();
 		ev->commID = commID;
 
-		ev->members.push_back( members[i].c_str() );
-		rtr.sendEvent( members[i].c_str(), ev );
-	}	
+		std::vector< ObjID > tmp;
 
-	client->addComm( commID, this );
+		tmp.push_back( members[0][i] );
+		ev->members.push_back( tmp );
+		rtr.sendEvent( members[0][i].c_str(), ev );
+	}	
 
 	return false;
 }

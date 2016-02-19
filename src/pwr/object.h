@@ -41,6 +41,9 @@ class Object {
 	virtual Object* parent();
 	virtual Grp* children();
 
+	virtual AttrInfo& getAttrInfo( PWR_AttrName attr ) {
+		return *m_attrInfo[attr];
+	}
 	virtual bool attrIsValid( PWR_AttrName );
 
 	virtual int attrGetValue( PWR_AttrName attr, void* buf, PWR_Time* ts );

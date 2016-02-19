@@ -18,13 +18,15 @@ namespace PowerAPI {
 
 class Request;
 class Status;
+class DistComm;
 
 class DistObject : public Object {
 
   public:
 	DistObject( std::string name, PWR_ObjType type, Cntxt* ctx );
 
-	bool isLocal() { return m_local; }
+	bool isLocal() { return ! m_comm; }
+	DistComm* getComm() { return m_comm; }
     virtual int attrGetValue( PWR_AttrName attr, void* buf, 
 								PWR_Time* ts );
     virtual int attrSetValue( PWR_AttrName attr, void* buf );
@@ -52,7 +54,7 @@ class DistObject : public Object {
                        unsigned int* count, void* buf, Request* );
 
   private:
-	bool m_local;
+	DistComm* m_comm;
 };
 
 };

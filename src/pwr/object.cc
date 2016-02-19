@@ -30,17 +30,6 @@ Object::Object( std::string name, PWR_ObjType type, Cntxt* ctx ) :
 	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
 		m_attrInfo[ attr ] = m_cntxt->initAttr( this, (PWR_AttrName)attr );
 	}
-	// for now all attributes for an object must serviced the same way 
-	Communicator* comm = m_attrInfo[0]->comm;
-	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
-		assert( ! ( m_attrInfo[attr]->comm && 
-						! m_attrInfo[attr]->devices.empty() ) );
-		if ( ! comm ) {
-			comm = m_attrInfo[0]->comm;
-		} else if ( m_attrInfo[0]->comm ) {
-			assert( comm == m_attrInfo[attr]->comm ); 
-		}
-	}
 }
 
 Object::~Object()

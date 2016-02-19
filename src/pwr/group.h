@@ -31,10 +31,10 @@ class Grp {
 		: m_ctx(ctx), m_name(name) {}
 	virtual ~Grp(){};
 
-    long size() { return m_list.size(); }
+    virtual size_t size() { return m_list.size(); }
     bool empty() { return m_list.empty(); }
 
-    Object* getObj( int i ) { return m_list[i]; }
+    virtual Object* getObj( unsigned i ) { return m_list[i]; }
 
     virtual int add( Object* obj ) {
         DBGX("%s\n",obj->name().c_str());

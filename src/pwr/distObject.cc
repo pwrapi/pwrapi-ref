@@ -15,17 +15,34 @@
 #include "distComm.h"
 #include "status.h"
 #include "debug.h"
+#include "util.h"
 
 using namespace PowerAPI;
 
 DistObject::DistObject( std::string name, PWR_ObjType type, Cntxt* ctx ) :
-        Object( name, type, ctx ), m_local(true) 
+        Object( name, type, ctx ), m_comm( NULL )
 {
 	for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) {
 		if ( m_attrInfo[ attr ]->comm ) {
-			m_local = false;
+    		DBGX("%s comm=%p\n",attrNameToString((PWR_AttrName)attr),
+									m_attrInfo[ attr ]->comm); 
+    		m_comm = static_cast<DistComm*>(m_attrInfo[0]->comm);
+			break;
 		} 
 	}	
+
+    // for now all attributes for an object must serviced the same way
+    for ( int attr = PWR_ATTR_PSTATE; attr < PWR_NUM_ATTR_NAMES; attr++ ) {
+        assert( ! ( m_attrInfo[attr]->comm &&
+                        ! m_attrInfo[attr]->devices.empty() ) );
+        if ( ! m_comm ) {
+            m_comm = static_cast<DistComm*>(m_attrInfo[attr]->comm);
+
+        } else if ( m_attrInfo[attr]->comm ) {
+            assert( m_comm == m_attrInfo[attr]->comm );
+        }
+    }
+    DBGX("m_comm %p\n",m_comm);
 }
 
 int DistObject::attrGetValue( PWR_AttrName attr, void* buf,
@@ -141,8 +158,8 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
     int retval;
 	DistRequest* distReq = static_cast<DistRequest*>(req);
     DBGX("\n");
-	req->value = buf;
-	req->timeStamp = ts;
+	req->value[0] = buf;
+	req->timeStamp[0] = ts;
 
 	// we don't care about the return value because errors will be
 	// flagged in the status structure
@@ -154,7 +171,7 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
 
 	for ( int i = 1; i < count; i++ ) {
 		assert( info->comm == m_attrInfo[ names[i] ]->comm );
-		valueOp[i] = info->valueOp; 
+		valueOp[i] = m_attrInfo[ names[i] ]->valueOp; 
 	}
 
 	if ( info->comm ) {
@@ -306,8 +323,8 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
         		double period, unsigned int* count, void* buf, Request* req )
 {
 	int retval;
-	req->value = buf;
-	req->timeStamp = ts;
+	req->value[0] = buf;
+	req->timeStamp[0] = ts;
 	req->count = count;
 
 	DBGX("period=%f count=%d\n", period, *count );

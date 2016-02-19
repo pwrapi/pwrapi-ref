@@ -12,6 +12,7 @@
 #ifndef _PWR_UTIL_H
 #define _PWR_UTIL_H
 
+#include <string.h>
 #include "pwrtypes.h"
 
 static inline const char* objTypeToString( PWR_ObjType type )
@@ -31,6 +32,27 @@ static inline const char* objTypeToString( PWR_ObjType type )
     default: return "????";
     }
     return NULL;
+}
+
+static inline PWR_ObjType objStringToType( const char* type ) 
+{
+    if ( ! strcmp(type,"Platform") ) {
+        return PWR_OBJ_PLATFORM;
+    } else if ( ! strcmp(type,"Cabinet") ) {
+        return PWR_OBJ_CABINET;
+    } else if ( ! strcmp(type,"Chassis") ) {
+        return PWR_OBJ_CHASSIS;
+    } else if ( ! strcmp(type,"Board") ) {
+        return PWR_OBJ_BOARD;
+    } else if ( ! strcmp(type,"Node") ) {
+        return PWR_OBJ_NODE;
+    } else if ( ! strcmp(type,"Socket") ) {
+        return PWR_OBJ_SOCKET;
+    } else if ( ! strcmp(type,"Core") ) {
+        return PWR_OBJ_CORE;
+    } else {
+        return PWR_OBJ_INVALID;
+    }
 }
 
 static inline const char* attrNameToString( PWR_AttrName name )

@@ -40,10 +40,12 @@ class RtrCommRespEvent: public  CommRespEvent {
 
 			CommRespEvent* resp = new CommRespEvent;
         	resp->id = info->id;
-			resp->timeStamp.resize( info->valueOp.size() );
-			resp->value.resize( info->valueOp.size() );
+			resp->timeStamp.resize(1);
+			resp->value.resize(1);
+			resp->timeStamp[0].resize( info->valueOp.size() );
+			resp->value[0].resize( info->valueOp.size() );
 			for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
-				resp->value[i] = 0;
+				resp->value[0][i] = 0;
 			}
 			DBGX("num attrs %lu\n",info->valueOp.size() );
 
@@ -52,8 +54,8 @@ class RtrCommRespEvent: public  CommRespEvent {
 				for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
 					DBGX( "op=%d \n", info->valueOp[i] );			
 					assert( FP_ADD == info->valueOp[i] );
-					fpAdd( &resp->value[i], &(*iter)->value[i] );
-					resp->timeStamp[i] = (*iter)->timeStamp[i];
+					fpAdd( &resp->value[0][i], &(*iter)->value[0][i] );
+					resp->timeStamp[0][i] = (*iter)->timeStamp[0][i];
 				}
 				delete (*iter);
 			} 

@@ -59,7 +59,7 @@ extern unsigned int _DbgFlags;
 
 #define DBG3( flag, prefix, fmt, ... ) \
     if ( flag & _DbgFlags ) {\
-    	fprintf( stderr, "%d:%s:%s():%d: "fmt, getpid(), prefix, __func__, __LINE__, ##__VA_ARGS__);\
+    	fprintf( stderr, "%d:%s:%s():%d: "fmt, getid(), prefix, __func__, __LINE__, ##__VA_ARGS__);\
 	}
 
 #else

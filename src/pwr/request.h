@@ -12,6 +12,7 @@
 #ifndef _REQUEST_H
 #define _REQUEST_H
 
+#include <vector>
 #include <deque>
 #include <pwrtypes.h>
 
@@ -24,6 +25,8 @@ class Request {
 
   public:
 	Request( Cntxt* ctx, Callback callback = NULL, void* data = NULL ) : 
+		value(1),
+		timeStamp(1),
 		retval( PWR_RET_SUCCESS ),
 		m_cntxt( ctx),
 		m_callback( callback ),
@@ -35,10 +38,10 @@ class Request {
 	virtual int check( int* status ) = 0;
 	virtual bool finished() = 0;
 
-	void* 		value;
-	PWR_Time* 	timeStamp;
+	std::vector<void*> 		value;
+	std::vector<PWR_Time*> 	timeStamp;
 	unsigned int* count;
-	int			retval;
+	int retval;
 
   protected:
 	Cntxt* 		m_cntxt;

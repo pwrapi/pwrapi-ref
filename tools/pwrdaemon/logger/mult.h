@@ -13,10 +13,23 @@ class Mult : public Work {
   public:
 	Mult( PWR_Cntxt ctx, std::string objName, std::string attrs ) {
 
-    	PWR_CntxtGetObjByName( ctx, objName.c_str(), &m_obj );
-    	assert( PWR_NULL != m_obj );
+		if ( ! objName.compare(0,5,"TYPE:") ) {
+			std::string type = objName.substr(5);
+        	PWR_ObjType objType = objStringToType( type.c_str() );
 
-		//printf("%s \n", attrs.c_str());
+        	int rc = PWR_CntxtGetGrpByType( ctx, objType, &m_grp );
+        	assert( rc == PWR_RET_SUCCESS );
+		} else {
+			PWR_Obj obj;
+    		PWR_CntxtGetObjByName( ctx, objName.c_str(), &obj );
+
+    		assert( PWR_NULL != obj );
+			int rc = PWR_GrpCreate( ctx, &m_grp );
+        	assert( rc == PWR_RET_SUCCESS );
+			rc = PWR_GrpAddObj( m_grp, obj ); 
+        	assert( rc == PWR_RET_SUCCESS );
+		}
+
 		size_t pos = 0;
 		while ( pos < attrs.length() ) {
 			size_t tmp = attrs.find_first_of( ',', pos );
@@ -33,36 +46,43 @@ class Mult : public Work {
     int work( FILE* );
 
   private:
-	PWR_Obj 	m_obj;
+	PWR_Grp 	m_grp;
 	std::vector<PWR_AttrName> m_attrs;
 };
 
+static inline std::string getName( PWR_Grp, size_t index );
+
 int Mult::work( FILE* fp )
 {
-	char objName[100];
-	PWR_ObjGetName( m_obj, objName, 100 );
+	int rc;
 
-    fprintf(fp,"Logger: objName=\'%s\'\n", objName );
+	size_t numObjs = PWR_GrpGetNumObjs( m_grp );
 
     while( 1 ) {
-        std::vector<double> value(m_attrs.size());
-        std::vector<PWR_Time> ts(m_attrs.size());
+        std::vector<double> value(m_attrs.size() * numObjs );
+        std::vector<PWR_Time> ts(m_attrs.size() * numObjs );
 		PWR_Status status;
 		PWR_StatusCreate( &status );
-        int retval = PWR_ObjAttrGetValues( m_obj, m_attrs.size(), &m_attrs[0], 
+        rc = PWR_GrpAttrGetValues( m_grp, m_attrs.size(), &m_attrs[0], 
 					&value[0], &ts[0], status );
 
-        if( retval != PWR_RET_SUCCESS ) {
-            fprintf(fp,"ERROR: PWR_ObjAttrGetValues( `%s`, `%s` ) failed,"
-						" retval=%d\n", objName, "??", retval );
+        if( rc != PWR_RET_SUCCESS ) {
+            fprintf(fp,"ERROR: PWR_GrpAttrGetValues( `) failed,"
+						" retval=%d\n", rc );
 			fflush(fp);
 			return -1;
         }
 		
-		for ( unsigned i = 0; i < m_attrs.size(); i++ ) {
-        	fprintf(fp,"Logger: %s %.2f %s, time %lf seconds\n", 
-				attrNameToString( m_attrs[i]), value[i], 
-				attrUnitsToString( m_attrs[i]), (double)ts[i]/1000000000.0);
+		for ( unsigned j = 0; j < numObjs; j++ ) {
+       		fprintf(fp,"Logger: `%s`:\n", getName( m_grp, j).c_str() );
+
+			for ( unsigned i = 0; i < m_attrs.size(); i++ ) {
+				int index = j * numObjs + i;
+        		fprintf(fp,"Logger:   %10s %15.2f %-10s %lf seconds\n", 
+					attrNameToString( m_attrs[i]), value[index], 
+					attrUnitsToString( m_attrs[i]), 
+							(double)ts[index]/1000000000.0);
+			}
 		}
         fflush(fp);
         sleep(1);
@@ -70,9 +90,21 @@ int Mult::work( FILE* fp )
 	return 0;
 }
 
+std::string getName( PWR_Grp grp, size_t index )
+{
+	char objName[100];
+	int rc;
+	PWR_Obj obj;
+	rc = PWR_GrpGetObjByIndx( grp, index, &obj );
+   	assert( rc == PWR_RET_SUCCESS );
+
+	rc = PWR_ObjGetName( obj, objName, 100 );
+   	assert( rc == PWR_RET_SUCCESS );
+	return objName;
+}
+
 PWR_AttrName getAttr( std::string name )
 {
-	printf("%s\n",name.c_str());
 	if ( ! name.compare( "energy" ) ) {
 		return PWR_ATTR_ENERGY;
 	} else if ( ! name.compare( "power" ) ) {
