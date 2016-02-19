@@ -186,6 +186,26 @@ int PWR_GrpDestroy( PWR_Grp group )
     return ctx->destroyGrp( GRP(group) );
 }
 
+int PWR_GrpDuplicate( PWR_Grp, PWR_Grp* dup )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_GrpUnion( PWR_Grp, PWR_Grp, PWR_Grp* result )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_GrpIntersection( PWR_Grp, PWR_Grp, PWR_Grp* result )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_GrpDifference( PWR_Grp, PWR_Grp, PWR_Grp* result )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
 #if 0
 const char* PWR_GrpGetName( PWR_Grp group ) 
 {
@@ -259,6 +279,21 @@ int PWR_StatusPopError(PWR_Status status, PWR_AttrAccessError* err )
 int PWR_StatusClear( PWR_Status status )
 {
     return STATUS(status)->clear();
+}
+
+int PWR_ObjAttrGetMeta( PWR_Obj, PWR_AttrName, PWR_MetaName, void* val )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_ObjAttrSetMeta( PWR_Obj, PWR_AttrName, PWR_MetaName, const void* val )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
+}
+
+int PWR_MetaValueAtIndex( PWR_Obj, PWR_AttrName, unsigned int index, void* val, char* val_str )
+{
+    return PWR_RET_NOT_IMPLEMENTED;
 }
 
 int PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat statOp,
