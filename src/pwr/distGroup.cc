@@ -11,6 +11,11 @@
 
 using namespace PowerAPI;
 
+Object* DistGrp::getObj( unsigned i ) {
+
+    return static_cast<Object*>( m_allObjs[ i ] );
+}
+
 int DistGrp::add( Object* _obj )
 {
 	DistObject* obj = static_cast<DistObject*>(_obj);
@@ -28,6 +33,7 @@ int DistGrp::add( Object* _obj )
         }
         m_distObjs.push_back( obj );
 	}
+	m_allObjs.push_back( obj );
     return PWR_RET_SUCCESS;
 }
 
@@ -56,7 +62,6 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
     DBGX("\n");
 	uint64_t* ptr = (uint64_t*) buf;
 
-
 	for ( unsigned i = 0; i < m_list.size(); i++ ) {
 
 		int rc = m_list[i]->attrGetValues( num, attr, 
@@ -70,6 +75,8 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
 	
 		std::vector<ValueOp> valueOp(num);
 
+		// attributes are the same for all members of the group
+		// or are they?
 		for ( int i = 0; i < num; i++ ) { 
     		valueOp[i] = m_distObjs[0]->getAttrInfo( attr[i] ).valueOp;
 		}
@@ -79,8 +86,19 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
 			m_comm = new DistGrpComm( 
 					static_cast<DistCntxt*>(m_ctx), m_distObjs );
 		}
-		distReq.value[0] = buf; 
-		distReq.timeStamp[0] = ts;
+
+		distReq.value.resize( m_distObjs.size() );
+		distReq.timeStamp.resize( m_distObjs.size() );
+
+		for ( unsigned i = 0; i < m_distObjs.size(); i++ ) {
+			for ( unsigned j = 0; j < m_allObjs.size(); j++ ) {
+				if ( m_distObjs[i] == m_allObjs[j] ) {
+					distReq.value[i] = ptr + i * valueOp.size(); 
+					distReq.timeStamp[i] = ts + i * valueOp.size();
+					break;
+				}
+			}			
+		}
 
         DistCommReq* commReq = new DistGetCommReq(&distReq);
         distReq.insert( commReq );
