@@ -63,6 +63,16 @@ class RtrCommRespEvent: public  CommRespEvent {
 				} 
 			}
 			for ( unsigned j = 0; j < info->respQ[grpIndex].size(); j++ ) {
+				info->resp->errValue.insert( info->resp->errValue.end(), 
+							info->respQ[grpIndex][j]->errValue.begin(), 
+							info->respQ[grpIndex][j]->errValue.end() );
+				info->resp->errAttr.insert( info->resp->errAttr.end(), 
+							info->respQ[grpIndex][j]->errAttr.begin(), 
+							info->respQ[grpIndex][j]->errAttr.end() );
+				info->resp->errObj.insert( info->resp->errObj.end(), 
+							info->respQ[grpIndex][j]->errObj.begin(), 
+							info->respQ[grpIndex][j]->errObj.end() );
+
 				if ( j < info->respQ[grpIndex].size() - 1 ) {
 					delete info->respQ[grpIndex][ j ];
 				}
