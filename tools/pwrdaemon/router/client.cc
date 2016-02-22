@@ -39,6 +39,6 @@ void Router::Client::addComm( CommID id, CommCreateEvent* ev ) {
     m_commMap[id] = ev;
 }
 
-std::vector<ObjID>& Router::Client::getCommList( CommID id ) {
-	return  m_commMap[id]->members[0];
+std::vector< std::vector< ObjID > >& Router::Client::getCommList( CommID id ) {
+	return  m_commMap[id]->members;
 }

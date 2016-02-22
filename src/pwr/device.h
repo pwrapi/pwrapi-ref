@@ -12,6 +12,9 @@
 #ifndef _DEVICE_H
 #define _DEVICE_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <vector>
 #include <assert.h>
 #include "pwrdev.h"
@@ -92,7 +95,7 @@ class Device {
 
     virtual int getSamples( PWR_AttrName name, PWR_Time* ts, 
 						double period, unsigned int* nSamples, void* results ) {
-        DBGX("%lld\n",*ts);
+        DBGX("%" PRIu64 "\n",*ts);
         if ( m_ops->get_samples ) {
             return m_ops->get_samples( m_fd, name, ts, period, nSamples, results );
         } else {

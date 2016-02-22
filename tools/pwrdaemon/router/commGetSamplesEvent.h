@@ -12,6 +12,9 @@
 #ifndef _RTR_COMM_GET_SAMPLES_REQ_EVENT_H
 #define _RTR_COMM_GET_SAMPLES_REQ_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <eventChannel.h>
 #include <debug.h>
@@ -24,6 +27,8 @@ class RtrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
    	RtrCommGetSamplesReqEvent( SerialBuf& buf ) : CommGetSamplesReqEvent( buf ) {}  
 
 	bool process(EventGenerator* _rtr, EventChannel* ec) {
+		assert(0);
+#if 0
 		Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
 
@@ -34,7 +39,7 @@ class RtrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
     	id = (EventId) info;
 
-    	DBGX("commID=%llu eventId=%#llx new eventId=%p\n",
+    	DBGX("commID=%"PRIx64" eventId=%"PRIx64" new eventId=%p\n",
                                 commID, id, info );
 
 		DBGX("period=%f count=%d\n",period,count);
@@ -46,6 +51,7 @@ class RtrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
         	DBGX("%s %d\n",(*iter).c_str(), attrName );
 			rtr.sendEvent( (*iter), this );
     	}
+#endif
 		return false;
 	}
 };
@@ -56,12 +62,14 @@ class RtrCommGetSamplesRespEvent: public  CommGetSamplesRespEvent {
 
 	bool process(EventGenerator* _rtr, EventChannel* ec) {
 
+#if 0
         DBGX("id=%p status=%d \n",(void*)id, status );
         CommReqInfo* info = (CommReqInfo*) id;
 
         id = info->id;
         info->src->sendEvent( this );
         delete info;
+#endif
 		return false;
 	}
 };

@@ -29,14 +29,9 @@ class DistGrp : public Grp {
 			Grp( ctx, name ), m_comm(NULL) { }
 
 	virtual int add( Object* obj );
-	virtual size_t size() { return Grp::size() + m_distObjs.size(); }
-	virtual Object* getObj( unsigned i ) {
-
-		if ( i < Grp::size() ) {
-			return Grp::getObj(i);
-		} 
-		return static_cast<Object*>( m_distObjs[ i - Grp::size() ] );
-	}
+	virtual int remove( Object* obj ) { assert(0); }
+	virtual size_t size() { return m_allObjs.size(); }
+	virtual Object* getObj( unsigned i );
 
 	virtual int attrSetValue( PWR_AttrName type, void* ptr, Status* status );
 	virtual int attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[],
@@ -47,8 +42,9 @@ class DistGrp : public Grp {
                                         PWR_Time ts[], Status* status);
 	
   private:
-	std::vector<DistObject*>  m_distObjs;
-	DistGrpComm*			  m_comm;
+	std::vector< DistObject* >  m_distObjs;
+	std::vector< DistObject* > 	m_allObjs;
+	DistGrpComm*	    m_comm;
 };
 
 }

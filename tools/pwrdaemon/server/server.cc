@@ -1,5 +1,8 @@
 #include <stdlib.h>
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include "server.h"
 
 #include "../router/routerEvent.h"
@@ -91,7 +94,7 @@ void Server::fini( Event* key, Event* payload )
 	RouterEvent* re = static_cast<RouterEvent*>(m_finiMap[key].first);
 	EventChannel* ec = static_cast<EventChannel*>(m_finiMap[key].second);
 
-	DBGX("src=%#llx dest=%#llx\n",re->dest,re->src);
+	DBGX("src=%" PRIx64 " dest=%" PRIx64"\n",re->dest,re->src);
     RouterEvent* ev = new RouterEvent( re->dest, re->src, payload );
     ec->sendEvent( ev );
 	

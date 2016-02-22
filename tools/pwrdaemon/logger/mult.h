@@ -77,7 +77,7 @@ int Mult::work( FILE* fp )
        		fprintf(fp,"Logger: `%s`:\n", getName( m_grp, j).c_str() );
 
 			for ( unsigned i = 0; i < m_attrs.size(); i++ ) {
-				int index = j * numObjs + i;
+				int index = j * m_attrs.size() + i;
         		fprintf(fp,"Logger:   %10s %15.2f %-10s %lf seconds\n", 
 					attrNameToString( m_attrs[i]), value[index], 
 					attrUnitsToString( m_attrs[i]), 
