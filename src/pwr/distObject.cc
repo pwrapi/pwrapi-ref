@@ -88,13 +88,13 @@ int DistObject::attrGetValues( int count, PWR_AttrName names[],
 {
     int retval;
     DBGX("\n");
-	DistRequest req( getCntxt() );
+	DistRequest req( getCntxt(), status );
 
 	// we don't care about the return value because errors will be
 	// flagged in the status structure
 	attrGetValues( count, names, buf, ts, status, &req );
 
-	retval = req.wait( status );
+	retval = req.wait( );
 	if( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}
@@ -107,13 +107,13 @@ int DistObject::attrSetValues( int count, PWR_AttrName names[],
 {
     int retval;
     DBGX("\n");
-	DistRequest req( getCntxt() );
+	DistRequest req( getCntxt(), status );
 
 	// we don't care about the return value because errors will be
 	// flagged in the status structure
 	attrSetValues( count, names, buf, status, &req );
 
-	retval = req.wait( status );
+	retval = req.wait( );
 	if( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}
@@ -264,7 +264,8 @@ int DistObject::attrStartLog( PWR_AttrName attr, Request* req )
 int DistObject::attrStartLog( PWR_AttrName attr )
 {
 	int retval;
-	DistRequest req( getCntxt() );
+	Status status;
+	DistRequest req( getCntxt(), & status );
 
 	DBGX("\n");
 
@@ -272,11 +273,16 @@ int DistObject::attrStartLog( PWR_AttrName attr )
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	
-	int status;
-	req.wait( &status );
-	assert ( retval == PWR_RET_SUCCESS );
 
-	return status;
+	req.wait( );
+
+	if ( ! status.empty() ) {
+		PWR_AttrAccessError error;
+		status.pop( &error );
+		retval = error.error;
+	}
+
+	return retval;
 }
 
 int DistObject::attrStopLog( PWR_AttrName attr, Request* req )
@@ -307,7 +313,8 @@ int DistObject::attrStopLog( PWR_AttrName attr, Request* req )
 int DistObject::attrStopLog( PWR_AttrName attr )
 {
 	int retval;
-	DistRequest req( getCntxt() );
+	Status status;
+	DistRequest req( getCntxt(), &status );
 
 	DBGX("\n");
 
@@ -315,11 +322,16 @@ int DistObject::attrStopLog( PWR_AttrName attr )
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	
-	int status;
-	req.wait( &status );
-	assert ( retval == PWR_RET_SUCCESS );
 
-	return status;
+	req.wait(  );
+
+    if ( ! status.empty() ) {
+        PWR_AttrAccessError error;
+        status.pop( &error );
+        retval = error.error;
+    }
+
+	return retval; 
 }
 
 int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
@@ -357,7 +369,8 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
                       double period, unsigned int* count, void* buf )
 {
 	int retval;
-	DistRequest req( getCntxt() );
+	Status status;
+	DistRequest req( getCntxt(), &status );
 
 	DBGX("\n");
 
@@ -365,10 +378,13 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	
-	int status;
-	req.wait( &status );
-	assert ( retval == PWR_RET_SUCCESS );
+	req.wait();
+    if ( ! status.empty() ) {
+        PWR_AttrAccessError error;
+        status.pop( &error );
+        retval = error.error;
+    }
 
-	return status;
+	return retval;
 }
 

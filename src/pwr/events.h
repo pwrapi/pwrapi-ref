@@ -133,7 +133,15 @@ struct CommRespEvent : public CommEvent {
     std::vector< std::vector<uint64_t> > value;
 	size_t grpIndex; 
 
+	std::vector< ObjID >  		errObj;
+	std::vector< PWR_AttrName > errAttr;
+	std::vector< int >   		errValue;
+
 	virtual void serialize_in( SerialBuf& buf ) {
+		buf >> errObj;
+		buf >> errAttr;
+		buf >> errValue;
+
 		buf >> grpIndex;
 		buf >> value;
 		buf >> timeStamp;
@@ -144,6 +152,10 @@ struct CommRespEvent : public CommEvent {
 		buf << timeStamp;
 		buf << value;
 		buf << grpIndex;
+
+		buf << errValue;
+		buf << errAttr;
+		buf << errObj;
 	} 
 };
 
@@ -170,11 +182,21 @@ struct CommLogRespEvent : public CommEvent {
 		serialize_in(buf);
 	}
 
+	std::vector< ObjID >  		errObj;
+	std::vector< PWR_AttrName > errAttr;
+	std::vector< int >   		errValue;
+
 	virtual void serialize_in( SerialBuf& buf ) {
 		CommEvent::serialize_in(buf);
+		buf >> errObj;
+		buf >> errAttr;
+		buf >> errValue;
 	} 
 	virtual void serialize_out( SerialBuf& buf ) {
 		CommEvent::serialize_out(buf);
+		buf << errValue;
+		buf << errAttr;
+		buf << errObj;
 	} 
 };
 
@@ -213,17 +235,29 @@ struct CommGetSamplesRespEvent : public CommEvent {
 	unsigned int count;
 	std::vector< uint64_t > data;
 
+	std::vector< ObjID >  		errObj;
+	std::vector< PWR_AttrName > errAttr;
+	std::vector< int >   		errValue;
+
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> startTime;
 		buf >> count;
 		buf >> data;
+		buf >> errValue;
+		buf >> errAttr;
+		buf >> errObj;
 		CommEvent::serialize_in(buf);
 	} 
 	virtual void serialize_out( SerialBuf& buf ) {
 		CommEvent::serialize_out(buf);
+
+		buf << errObj;
+		buf << errAttr;
+		buf << errValue;
 		buf << data;
 		buf << count;
 		buf << startTime;
+
 	} 
 };
 

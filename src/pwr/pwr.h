@@ -144,12 +144,12 @@ PWR_Obj PWR_ObjGetAncestorByType( PWR_Obj, PWR_ObjType );
 EventChannel* PWR_CntxtGetEventChannel( PWR_Cntxt ctx );
 int PWR_CntxtMakeProgress( PWR_Cntxt ctx );
 
-PWR_Request PWR_ReqCreate( PWR_Cntxt );
-PWR_Request PWR_ReqCreateCallback( PWR_Cntxt, Callback callback, void* data );
+PWR_Request PWR_ReqCreate( PWR_Cntxt, PWR_Status );
+PWR_Request PWR_ReqCreateCallback( PWR_Cntxt, PWR_Status, Callback callback,
+										void* data );
 int PWR_ReqDestroy( PWR_Request );
 
-int PWR_ReqCheck( PWR_Request, int* status );
-int PWR_ReqWait( PWR_Request, int* status );
+int PWR_ReqWait( PWR_Request );
 
 int PWR_ObjAttrGetValues_NB( PWR_Obj, int count, PWR_AttrName name[],
 								void* buf, PWR_Time [], PWR_Request );

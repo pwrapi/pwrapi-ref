@@ -19,31 +19,33 @@
 namespace PowerAPI {
 
 class Cntxt;
+class Status;
 
 class Request {
 
   public:
-	Request( Cntxt* ctx, Callback callback = NULL, void* data = NULL ) : 
+	Request( Cntxt* ctx, Status* status, 
+				Callback callback = NULL, void* data = NULL ) : 
 		value(1),
 		timeStamp(1),
-		retval( PWR_RET_SUCCESS ),
 		m_cntxt( ctx),
+		m_status( status ),
 		m_callback( callback ),
 		m_data( data ) 
 	{}
 	virtual ~Request() {}
 
-	virtual int wait( int* status ) = 0;
-	virtual int check( int* status ) = 0;
+	virtual int wait( ) = 0;
 	virtual bool finished() = 0;
 
 	std::vector<void*> 		value;
 	std::vector<PWR_Time*> 	timeStamp;
+
 	unsigned int* count;
-	int retval;
 
   protected:
 	Cntxt* 		m_cntxt;
+	Status* 	m_status;
 	Callback 	m_callback;
 	void*  		m_data;
 };

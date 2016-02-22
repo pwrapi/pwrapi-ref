@@ -119,12 +119,12 @@ void DistComm::startLog( PWR_AttrName attr, CommReq* req )
 
 void DistStartLogCommReq::process( Event* _ev ) {
 	DBGX("\n");
-	m_req->setStatus( this, static_cast<CommRespEvent*>(_ev) );
+	assert(0);
 }
 
 void DistStopLogCommReq::process( Event* _ev ) {
 	DBGX("\n");
-	m_req->setStatus( this, static_cast<CommRespEvent*>(_ev) );
+	assert(0);
 }
 
 void DistGetSamplesCommReq::process( Event* _ev ) {

@@ -27,7 +27,7 @@ class Status {
         return m_info.empty();
     }
     int pop( PWR_AttrAccessError* ptr ) {
-        if ( m_info.empty() ) return PWR_RET_FAILURE;
+        if ( m_info.empty() ) return PWR_RET_EMPTY;
         *ptr = m_info.front();
         m_info.pop_front();
         return PWR_RET_SUCCESS;
