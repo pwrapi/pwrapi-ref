@@ -30,31 +30,35 @@ class RtrCommReqEvent: public  CommReqEvent {
 		Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
 
+    	std::vector< std::vector< ObjID > >& commList = 
+				client.getCommList( commID );
+
     	CommReqInfo* info = new CommReqInfo;
-    	info->src = ec;
-    	info->ev = this;
-		info->valueOp = valueOp;
-
-		for ( size_t i = 0; i < valueOp.size(); i++ ) {
-			DBGX("valueOp=%d\n",valueOp[i]);	
-		}
-
 
     	DBGX("commID=%"PRIu64" eventId=%"PRIx64" new eventId=%p\n", 
 													commID, id, info );
 
-    	std::vector< std::vector< ObjID > >& commList = 
-				client.getCommList( commID );
-
+    	info->src = ec;
+    	info->ev = this;
 		info->grpInfo.resize( commList.size() );
 		info->respQ.resize( commList.size() );
 		info->pending = commList.size();
         info->resp = new CommRespEvent;
-        info->resp->timeStamp.resize( commList.size() );
-        info->resp->value.resize( commList.size() );
         info->resp->id = id;
 
     	id = (EventId) info;
+
+		if ( op == Get ) {
+
+			info->valueOp = valueOp;
+
+			for ( size_t i = 0; i < valueOp.size(); i++ ) {
+				DBGX("valueOp=%d\n",valueOp[i]);	
+			}
+
+        	info->resp->timeStamp.resize( commList.size() );
+        	info->resp->value.resize( commList.size() );
+   		}
 
     	for ( unsigned int i=0; i <  commList.size(); i++ ) {
 			info->grpInfo[i] = commList[i].size();
