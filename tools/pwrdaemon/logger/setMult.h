@@ -1,17 +1,16 @@
 
-#ifndef _MULT_H
-#define _MULT_H
+#ifndef _SET_MULT_H
+#define _SET_MULT_H
 
 #include "work.h" 
-
 #include <util.h>
 #include "./util.h"
 
 namespace PWR_Logger {
 
-class Mult : public Work {
+class SetMult : public Work {
   public:
-	Mult( PWR_Cntxt ctx, std::string objName, std::string attrs ) {
+	SetMult( PWR_Cntxt ctx, std::string objName, std::string attrs ) {
 
 		if ( ! objName.compare(0,5,"TYPE:") ) {
 			std::string type = objName.substr(5);
@@ -42,48 +41,39 @@ class Mult : public Work {
 				pos = attrs.length();
 			}
 		}
+		size_t numObjs = PWR_GrpGetNumObjs( m_grp );
+		values.resize( m_attrs.size() );
+
+		for ( unsigned i = 0; i < m_attrs.size(); i++ ) {
+			values[i] = 1000.0 + i; 
+		}
 	}
     int work( FILE* );
 
   private:
 	PWR_Grp 	m_grp;
 	std::vector<PWR_AttrName> m_attrs;
+    std::vector<double> values;
 };
 
-int Mult::work( FILE* fp )
+int SetMult::work( FILE* fp )
 {
 	int rc;
 
-	size_t numObjs = PWR_GrpGetNumObjs( m_grp );
+	PWR_Status status;
+	PWR_StatusCreate( &status );
+	fprintf(fp,"call set\n");
+	fflush(fp);
+    rc = PWR_GrpAttrSetValues( m_grp, m_attrs.size(), &m_attrs[0], 
+					&values[0], status );
+	fprintf(fp,"set returned\n");
+	fflush(fp);
 
-    while( 1 ) {
-        std::vector<double> value(m_attrs.size() * numObjs );
-        std::vector<PWR_Time> ts(m_attrs.size() * numObjs );
-		PWR_Status status;
-		PWR_StatusCreate( &status );
-        rc = PWR_GrpAttrGetValues( m_grp, m_attrs.size(), &m_attrs[0], 
-					&value[0], &ts[0], status );
-
-        if( rc != PWR_RET_SUCCESS ) {
+    if( rc != PWR_RET_SUCCESS ) {
             fprintf(fp,"ERROR: PWR_GrpAttrGetValues( `) failed,"
 						" retval=%d\n", rc );
 			fflush(fp);
-			return -1;
-        }
-		
-		for ( unsigned j = 0; j < numObjs; j++ ) {
-       		fprintf(fp,"Logger: `%s`:\n", getName( m_grp, j).c_str() );
-
-			for ( unsigned i = 0; i < m_attrs.size(); i++ ) {
-				int index = j * m_attrs.size() + i;
-        		fprintf(fp,"Logger:   %10s %15.2f %-10s %lf seconds\n", 
-					attrNameToString( m_attrs[i]), value[index], 
-					attrUnitsToString( m_attrs[i]), 
-							(double)ts[index]/1000000000.0);
-			}
-		}
-        fflush(fp);
-        sleep(1);
+		return -1;
     }
 	return 0;
 }

@@ -104,19 +104,19 @@ struct CommReqEvent : public CommEvent {
 
 	size_t grpIndex;	
     std::vector<PWR_AttrName> attrName;
-    std::vector<uint64_t> values;
+    std::vector< uint64_t >   setValues;
 	std::vector<ValueOp> valueOp;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> grpIndex;
 		buf >> valueOp;
 		buf >> attrName;
-		buf >> values;
+		buf >> setValues;
 		CommEvent::serialize_in(buf);
 	} 
 	virtual void serialize_out( SerialBuf& buf ) {
 		CommEvent::serialize_out(buf);
-		buf << values;
+		buf << setValues;
 		buf << attrName;
 		buf << valueOp;
 		buf << grpIndex;

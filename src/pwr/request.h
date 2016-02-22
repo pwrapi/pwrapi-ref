@@ -19,7 +19,6 @@
 namespace PowerAPI {
 
 class Cntxt;
-class CommReq;
 
 class Request {
 

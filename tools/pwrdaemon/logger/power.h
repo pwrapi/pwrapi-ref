@@ -3,7 +3,7 @@
 #define _POWER_H
 
 #include "work.h" 
-#include "util.h"
+#include <util.h>
 
 namespace PWR_Logger {
 class Power : public Work {

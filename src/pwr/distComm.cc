@@ -83,7 +83,7 @@ void DistGetCommReq::process( Event* _ev ) {
 }
 
 void DistComm::setValues( int count, PWR_AttrName attr[], 
-						void* buf, CommReq* req )
+						void* values, CommReq* req )
 {
 
 	CommReqEvent* ev = new CommReqEvent;	
@@ -93,7 +93,7 @@ void DistComm::setValues( int count, PWR_AttrName attr[],
 	for ( int i = 0; i < count; i++ ) {
 		DBGX("%s\n",attrNameToString(attr[i]));
 		ev->attrName.push_back( attr[i] ); 
-		ev->values.push_back( ((uint64_t*)buf)[i] );
+		ev->setValues.push_back( ((uint64_t*)values)[i] );
 	}
 	getChannel().sendEvent( ev );
 	delete ev;
