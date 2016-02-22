@@ -20,6 +20,7 @@
 #include "powerGrp.h"
 #include "rate.h"
 #include "mult.h"
+#include "setMult.h"
 
 using namespace PWR_Logger;
 
@@ -64,7 +65,9 @@ Logger::Logger( int argc, char* argv[] ) :
         }
     }
 
-	if ( 0 == m_args.attr.compare(0,5,"MULT:") ) {
+	if ( 0 == m_args.attr.compare(0,8,"SETMULT:") ) {
+		m_work = new SetMult( m_ctx, m_args.objectName, m_args.attr.substr(8) );
+	} else if ( 0 == m_args.attr.compare(0,5,"MULT:") ) {
 		m_work = new Mult( m_ctx, m_args.objectName, m_args.attr.substr(5) );
 	} else if ( 0 == m_args.attr.compare("power") ) {
 		
