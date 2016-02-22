@@ -41,7 +41,6 @@ int DistRequest::wait( Status* status )
 {
 	DistCntxt* ctx = static_cast<DistCntxt*>(m_cntxt);
 	EventChannel* ec = ctx->getEventChannel();
-	DBGX("%lu\n", m_commReqs.size());
 
 	while ( ! m_commReqs.empty() ) {	
 		Event* ev = ec->getEvent();
@@ -109,7 +108,6 @@ int DistRequest::wait( int* status )
 {
 	DistCntxt* ctx = static_cast<DistCntxt*>(m_cntxt);
 	EventChannel* ec = ctx->getEventChannel();
-	DBGX("%lu\n", m_commReqs.size());
 
 	*status = PWR_RET_SUCCESS;
 	while ( ! m_commReqs.empty() ) {	

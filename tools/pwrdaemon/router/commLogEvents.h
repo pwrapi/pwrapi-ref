@@ -12,6 +12,9 @@
 #ifndef _RTR_COMM_LOG_EVENT_H
 #define _RTR_COMM_LOG_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <eventChannel.h>
 #include <debug.h> 
@@ -24,6 +27,8 @@ class RtrCommLogReqEvent: public  CommLogReqEvent {
    	RtrCommLogReqEvent( SerialBuf& buf ) : CommLogReqEvent( buf ) {}  
 
 	bool process( EventGenerator* _rtr, EventChannel* ec ) {
+		assert(0);
+#if 0
         Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
 
@@ -34,10 +39,10 @@ class RtrCommLogReqEvent: public  CommLogReqEvent {
 
         id = (EventId) info;
 
-        DBGX("commID=%llu eventId=%#llx new eventId=%p\n",
+        DBGX("commID=%"PRIu64" eventId=%" PRIx64 " new eventId=%p\n",
                                 commID, id, info );
 
-		std::vector<ObjID>& commList= client.getCommList( commID );
+		std::vector< std::vector< ObjID > >& commList= client.getCommList( commID );
         std::vector<ObjID>::iterator iter = commList.begin();
 
         for ( ; iter != commList.end(); ++iter ) {
@@ -45,6 +50,7 @@ class RtrCommLogReqEvent: public  CommLogReqEvent {
             DBGX("%s %d\n",(*iter).c_str(), attrName );
 			rtr.sendEvent( (*iter), this );
         }
+#endif
 		return false;
 	}
 };
@@ -57,11 +63,13 @@ class RtrCommLogRespEvent: public  CommLogRespEvent {
 
       	DBGX("id=%p status=%d \n",(void*)id, status );
 
+#if 0
         CommReqInfo* info = (CommReqInfo*) id;
 
         id = info->id;
         info->src->sendEvent( this );
         delete info;
+#endif
         return true;
 	}
 };

@@ -9,6 +9,9 @@
  * distribution.
 */
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include "distObject.h"
 #include "attrInfo.h"
 #include "distRequest.h"
@@ -333,7 +336,7 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	
-	DBGX("ts=%lld\n",*ts);
+	DBGX("ts=%" PRIu64 "\n",*ts);
 
 	AttrInfo* info = m_attrInfo[ attr ];
 	if ( info->comm ) {

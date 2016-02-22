@@ -2,6 +2,9 @@
 #ifndef _SRVR_ROUTER_EVENT_H
 #define _SRVR_ROUTER_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <eventChannel.h>
 #include <debug.h> 
@@ -24,7 +27,7 @@ class SrvrRouterEvent: public RouterEvent {
 
         Server* info = static_cast<Server*>(gen);
 
-        DBGX("src=%#llx dest=%#llx\n",src,dest);
+        DBGX("src=%" PRIx64 " dest=%" PRIx64 "\n",src,dest);
         Event* ev = getPayload( allocReqEvent );
 
        	info->initFini( ev, this, ec );
