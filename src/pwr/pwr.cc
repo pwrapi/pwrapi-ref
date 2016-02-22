@@ -125,7 +125,7 @@ int PWR_ObjAttrSetValues_NB( PWR_Obj obj, int count, PWR_AttrName attr[],
     return DISTOBJECT(obj)->attrSetValues( count, attr, buf, REQUEST(req) );
 }
 
-int PWR_ObjAttrGetValues( PWR_Obj obj, int num, const PWR_AttrName attrs[],
+int PWR_ObjAttrGetValues( PWR_Obj obj, int num, PWR_AttrName attrs[],
                     void* values, PWR_Time ts[], PWR_Status status )
 {
     return OBJECT(obj)->attrGetValues( num, (PWR_AttrName*)attrs, values, ts, STATUS(status) );
@@ -226,15 +226,15 @@ int PWR_GrpAttrGetValue( PWR_Grp grp, PWR_AttrName type, void* ptr,
     return GRP(grp)->attrGetValue( type, ptr, ts, STATUS(status) );
 }
 
-int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[], void* buf, PWR_Status status )
+int PWR_GrpAttrSetValues( PWR_Grp grp, int num, PWR_AttrName attr[],
+								void* buf, PWR_Status status )
 {
     return GRP(grp)->attrSetValues( num, attr, buf, STATUS(status) ); 
 }
 
-int PWR_GrpAttrGetValues( PWR_Grp grp, int num, const PWR_AttrName attr[],
-                                  void* buf, PWR_Time ts[], PWR_Status status)
+int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrName attr[],
+                               	void* buf, PWR_Time ts[], PWR_Status status)
 {
-	DBG("%p %p\n",buf,ts);
     return GRP(grp)->attrGetValues( num, (PWR_AttrName*)attr, buf, ts, STATUS(status) ); 
 }
 

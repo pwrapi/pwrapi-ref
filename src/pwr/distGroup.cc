@@ -53,7 +53,35 @@ int DistGrp::attrGetValue( PWR_AttrName type, void* ptr, PWR_Time ts[],
 int DistGrp::attrSetValues( int num, PWR_AttrName attr[], void* buf,
                             			Status* status )
 {
-	assert(0);
+    DBGX("\n");
+
+	for ( unsigned i = 0; i < m_list.size(); i++ ) {
+
+		int rc = m_list[i]->attrSetValues( num, attr, 
+					buf, status ); 
+		if ( rc != PWR_RET_SUCCESS && rc != PWR_RET_STATUS ) {
+			return rc;
+		}
+	}
+	
+	if ( ! m_distObjs.empty() ) {
+	
+		DistRequest distReq( m_ctx );
+		if ( ! m_comm ) {
+			m_comm = new DistGrpComm( 
+					static_cast<DistCntxt*>(m_ctx), m_distObjs );
+		}
+
+        DistCommReq* commReq = new DistSetCommReq(&distReq);
+        distReq.insert( commReq );
+
+		m_comm->setValues( num, attr, buf, commReq ); 
+
+		int status;
+		distReq.wait( &status );
+	}
+	
+	return PWR_RET_SUCCESS;
 }
 
 int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
