@@ -39,30 +39,34 @@ class RtrCommRespEvent: public  CommRespEvent {
 
 		if ( info->respQ[grpIndex].size() == info->grpInfo[grpIndex] ) {
 
-			DBGX("index %"PRIu64" is ready, num attrs %lu\n",
+			if ( Get == info->ev->op ) {
+				DBGX("index %"PRIu64" is ready, num attrs %lu\n",
 										grpIndex, info->valueOp.size() );
-			info->resp->timeStamp[grpIndex].resize( info->valueOp.size() );
-			info->resp->value[grpIndex].resize( info->valueOp.size() );
+				info->resp->timeStamp[grpIndex].resize( info->valueOp.size() );
+				info->resp->value[grpIndex].resize( info->valueOp.size() );
 
-			for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
-				info->resp->value[grpIndex][i] = 0;
-			}
-
-			for ( unsigned j = 0; j < info->respQ[grpIndex].size(); j++ ) {
 				for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
-					DBGX( "op=%d \n", info->valueOp[i] );			
-					assert( FP_ADD == info->valueOp[i] );
+					info->resp->value[grpIndex][i] = 0;
+				}
 
-					fpAdd( &info->resp->value[grpIndex][i], 
+				for ( unsigned j = 0; j < info->respQ[grpIndex].size(); j++ ) {
+					for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
+						DBGX( "op=%d \n", info->valueOp[i] );			
+						assert( FP_ADD == info->valueOp[i] );
+
+						fpAdd( &info->resp->value[grpIndex][i], 
 									&info->respQ[grpIndex][j]->value[0][i] );
 
-					info->resp->timeStamp[grpIndex][i] = 
+						info->resp->timeStamp[grpIndex][i] = 
 									info->respQ[grpIndex][j]->timeStamp[0][i];
-				}
+					}
+				} 
+			}
+			for ( unsigned j = 0; j < info->respQ[grpIndex].size(); j++ ) {
 				if ( j < info->respQ[grpIndex].size() - 1 ) {
 					delete info->respQ[grpIndex][ j ];
 				}
-			} 
+			}
 
 			DBGX("pending %"PRIu64"\n",info->pending);
 			--info->pending;
@@ -71,6 +75,7 @@ class RtrCommRespEvent: public  CommRespEvent {
 				DBGX("done send the response\n");
         		info->src->sendEvent( info->resp );
 				delete info->resp;
+				delete info->ev;
 				delete info;
 			} 
 
