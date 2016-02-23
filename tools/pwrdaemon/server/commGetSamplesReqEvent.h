@@ -13,8 +13,7 @@
 
 namespace PWR_Server {
 
-class SrvrCommGetSamplesReqEvent;
-static void getSamplesFini( SrvrCommGetSamplesReqEvent*, int status );
+static void getSamplesFini( void* );
 
 class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
   public:
@@ -43,7 +42,8 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
     	m_respEvent.id = id;
 		m_respEvent.data.resize( count );
 		m_respEvent.count = count;
-    	m_req = PWR_ReqCreateCallback( m_info->m_ctx, 
+		PWR_StatusCreate(&m_status);
+    	m_req = PWR_ReqCreateCallback( m_info->m_ctx, m_status, 
 											(Callback)getSamplesFini, this );
     	assert( m_req );
 			
@@ -52,7 +52,7 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 				(void*) &m_respEvent.data[0], m_req );
 
     	if ( ret != PWR_RET_SUCCESS ) {
-        	getSamplesFini( this, ret );
+        	getSamplesFini( this );
     	}
 
 		return false;
@@ -62,13 +62,26 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
 
 	Server*			m_info;
 	PWR_Request	    m_req;
+	PWR_Status		m_status;
 };
 
-static void getSamplesFini( SrvrCommGetSamplesReqEvent* data, int status )
+static void getSamplesFini( void* _data )
 {
-    DBG4("PWR_Server","status=%d\n",status);
+	SrvrCommGetSamplesReqEvent* data = (SrvrCommGetSamplesReqEvent*) _data; 
+    DBG4("PWR_Server","\n");
 
-    data->m_respEvent.status = status;
+    PWR_Status status = data->m_status;
+    PWR_AttrAccessError error;
+    while ( PWR_RET_EMPTY != PWR_StatusPopError( status, &error ) ) {
+
+        data->m_respEvent.errValue.push_back( error.error ) ;
+        data->m_respEvent.errAttr.push_back( error.name ) ;
+        char name[100];
+        PWR_ObjGetName( error.obj, name, 100 );
+        data->m_respEvent.errObj.push_back( name );
+    }
+
+	PWR_StatusDestroy( data->m_status );
 
 	data->m_info->fini( data, &data->m_respEvent );
 }

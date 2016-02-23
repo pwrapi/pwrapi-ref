@@ -255,6 +255,6 @@ typedef void* PWR_Request;
 
 typedef int PWR_CntxtState;
 
-typedef void (*Callback)(void* data, int status);
+typedef void (*Callback)( void* data );
 
 #endif

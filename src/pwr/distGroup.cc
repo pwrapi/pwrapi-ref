@@ -66,7 +66,7 @@ int DistGrp::attrSetValues( int num, PWR_AttrName attr[], void* buf,
 	
 	if ( ! m_distObjs.empty() ) {
 	
-		DistRequest distReq( m_ctx );
+		DistRequest distReq( m_ctx, status );
 		if ( ! m_comm ) {
 			m_comm = new DistGrpComm( 
 					static_cast<DistCntxt*>(m_ctx), m_distObjs );
@@ -77,11 +77,10 @@ int DistGrp::attrSetValues( int num, PWR_AttrName attr[], void* buf,
 
 		m_comm->setValues( num, attr, buf, commReq ); 
 
-		int status;
-		distReq.wait( &status );
+		distReq.wait( );
 	}
 	
-	return PWR_RET_SUCCESS;
+	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
 }
 
 int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
@@ -109,7 +108,7 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
     		valueOp[i] = m_distObjs[0]->getAttrInfo( attr[i] ).valueOp;
 		}
 
-		DistRequest distReq( m_ctx );
+		DistRequest distReq( m_ctx, status );
 		if ( ! m_comm ) {
 			m_comm = new DistGrpComm( 
 					static_cast<DistCntxt*>(m_ctx), m_distObjs );
@@ -133,9 +132,8 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
 
 		m_comm->getValues( num, attr, &valueOp[0], commReq ); 
 
-		int status;
-		distReq.wait( &status );
+		distReq.wait( );
 	}
 	
-	return PWR_RET_SUCCESS;
+	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
 }

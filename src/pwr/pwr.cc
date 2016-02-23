@@ -265,13 +265,13 @@ int PWR_StatusCreate( PWR_Status* status )
     return PWR_RET_SUCCESS;
 }
 
-int PWR_StatusDestroy(PWR_Status status )
+int PWR_StatusDestroy( PWR_Status status )
 {
     delete STATUS(status);
     return PWR_RET_SUCCESS;
 }
 
-int PWR_StatusPopError(PWR_Status status, PWR_AttrAccessError* err )
+int PWR_StatusPopError( PWR_Status status, PWR_AttrAccessError* err )
 {
     return STATUS(status)->pop( err );
 }
@@ -361,24 +361,21 @@ int PWR_CntxtMakeProgress( PWR_Cntxt ctx )
     return DISTCNTXT(ctx)->makeProgress();
 }
 
-int PWR_ReqCheck( PWR_Request req, int* status )
+int PWR_ReqWait( PWR_Request req )
 {
-    return static_cast<Request*>(req)->check( status );
+    return static_cast<Request*>(req)->wait( );
 }
 
-int PWR_ReqWait( PWR_Request req, int* status )
+PWR_Request PWR_ReqCreate( PWR_Cntxt ctx, PWR_Status status )
 {
-    return static_cast<Request*>(req)->wait( status );
+    return new DistRequest( static_cast<Cntxt*>(ctx), STATUS(status) );
 }
 
-PWR_Request PWR_ReqCreate( PWR_Cntxt ctx )
+PWR_Request PWR_ReqCreateCallback( PWR_Cntxt ctx, PWR_Status status,
+				Callback callback, void* data )
 {
-    return new DistRequest( static_cast<Cntxt*>(ctx) );
-}
-
-PWR_Request PWR_ReqCreateCallback( PWR_Cntxt ctx, Callback callback, void* data )
-{
-    return new DistRequest( static_cast<Cntxt*>(ctx), callback, data );
+    return new DistRequest( static_cast<Cntxt*>(ctx), STATUS(status), 
+										callback, data );
 }
 
 int PWR_ReqDestroy( PWR_Request req )

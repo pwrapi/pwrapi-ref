@@ -11,8 +11,7 @@
 
 namespace PWR_Server {
 
-class SrvrCommLogReqEvent;
-static void logReqFini( SrvrCommLogReqEvent* data, int status );
+static void logReqFini( void* );
 
 class SrvrCommLogReqEvent: public  CommLogReqEvent {
   public:
@@ -39,7 +38,8 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
         m_respEvent.op = op;
         m_respEvent.id = id;
 
-        m_req = PWR_ReqCreateCallback( m_info->m_ctx,
+        PWR_StatusCreate(&m_status);
+        m_req = PWR_ReqCreateCallback( m_info->m_ctx, m_status,
                                             (Callback)logReqFini, this );
         assert( m_req );
 
@@ -51,7 +51,7 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
         }
 
         if ( ret != PWR_RET_SUCCESS ) {
-            logReqFini( this, ret );
+            logReqFini( this );
         }
 
 		return false;
@@ -60,13 +60,25 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
 	PWR_Request			m_req;
 	Server* 			m_info;
 	CommLogRespEvent 	m_respEvent;
+	PWR_Status			m_status;
 };
 
-static void logReqFini( SrvrCommLogReqEvent* data, int status )
+static void logReqFini( void* _data )
 {
-	DBG4("PWR_Server","status=%d\n",status);
+	SrvrCommLogReqEvent* data = (SrvrCommLogReqEvent*) _data;
+	DBG4("PWR_Server","\n");
 
-    data->m_respEvent.status = status;
+    PWR_Status status = data->m_status;
+    PWR_AttrAccessError error;
+    while ( PWR_RET_EMPTY != PWR_StatusPopError( status, &error ) ) {
+        data->m_respEvent.errValue.push_back( error.error ) ;
+        data->m_respEvent.errAttr.push_back( error.name ) ;
+        char name[100];
+        PWR_ObjGetName( error.obj, name, 100 );
+        data->m_respEvent.errObj.push_back( name );
+    }
+
+	PWR_StatusDestroy( data->m_status );
 
 	data->m_info->fini( data, &data->m_respEvent );
 }

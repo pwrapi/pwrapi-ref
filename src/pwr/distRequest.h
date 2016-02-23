@@ -27,28 +27,25 @@ class DistCommReq;
 class DistRequest : public Request {
 
   public:
-	DistRequest( Cntxt* ctx,
+	DistRequest( Cntxt* ctx, Status* status,
 			Callback callback = NULL, void* data = NULL ) :
-		Request( ctx, callback, data )
+		Request( ctx, status, callback, data )
 	{}
 	~DistRequest( );
 
-	int wait( Status* status );
-	int check( int* status );
-	int wait( int* status );
+	int wait( );
 
 	bool finished() { 
 		return m_commReqs.empty();
 	}
 	virtual bool execCallback( ) {
         if ( m_callback) {
-            (m_callback)(m_data,retval);
+            (m_callback)(m_data);
         }
 		return false;
     }
 
 	void getSamples( DistCommReq*, CommGetSamplesRespEvent* );
-	void setStatus( DistCommReq*, CommRespEvent* );
 	void getValue( DistCommReq*, CommRespEvent* );
 	void setValue( DistCommReq*, CommRespEvent* );
 	void insert( DistCommReq* req ) {

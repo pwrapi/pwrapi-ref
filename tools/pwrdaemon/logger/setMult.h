@@ -41,7 +41,6 @@ class SetMult : public Work {
 				pos = attrs.length();
 			}
 		}
-		size_t numObjs = PWR_GrpGetNumObjs( m_grp );
 		values.resize( m_attrs.size() );
 
 		for ( unsigned i = 0; i < m_attrs.size(); i++ ) {
@@ -61,7 +60,8 @@ int SetMult::work( FILE* fp )
 	int rc;
 
 	PWR_Status status;
-	PWR_StatusCreate( &status );
+	rc = PWR_StatusCreate( &status );
+	assert( rc == PWR_RET_SUCCESS );
 	fprintf(fp,"call set\n");
 	fflush(fp);
     rc = PWR_GrpAttrSetValues( m_grp, m_attrs.size(), &m_attrs[0], 
