@@ -28,7 +28,7 @@ class RtrRouterEvent: public  RouterEvent {
 		DBGX("dest=%"PRIx64"\n",dest);
 		rtr.sendEvent( dest, this );
 
-        return false;
+        return true;
     }
 };
 

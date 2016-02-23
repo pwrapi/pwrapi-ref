@@ -36,6 +36,7 @@ bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 			tmp.push_back( members[j][i] );
 			ev->members.push_back( tmp );
 			rtr.sendEvent( members[j][i], ev );
+			delete ev;
 		}	
 	}
 

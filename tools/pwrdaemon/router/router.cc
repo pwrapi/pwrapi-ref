@@ -145,6 +145,7 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 	ServerID srvrID = SERVER_ID( dest );
 	RouterID rtrID  = RTR_ID( dest );
 	EventChannel* ec = NULL; 
+	Event* rev = NULL;
 
 	DBGX("rtr=%d srvr=%d\n",rtrID, srvrID );
 	if ( rtrID == m_args.rtrId ) {
@@ -173,7 +174,7 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 		DBGX("rtrId %d\n",m_args.rtrId);
 		AppID src = APP_ID( m_args.rtrId, -1 );
 		DBGX("create RouterEvent src=%#lx dest=%#lx\n",src,dest);
-		RouterEvent* rev = new RouterEvent( src, dest, ev );
+		rev = new RouterEvent( src, dest, ev );
 		ev = rev;
 	}
 
@@ -182,6 +183,9 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 		DBGX("add pending %d\n",srvrID);
 	} else {
 		ec->sendEvent( ev );
+		if ( rev ) {
+			delete rev;
+		}
 	}
 }
 

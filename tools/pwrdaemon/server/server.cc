@@ -97,7 +97,8 @@ void Server::fini( Event* key, Event* payload )
 	DBGX("src=%" PRIx64 " dest=%" PRIx64"\n",re->dest,re->src);
     RouterEvent* ev = new RouterEvent( re->dest, re->src, payload );
     ec->sendEvent( ev );
-	
+
+	delete ev;
 	delete re;
 	delete key;
 	m_finiMap.erase(key);
