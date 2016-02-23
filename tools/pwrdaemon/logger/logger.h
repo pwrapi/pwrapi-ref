@@ -46,7 +46,6 @@ class Logger {
 	Work*     	m_work;
 	Args		m_args;
 	PWR_Cntxt 	m_ctx;
-	//PWR_Obj   	m_obj;
 	FILE*		m_logFP;
 	int     	m_delay;
 };
