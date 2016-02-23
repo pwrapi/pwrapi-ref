@@ -58,8 +58,6 @@ int Mult::work( FILE* fp )
 
 	PWR_Status status;
 	PWR_StatusCreate( &status );
-	//int count = 10;
-    //while( count-- ) {
     while( 1 ) {
         std::vector<double> value(m_attrs.size() * numObjs );
         std::vector<PWR_Time> ts(m_attrs.size() * numObjs );
