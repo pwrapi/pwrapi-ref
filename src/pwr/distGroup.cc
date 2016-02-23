@@ -133,6 +133,7 @@ int DistGrp::attrGetValues( int num, PWR_AttrName attr[], void* buf,
 		m_comm->getValues( num, attr, &valueOp[0], commReq ); 
 
 		distReq.wait( );
+		delete commReq;
 	}
 	
 	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
