@@ -148,6 +148,7 @@ static int dummy_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
 	ftime( &tp);
 	srand((unsigned) tp.millitm );
 	int i;
+    srand(  time(NULL) );
 	for ( i = 0; i < *nSamples; i++ ) {
 		((double*)buf)[i] = 100 + (float)rand()/(float)( RAND_MAX/2.0);
 		DBGP("%f\n",((double*)buf)[i]);
