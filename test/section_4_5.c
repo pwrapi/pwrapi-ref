@@ -65,8 +65,10 @@ int section_4_5_test( void )
     for( i=0; i<num_meta; i++ ) {
         printf( "\tPWR_MetaValueAtIndex - PWR_MD_NUM of PWR_ATTR_PSTATE: %s\n",
             RESULT( rc = PWR_MetaValueAtIndex( self, PWR_ATTR_PSTATE, i, &val, str ) ) );
-        printf( "\t\tError: retrieval of meta data at index %d failed\n", i );
-        return rc;
+        if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
+            printf( "\t\tError: retrieval of meta data at index %d failed\n", i );
+            return rc;
+        }
     }
 
     printf( "\tPWR_CntxtDestroy - application context: %s\n",
