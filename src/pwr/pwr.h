@@ -167,13 +167,13 @@ int PWR_TimeConvert( PWR_Time time, time_t* );
 
 int PWR_ObjAttrStartLog( PWR_Obj, PWR_AttrName name );
 int PWR_ObjAttrStopLog( PWR_Obj, PWR_AttrName name );
-int PWR_ObjAttrGetSamples( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
-											unsigned int count, void* buf );
+int PWR_ObjAttrGetSamples( PWR_Obj, PWR_AttrName name, PWR_Time* start,
+				double period, unsigned int count, void* buf );
 
 int PWR_ObjAttrStartLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
 int PWR_ObjAttrStopLog_NB( PWR_Obj, PWR_AttrName name, PWR_Request );
-int PWR_ObjAttrGetSamples_NB( PWR_Obj, PWR_AttrName name, PWR_Time*, double period, 
-											unsigned int* count, void* buf,  PWR_Request );
+int PWR_ObjAttrGetSamples_NB( PWR_Obj, PWR_AttrName name, PWR_Time* start,
+				double period, unsigned int* count, void* buf,  PWR_Request );
 
 
 int PWR_GrpFilterByAttrName( PWR_Grp, PWR_AttrName, PWR_Grp* );

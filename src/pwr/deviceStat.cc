@@ -9,6 +9,9 @@
  * distribution.
 */
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <sys/time.h>
 #include "deviceStat.h"
 
@@ -104,20 +107,34 @@ int DeviceStat::getValue( double* value, PWR_TimePeriod* statTimes ) {
 int DeviceStat::objGetValue( Object* obj, double* value,
 								PWR_TimePeriod* statTimes )
 {
-	double now = getTime();
-	double windowTime = now - m_startTime;	
+	double windowTime = statTimes->stop - statTimes->start;	
+	windowTime /= 1000000000;
+
+	DBGX( "start=%lf stop=%lf\n", (double)statTimes->start/1000000000,
+				(double)statTimes->stop/1000000000); 
+
 	unsigned int nSamples = windowTime / m_period;  
-	DBGX("%s curTime=%.9f wndwLngth=%.9f smpls=%d\n",
-				objTypeToString(obj->type()), now, windowTime, nSamples);
+
+	DBGX("wndwLngth=%.9f smpls=%d\n", windowTime, nSamples);
 
 	std::vector<double> values(nSamples,0.0);
 	PWR_Time timeStamp;
 	int retval = obj->attrGetSamples( m_attrName, &timeStamp, 
 								m_period, &nSamples, &values[0] );
-	statTimes->start = m_startTime;
-	statTimes->stop = now;
+
+
+	statTimes->start = timeStamp;
+	statTimes->stop = timeStamp + nSamples * m_period ;
+	DBGX("actual: start=%lf stop=%lf count=%"PRIu32"\n", 
+			(double) timeStamp/1000000000, 
+			(double) statTimes->stop/1000000000, nSamples);	
+
 	statTimes->instant = PWR_TIME_UNINIT;
-	*value = opPtr( values );
+	int pos;
+	*value = opPtr( values, pos );
+    if ( pos > -1 ) {
+        statTimes->instant = statTimes->start + pos * m_period; 
+    }
 	return retval;
 }
 

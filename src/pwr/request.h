@@ -38,11 +38,15 @@ class Request {
 	virtual int wait( ) = 0;
 	virtual bool finished() = 0;
 
+	// getAttr
 	std::vector<void*> 		value;
 	std::vector<PWR_Time*> 	timeStamp;
 
+	// getSample 
 	unsigned int* count;
-
+	std::vector<PWR_TimePeriod*> timePeriod;
+	std::vector<void*> 			 sampleValues;
+	
   protected:
 	Cntxt* 		m_cntxt;
 	Status* 	m_status;

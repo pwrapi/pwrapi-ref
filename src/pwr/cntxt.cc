@@ -153,25 +153,102 @@ void Cntxt::findAllObjType( Object* obj, PWR_ObjType type, Grp* grp )
     }
 }
 
-static double opAvg( std::vector<double>& data )
+static double opAvg( std::vector<double>& data, int& pos )
 {
+    pos = -1;
     double result = 0;
     for ( unsigned i =0; i < data.size(); i++ ) {
+        DBG("%lf\n",data[i]);
         result += data[i];
     }
     return result / data.size();
 }
 
+static double opMin( std::vector<double>& data, int& pos )
+{
+    double result = data[0];
+	
+    for ( unsigned i =1; i < data.size(); i++ ) {
+        DBG("%lf\n",data[i]);
+        if ( data[i] < result ) {
+            pos = i;	
+            result = data[i];
+        }
+    }
+    return result;
+}
+
+static double opMax( std::vector<double>& data, int& pos )
+{
+    double result = data[0];
+	
+    for ( unsigned i =1; i < data.size(); i++ ) {
+        DBG("%lf\n",data[i]);
+        if ( data[i] > result ) {
+            pos = i;	
+            result = data[i];
+        }
+    }
+    return result;
+}
+
+static Stat::OpFuncPtr getOp( std::string name ) {
+    if ( ! name.compare( "Avg" ) ) {
+        return opAvg;
+    } else if ( ! name.compare( "Min" ) ) {
+        return opMin;
+    } else if ( ! name.compare( "Max" ) ) {
+        return opMax;
+    }
+    return NULL;
+}
+
 Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat stat )
 {
     DBGX("\n");
-	return new DeviceStat( this, obj, name, opAvg, 10.0 );
+    Stat::OpFuncPtr op = getOp( attrStatToString( stat ) );
+    if ( ! op ) {
+        return NULL;
+    }
+
+    std::string tmp = m_config->findAttrHz( obj->name(), name );
+
+    DBGX("hz=%s\n",tmp.c_str());
+
+    if ( tmp.empty() ) {
+        return NULL;
+    }
+
+    double hz = atof(  tmp.c_str() );	
+    if ( 0 == hz ) {
+        return NULL;
+    }
+
+    return new DeviceStat( this, obj, name, op, hz );
 }
 
 Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
 {
     DBGX("\n");
-	return new DeviceStat( this, grp, name, opAvg, 10.0 );
+    Stat::OpFuncPtr op = getOp( attrStatToString( stat ) );
+    if ( ! op ) {
+        return NULL;
+    }
+    assert(0);
+
+#if 0
+    std::string tmp = m_config->findAttrHz( obj->name(), name );
+	if ( tmp.empty() ) {
+		return NULL;
+	}
+#endif
+
+    double hz = 10.0;	
+    if ( 0 == hz ) {
+        return NULL;
+    }
+
+    return new DeviceStat( this, grp, name, op, hz );
 }
 
 int Cntxt::destroyStat( Stat* stat )

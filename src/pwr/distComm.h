@@ -76,8 +76,8 @@ class DistComm : public Communicator {
 	virtual void setValues( int, PWR_AttrName [], void* values, CommReq* req );
 	virtual void startLog( PWR_AttrName, CommReq* req );
 	virtual void stopLog( PWR_AttrName, CommReq* req );
-	virtual void getSamples( PWR_AttrName attr, PWR_Time*, double period,
-			                unsigned int count, CommReq* req );
+	virtual void getSamples( PWR_AttrName attr, PWR_Time start,
+						double period, unsigned int count, CommReq* req );
 
   private:
 	EventChannel& getChannel();
