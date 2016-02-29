@@ -41,6 +41,7 @@ class Config {
 	};
 
     virtual std::string findParent( std::string ) = 0;
+	virtual std::string findAttrHz( std::string, PWR_AttrName ) = 0;
 	virtual std::string findAttrOp( std::string, PWR_AttrName ) = 0;
 	virtual std::string findAttrType( std::string, PWR_AttrName ) = 0;
 	virtual std::deque< std::string > 

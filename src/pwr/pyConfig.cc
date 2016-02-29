@@ -314,6 +314,7 @@ std::string PyConfig::findAttrType( std::string name, PWR_AttrName attr )
 
 	return retval;
 }
+
 std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 {
 	std::string retval;
@@ -321,6 +322,43 @@ std::string PyConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	lock();
 	// new
 	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findAttrOp" );
+	assert(pFunc);
+
+	// new
+	PyObject* pArgs = PyTuple_New( 2 );
+	assert(pArgs);
+
+	// steals 
+	PyTuple_SetItem( pArgs, 0, PyString_FromString( name.c_str() ) );
+
+	// steals 
+	PyTuple_SetItem( pArgs, 1, 
+			PyString_FromString( attrNameToString(attr).c_str() ) );
+
+	// new	
+	PyObject* pRetval = PyObject_CallObject( pFunc, pArgs );
+	assert(pRetval);
+
+	retval = PyString_AsString( pRetval );
+
+	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s` op=`%s`\n",
+				name.c_str(),attrNameToString(attr).c_str(), retval.c_str() );
+
+	Py_DECREF( pRetval );
+	Py_DECREF( pFunc );
+	Py_DECREF( pArgs );
+	unlock();
+
+	return retval;
+}
+
+std::string PyConfig::findAttrHz( std::string name, PWR_AttrName attr )
+{
+	std::string retval;
+
+	lock();
+	// new
+	PyObject* pFunc = PyObject_GetAttrString( m_pModule, "findAttrHz" );
 	assert(pFunc);
 
 	// new
