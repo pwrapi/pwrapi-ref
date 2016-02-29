@@ -22,15 +22,15 @@ int section_4_7_test( void )
 {
     int rc;
 
-    printf( "\tPWR_GetMajorVersion: %s\n",
-	    RESULT( rc = PWR_GetMajorVersion( ) ) );
+	rc = PWR_GetMajorVersion( );
+    printf( "\tPWR_GetMajorVersion: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < 0 ) {
         printf( "\t\tError: retrieving PowerAPI major version failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_GetMinorVersion: %s\n",
-	    RESULT( rc = PWR_GetMinorVersion( ) ) );
+	rc = PWR_GetMinorVersion( );
+    printf( "\tPWR_GetMinorVersion: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < 0 ) {
         printf( "\t\tError: retrieving PowerAPI minor version failed\n" );
         return rc;

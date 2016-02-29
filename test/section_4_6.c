@@ -32,122 +32,122 @@ int section_4_6_test( void )
     double vals[NUM_ATTR(attrs)];
     PWR_TimePeriod tps[NUM_ATTR(attrs)];
 
-    printf( "\tPWR_CntxtInit - application context: %s\n",
-	    RESULT( rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt ) ) );
+	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
+    printf( "\tPWR_CntxtInit - application context: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: initialization of PowerAPI context failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_CntxtGetEntryPoint: %s\n",
-	    RESULT( rc = PWR_CntxtGetEntryPoint( cntxt, &self ) ) );
+	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    printf( "\tPWR_CntxtGetEntryPoint: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting self from PowerAPI context failed\n" );
         return rc;
     }
 
 #if 0
-    printf( "\tPWR_CreateStat - PWR_ATTR_STAT_AVG of PWR_ATTR_POWER: %s\n",
-        RESULT( rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_avg ) ) );
+    rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_avg );
+    printf( "\tPWR_CreateStat - PWR_ATTR_STAT_AVG of PWR_ATTR_POWER: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: creating stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatStart - average power: %s\n",
-        RESULT( rc = PWR_StatStart( stat_avg ) ) );
+    rc = PWR_StatStart( stat_avg );
+    printf( "\tPWR_StatStart - average power: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: starting stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatStop - average power: %s\n",
-        RESULT( rc = PWR_StatStop( stat_avg ) ) );
+    rc = PWR_StatStop( stat_avg );
+    printf( "\tPWR_StatStop - average power: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatGetValue - average power: %s\n",
-        RESULT( rc = PWR_StatGetValue( stat_avg, &val, &tp ) ) );
+    rc = PWR_StatGetValue( stat_avg, &val, &tp );
+    printf( "\tPWR_StatGetValue - average power: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatClear - average power: %s\n",
-        RESULT( rc = PWR_StatClear( stat_avg ) ) );
+    rc = PWR_StatClear( stat_avg );
+    printf( "\tPWR_StatClear - average power: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: clearing stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatGetReduce - PWR_ATTR_STAT_MIN of average power: %s\n",
-        RESULT( rc = PWR_StatGetReduce( stat, PWR_ATTR_STAT_MIN, &i, vals, tps ) ) );
+    rc = PWR_StatGetReduce( stat, PWR_ATTR_STAT_MIN, &i, vals, tps );
+    printf( "\tPWR_StatGetReduce - PWR_ATTR_STAT_MIN of average power: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatClear - maximum power and energy: %s\n",
-        RESULT( rc = PWR_StatClear( stat_avg ) ) );
+    rc = PWR_StatClear( stat_avg );
+    printf( "\tPWR_StatClear - maximum power and energy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: clearing stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatDestroy: %s\n",
-        RESULT( rc = PWR_StatDestroy( stat_avg ) ) );
+    rc = PWR_StatDestroy( stat_avg );
+    printf( "\tPWR_StatDestroy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: destruction of stat failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_CreateStat - PWR_ATTR_STAT_MAX of PWR_ATTR_POWER, PWR_ATTR_ENERGY: %s\n",
-        RESULT( rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_max ) ) );
+    rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_max );
+    printf( "\tPWR_CreateStat - PWR_ATTR_STAT_MAX of PWR_ATTR_POWER, PWR_ATTR_ENERGY: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: creating stat for objects failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatStart - maximum power, energy: %s\n",
-        RESULT( rc = PWR_StatStart( stat_max ) ) );
+    rc = PWR_StatStart( stat_max );
+    printf( "\tPWR_StatStart - maximum power, energy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: starting stat for objects failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatStop - maximum power, energy: %s\n",
-        RESULT( rc = PWR_StatStop( stat_max ) ) );
+    rc = PWR_StatStop( stat_max );
+    printf( "\tPWR_StatStop - maximum power, energy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for objects failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatGetValues - maximum power, energy: %s\n",
-        RESULT( rc = PWR_StatGetValues( stat_max, vals, tps ) ) );
+    rc = PWR_StatGetValues( stat_max, vals, tps );
+    printf( "\tPWR_StatGetValues - maximum power, energy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for objects failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatClear - maximum power and energy: %s\n",
-        RESULT( rc = PWR_StatClear( stat_max ) ) );
+    rc = PWR_StatClear( stat_max );
+    printf( "\tPWR_StatClear - maximum power and energy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: clearing stat for object failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_StatDestroy: %s\n",
-        RESULT( rc = PWR_StatDestroy( stat_max ) ) );
+    rc = PWR_StatDestroy( stat_max );
+    printf( "\tPWR_StatDestroy: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: destruction of stat failed\n" );
         return rc;
     }
 #endif
 
-    printf( "\tPWR_CntxtDestroy - application context: %s\n",
-        RESULT( rc = PWR_CntxtDestroy( cntxt ) ) );
+    rc = PWR_CntxtDestroy( cntxt );
+    printf( "\tPWR_CntxtDestroy - application context: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: destruction of PowerAPI context failed\n" );
         return rc;
