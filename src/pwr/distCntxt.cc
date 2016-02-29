@@ -106,7 +106,6 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
         printf("error: environment variable `POWERAPI_ROOT` must be set\n");
         exit(-1);
     }
-
 }
 DistCntxt::~DistCntxt() 
 {

@@ -24,12 +24,12 @@ DeviceStat::~DeviceStat() {
 	}
 }
 
-static double getTime() {
+static PWR_Time getTime() {
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    double value;
-    value = tv.tv_sec;
-    value += (double) tv.tv_usec / 1000000000.0;
+    PWR_Time value;
+    value = tv.tv_sec * 1000000000;
+    value += tv.tv_usec * 1000;
     return value;
 }
 
@@ -47,7 +47,7 @@ int DeviceStat::start( ) {
 
 int DeviceStat::startObj( ) {
 	int retval = m_obj->attrStartLog( m_attrName );
-	DBGX("%s time=%.9f\n",objTypeToString(m_obj->type()),m_startTime);
+	DBGX("%s time=%"PRIu64" sec\n",objTypeToString(m_obj->type()),m_startTime);
 	return retval;
 }
 
@@ -64,7 +64,7 @@ int DeviceStat::startGrp( ) {
 	return PWR_RET_SUCCESS;
 }
 int DeviceStat::stopObj( ) {
-	DBGX("%s time=%.9f\n",objTypeToString(m_obj->type()),m_startTime);
+	DBGX("%s time=%"PRIu64" sec\n",objTypeToString(m_obj->type()),m_startTime);
 	int retval = m_obj->attrStopLog( m_attrName );
 	return retval;
 }
@@ -85,7 +85,7 @@ int DeviceStat::stopGrp( ) {
 int DeviceStat::stop( ) {
 	m_isLogging = false;
 	m_stopTime = getTime();
-	DBGX("time=%.9f\n",m_stopTime);
+	DBGX("time=%"PRIu64" sec\n",m_stopTime);
 	if ( m_obj ) {
 		return stopObj();
 	} else {
@@ -107,6 +107,16 @@ int DeviceStat::getValue( double* value, PWR_TimePeriod* statTimes ) {
 int DeviceStat::objGetValue( Object* obj, double* value,
 								PWR_TimePeriod* statTimes )
 {
+    if ( PWR_TIME_UNINIT == statTimes->start ) {
+        statTimes->start = m_startTime; 
+    } 
+    if ( PWR_TIME_UNINIT == statTimes->stop ) {
+        if ( m_isLogging ) { 
+            statTimes->stop = getTime(); 
+        } else {
+            statTimes->stop = m_stopTime; 
+        } 
+    } 
 	double windowTime = statTimes->stop - statTimes->start;	
 	windowTime /= 1000000000;
 

@@ -60,8 +60,12 @@ int PWR_CntxtGetEntryPoint( PWR_Cntxt ctx, PWR_Obj* obj )
 
 int PWR_CntxtGetGrpByType( PWR_Cntxt ctx, PWR_ObjType type, PWR_Grp* grp )
 {
-	*grp = CNTXT(ctx)->getGrp( type );
-    return PWR_RET_SUCCESS;
+    PWR_Grp tmp = CNTXT(ctx)->getGrp( type );
+    if ( tmp ) {
+	    *grp = tmp; 
+        return PWR_RET_SUCCESS;
+    }
+    return PWR_RET_FAILURE;
 }
 
 int PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name, PWR_Grp* grp )
@@ -88,8 +92,12 @@ int PWR_ObjGetType( PWR_Obj obj, PWR_ObjType* type )
 
 int PWR_ObjGetParent(PWR_Obj obj, PWR_Obj* out )
 {
-    *out = OBJECT(obj)->parent();
-    return PWR_RET_SUCCESS;
+    PWR_Obj tmp = OBJECT(obj)->parent();
+    if ( tmp ) {
+        *out = tmp;
+        return PWR_RET_SUCCESS;
+    }
+    return PWR_RET_WARN_NO_PARENT;
 }
 
 int PWR_ObjGetChildren( PWR_Obj obj, PWR_Grp* grp )

@@ -57,8 +57,8 @@ class Stat {
 	PWR_AttrName	m_attrName;
 	OpFuncPtr		opPtr;
     double 			m_period;
-    double 			m_startTime;
-    double 			m_stopTime;
+    PWR_Time 		m_startTime;
+    PWR_Time 		m_stopTime;
 };
 
 }

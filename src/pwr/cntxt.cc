@@ -34,6 +34,10 @@ Object* Cntxt::getEntryPoint() {
 
 Object* Cntxt::getParent( Object* obj )
 {
+    if ( obj == m_rootObj ) {
+        return NULL;
+    }
+
     std::string parentName = m_config->findParent( obj->name() );
 
     if ( parentName.empty() ) return NULL;
@@ -71,8 +75,14 @@ Grp* Cntxt::getGrp( PWR_ObjType type )
     tmp = "internal" + tmp;
 
     if ( m_groupMap.find( tmp ) == m_groupMap.end() ) {
+
         grp = createGrp(tmp);
+
         findAllObjType( getSelf(), type, grp );
+        if ( 0 == grp->size() ) {
+            destroyGrp(grp); 
+            return NULL;
+        }
     }
 
     return grp;
@@ -207,6 +217,23 @@ static Stat::OpFuncPtr getOp( std::string name ) {
     return NULL;
 }
 
+double Cntxt::findHz( Object* obj, PWR_AttrName name )
+{
+    std::string tmp = m_config->findAttrHz( obj->name(), name );
+
+    DBGX("hz=%s\n",tmp.c_str());
+
+    if ( tmp.empty() ) {
+        return 0;
+    }
+
+    double hz = atof(  tmp.c_str() );	
+    if ( 0 == hz ) {
+        return 0;
+    }
+    return hz;
+}
+
 Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat stat )
 {
     DBGX("\n");
@@ -214,22 +241,15 @@ Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat stat )
     if ( ! op ) {
         return NULL;
     }
-
-    std::string tmp = m_config->findAttrHz( obj->name(), name );
-
-    DBGX("hz=%s\n",tmp.c_str());
-
-    if ( tmp.empty() ) {
-        return NULL;
-    }
-
-    double hz = atof(  tmp.c_str() );	
+   
+    double hz = findHz( obj, name );
     if ( 0 == hz ) {
         return NULL;
-    }
+    } 
 
     return new DeviceStat( this, obj, name, op, hz );
 }
+
 
 Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
 {
@@ -238,18 +258,17 @@ Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
     if ( ! op ) {
         return NULL;
     }
-    assert(0);
 
-#if 0
-    std::string tmp = m_config->findAttrHz( obj->name(), name );
-	if ( tmp.empty() ) {
-		return NULL;
-	}
-#endif
-
-    double hz = 10.0;	
+    double hz = findHz( grp->getObj(0), name ); 
     if ( 0 == hz ) {
         return NULL;
+    }
+
+    for ( unsigned i = 1; i < grp->size(); i++ ) {
+        double tmp = findHz( grp->getObj(i), name ); 
+        if ( tmp != hz ) {
+            return NULL;
+        }
     }
 
     return new DeviceStat( this, grp, name, op, hz );
