@@ -60,7 +60,6 @@ class Foo:
 
 class Attr:
 	def __init__(self, op = None, type = None, hz = None ):
-		print op, type, hz
 		self.op = op 
 		self.hz = str(hz)
 		self.type = type 
