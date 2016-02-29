@@ -41,6 +41,7 @@ int section_4_5_test( void )
         return rc;
     }
 
+#if 0
     rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
     printf( "\tPWR_ObjAttrGetMeta - PWR_MD_SAMPLE_RATE of PWR_ATTR_POWER: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
@@ -70,6 +71,7 @@ int section_4_5_test( void )
             return rc;
         }
     }
+#endif
 
     rc = PWR_CntxtDestroy( cntxt );
     printf( "\tPWR_CntxtDestroy - application context: %s\n", RESULT( rc ) );

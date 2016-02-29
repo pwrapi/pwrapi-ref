@@ -89,6 +89,7 @@ int section_4_1_test( void )
         return rc;
     }
 
+#if 0
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_INVALID, "Invalid", &role_inv );
     printf( "\tPWR_CntxtInit - invalid context: %s\n", RESULT( rc ) );
     if( rc == PWR_RET_SUCCESS ) {
@@ -102,6 +103,7 @@ int section_4_1_test( void )
         printf( "\t\tError: initialization of PowerAPI not specified context succeeded\n" );
         return rc;
     }
+#endif
 
     rc = PWR_CntxtDestroy( role_app );
     printf( "\tPWR_CntxtDestroy - application context: %s\n", RESULT( rc ) );

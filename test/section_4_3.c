@@ -53,6 +53,7 @@ int section_4_3_test( void )
         return rc;
     }
 
+#if 0
     rc = PWR_GrpDuplicate( grp, &dup );
     printf( "\tPWR_GrpDuplicate - self group: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
@@ -108,6 +109,7 @@ int section_4_3_test( void )
         printf( "\t\tError: destroying the difference group failed\n" );
         return rc;
     }
+#endif
 
     num = PWR_GrpGetNumObjs( grp );
     printf( "\tPWR_GrpGetNumObjs - self group: %s\n", RESULT( rc ) );
