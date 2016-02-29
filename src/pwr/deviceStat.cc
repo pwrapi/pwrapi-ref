@@ -124,7 +124,7 @@ int DeviceStat::objGetValue( Object* obj, double* value,
 
 
 	statTimes->start = timeStamp;
-	statTimes->stop = timeStamp + nSamples * m_period ;
+	statTimes->stop = timeStamp + nSamples * m_period * 1000000000 ;
 	DBGX("actual: start=%lf stop=%lf count=%"PRIu32"\n", 
 			(double) timeStamp/1000000000, 
 			(double) statTimes->stop/1000000000, nSamples);	
@@ -133,8 +133,14 @@ int DeviceStat::objGetValue( Object* obj, double* value,
 	int pos;
 	*value = opPtr( values, pos );
     if ( pos > -1 ) {
-        statTimes->instant = statTimes->start + pos * m_period; 
+        statTimes->instant = statTimes->start + pos * m_period * 1000000000; 
     }
+
+	DBGX("actual: start=%lf stop=%lf instant=%lf count=%"PRIu32"\n", 
+			(double) timeStamp/1000000000, 
+			(double) statTimes->stop/1000000000, 
+            (double) statTimes->instant/1000000000,nSamples);	
+
 	return retval;
 }
 

@@ -168,8 +168,10 @@ static double opMin( std::vector<double>& data, int& pos )
 {
     double result = data[0];
 	
+    pos = 0;
+    DBG("%d %lf\n",0,data[0]);
     for ( unsigned i =1; i < data.size(); i++ ) {
-        DBG("%lf\n",data[i]);
+        DBG("%d %lf\n",i,data[i]);
         if ( data[i] < result ) {
             pos = i;	
             result = data[i];
@@ -182,8 +184,10 @@ static double opMax( std::vector<double>& data, int& pos )
 {
     double result = data[0];
 	
+    pos = 0;
+    DBG("%d %lf\n",0,data[0]);
     for ( unsigned i =1; i < data.size(); i++ ) {
-        DBG("%lf\n",data[i]);
+        DBG("%d %lf\n",i,data[i]);
         if ( data[i] > result ) {
             pos = i;	
             result = data[i];
