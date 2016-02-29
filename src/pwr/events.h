@@ -40,12 +40,12 @@ struct ServerConnectEvent : public Event {
 };
 
 struct CommEvent : public Event {
-	CommEvent( EventType type ) : Event( type ) {}
+	CommEvent( EventType type ) : Event( type ), op( Noop ) {}
 	CommEvent() { } 
 
     CommID          commID;
 
-	enum OpType { Get, Set, Start, Stop, Clear } op;
+	enum OpType { Noop, Get, Set, Start, Stop, Clear } op;
 
 	virtual void serialize_out( SerialBuf& buf ) {
 		Event::serialize_out(buf);

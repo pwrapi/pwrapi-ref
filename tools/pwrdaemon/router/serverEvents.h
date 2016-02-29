@@ -30,7 +30,7 @@ class RtrServerConnectEvent: public  ServerConnectEvent {
 		rtr.doPending( id );
 //        Router::Server& server = *rtr.getServer( ec );
 		DBGX("%s\n",name.c_str());
-		return false;
+		return true;
 	}
 };
 

@@ -56,11 +56,11 @@ int Mult::work( FILE* fp )
 
 	size_t numObjs = PWR_GrpGetNumObjs( m_grp );
 
+	PWR_Status status;
+	PWR_StatusCreate( &status );
     while( 1 ) {
         std::vector<double> value(m_attrs.size() * numObjs );
         std::vector<PWR_Time> ts(m_attrs.size() * numObjs );
-		PWR_Status status;
-		PWR_StatusCreate( &status );
         rc = PWR_GrpAttrGetValues( m_grp, m_attrs.size(), &m_attrs[0], 
 					&value[0], &ts[0], status );
 
@@ -82,9 +82,14 @@ int Mult::work( FILE* fp )
 							(double)ts[index]/1000000000.0);
 			}
 		}
+
+		PWR_StatusClear( status );
+
         fflush(fp);
         sleep(1);
     }
+
+	PWR_StatusDestroy( status );
 	return 0;
 }
 

@@ -7,7 +7,6 @@ from machine import *
 plugins['CrayXTPM'] = 'libpwr_xtpmdev'
 devices['XTPM-node'] = ['CrayXTPM','']
 
-
 energy = Attr( Sum, Float )
 
 platform = Object( Platform, 'plat' )

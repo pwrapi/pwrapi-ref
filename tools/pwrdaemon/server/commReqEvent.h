@@ -39,18 +39,19 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		for ( unsigned i = 0; i < attrName.size(); i++ ) {
     		DBGX("    attr=`%s`\n", PWR_AttrGetTypeString( attrName[i] ) );
 		}
-
 	
 		if ( op == Get ) {
 			m_respEvent.value.resize(1);
 			m_respEvent.timeStamp.resize(1);
 			m_respEvent.value[0].resize(attrName.size());
 			m_respEvent.timeStamp[0].resize(attrName.size());
-    		m_respEvent.op = op;
 		}
 
+		m_respEvent.op = op;
     	m_respEvent.id = id;
 		m_respEvent.grpIndex = grpIndex;
+		// quiet valgrind
+		m_respEvent.commID = 0;
 
 		int rc = PWR_StatusCreate(&m_status);
 		assert( rc == PWR_RET_SUCCESS );

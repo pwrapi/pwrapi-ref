@@ -77,6 +77,9 @@ class RtrCommRespEvent: public  CommRespEvent {
 					delete info->respQ[grpIndex][ j ];
 				}
 			}
+			// quiet valgrind
+			info->resp->grpIndex = 0;
+			info->resp->commID = 0;
 
 			DBGX("pending %"PRIu64"\n",info->pending);
 			--info->pending;

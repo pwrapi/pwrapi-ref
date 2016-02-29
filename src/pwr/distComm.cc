@@ -72,6 +72,9 @@ void DistComm::getValues( int count, PWR_AttrName attr[],
 		ev->valueOp.push_back( op[i] );
 		ev->attrName.push_back( attr[i] ); 
 	}
+	// don't need to set this but it gets rid of a valgrind error
+	// should there be a different get and set events?
+	ev->grpIndex = 0;
 	ev->id = (EventId) req;	
 	getChannel().sendEvent( ev );
 	delete ev;
