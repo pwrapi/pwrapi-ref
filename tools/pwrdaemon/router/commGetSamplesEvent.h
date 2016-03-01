@@ -27,31 +27,33 @@ class RtrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
    	RtrCommGetSamplesReqEvent( SerialBuf& buf ) : CommGetSamplesReqEvent( buf ) {}  
 
 	bool process(EventGenerator* _rtr, EventChannel* ec) {
-		assert(0);
-#if 0
 		Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
+
+		std::vector<std::vector< ObjID > >& commList= 
+                client.getCommList( commID );
+
+       // don't support more that one object at this time
+        assert( 1 == commList.size() );
+        assert( 1 == commList[0].size() );
 
     	CommReqInfo* info = new CommReqInfo;
     	info->src = ec;
     	info->ev = this;
-    	info->id = id;
 
-    	id = (EventId) info;
+        info->resp = new CommGetSamplesRespEvent;
+        info->resp->id = id;
+        id = (EventId) info;
 
     	DBGX("commID=%"PRIx64" eventId=%"PRIx64" new eventId=%p\n",
                                 commID, id, info );
 
-		DBGX("period=%f count=%d\n",period,count);
+        for ( unsigned int i=0; i <  commList.size(); i++ ) {
 
-		std::vector<ObjID>& commList= client.getCommList( commID );
-    	std::vector<ObjID>::iterator iter = commList.begin();
-    	for ( ; iter != commList.end(); ++iter ) {
-
-        	DBGX("%s %d\n",(*iter).c_str(), attrName );
-			rtr.sendEvent( (*iter), this );
-    	}
-#endif
+            for ( unsigned int j=0; j <  commList[i].size(); j++ ) {
+                rtr.sendEvent( commList[i][j], this );
+            }
+        }
 		return false;
 	}
 };
@@ -62,14 +64,17 @@ class RtrCommGetSamplesRespEvent: public  CommGetSamplesRespEvent {
 
 	bool process(EventGenerator* _rtr, EventChannel* ec) {
 
-#if 0
         DBGX("id=%p status=%d \n",(void*)id, status );
         CommReqInfo* info = (CommReqInfo*) id;
 
-        id = info->id;
-        info->src->sendEvent( this );
+        // Why don't we just sent this? Because we want to be consistent
+        // CommRespEvent
+        *static_cast<CommGetSamplesRespEvent*>(info->resp) = *this;
+    
+        info->src->sendEvent( info->resp );
+        delete info->resp;
+        delete info->ev;
         delete info;
-#endif
 		return false;
 	}
 };
