@@ -17,11 +17,10 @@
 #include "pwr.h"
 #include "group.h"
 #include "object.h"
+#include "attrInfo.h"
 
 namespace PowerAPI {
 
-class Grp;
-class Object;
 class Cntxt;
 
 class Stat {
@@ -31,12 +30,35 @@ class Stat {
 															double hz ) 
 	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), m_attrName( name ), 
 	    opPtr( ptr ), m_period( 1 / hz ),
-		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) { }
+		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) 
+    { 
+        // for now limit stat to a leaf object with only 1 device
+        if ( obj->children()->size() ) { 
+            DBGX("have children\n");
+            throw int ();
+        }
+        AttrInfo& info = obj->getAttrInfo( name );
+        if ( 1 != info.devices.size() ) {
+            throw int ();
+        }
+    }
 
 	Stat( Cntxt* ctx, Grp* grp, PWR_AttrName name, OpFuncPtr ptr, double hz ) 
 	  : m_ctx( ctx), m_obj(NULL), m_grp(grp), m_attrName( name ),
 	    opPtr( ptr ), m_period( 1/ hz), 
-		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT) { }
+		m_startTime(PWR_TIME_UNINIT), m_stopTime(PWR_TIME_UNINIT)
+    { 
+        for ( unsigned i=0; i < grp->size(); i++ ) {
+            if ( grp->getObj(i)->children()->size() ) {
+                DBGX("have children\n");
+                throw int ();
+            }
+            AttrInfo& info = grp->getObj(i)->getAttrInfo( name );
+            if ( 1 != info.devices.size() ) {
+                throw int ();
+            }
+        }
+    }
 	virtual ~Stat() {}
 
 	virtual int start() = 0;
