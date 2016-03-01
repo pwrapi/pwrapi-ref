@@ -27,67 +27,67 @@ int section_4_2_test( void )
     char name[PWR_MAX_STRING_LEN] = "";
     PWR_Grp children;
 
-    printf( "\tPWR_CntxtInit - application context: %s\n", 
-	    RESULT( rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
+    printf( "\tPWR_CntxtInit - application context: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: initialization of PowerAPI context failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_GetEntryPoint: %s\n",
-	    RESULT( rc = PWR_CntxtGetEntryPoint( cntxt, &self ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    printf( "\tPWR_GetEntryPoint: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting self from PowerAPI context failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_ObjGetType: %s\n",
-	    RESULT( rc = PWR_ObjGetType( self, &type ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_ObjGetType( self, &type );
+    printf( "\tPWR_ObjGetType: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting object type failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_ObjGetName: %s\n",
-	    RESULT( rc = PWR_ObjGetName( self, name, PWR_MAX_STRING_LEN ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_ObjGetName( self, name, PWR_MAX_STRING_LEN );
+    printf( "\tPWR_ObjGetName: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting object name failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_ObjGetParent: %s\n",
-	    RESULT( rc = PWR_ObjGetParent( self, &parent ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_ObjGetParent( self, &parent );
+    printf( "\tPWR_ObjGetParent: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting object parent failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_ObjGetChildren: %s\n",
-	    RESULT( rc = PWR_ObjGetChildren( self, &children ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_ObjGetChildren( self, &children );
+    printf( "\tPWR_ObjGetChildren: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting object parent failed\n" );
         return rc;
     }
 
 #if 0
-    printf( "\tPWR_ObjGrpDestroy - children group: %s\n",
-        RESULT( rc = PWR_GrpDestroy( children) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+    rc = PWR_GrpDestroy( children);
+    printf( "\tPWR_ObjGrpDestroy - children group: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: destroying children failed\n" );
         return rc;
     }
 #endif
 
-    printf( "\tPWR_CntxtGetObjByName - \"plat\" name: %s\n",
-	    RESULT( rc = PWR_CntxtGetObjByName( cntxt, "plat", &obj ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+	rc = PWR_CntxtGetObjByName( cntxt, "plat", &obj );
+    printf( "\tPWR_CntxtGetObjByName - \"plat\" name: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting object by name from PowerAPI context failed\n" );
         return rc;
     }
 
-    printf( "\tPWR_CntxtDestroy - application context: %s\n",
-        RESULT( rc = PWR_CntxtDestroy( cntxt ) ) );
-    if( rc < PWR_RET_SUCCESS ) {
+    rc = PWR_CntxtDestroy( cntxt );
+    printf( "\tPWR_CntxtDestroy - application context: %s\n", RESULT( rc ) );
+    if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: destruction of PowerAPI context failed\n" );
         return rc;
     }
