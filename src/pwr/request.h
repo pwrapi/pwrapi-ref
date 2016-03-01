@@ -42,10 +42,8 @@ class Request {
 	std::vector<void*> 		value;
 	std::vector<PWR_Time*> 	timeStamp;
 
-	// getSample 
+	// where to put the number of samples returned 
 	unsigned int* count;
-	std::vector<PWR_TimePeriod*> timePeriod;
-	std::vector<void*> 			 sampleValues;
 	
   protected:
 	Cntxt* 		m_cntxt;
