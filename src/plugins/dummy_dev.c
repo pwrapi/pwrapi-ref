@@ -148,6 +148,11 @@ static int dummy_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
 	ftime( &tp);
 	srand((unsigned) tp.millitm );
 	int i;
+
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+
+    srand(  tv.tv_usec );
 	for ( i = 0; i < *nSamples; i++ ) {
 		((double*)buf)[i] = 100 + (float)rand()/(float)( RAND_MAX/2.0);
 		DBGP("%f\n",((double*)buf)[i]);

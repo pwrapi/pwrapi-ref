@@ -148,7 +148,7 @@ void DistComm::stopLog( PWR_AttrName attr, CommReq* req )
 	delete ev;
 }
 
-void DistComm::getSamples( PWR_AttrName attr, PWR_Time* time,
+void DistComm::getSamples( PWR_AttrName attr, PWR_Time start,
 				double period, unsigned int count, CommReq* req )
 {
 	DBGX("%s period=%f count=%d\n",attrNameToString(attr), period, count );
@@ -157,7 +157,7 @@ void DistComm::getSamples( PWR_AttrName attr, PWR_Time* time,
 	ev->commID = m_commID;
 	ev->id = (EventId) req;	
 	ev->attrName = attr; 
-	ev->startTime = *time;
+	ev->startTime = start;
 	ev->period = period;
 	ev->count = count;
 	getChannel().sendEvent( ev );

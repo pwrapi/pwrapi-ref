@@ -25,8 +25,8 @@ class Object;
 class Cntxt;
 
 class Stat {
-	typedef double (*OpFuncPtr)(std::vector<double>&);
   public:
+	typedef double (*OpFuncPtr)(std::vector<double>&, int& pos );
 	Stat( Cntxt* ctx, Object* obj, PWR_AttrName name, OpFuncPtr ptr,
 															double hz ) 
 	  : m_ctx( ctx), m_obj(obj), m_grp(NULL), m_attrName( name ), 
@@ -57,8 +57,8 @@ class Stat {
 	PWR_AttrName	m_attrName;
 	OpFuncPtr		opPtr;
     double 			m_period;
-    double 			m_startTime;
-    double 			m_stopTime;
+    PWR_Time 		m_startTime;
+    PWR_Time 		m_stopTime;
 };
 
 }

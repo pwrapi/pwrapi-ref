@@ -32,23 +32,22 @@ int main( int argc, char* argv[] )
 
     // Get a context
     rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
-    assert( PWR_RET_SUCCESS != rc );
+    assert( PWR_RET_SUCCESS == rc );
+
     rc = PWR_CntxtGetEntryPoint( cntxt, &self );
-    assert( PWR_RET_SUCCESS != rc );
+    assert( PWR_RET_SUCCESS == rc );
     
 	PWR_ObjType objType;
 	PWR_ObjGetType( self, &objType );
-    printf("I'm a `%s`\n", PWR_ObjGetTypeString( objType ) ); 
+    printf("I am a `%s`\n", PWR_ObjGetTypeString( objType ) ); 
 
     PWR_Obj parent;
 	rc = PWR_ObjGetParent( self, &parent );
-	assert( PWR_RET_SUCCESS != rc );	
-    assert( ! parent );
+	assert( rc >= PWR_RET_SUCCESS );	
 
     PWR_Grp children;
 	rc = PWR_ObjGetChildren( self, &children );
-	assert( PWR_RET_SUCCESS != rc );	
-    assert( children );
+	assert( rc >= PWR_RET_SUCCESS );	
 
     int i;
     for ( i = 0; i < PWR_GrpGetNumObjs(children); i++ ) {
@@ -61,118 +60,120 @@ int main( int argc, char* argv[] )
     }
 
     rc = PWR_ObjAttrGetValue( self, PWR_ATTR_VOLTAGE, &value, &ts );
-    assert( rc == PWR_RET_INVALID );
+    assert( PWR_RET_INVALID == rc );
 
-    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( rc == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &value, &ts );
+    assert( PWR_RET_SUCCESS == rc );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=%f ts=`%s`\n",
 													value,myctime(&time));
     
     value = 25.812;
-    printf("PWR_ObjAttrSetValue(PWR_ATTR_POWER) value=%f\n",value);
-    rc = PWR_ObjAttrSetValue( self, PWR_ATTR_POWER, &value );
-    assert( rc == PWR_RET_SUCCESS );
+    printf("PWR_ObjAttrSetValue(PWR_ATTR_ENERGY) value=%f\n",value);
+    rc = PWR_ObjAttrSetValue( self, PWR_ATTR_ENERGY, &value );
+    assert( PWR_RET_SUCCESS == rc );
 
-    PWR_AttrName name = PWR_ATTR_POWER;
+    PWR_AttrName name = PWR_ATTR_ENERGY;
      
 	rc =  PWR_StatusCreate( &status );
-	assert( PWR_RET_SUCCESS != rc );
+	assert( PWR_RET_SUCCESS == rc );
 
     rc = PWR_ObjAttrGetValues( self, 1, &name, &value, &ts, status );  
-    assert( rc == PWR_RET_SUCCESS );
+    assert( PWR_RET_SUCCESS == rc );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValues(PWR_ATTR_POWER) value=%f ts=`%s`\n", 
+    printf("PWR_ObjAttrGetValues(PWR_ATTR_ENERGY) value=%f ts=`%s`\n", 
 													value, myctime( &time ) );
 
     value = 100.10;
-    printf("PWR_ObjAttrSetValues(PWR_ATTR_POWER) value=%f\n",value);
+    printf("PWR_ObjAttrSetValues(PWR_ATTR_ENERGY) value=%f\n",value);
     rc = PWR_ObjAttrSetValues( self, 1, &name, &value, status );  
-    assert( rc == PWR_RET_SUCCESS );
+    assert( PWR_RET_SUCCESS == rc );
 
-    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( rc == PWR_RET_SUCCESS );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &value, &ts );
+    assert( PWR_RET_SUCCESS == rc );
 
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=%f ts=`%s`\n",
 													value,myctime(&time));
-    assert( value == 200.20 );
 
-    rc = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE, &grp );
-    assert( rc == PWR_RET_SUCCESS );
-    assert( grp );
-	assert( PWR_GrpGetNumObjs( grp ) );
+    rc = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_NODE, &grp );
+    assert ( PWR_RET_SUCCESS == rc );
 
     value = 0.1;
-    printf("PWR_GrpAttrSetValue(PWR_ATTR_POWER) value=%f\n", value);
-    rc = PWR_GrpAttrSetValue( grp, PWR_ATTR_POWER, &value, status );
-    assert( rc == PWR_RET_SUCCESS );
+    printf("PWR_GrpAttrSetValue(PWR_ATTR_ENERGY) value=%f\n", value);
+    rc = PWR_GrpAttrSetValue( grp, PWR_ATTR_ENERGY, &value, status );
+    assert( PWR_RET_SUCCESS == rc );
 
-    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_POWER, &value, &ts );
-    assert( rc == PWR_RET_SUCCESS );
-
-    assert( value == 0.2 );
+    rc = PWR_ObjAttrGetValue( self, PWR_ATTR_ENERGY, &value, &ts );
+    assert( PWR_RET_SUCCESS == rc );
 
     PWR_TimeConvert( ts, &time );
-    printf("PWR_ObjAttrGetValue(PWR_ATTR_POWER) value=%f ts=`%s`\n",
+    printf("PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=%f ts=`%s`\n",
 													value,myctime(&time));
 
-	PWR_Obj core;
-	rc = PWR_GrpGetObjByIndx( grp, 0, &core );
-	assert( PWR_RET_SUCCESS != rc );
+    PWR_Obj node;
+    rc = PWR_GrpGetObjByIndx( grp, 0, &node );
+    assert( PWR_RET_SUCCESS == rc );
 
-	PWR_Stat coreStat;
-	rc = PWR_ObjCreateStat( core, PWR_ATTR_POWER, 
-						PWR_ATTR_STAT_AVG, &coreStat );
-	assert( PWR_RET_SUCCESS != rc );
+	PWR_Stat nodeStat;
+	rc = PWR_ObjCreateStat( node, PWR_ATTR_ENERGY, 
+						PWR_ATTR_STAT_AVG, &nodeStat );
+	assert( PWR_RET_SUCCESS == rc );
 
-	rc = PWR_StatStart( coreStat );
-    assert( rc == PWR_RET_SUCCESS );
+	rc = PWR_StatStart( nodeStat );
+    assert( PWR_RET_SUCCESS == rc );
 
 	sleep(1);
 	PWR_TimePeriod statTimes;
+    statTimes.start = statTimes.stop = PWR_TIME_UNINIT;
 
-	rc = PWR_StatGetValue( coreStat, &value, &statTimes);
-    assert( rc == PWR_RET_SUCCESS );
+	rc = PWR_StatGetValue( nodeStat, &value, &statTimes );
+    assert( PWR_RET_SUCCESS == rc );
 
-    printf("PWR_StatGetValue(PWR_ATTR_POWER) value=%f\n", value );
-    printf("PWR_StatGetValue(PWR_ATTR_POWER) start=%llu\n", 
-                                    (long long)statTimes.start );
+    printf("PWR_StatGetValue(PWR_ATTR_ENERGY) value=%lf\n", value );
+    printf("PWR_StatGetValue(PWR_ATTR_ENERGY) start=%lf\n", 
+                                    (double)statTimes.start / 1000000000 );
 
-   	printf("PWR_StatGetValue(PWR_ATTR_POWER) stop=%llu\n",
-                                    (long long) statTimes.stop );
+   	printf("PWR_StatGetValue(PWR_ATTR_ENERGY) stop=%lf\n",
+                                    (double) statTimes.stop / 1000000000);
 
 	if ( statTimes.instant != PWR_TIME_UNINIT ) {
-    	printf("PWR_StatGetValue(PWR_ATTR_POWER) instant=%llu\n",
-									(long long )statTimes.instant );
+    	printf("PWR_StatGetValue(PWR_ATTR_ENERGY) instant=%lf\n",
+									(double)statTimes.instant / 1000000000 );
 	}
-	PWR_StatDestroy( coreStat );
+	PWR_StatDestroy( nodeStat );
 
-	PWR_Stat coresStat;
-	rc = PWR_GrpCreateStat( grp, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, &coreStat);
-	assert( PWR_RET_SUCCESS != rc );
+	PWR_Stat nodesStat;
+	rc = PWR_GrpCreateStat( grp, PWR_ATTR_ENERGY, PWR_ATTR_STAT_AVG, &nodesStat);
+	assert( PWR_RET_SUCCESS == rc );
 
-	rc = PWR_StatStart( coresStat );
-	assert( rc == PWR_RET_SUCCESS );
+    int grpSize = PWR_GrpGetNumObjs( grp ); 
+	PWR_TimePeriod* statTimes2 = malloc( grpSize * sizeof(*statTimes2) );
+	double* values = malloc( grpSize * sizeof(*values) );
+
+	for ( i = 0; i < grpSize; i++ ) {
+        statTimes2[i].start = statTimes2[i].stop = PWR_TIME_UNINIT;
+    } 
+	rc = PWR_StatStart( nodesStat );
+	assert( PWR_RET_SUCCESS == rc);
 
 	sleep(1);
-	PWR_TimePeriod statTimes2[2];
-	double values[2];
 
-	rc = PWR_StatGetValues( coresStat, &values[0], &statTimes2[0]);
-	assert( rc == PWR_RET_SUCCESS );
+	rc = PWR_StatGetValues( nodesStat, &values[0], &statTimes2[0]);
+	assert( PWR_RET_SUCCESS == rc );
 
-	PWR_StatDestroy( coresStat );
+	PWR_StatDestroy( nodesStat );
 
-	for ( i = 0; i < PWR_GrpGetNumObjs( grp ); i++ ) {
-		printf("stat: value=%f start=%llu stop=%llu\n",
-							values[i],statTimes2[i].start, statTimes2[i].stop );
+	for ( i = 0; i < grpSize; i++ ) {
+		printf("stat: value=%lf start=%lf stop=%lf\n", values[i],
+            (double) statTimes2[i].start/1000000000, 
+            (double)statTimes2[i].stop/1000000000 );
 	}
 
-	PWR_CntxtDestroy( cntxt );
+	//PWR_CntxtDestroy( cntxt );
     return 0;
 }
 char* myctime(const time_t *timep)

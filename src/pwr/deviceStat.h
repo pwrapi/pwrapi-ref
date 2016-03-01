@@ -17,7 +17,6 @@
 namespace PowerAPI {
 
 class DeviceStat : public Stat {
-	typedef double (*OpFuncPtr)(std::vector<double>&);
   public:
 	DeviceStat( Cntxt* ctx, Object* obj, PWR_AttrName name,
 											OpFuncPtr ptr, double hz ) 

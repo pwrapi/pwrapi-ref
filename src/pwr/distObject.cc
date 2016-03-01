@@ -334,28 +334,30 @@ int DistObject::attrStopLog( PWR_AttrName attr )
 	return retval; 
 }
 
-int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
+int DistObject::attrGetSamples( PWR_AttrName attr, PWR_TimePeriod* tp,
         		double period, unsigned int* count, void* buf, Request* req )
 {
 	int retval;
-	req->value[0] = buf;
-	req->timeStamp[0] = ts;
-	req->count = count;
 
 	DBGX("period=%f count=%d\n", period, *count );
 	DistRequest* distReq = static_cast<DistRequest*>(req);
-	retval = Object::attrGetSamples( attr, ts, period, count, buf ); 
+	retval = Object::attrGetSamples( attr, &tp->start, period, count, buf ); 
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	
-	DBGX("ts=%" PRIu64 "\n",*ts);
 
 	AttrInfo* info = m_attrInfo[ attr ];
 	if ( info->comm ) {
+	
+		assert(0);
+		req->sampleValues[0] = buf;
+		req->timePeriod[0] = tp;
+		req->count = count;
+
 		DistCommReq* commReq = 
 					new DistGetSamplesCommReq(static_cast<DistRequest*>(req));	
 		distReq->insert( commReq );
-		info->comm->getSamples( attr, ts, period, *count, commReq );
+		info->comm->getSamples( attr, tp->start, period, *count, commReq );
 	}
 	if ( retval == PWR_RET_SUCCESS && distReq->finished() ) {
 		if ( distReq->execCallback( ) ) {
@@ -365,7 +367,7 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
 	return PWR_RET_SUCCESS;
 }
 
-int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
+int DistObject::attrGetSamples( PWR_AttrName attr, PWR_TimePeriod* tp,
                       double period, unsigned int* count, void* buf )
 {
 	int retval;
@@ -374,7 +376,7 @@ int DistObject::attrGetSamples( PWR_AttrName attr, PWR_Time* ts,
 
 	DBGX("\n");
 
-	retval = attrGetSamples( attr, ts, period, count, buf, &req ); 
+	retval = attrGetSamples( attr, tp, period, count, buf, &req ); 
 	if ( retval != PWR_RET_SUCCESS ) {
 		return retval;
 	}	

@@ -7,7 +7,7 @@ from machine import *
 plugins['DummyPlugin'] = 'libdummy_dev'
 devices['DummyDev'] = ['DummyPlugin','']
 
-energy = Attr( Sum, Float )
+energy = Attr( Sum, Float, 10.0 )
 
 platform = Object( Platform, 'plat' )
 platform.setAttr( Energy, energy )
@@ -20,9 +20,9 @@ board.setAttr( Energy, energy )
 
 node = Object( Node, 'node', board )
 
-node.setAttr( Energy, Attr( Sum, Float ) )
-node.setAttr( Power, Attr( Sum, Float ) )
-node.setAttr( MaxPower, Attr( Sum, Float ) )
+node.setAttr( Energy, Attr( Sum, Float, 10.0 ) )
+node.setAttr( Power, Attr( Sum, Float, 10.0 ) )
+node.setAttr( MaxPower, Attr( Sum, Float, 10.0 ) )
 
 def calcAttrSrc( name ):
 	Debug("calcAttrSrc() name=\'{1}\'".format( "", name ) )

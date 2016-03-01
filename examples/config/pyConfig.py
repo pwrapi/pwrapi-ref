@@ -59,8 +59,9 @@ class Foo:
         return 0
 
 class Attr:
-	def __init__(self, op = None, type = None ):
+	def __init__(self, op = None, type = None, hz = None ):
 		self.op = op 
+		self.hz = str(hz)
 		self.type = type 
 		self.src = None 
 
@@ -76,6 +77,9 @@ class Attr:
 
 	def getOp(self):
 		return self.op
+
+	def getHz(self):
+		return self.hz
 
 	def getType(self):
 		return self.type
@@ -132,13 +136,25 @@ class Object:
 		return children
 
 	def findAttrOp(self, myName, attr):
-		Debug( "{0}(): name={1} attr={0}".format( funcName(), myName, attr ) ) 
+		Debug( "{0}(): name={1} attr={2}".format( funcName(), myName, attr ) ) 
 
 		if not self.attrs.has_key( attr ):
 			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
 			return None
 
 		return self.attrs[attr].getOp() 
+
+	def findAttrHz(self, myName, attr):
+		Debug( "{0}(): name={1} attr={2}".format( funcName(), myName, attr ) ) 
+
+		if not self.attrs.has_key( attr ):
+			Debug( "{0}(): attr={1} not found".format( funcName() , attr ))
+			return None
+
+
+		tmp = self.attrs[attr].getHz() 
+		Debug( "{0}(): name={1} tmp={2}".format( funcName(), myName, tmp ) ) 
+		return tmp 
 
 	def findAttrType(self, myName, attr):
 		Debug( "{0}(): attr={1}".format( funcName(), attr ) ) 
@@ -296,6 +312,15 @@ def findAttrChildren( name, attr ):
 def findAttrOp( name, attr ):
 	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
 	ret = _getObject(name).findAttrOp( name, attr )
+	if ret:
+		return ret 
+	else: 
+		return '' 
+
+#external
+def findAttrHz( name, attr ):
+	Debug( "{0}(): obj={1} attr={2}".format( funcName(), name, attr ) )
+	ret = _getObject(name).findAttrHz( name, attr )
 	if ret:
 		return ret 
 	else: 

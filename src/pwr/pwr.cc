@@ -60,8 +60,12 @@ int PWR_CntxtGetEntryPoint( PWR_Cntxt ctx, PWR_Obj* obj )
 
 int PWR_CntxtGetGrpByType( PWR_Cntxt ctx, PWR_ObjType type, PWR_Grp* grp )
 {
-	*grp = CNTXT(ctx)->getGrp( type );
-    return PWR_RET_SUCCESS;
+    PWR_Grp tmp = CNTXT(ctx)->getGrp( type );
+    if ( tmp ) {
+	    *grp = tmp; 
+        return PWR_RET_SUCCESS;
+    }
+    return PWR_RET_FAILURE;
 }
 
 int PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name, PWR_Grp* grp )
@@ -88,8 +92,12 @@ int PWR_ObjGetType( PWR_Obj obj, PWR_ObjType* type )
 
 int PWR_ObjGetParent(PWR_Obj obj, PWR_Obj* out )
 {
-    *out = OBJECT(obj)->parent();
-    return PWR_RET_SUCCESS;
+    PWR_Obj tmp = OBJECT(obj)->parent();
+    if ( tmp ) {
+        *out = tmp;
+        return PWR_RET_SUCCESS;
+    }
+    return PWR_RET_WARN_NO_PARENT;
 }
 
 int PWR_ObjGetChildren( PWR_Obj obj, PWR_Grp* grp )
@@ -148,9 +156,9 @@ int PWR_ObjAttrStopLog( PWR_Obj obj, PWR_AttrName attr )
 }
 
 int PWR_ObjAttrGetSamples( PWR_Obj obj, PWR_AttrName name, 
-		PWR_Time* time, double period, unsigned int* count, void* buf )
+		PWR_Time* start, double period, unsigned int* count, void* buf )
 {
-    return OBJECT(obj)->attrGetSamples( name, time, period, count, buf );
+    return OBJECT(obj)->attrGetSamples( name, start, period, count, buf );
 }
 
 int PWR_ObjAttrStartLog_NB( PWR_Obj obj, PWR_AttrName name, PWR_Request req )
@@ -164,9 +172,9 @@ int PWR_ObjAttrStopLog_NB( PWR_Obj obj, PWR_AttrName name, PWR_Request req )
 }
 
 int PWR_ObjAttrGetSamples_NB( PWR_Obj obj, PWR_AttrName name, 
-		PWR_Time* time, double period, unsigned int* count, void* buf,  PWR_Request req )
+		PWR_Time* start, double period, unsigned int* count, void* buf,  PWR_Request req )
 {
-    return OBJECT(obj)->attrGetSamples( name, time, period, count, buf, REQUEST(req) );
+    return OBJECT(obj)->attrGetSamples( name, start, period, count, buf, REQUEST(req) );
 }
 
 
@@ -300,14 +308,14 @@ int PWR_ObjCreateStat( PWR_Obj obj, PWR_AttrName name, PWR_AttrStat statOp,
 			 PWR_Stat* stat ) 
 {
 	*stat = OBJECT(obj)->getCntxt()->createStat(OBJECT(obj),name,statOp);
-	return PWR_RET_SUCCESS;
+	return *stat ? PWR_RET_SUCCESS : PWR_RET_FAILURE;
 }
 
 int PWR_GrpCreateStat( PWR_Grp grp, PWR_AttrName name, PWR_AttrStat statOp,
 			 PWR_Stat* stat )
 {
 	*stat = GRP(grp)->getCntxt()->createStat(GRP(grp),name,statOp);
-	return PWR_RET_SUCCESS; 
+	return *stat ? PWR_RET_SUCCESS : PWR_RET_FAILURE;
 }
 
 int PWR_StatDestroy( PWR_Stat stat )

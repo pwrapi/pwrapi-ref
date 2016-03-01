@@ -9,6 +9,9 @@
  * distribution.
 */
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <sys/time.h>
 #include "deviceStat.h"
 
@@ -21,12 +24,12 @@ DeviceStat::~DeviceStat() {
 	}
 }
 
-static double getTime() {
+static PWR_Time getTime() {
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    double value;
-    value = tv.tv_sec;
-    value += (double) tv.tv_usec / 1000000000.0;
+    PWR_Time value;
+    value = tv.tv_sec * 1000000000;
+    value += tv.tv_usec * 1000;
     return value;
 }
 
@@ -44,7 +47,7 @@ int DeviceStat::start( ) {
 
 int DeviceStat::startObj( ) {
 	int retval = m_obj->attrStartLog( m_attrName );
-	DBGX("%s time=%.9f\n",objTypeToString(m_obj->type()),m_startTime);
+	DBGX("%s time=%"PRIu64" sec\n",objTypeToString(m_obj->type()),m_startTime);
 	return retval;
 }
 
@@ -61,7 +64,7 @@ int DeviceStat::startGrp( ) {
 	return PWR_RET_SUCCESS;
 }
 int DeviceStat::stopObj( ) {
-	DBGX("%s time=%.9f\n",objTypeToString(m_obj->type()),m_startTime);
+	DBGX("%s time=%"PRIu64" sec\n",objTypeToString(m_obj->type()),m_startTime);
 	int retval = m_obj->attrStopLog( m_attrName );
 	return retval;
 }
@@ -82,7 +85,7 @@ int DeviceStat::stopGrp( ) {
 int DeviceStat::stop( ) {
 	m_isLogging = false;
 	m_stopTime = getTime();
-	DBGX("time=%.9f\n",m_stopTime);
+	DBGX("time=%"PRIu64" sec\n",m_stopTime);
 	if ( m_obj ) {
 		return stopObj();
 	} else {
@@ -104,20 +107,50 @@ int DeviceStat::getValue( double* value, PWR_TimePeriod* statTimes ) {
 int DeviceStat::objGetValue( Object* obj, double* value,
 								PWR_TimePeriod* statTimes )
 {
-	double now = getTime();
-	double windowTime = now - m_startTime;	
+    if ( PWR_TIME_UNINIT == statTimes->start ) {
+        statTimes->start = m_startTime; 
+    } 
+    if ( PWR_TIME_UNINIT == statTimes->stop ) {
+        if ( m_isLogging ) { 
+            statTimes->stop = getTime(); 
+        } else {
+            statTimes->stop = m_stopTime; 
+        } 
+    } 
+	double windowTime = statTimes->stop - statTimes->start;	
+	windowTime /= 1000000000;
+
+	DBGX( "start=%lf stop=%lf\n", (double)statTimes->start/1000000000,
+				(double)statTimes->stop/1000000000); 
+
 	unsigned int nSamples = windowTime / m_period;  
-	DBGX("%s curTime=%.9f wndwLngth=%.9f smpls=%d\n",
-				objTypeToString(obj->type()), now, windowTime, nSamples);
+
+	DBGX("wndwLngth=%.9f smpls=%d\n", windowTime, nSamples);
 
 	std::vector<double> values(nSamples,0.0);
 	PWR_Time timeStamp;
 	int retval = obj->attrGetSamples( m_attrName, &timeStamp, 
 								m_period, &nSamples, &values[0] );
-	statTimes->start = m_startTime;
-	statTimes->stop = now;
+
+
+	statTimes->start = timeStamp;
+	statTimes->stop = timeStamp + nSamples * m_period * 1000000000 ;
+	DBGX("actual: start=%lf stop=%lf count=%"PRIu32"\n", 
+			(double) timeStamp/1000000000, 
+			(double) statTimes->stop/1000000000, nSamples);	
+
 	statTimes->instant = PWR_TIME_UNINIT;
-	*value = opPtr( values );
+	int pos;
+	*value = opPtr( values, pos );
+    if ( pos > -1 ) {
+        statTimes->instant = statTimes->start + pos * m_period * 1000000000; 
+    }
+
+	DBGX("actual: start=%lf stop=%lf instant=%lf count=%"PRIu32"\n", 
+			(double) timeStamp/1000000000, 
+			(double) statTimes->stop/1000000000, 
+            (double) statTimes->instant/1000000000,nSamples);	
+
 	return retval;
 }
 
