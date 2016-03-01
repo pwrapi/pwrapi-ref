@@ -14,6 +14,8 @@
 #include "config.h"
 #include "deviceStat.h"
 
+#include <stdlib.h>
+
 using namespace PowerAPI;
 
 Object* Cntxt::getObjByName( std::string name )
