@@ -210,7 +210,7 @@ struct CommReqInfo {
 
 	std::vector<ValueOp>		valueOp;
 	std::vector< std::vector< CommRespEvent* > > 	respQ; 
-	CommRespEvent* resp;
+	CommEvent* resp;
 };
 
 }

@@ -38,7 +38,11 @@ class Stat {
             throw int ();
         }
         AttrInfo& info = obj->getAttrInfo( name );
-        if ( 1 != info.devices.size() ) {
+
+        if ( ( 0 == info.devices.size() && ! info.comm ) || 
+           ( 0 < info.devices.size() && info.comm ) ||
+           ( 1 < info.devices.size() && ! info.comm ) ) {
+            DBGX("devices\n");
             throw int ();
         }
     }

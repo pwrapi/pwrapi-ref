@@ -27,49 +27,57 @@ class RtrCommLogReqEvent: public  CommLogReqEvent {
    	RtrCommLogReqEvent( SerialBuf& buf ) : CommLogReqEvent( buf ) {}  
 
 	bool process( EventGenerator* _rtr, EventChannel* ec ) {
-		assert(0);
-#if 0
         Router& rtr = *static_cast<Router*>(_rtr);
 		Router::Client& client = *rtr.getClient( ec );
+
+        std::vector< std::vector< ObjID > >& commList =
+                client.getCommList( commID );
+
+        // don't support more that one object at this time
+        assert( 1 == commList.size() );
+        assert( 1 == commList[0].size() );
 
         CommReqInfo* info = new CommReqInfo;
         info->src = ec;
         info->ev = this;
-        info->id = id;
+        info->pending = commList.size();
 
+        info->resp = new CommLogRespEvent; 
+        info->resp->id = id;
         id = (EventId) info;
 
         DBGX("commID=%"PRIu64" eventId=%" PRIx64 " new eventId=%p\n",
                                 commID, id, info );
 
-		std::vector< std::vector< ObjID > >& commList= client.getCommList( commID );
-        std::vector<ObjID>::iterator iter = commList.begin();
+        for ( unsigned int i=0; i <  commList.size(); i++ ) {
 
-        for ( ; iter != commList.end(); ++iter ) {
-
-            DBGX("%s %d\n",(*iter).c_str(), attrName );
-			rtr.sendEvent( (*iter), this );
+            for ( unsigned int j=0; j <  commList[i].size(); j++ ) {
+                rtr.sendEvent( commList[i][j], this );
+            }
         }
-#endif
 		return false;
 	}
 };
 
 class RtrCommLogRespEvent: public  CommLogRespEvent {
   public:
-   	RtrCommLogRespEvent( SerialBuf& buf ) : CommLogRespEvent( buf ) {}  
+   	RtrCommLogRespEvent( SerialBuf& buf ) : CommLogRespEvent( buf ) {
+    }  
 
 	bool process( EventGenerator* _rtr, EventChannel* ec ) {
 
       	DBGX("id=%p status=%d \n",(void*)id, status );
 
-#if 0
         CommReqInfo* info = (CommReqInfo*) id;
 
-        id = info->id;
-        info->src->sendEvent( this );
+        // Why don't we just sent this? Because we want to be consistent
+        // CommRespEvent
+        *static_cast<CommLogRespEvent*>(info->resp) = *this;
+
+        info->src->sendEvent( info->resp );
+        delete info->resp;
+        delete info->ev;
         delete info;
-#endif
         return true;
 	}
 };

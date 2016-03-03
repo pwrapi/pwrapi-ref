@@ -17,6 +17,7 @@
 
 
 struct CommRespEvent;
+struct CommLogRespEvent;
 struct CommGetSamplesRespEvent;
 
 namespace PowerAPI {
@@ -45,7 +46,9 @@ class DistRequest : public Request {
 		return false;
     }
 
+	void setRetval( DistCommReq*, CommLogRespEvent* );
 	void getSamples( DistCommReq*, CommGetSamplesRespEvent* );
+
 	void getValue( DistCommReq*, CommRespEvent* );
 	void setValue( DistCommReq*, CommRespEvent* );
 	void insert( DistCommReq* req ) {

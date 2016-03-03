@@ -53,17 +53,31 @@ int DistRequest::wait( )
 // can we use "this"
 void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 {
-	assert(0);
+	DBGX("count %lu\n",ev->count);
+
 #if 0
+    // FIX ME 
+    // need to pass up error codes somehome
 	retval = ev->status;
-	assert(0);
+#endif
+
 	for ( unsigned i = 0; i< ev->count; i++ ) {
 		((uint64_t*)value[0])[i] = ev->data[i];
 	}
 	DBGX("start time %lu, samples %d\n",*timeStamp[0], ev->count);
 	*timeStamp[0] = ev->startTime;
 	m_commReqs.erase( req ); 
-#endif
+}
+
+void DistRequest::setRetval( DistCommReq* req, CommLogRespEvent* ev )
+{
+	DBGX("\n");
+	for ( unsigned i = 0; i < ev->errValue.size(); i++ ) {
+		PWR_Obj obj;
+		PWR_CntxtGetObjByName( m_cntxt, ev->errObj[i].c_str(), &obj ); 
+		m_status->add( (Object*) obj, ev->errAttr[i], ev->errValue[i] );
+	} 
+	m_commReqs.erase( req ); 
 }
 
 void DistRequest::getValue( DistCommReq* req, CommRespEvent* ev )
