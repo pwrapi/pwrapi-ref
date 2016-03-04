@@ -39,14 +39,15 @@ class RtrCommRespEvent: public  CommRespEvent {
 
 		if ( info->respQ[grpIndex].size() == info->grpInfo[grpIndex] ) {
 
+            CommRespEvent* resp = static_cast<CommRespEvent*>(info->resp);
 			if ( Get == info->ev->op ) {
 				DBGX("index %"PRIu64" is ready, num attrs %lu\n",
 										grpIndex, info->valueOp.size() );
-				info->resp->timeStamp[grpIndex].resize( info->valueOp.size() );
-				info->resp->value[grpIndex].resize( info->valueOp.size() );
+				resp->timeStamp[grpIndex].resize( info->valueOp.size() );
+				resp->value[grpIndex].resize( info->valueOp.size() );
 
 				for ( unsigned i = 0; i < info->valueOp.size(); i++ ) { 
-					info->resp->value[grpIndex][i] = 0;
+					resp->value[grpIndex][i] = 0;
 				}
 
 				for ( unsigned j = 0; j < info->respQ[grpIndex].size(); j++ ) {
@@ -54,22 +55,22 @@ class RtrCommRespEvent: public  CommRespEvent {
 						DBGX( "op=%d \n", info->valueOp[i] );			
 						assert( FP_ADD == info->valueOp[i] );
 
-						fpAdd( &info->resp->value[grpIndex][i], 
+						fpAdd( &resp->value[grpIndex][i], 
 									&info->respQ[grpIndex][j]->value[0][i] );
 
-						info->resp->timeStamp[grpIndex][i] = 
+						resp->timeStamp[grpIndex][i] = 
 									info->respQ[grpIndex][j]->timeStamp[0][i];
 					}
 				} 
 			}
 			for ( unsigned j = 0; j < info->respQ[grpIndex].size(); j++ ) {
-				info->resp->errValue.insert( info->resp->errValue.end(), 
+				resp->errValue.insert( resp->errValue.end(), 
 							info->respQ[grpIndex][j]->errValue.begin(), 
 							info->respQ[grpIndex][j]->errValue.end() );
-				info->resp->errAttr.insert( info->resp->errAttr.end(), 
+				resp->errAttr.insert( resp->errAttr.end(), 
 							info->respQ[grpIndex][j]->errAttr.begin(), 
 							info->respQ[grpIndex][j]->errAttr.end() );
-				info->resp->errObj.insert( info->resp->errObj.end(), 
+				resp->errObj.insert( resp->errObj.end(), 
 							info->respQ[grpIndex][j]->errObj.begin(), 
 							info->respQ[grpIndex][j]->errObj.end() );
 
@@ -78,8 +79,8 @@ class RtrCommRespEvent: public  CommRespEvent {
 				}
 			}
 			// quiet valgrind
-			info->resp->grpIndex = 0;
-			info->resp->commID = 0;
+			resp->grpIndex = 0;
+			resp->commID = 0;
 
 			DBGX("pending %"PRIu64"\n",info->pending);
 			--info->pending;

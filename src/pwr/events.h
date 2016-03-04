@@ -43,6 +43,12 @@ struct CommEvent : public Event {
 	CommEvent( EventType type ) : Event( type ), op( Noop ) {}
 	CommEvent() { } 
 
+    CommEvent& operator=( const CommEvent& other ) {
+        commID = other.commID;
+        op = other.op;
+        return *this;
+    }
+
     CommID          commID;
 
 	enum OpType { Noop, Get, Set, Start, Stop, Clear } op;
@@ -182,15 +188,22 @@ struct CommLogRespEvent : public CommEvent {
 		serialize_in(buf);
 	}
 
+    CommLogRespEvent& operator=( const CommLogRespEvent& other ) {
+        errObj = other.errObj;
+        errAttr = other.errAttr;
+        errValue = other.errValue;
+        return *this;
+    }
+
 	std::vector< ObjID >  		errObj;
 	std::vector< PWR_AttrName > errAttr;
 	std::vector< int >   		errValue;
 
 	virtual void serialize_in( SerialBuf& buf ) {
-		CommEvent::serialize_in(buf);
 		buf >> errObj;
 		buf >> errAttr;
 		buf >> errValue;
+		CommEvent::serialize_in(buf);
 	} 
 	virtual void serialize_out( SerialBuf& buf ) {
 		CommEvent::serialize_out(buf);
@@ -231,6 +244,17 @@ struct CommGetSamplesRespEvent : public CommEvent {
 	CommGetSamplesRespEvent( SerialBuf& buf ) {
 		serialize_in(buf);
 	}
+
+    CommGetSamplesRespEvent& operator=( const CommGetSamplesRespEvent& other ) {
+        errObj = other.errObj;
+        errAttr = other.errAttr;
+        errValue = other.errValue;
+        startTime = other.startTime;
+        count = other.count;
+        data = other.data;
+        return *this;
+    }
+
 	PWR_Time startTime;
 	unsigned int count;
 	std::vector< uint64_t > data;
