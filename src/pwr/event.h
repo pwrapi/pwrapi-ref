@@ -36,6 +36,13 @@ struct Event : public EventBase {
 	Event( EventType _type = NotSet ) : type(_type), id(0), status(0) {}
 	virtual ~Event() {}
 
+    Event& operator=(const Event& other ) {
+        type = other.type;
+        id =   other.id;
+        status = other.status;
+        return *this;
+    }
+
 	EventType	type;
     EventId   	id;
     int         status;
