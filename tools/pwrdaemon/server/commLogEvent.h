@@ -38,6 +38,8 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
         m_respEvent.op = op;
         m_respEvent.id = id;
 
+        m_respEvent.commID = 0;
+
         PWR_StatusCreate(&m_status);
         m_req = PWR_ReqCreateCallback( m_info->m_ctx, m_status,
                                             (Callback)logReqFini, this );
@@ -70,6 +72,7 @@ static void logReqFini( void* _data )
 
     PWR_Status status = data->m_status;
     PWR_AttrAccessError error;
+
     while ( PWR_RET_EMPTY != PWR_StatusPopError( status, &error ) ) {
         data->m_respEvent.errValue.push_back( error.error ) ;
         data->m_respEvent.errAttr.push_back( error.name ) ;

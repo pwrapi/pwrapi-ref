@@ -239,7 +239,24 @@ std::string XmlConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	if ( NULL == node ) {
 		return "";
 	}else {
-		return static_cast<XMLElement*>(node)->Attribute("op");
+        const char * tmp = static_cast<XMLElement*>(node)->Attribute("op");
+        return tmp ? tmp : "";
+	}
+}
+
+std::string XmlConfig::findAttrHz( std::string name, PWR_AttrName attr )
+{
+	DBGX2(DBG_CONFIG,"%s %s\n",name.c_str(), attrNameToString(attr).c_str());
+
+	XMLElement* obj = findObject( name );
+	assert( obj );
+
+	XMLNode* node = findAttr( obj, attrNameToString(attr) );		
+	if ( NULL == node ) {
+		return "";
+	}else {
+        const char * tmp = static_cast<XMLElement*>(node)->Attribute("hz");
+        return tmp ? tmp : "";
 	}
 }
 
@@ -298,11 +315,13 @@ std::deque< std::string > XmlConfig::findObjType( PWR_ObjType type )
 
 XMLNode* XmlConfig::findDev( XMLElement* elm, std::string name )
 {
+    DBGX2(DBG_CONFIG,"name=%s\n",name.c_str());
 	return findNodeWithAttr( elm, "devices", "name", name );
 } 
 
 XMLNode* XmlConfig::findAttr( XMLElement* elm, std::string attr )
 {
+    DBGX2(DBG_CONFIG,"attr=%s\n",attr.c_str());
 	return findNodeWithAttr( elm, "attributes", "name", attr );
 } 
 
@@ -473,17 +492,24 @@ PWR_ObjType XmlConfig::objTypeStrToInt( const std::string name )
 std::string XmlConfig::attrNameToString( PWR_AttrName name )
 {
     switch( name ){
-    case PWR_ATTR_FREQ: return "FREQ";
-    case PWR_ATTR_TEMP: return "TEMP";
     case PWR_ATTR_PSTATE: return "PSTATE";
+    case PWR_ATTR_CSTATE: return "CSTATE";
+    case PWR_ATTR_CSTATE_LIMIT: return "CSTATE_LIMIT";
+    case PWR_ATTR_SSTATE: return "SSTATE";
+    case PWR_ATTR_CURRENT: return "CURRENT";
+    case PWR_ATTR_VOLTAGE: return "VOLTAGE";
+    case PWR_ATTR_POWER: return "POWER";
     case PWR_ATTR_POWER_LIMIT_MAX: return "MAX_POWER";
     case PWR_ATTR_POWER_LIMIT_MIN: return "MIN_POWER";
-    case PWR_ATTR_POWER: return "POWER";
-    case PWR_ATTR_VOLTAGE: return "VOLTAGE";
-    case PWR_ATTR_CURRENT: return "CURRENT";
+    case PWR_ATTR_FREQ: return "FREQ";
+    case PWR_ATTR_FREQ_LIMIT_MIN: return "FREQ_MIN";
+    case PWR_ATTR_FREQ_LIMIT_MAX: return "FREQ_MAX";
     case PWR_ATTR_ENERGY: return "ENERGY";
-    case PWR_ATTR_INVALID: return "Invalid";
-    default: return "????";
+    case PWR_ATTR_TEMP: return "TEMP";
+    case PWR_ATTR_OS_ID: return "OS_ID";
+    case PWR_ATTR_THROTTLED_TIME: return "THROTTLED_TIME";
+    case PWR_ATTR_THROTTLED_COUNT: return "THROTTLED_COUNT";
+    default: return "";
     }
     return NULL;
 }
