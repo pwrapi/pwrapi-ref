@@ -232,7 +232,7 @@ int Object::attrGetSamples( PWR_AttrName name, PWR_Time* start,
 
 	AttrInfo& info = *m_attrInfo[name];
 
-	assert( 1 == info.devices.size() );
+	assert( info.devices.size() <= 1 );
 	for ( unsigned i = 0; i < info.devices.size(); i++ ) {
 		std::vector<uint64_t> data(*count);
 

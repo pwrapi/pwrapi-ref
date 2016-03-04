@@ -56,8 +56,10 @@ class RtrCommReqEvent: public  CommReqEvent {
 				DBGX("valueOp=%d\n",valueOp[i]);	
 			}
 
-        	info->resp->timeStamp.resize( commList.size() );
-        	info->resp->value.resize( commList.size() );
+        	static_cast<CommRespEvent*>(info->resp)->
+                            timeStamp.resize( commList.size() );
+        	static_cast<CommRespEvent*>(info->resp)->
+                            value.resize( commList.size() );
    		}
 
     	for ( unsigned int i=0; i <  commList.size(); i++ ) {
