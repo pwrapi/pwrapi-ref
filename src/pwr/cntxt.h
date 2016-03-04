@@ -54,6 +54,7 @@ class Cntxt {
   protected:
     virtual Object* findObject( std::string );
 	void findAllObjType( Object*, PWR_ObjType, Grp* );
+    double findHz( Object* obj, PWR_AttrName name );
 
 	Object*								m_rootObj;
 	Config*         					m_config;

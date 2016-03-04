@@ -46,12 +46,13 @@ class DistObject : public Object {
 
     virtual int attrStartLog( PWR_AttrName );
     virtual int attrStopLog( PWR_AttrName );
-    virtual int attrGetSamples( PWR_AttrName name, PWR_Time*, double period,
-                                       unsigned int* count, void* buf );
+    virtual int attrGetSamples( PWR_AttrName name, PWR_Time* start,
+					double period, unsigned int* count, void* buf );
+
     virtual int attrStartLog( PWR_AttrName, Request* );
     virtual int attrStopLog( PWR_AttrName, Request* );
-    virtual int attrGetSamples( PWR_AttrName name, PWR_Time*, double period,
-                       unsigned int* count, void* buf, Request* );
+    virtual int attrGetSamples( PWR_AttrName name, PWR_Time* start,
+					double period, unsigned int* count, void* buf, Request* );
 
   private:
 	DistComm* m_comm;

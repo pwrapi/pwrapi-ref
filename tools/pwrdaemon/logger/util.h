@@ -16,6 +16,24 @@ static inline std::string getName( PWR_Grp grp, size_t index )
     return objName;
 }
 
+static inline PWR_AttrStat getAttrStat( std::string name )
+{
+    if ( ! name.compare( "min" ) ) {
+        return PWR_ATTR_STAT_MIN;
+    } else if ( ! name.compare( "max" ) ) {
+        return PWR_ATTR_STAT_MAX;
+    } else if ( ! name.compare( "avg" ) ) {
+        return PWR_ATTR_STAT_AVG;
+    } else if ( ! name.compare( "stdev" ) ) {
+        return PWR_ATTR_STAT_STDEV;
+    } else if ( ! name.compare( "cv" ) ) {
+        return PWR_ATTR_STAT_CV;
+    } else if ( ! name.compare( "sum" ) ) {
+        return PWR_ATTR_STAT_SUM;
+    }
+    assert(0);
+}
+
 static inline PWR_AttrName getAttr( std::string name )
 {
     if ( ! name.compare( "energy" ) ) {

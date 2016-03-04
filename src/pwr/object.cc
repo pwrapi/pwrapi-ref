@@ -221,7 +221,7 @@ int Object::attrStopLog( PWR_AttrName name )
 	return PWR_RET_SUCCESS;
 }
 
-int Object::attrGetSamples( PWR_AttrName name, PWR_Time* ts, 
+int Object::attrGetSamples( PWR_AttrName name, PWR_Time* start, 
 		double period, unsigned int* count, void* buf )
 {
 	DBGX("\n");
@@ -232,11 +232,16 @@ int Object::attrGetSamples( PWR_AttrName name, PWR_Time* ts,
 
 	AttrInfo& info = *m_attrInfo[name];
 
+	assert( info.devices.size() <= 1 );
 	for ( unsigned i = 0; i < info.devices.size(); i++ ) {
 		std::vector<uint64_t> data(*count);
+
 		unsigned int tCnt = *count; 
 		PWR_Time tStart;
-		int retval = info.devices[i]->getSamples( name, &tStart, period, &tCnt, &data[0] );
+
+		int retval = info.devices[i]->getSamples( name, 
+				&tStart, period, &tCnt, &data[0] );
+
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
@@ -245,7 +250,7 @@ int Object::attrGetSamples( PWR_AttrName name, PWR_Time* ts,
 			// WE NEED to compare start times for each device and message the results
 			((uint64_t*)buf)[i] += data[i];
 		}
-		*ts = tStart;
+		*start = tStart;
 	}
 	return PWR_RET_SUCCESS;
 }

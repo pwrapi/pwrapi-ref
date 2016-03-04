@@ -34,6 +34,10 @@ Object* Cntxt::getEntryPoint() {
 
 Object* Cntxt::getParent( Object* obj )
 {
+    if ( obj == m_rootObj ) {
+        return NULL;
+    }
+
     std::string parentName = m_config->findParent( obj->name() );
 
     if ( parentName.empty() ) return NULL;
@@ -71,8 +75,14 @@ Grp* Cntxt::getGrp( PWR_ObjType type )
     tmp = "internal" + tmp;
 
     if ( m_groupMap.find( tmp ) == m_groupMap.end() ) {
+
         grp = createGrp(tmp);
+
         findAllObjType( getSelf(), type, grp );
+        if ( 0 == grp->size() ) {
+            destroyGrp(grp); 
+            return NULL;
+        }
     }
 
     return grp;
@@ -153,25 +163,129 @@ void Cntxt::findAllObjType( Object* obj, PWR_ObjType type, Grp* grp )
     }
 }
 
-static double opAvg( std::vector<double>& data )
+static double opAvg( std::vector<double>& data, int& pos )
 {
+    pos = -1;
     double result = 0;
     for ( unsigned i =0; i < data.size(); i++ ) {
+        DBG("%lf\n",data[i]);
         result += data[i];
     }
     return result / data.size();
 }
 
-Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat stat )
+static double opMin( std::vector<double>& data, int& pos )
 {
-    DBGX("\n");
-	return new DeviceStat( this, obj, name, opAvg, 10.0 );
+    double result = data[0];
+	
+    pos = 0;
+    DBG("%d %lf\n",0,data[0]);
+    for ( unsigned i =1; i < data.size(); i++ ) {
+        DBG("%d %lf\n",i,data[i]);
+        if ( data[i] < result ) {
+            pos = i;	
+            result = data[i];
+        }
+    }
+    return result;
 }
 
-Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
+static double opMax( std::vector<double>& data, int& pos )
+{
+    double result = data[0];
+	
+    pos = 0;
+    DBG("%d %lf\n",0,data[0]);
+    for ( unsigned i =1; i < data.size(); i++ ) {
+        DBG("%d %lf\n",i,data[i]);
+        if ( data[i] > result ) {
+            pos = i;	
+            result = data[i];
+        }
+    }
+    return result;
+}
+
+static Stat::OpFuncPtr getOp( std::string name ) {
+    if ( ! name.compare( "Avg" ) ) {
+        return opAvg;
+    } else if ( ! name.compare( "Min" ) ) {
+        return opMin;
+    } else if ( ! name.compare( "Max" ) ) {
+        return opMax;
+    }
+    return NULL;
+}
+
+double Cntxt::findHz( Object* obj, PWR_AttrName name )
+{
+    std::string tmp = m_config->findAttrHz( obj->name(), name );
+
+    DBGX("hz=%s\n",tmp.c_str());
+
+    if ( tmp.empty() ) {
+        return 0;
+    }
+
+    double hz = strtof(  tmp.c_str(), (char**)NULL );	
+    if ( 0 == hz ) {
+        return 0;
+    }
+    return hz;
+}
+
+Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat attrStat )
 {
     DBGX("\n");
-	return new DeviceStat( this, grp, name, opAvg, 10.0 );
+    Stat::OpFuncPtr op = getOp( attrStatToString( attrStat ) );
+    if ( ! op ) {
+        return NULL;
+    }
+   
+    double hz = findHz( obj, name );
+    if ( 0 == hz ) {
+        return NULL;
+    } 
+
+    Stat* stat = NULL;
+    try {
+        stat = new DeviceStat( this, obj, name, op, hz );
+    }
+    catch(int) {
+    }
+
+    return stat; 
+}
+
+
+Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat attrStat )
+{
+    DBGX("\n");
+    Stat::OpFuncPtr op = getOp( attrStatToString( attrStat ) );
+    if ( ! op ) {
+        return NULL;
+    }
+
+    double hz = findHz( grp->getObj(0), name ); 
+    if ( 0 == hz ) {
+        return NULL;
+    }
+
+    for ( unsigned i = 1; i < grp->size(); i++ ) {
+        double tmp = findHz( grp->getObj(i), name ); 
+        if ( tmp != hz ) {
+            return NULL;
+        }
+    }
+
+    Stat* stat = NULL;
+    try {
+        stat = new DeviceStat( this, grp, name, op, hz );
+    }
+    catch(int) {
+    }
+
+    return stat; 
 }
 
 int Cntxt::destroyStat( Stat* stat )

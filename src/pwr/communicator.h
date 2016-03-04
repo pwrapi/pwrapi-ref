@@ -33,7 +33,7 @@ class Communicator {
 	virtual void setValues( int, PWR_AttrName [], void* buf, CommReq* req ) = 0;
 	virtual void startLog( PWR_AttrName, CommReq* req ) = 0;
 	virtual void stopLog( PWR_AttrName, CommReq* req ) = 0;
-	virtual void getSamples( PWR_AttrName attr, PWR_Time*, double period, 
+	virtual void getSamples( PWR_AttrName attr, PWR_Time start, double period, 
 				unsigned int count, CommReq* req ) = 0;
 };
 
