@@ -220,6 +220,7 @@ static PWR_Time timeOp( std::vector<PWR_Time> x )
 AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
 {
 	ValueOp vOp = NO_OP;
+    DBGX("obj=`%s` attr=%s\n",obj->name().c_str(),attrNameToString(attrName));
 
     std::string op = m_config->findAttrOp( obj->name(),attrName );
     std::string type = m_config->findAttrType( obj->name(),attrName );
