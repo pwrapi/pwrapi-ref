@@ -14,6 +14,8 @@
 #include "config.h"
 #include "deviceStat.h"
 
+#include <stdlib.h>
+
 using namespace PowerAPI;
 
 Object* Cntxt::getObjByName( std::string name )
@@ -227,17 +229,17 @@ double Cntxt::findHz( Object* obj, PWR_AttrName name )
         return 0;
     }
 
-    double hz = atof(  tmp.c_str() );	
+    double hz = strtof(  tmp.c_str(), (char**)NULL );	
     if ( 0 == hz ) {
         return 0;
     }
     return hz;
 }
 
-Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat stat )
+Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat attrStat )
 {
     DBGX("\n");
-    Stat::OpFuncPtr op = getOp( attrStatToString( stat ) );
+    Stat::OpFuncPtr op = getOp( attrStatToString( attrStat ) );
     if ( ! op ) {
         return NULL;
     }
@@ -247,14 +249,21 @@ Stat* Cntxt::createStat( Object* obj, PWR_AttrName name, PWR_AttrStat stat )
         return NULL;
     } 
 
-    return new DeviceStat( this, obj, name, op, hz );
+    Stat* stat = NULL;
+    try {
+        stat = new DeviceStat( this, obj, name, op, hz );
+    }
+    catch(int) {
+    }
+
+    return stat; 
 }
 
 
-Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
+Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat attrStat )
 {
     DBGX("\n");
-    Stat::OpFuncPtr op = getOp( attrStatToString( stat ) );
+    Stat::OpFuncPtr op = getOp( attrStatToString( attrStat ) );
     if ( ! op ) {
         return NULL;
     }
@@ -271,7 +280,14 @@ Stat* Cntxt::createStat( Grp* grp, PWR_AttrName name, PWR_AttrStat stat )
         }
     }
 
-    return new DeviceStat( this, grp, name, op, hz );
+    Stat* stat = NULL;
+    try {
+        stat = new DeviceStat( this, grp, name, op, hz );
+    }
+    catch(int) {
+    }
+
+    return stat; 
 }
 
 int Cntxt::destroyStat( Stat* stat )
