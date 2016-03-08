@@ -18,9 +18,9 @@ AC_DEFUN([PWRAPI_CHECK_POWERINSIGHT], [
                          POWERINSIGHT_LDFLAGS=
                          POWERINSIGHT_LIBS="-lpidev -lpthread"
                          LIBS="$LIBS $POWERINSIGHT_LIBS"],
-                                [POWERINSIGHT_CPPFLAGS="-I$with_powerinsight/include"
+                                [POWERINSIGHT_CPPFLAGS="-I$with_powerinsight"
                  CPPFLAGS="$POWERINSIGHT_CPPFLAGS $CPPFLAGS"
-                 POWERINSIGHT_LDFLAGS="-L$with_powerinsight/lib"
+                 POWERINSIGHT_LDFLAGS="-L$with_powerinsight"
                  LDFLAGS="$POWERINSIGHT_LDFLAGS $LDFLAGS"
                  POWERINSIGHT_LIBS="-lpidev -lpthread"
                  LIBS="$LIBS $POWERINSIGHT_LIBS"]
