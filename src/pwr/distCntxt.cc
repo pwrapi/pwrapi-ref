@@ -229,18 +229,22 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
         opFunc = sumOp;
 		if ( ! type.compare("Float") ) {
 			vOp = FP_ADD;
-		} else {
+		} else if ( ! type.compare("Integer") ) {
 			vOp = INT_ADD;
-		}
+		} else {
+            assert(0);
+        }
 
     } else if ( ! op.compare("AVG") ) {
         opFunc = avgOp;
 
 		if ( ! type.compare("Float") ) {
 			vOp = FP_AVG;
-		} else {
+		} else if ( ! type.compare("Integer") ) {
 			vOp = INT_AVG;
-		}
+		} else {
+            assert(0);
+        }
     }
 
 	AttrInfo* attrInfo = new AttrInfo( opFunc, timeOp, vOp );
