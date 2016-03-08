@@ -229,7 +229,7 @@ double Cntxt::findHz( Object* obj, PWR_AttrName name )
         return 0;
     }
 
-    double hz = atof(  tmp.c_str() );	
+    double hz = strtof(  tmp.c_str(), (char**)NULL );	
     if ( 0 == hz ) {
         return 0;
     }

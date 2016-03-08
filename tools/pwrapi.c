@@ -58,7 +58,7 @@ int main( int argc, char* argv[] )
     PWR_Obj self;
     PWR_Cntxt cntxt;
     PWR_Grp grp;
-    time_t time;
+    unsigned long time;
     double start = 0.0, val = 0.0;
     PWR_Time start_ts = 0, val_ts = 0;
     struct timeval t0, t1;
@@ -194,7 +194,7 @@ int main( int argc, char* argv[] )
                 printf( "%s: ", name );
 
                 for( k = 0; k < numattrs; k++ ) {
-                    if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
+                    if( !i ) {
                         start = vals[k];
                         start_ts = vals_ts[k];
                     }
