@@ -194,7 +194,7 @@ int main( int argc, char* argv[] )
                 printf( "%s: ", name );
 
                 for( k = 0; k < numattrs; k++ ) {
-                    if( !i && attrs[k] == PWR_ATTR_ENERGY ) {
+                    if( !i ) {
                         start = vals[k];
                         start_ts = vals_ts[k];
                     }
