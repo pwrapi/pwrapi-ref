@@ -3,23 +3,23 @@ AC_DEFUN([PWRAPI_CHECK_POWERINSIGHT], [
 
         pwrapi_check_powerinsight_happy="yes"
 
-        CPPFLAGS_saved="$CPPFLAGS"
+        CFLAGS_saved="$CFLAGS"
         LDFLAGS_saved="$LDFLAGS"
         LIBS_saved="$LIBS"
         POWERINSIGHT_LIBS=""
 
         AS_IF([test -z "$with_powerinsight"],
-                [POWERINSIGHT_CPPFLAGS=
+                [POWERINSIGHT_CFLAGS=
                  POWERINSIGHT_LDFLAGS=
                  POWERINSIGHT_LIBS="-lpidev -lpthread"
                  LIBS="$LIBS $POWERINSIGHT_LIBS"],
                 [       AS_IF([test "x$with_powerinsight" = "xyes"],
-                                [POWERINSIGHT_CPPFLAGS=
+                                [POWERINSIGHT_CFLAGS=
                          POWERINSIGHT_LDFLAGS=
                          POWERINSIGHT_LIBS="-lpidev -lpthread"
                          LIBS="$LIBS $POWERINSIGHT_LIBS"],
-                                [POWERINSIGHT_CPPFLAGS="-I$with_powerinsight"
-                 CPPFLAGS="$POWERINSIGHT_CPPFLAGS $CPPFLAGS"
+                                [POWERINSIGHT_CFLAGS="-I$with_powerinsight"
+                 CFLAGS="$POWERINSIGHT_CFLAGS $CFLAGS"
                  POWERINSIGHT_LDFLAGS="-L$with_powerinsight"
                  LDFLAGS="$POWERINSIGHT_LDFLAGS $LDFLAGS"
                  POWERINSIGHT_LIBS="-lpidev -lpthread"
@@ -41,11 +41,11 @@ AC_DEFUN([PWRAPI_CHECK_POWERINSIGHT], [
 
         AC_LANG_RESTORE
 
-        CPPFLAGS="$CPPFLAGS_saved"
+        CFLAGS="$CFLAGS_saved"
         LDFLAGS="$LDFLAGS_saved"
         LIBS="$LIBS_saved"
 
-        AC_SUBST([POWERINSIGHT_CPPFLAGS])
+        AC_SUBST([POWERINSIGHT_CFLAGS])
         AC_SUBST([POWERINSIGHT_LDFLAGS])
         AC_SUBST([POWERINSIGHT_LIBS])
 
