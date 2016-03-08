@@ -43,7 +43,8 @@ struct Event : public EventBase {
         return *this;
     }
 
-	EventType	type;
+	//EventType	type;
+    uint32_t    type;
     EventId   	id;
     int         status;
 
