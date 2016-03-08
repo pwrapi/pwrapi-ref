@@ -194,11 +194,13 @@ int main( int argc, char* argv[] )
                 printf( "%s: ", name );
 
                 for( k = 0; k < numattrs; k++ ) {
-                    if( !i ) {
-                        start = vals[k];
-                        start_ts = vals_ts[k];
+                    if( !k ) {
+                        if( !i ) {
+                            start = vals[k];
+                            start_ts = vals_ts[k];
+                        }
+                        time = vals_ts[k] - start_ts;
                     }
-                    if( !k ) time = vals_ts[k] - start_ts;
                     if( attrs[k] == PWR_ATTR_ENERGY )
                         printf( "%lf ", vals[k] - start );
                     printf( "%lf ", vals[k] );
