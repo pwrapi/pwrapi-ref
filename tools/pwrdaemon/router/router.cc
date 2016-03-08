@@ -10,17 +10,14 @@
 */
 
 #include "pwr_config.h"
-#ifdef HAVE_PYTHON
-#include "pyConfig.h"
-#endif
 #define __STDC_FORMAT_MACROS
+#include <string.h>
 #include <inttypes.h>
 #include <sys/utsname.h>
 #include <string>
 #include <fstream>
 #include <debug.h>
 #include "router.h"
-#include "xmlConfig.h"
 #include "allocEvent.h"
 #include "routerEvent.h"
 #include "routerCore.h"
@@ -41,18 +38,6 @@ Router::Router( int argc, char* argv[] ) :
         _DbgFlags = atoi( getenv( "POWERAPI_DEBUG" ) );
     }
 	initArgs( argc, argv, &m_args );
-	DBGX("config='%s'\n",m_args.pwrApiConfig.c_str() );
-
-	size_t pos = m_args.pwrApiConfig.find_last_of( "." );
-	if ( 0 == m_args.pwrApiConfig.compare(pos,4,".xml") ) {	
-		m_config = new PowerAPI::XmlConfig( m_args.pwrApiConfig );
-#ifdef HAVE_PYTHON
-	} else if ( 0 == m_args.pwrApiConfig.compare(pos,3,".py") ) {
-		m_config = new PowerAPI::PyConfig( m_args.pwrApiConfig );
-#endif
-	} else {
-		assert(0);
-	}
 
 	m_chanSelect = getChannelSelect( "TCP" );
 
@@ -245,7 +230,6 @@ static void initArgs( int argc, char* argv[], Args* args )
         {"routerInfo"           , required_argument, NULL, RTR_INFO },
         {"routerId"             , required_argument, NULL, RTR_ID },
         {"routeTable"           , required_argument, NULL, RTR_TABLE },
-		{"pwrApiConfig"     	, required_argument, NULL, PWRAPI_CONFIG },
         {0,0,0,0}
     };
 
@@ -265,9 +249,6 @@ static void initArgs( int argc, char* argv[], Args* args )
           case RTR_TABLE:
             args->routeTable = optarg;
             break;
-		  case PWRAPI_CONFIG:
-			args->pwrApiConfig = optarg;
-			break;
           case RTR_TYPE:
 			assert( ! args->coreArgs ); 
 			if ( 0 == strcmp( optarg, "torus" ) ) {

@@ -43,7 +43,6 @@ struct Args {
 	std::string routeTable;
     std::string	serverPort;
     std::string clientPort;
-	std::string pwrApiConfig;
 
 	RouterCoreArgs* coreArgs;
 };
@@ -189,7 +188,6 @@ class Router : public EventGenerator {
 
 
   private:
-	PowerAPI::Config*               m_config;
 	ChannelSelect* 			 		m_chanSelect;
 
 	std::map<EventChannel*,Server*>	m_serverMap;
