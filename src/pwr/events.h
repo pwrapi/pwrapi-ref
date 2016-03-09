@@ -108,7 +108,7 @@ struct CommReqEvent : public CommEvent {
 		serialize_in(buf);
 	}
 
-	size_t grpIndex;	
+	uint64_t grpIndex;	
     std::vector<PWR_AttrName> attrName;
     std::vector< uint64_t >   setValues;
 	std::vector<ValueOp> valueOp;
@@ -137,7 +137,7 @@ struct CommRespEvent : public CommEvent {
 
     std::vector< std::vector<PWR_Time> > timeStamp;
     std::vector< std::vector<uint64_t> > value;
-	size_t grpIndex; 
+	uint64_t grpIndex; 
 
 	std::vector< ObjID >  		errObj;
 	std::vector< PWR_AttrName > errAttr;
@@ -221,7 +221,7 @@ struct CommGetSamplesReqEvent : public CommEvent {
     PWR_AttrName attrName;
 	PWR_Time startTime;
 	double period;
-	unsigned int count;
+	uint32_t count;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> attrName;
@@ -256,12 +256,12 @@ struct CommGetSamplesRespEvent : public CommEvent {
     }
 
 	PWR_Time startTime;
-	unsigned int count;
+	uint32_t count;
 	std::vector< uint64_t > data;
 
 	std::vector< ObjID >  		errObj;
 	std::vector< PWR_AttrName > errAttr;
-	std::vector< int >   		errValue;
+	std::vector< int32_t >   		errValue;
 
 	virtual void serialize_in( SerialBuf& buf ) {
 		buf >> startTime;
