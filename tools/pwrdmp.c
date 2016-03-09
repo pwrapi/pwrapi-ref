@@ -58,11 +58,9 @@ int main( int argc, char* argv[] )
 {
     PWR_Obj self;
     PWR_Cntxt cntxt;
-    PWR_Grp grp;
 	int rc; 
 
     int option;
-    unsigned int i, j, samples = 1, freq = 1, numattrs = 0;
     PWR_ObjType type = PWR_OBJ_INVALID;
 
     static char usage[] =
