@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="Dummy" lib="libdummy_dev"/>
+</Plugins>
+
+<Devices>
+    <device name="Dummy-node1" plugin="Dummy" initString="node1"/>
+    <device name="Dummy-node2" plugin="Dummy" initString="node2"/>
+</Devices>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" hz="10.0">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0">
+            <src type="child" name="cab0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" hz="10.0" >
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0" >
+            <src type="child" name="board0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0" type="Board">
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" hz="10.0" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node0" />
+        <child name="node1" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node0" type="Node">
+
+    <devices>
+        <dev name="dev1" device="Dummy-node1" openString="node0" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" hz="10.0" >
+            <src type="device" name="dev1" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0" >
+            <src type="device" name="dev1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node1" type="Node">
+
+    <devices>
+        <dev name="dev1" device="Dummy-node1" openString="node1" /> 
+    </devices>
+
+    <attributes>
+        <attr name="ENERGY" op="SUM" hz="10.0" >
+            <src type="device" name="dev1" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0" >
+            <src type="device" name="dev1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+</Objects>
+</System>
