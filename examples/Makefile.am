@@ -18,6 +18,7 @@ examples_configdir = $(examplesdir)/config
 examples_scriptdir = $(examplesdir)/script
 examples_DATA = snippet.c snippet.py dummyTest.c dummyTest.py simpleTest.cc
 examples_config_DATA =	config/cpu-node.xml \
+			config/compliance.xml \
 			config/dummySystem.xml \
 			config/pg-node.xml \
 			config/piapi-node.xml \
