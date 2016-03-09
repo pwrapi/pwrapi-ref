@@ -17,6 +17,7 @@
 #include <string>
 #include <fstream>
 #include <debug.h>
+#include <stdlib.h>
 #include "router.h"
 #include "allocEvent.h"
 #include "routerEvent.h"
