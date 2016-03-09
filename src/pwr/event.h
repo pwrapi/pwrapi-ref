@@ -46,7 +46,7 @@ struct Event : public EventBase {
 	//EventType	type;
     uint32_t    type;
     EventId   	id;
-    int         status;
+    int32_t    status;
 
 	virtual void serialize_out( SerialBuf& buf ) {
 		buf << id;

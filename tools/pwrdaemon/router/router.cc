@@ -159,7 +159,7 @@ void Router::sendEvent( AppID dest, Event* ev ) {
 	} else {
 		DBGX("rtrId %d\n",m_args.rtrId);
 		AppID src = APP_ID( m_args.rtrId, -1 );
-		DBGX("create RouterEvent src=%#lx dest=%#lx\n",src,dest);
+		DBGX("create RouterEvent src=%#"PRIx64" dest=%#"PRIx64"\n",src,dest);
 		rev = new RouterEvent( src, dest, ev );
 		ev = rev;
 	}
