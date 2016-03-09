@@ -349,6 +349,11 @@ int PWR_StatGetValues( PWR_Stat stat, double values[],
 	return STAT(stat)->getValues( values, statTimes );
 }
 
+int PWR_StatGetReduce( PWR_Stat, PWR_AttrStat, int* index, double* val, PWR_TimePeriod* )
+{
+	return PWR_RET_NOT_IMPLEMENTED;
+}
+
 int PWR_GetMajorVersion( )
 {
     return PWR_MAJOR_VERSION;

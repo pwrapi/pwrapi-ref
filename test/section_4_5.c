@@ -27,21 +27,20 @@ int section_4_5_test( void )
     unsigned int num_meta = 0;
     char str[PWR_MAX_STRING_LEN];
 
-	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
+    rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     printf( "\tPWR_CntxtInit - application context: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: initialization of PowerAPI context failed\n" );
         return rc;
     }
 
-	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     printf( "\tPWR_CntxtGetEntryPoint: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting self from PowerAPI context failed\n" );
         return rc;
     }
 
-#if 0
     rc = PWR_ObjAttrGetMeta( self, PWR_ATTR_POWER, PWR_MD_SAMPLE_RATE, &val );
     printf( "\tPWR_ObjAttrGetMeta - PWR_MD_SAMPLE_RATE of PWR_ATTR_POWER: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
@@ -71,7 +70,6 @@ int section_4_5_test( void )
             return rc;
         }
     }
-#endif
 
     rc = PWR_CntxtDestroy( cntxt );
     printf( "\tPWR_CntxtDestroy - application context: %s\n", RESULT( rc ) );
