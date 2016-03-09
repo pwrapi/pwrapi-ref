@@ -20,6 +20,7 @@ script:
         - export POWERAPI_ROOT=plat
         - cd bin
         - ./pwrapi -a P -t P
+        - ./compliance
 notifications:
     email:
         recipients:

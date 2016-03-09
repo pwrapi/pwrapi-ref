@@ -30,7 +30,7 @@
 
 </obj>
 
-<obj name="plat.cab0" type="Cabinet" >
+<obj name="plat.cab0" type="Cabinet">
 
     <attributes>
         <attr name="ENERGY" op="SUM" hz="10.0" >
@@ -45,7 +45,7 @@
         <child name="board0" />
     </children>
 
-</obj >
+</obj>
 
 <obj name="plat.cab0.board0" type="Board">
 
@@ -65,7 +65,7 @@
         <child name="node1" />
     </children>
 
-</obj >
+</obj>
 
 <obj name="plat.cab0.board0.node0" type="Node">
 
@@ -82,7 +82,7 @@
         </attr>
     </attributes>
 
-</obj >
+</obj>
 
 <obj name="plat.cab0.board0.node1" type="Node">
 
@@ -99,7 +99,7 @@
         </attr>
     </attributes>
 
-</obj >
+</obj>
 
 </Objects>
 </System>
