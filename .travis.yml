@@ -6,8 +6,6 @@ os:
     - linux
 before_install:
 install:
-        - git clone https://github.com/pwrapi/pwrapi-ref
-        - cd pwrapi-ref
         - ./autogen.sh
         - mkdir build
         - cd build
