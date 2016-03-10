@@ -12,6 +12,9 @@
 #ifndef _RTR_COMM_RESP_EVENT_H
 #define _RTR_COMM_RESP_EVENT_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <events.h>
 #include <eventChannel.h>
 #include <debug.h>
@@ -30,7 +33,7 @@ class RtrCommRespEvent: public  CommRespEvent {
 
 	bool process( EventGenerator* _rtr, EventChannel* ) {
 
-		DBGX("id=%p status=%d grpIndex=%" PRIu64 "\n",
+		DBGX("id=%p status=%"PRIi32" grpIndex=%" PRIu64 "\n",
 								(void*)id, status, grpIndex );
 
         CommReqInfo* info = (CommReqInfo*) id;
@@ -41,7 +44,7 @@ class RtrCommRespEvent: public  CommRespEvent {
 
             CommRespEvent* resp = static_cast<CommRespEvent*>(info->resp);
 			if ( Get == info->ev->op ) {
-				DBGX("index %"PRIu64" is ready, num attrs %lu\n",
+				DBGX("index %"PRIu64" is ready, num attrs %zu\n",
 										grpIndex, info->valueOp.size() );
 				resp->timeStamp[grpIndex].resize( info->valueOp.size() );
 				resp->value[grpIndex].resize( info->valueOp.size() );
@@ -82,7 +85,7 @@ class RtrCommRespEvent: public  CommRespEvent {
 			resp->grpIndex = 0;
 			resp->commID = 0;
 
-			DBGX("pending %"PRIu64"\n",info->pending);
+			DBGX("pending %zu\n",info->pending);
 			--info->pending;
 
 			if ( 0 == info->pending ) {

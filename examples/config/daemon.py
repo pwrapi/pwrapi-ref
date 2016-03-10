@@ -114,7 +114,6 @@ def configRtr( myNode, nidMap, config, routeFile, nodesPerBoard, rootRtr ):
 		tmp += calcRtrLeaf( myNode, nidMap, nodesPerBoard,rootRtr  ) 
 
 	tmp += ' --rtr.routeTable=' + routeFile
-	tmp += ' --rtr.pwrApiConfig=' + config
 
 	return tmp
 

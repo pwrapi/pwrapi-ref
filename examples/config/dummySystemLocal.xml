@@ -45,7 +45,7 @@
 
 </obj >
 
-<obj name="plat.cab0.board0" type="Board" location="plat.cab0.board0-daemon">
+<obj name="plat.cab0.board0" type="Board" >
 
     <attributes>
         <attr name="ENERGY" op="SUM" hz="10.0" >
@@ -61,7 +61,7 @@
 
 </obj >
 
-<obj name="plat.cab0.board0.node0" type="Node" location="plat.cab0.board0.node0-daemon" >
+<obj name="plat.cab0.board0.node0" type="Node"  >
 
     <devices>
         <dev name="dev1" device="Dummy-node1" openString="node0" /> 
@@ -78,7 +78,7 @@
 
 </obj >
 
-<obj name="plat.cab0.board0.node1" type="Node" location="plat.cab0.board0.node1-daemon" >
+<obj name="plat.cab0.board0.node1" type="Node"  >
 
     <devices>
         <dev name="dev1" device="Dummy-node1" openString="node1" /> 

@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
+#include <stdlib.h>
 #include "router.h"
 #include "server.h"
 #include "logger.h"
@@ -98,7 +99,10 @@ int main( int argc, char* argv[] )
 
 	rc = pthread_mutex_lock(&mutex);	
 	assert(0==rc);
-	kill(getppid(),SIGUSR1);
+
+    if ( getenv( "POWERRT_SIGNAL" ) ) {
+	    kill(getppid(),SIGUSR1);
+    }
 
 	while ( srvrThreads.size() ) {
 		//printf("wait for server thread to exit\n");

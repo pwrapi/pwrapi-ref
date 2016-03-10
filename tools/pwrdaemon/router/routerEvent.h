@@ -24,7 +24,7 @@ struct RouterEvent : public Event {
         Event( Router2Router ), src(_src), dest( _dest)
 	{	
 		ev->serialize_out( payload );
-	    eventType = ev->type;
+	    eventType = (EventType) ev->type;
 	}
 
     RouterEvent( SerialBuf& buf ) {
@@ -33,7 +33,7 @@ struct RouterEvent : public Event {
 
 	void initPayload( Event* ev ) {
 		ev->serialize_out( payload );
-		eventType = ev->type;
+		eventType = (EventType) ev->type;
 	}
 
 	Event* getPayload( AllocFuncPtr alloc ) {

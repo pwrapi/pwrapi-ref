@@ -14,7 +14,7 @@
 
 #define RESULT( X ) \
     (X >= PWR_RET_SUCCESS ) ? "SUCCESS" : \
-    ((X == PWR_RET_NOT_IMPLEMENTED) ? "NOT IMPLENTED" : "FAILURE")
+    ((X == PWR_RET_NOT_IMPLEMENTED) ? "NOT IMPLEMENTED" : "FAILURE")
 
 int section_4_1_test( void );
 int section_4_2_test( void );

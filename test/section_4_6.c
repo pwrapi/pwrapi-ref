@@ -32,14 +32,14 @@ int section_4_6_test( void )
     double vals[NUM_ATTR(attrs)];
     PWR_TimePeriod tps[NUM_ATTR(attrs)];
 
-	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
+    rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     printf( "\tPWR_CntxtInit - application context: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: initialization of PowerAPI context failed\n" );
         return rc;
     }
 
-	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     printf( "\tPWR_CntxtGetEntryPoint: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting self from PowerAPI context failed\n" );
@@ -47,7 +47,7 @@ int section_4_6_test( void )
     }
 
 #if 0
-    rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_avg );
+    rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, &stat_avg );
     printf( "\tPWR_CreateStat - PWR_ATTR_STAT_AVG of PWR_ATTR_POWER: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: creating stat for object failed\n" );
@@ -82,7 +82,7 @@ int section_4_6_test( void )
         return rc;
     }
 
-    rc = PWR_StatGetReduce( stat, PWR_ATTR_STAT_MIN, &i, vals, tps );
+    rc = PWR_StatGetReduce( stat_avg, PWR_ATTR_STAT_MIN, &i, vals, tps );
     printf( "\tPWR_StatGetReduce - PWR_ATTR_STAT_MIN of average power: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: stoping stat for object failed\n" );
@@ -103,7 +103,7 @@ int section_4_6_test( void )
         return rc;
     }
 
-    rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, stat_max );
+    rc = PWR_ObjCreateStat( self, PWR_ATTR_POWER, PWR_ATTR_STAT_AVG, &stat_max );
     printf( "\tPWR_CreateStat - PWR_ATTR_STAT_MAX of PWR_ATTR_POWER, PWR_ATTR_ENERGY: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: creating stat for objects failed\n" );

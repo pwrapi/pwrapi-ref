@@ -38,6 +38,7 @@ def initDaemonEnv( nidlist ):
 	daemonEnv += 'POWERRT_NUMNODES={0} '.format(machine.numNodes)
 	daemonEnv += 'POWERRT_NODES_PER_BOARD={0} '.format(machine.nodesPerBoard)
 	daemonEnv += 'POWERRT_BOARDS_PER_CAB={0} '.format(machine.boardsPerCab)
+	daemonEnv += 'POWERRT_SIGNAL=yes '
 	daemonEnv += 'POWERAPI_DEBUG={0} '.format(daemonDebug) 
 	daemonEnv += 'LD_LIBRARY_PATH={0} '.format(ldLibraryPath) 
 	return daemonEnv

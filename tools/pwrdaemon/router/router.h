@@ -12,6 +12,9 @@
 #ifndef _ROUTER_H
 #define _ROUTER_H
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <map>
 #include <vector>
 #include <set>
@@ -43,7 +46,6 @@ struct Args {
 	std::string routeTable;
     std::string	serverPort;
     std::string clientPort;
-	std::string pwrApiConfig;
 
 	RouterCoreArgs* coreArgs;
 };
@@ -152,7 +154,7 @@ class Router : public EventGenerator {
 		if ( m_routeTable.find(id) != m_routeTable.end() ) {
 			retval = m_routeTable[id];
 		}
-		DBGX("name=`%s` AppID=%lx\n", id.c_str(), retval  )
+		DBGX("name=`%s` AppID=%"PRIx64"\n", id.c_str(), retval  )
     	return retval;
 	}
 
@@ -189,7 +191,6 @@ class Router : public EventGenerator {
 
 
   private:
-	PowerAPI::Config*               m_config;
 	ChannelSelect* 			 		m_chanSelect;
 
 	std::map<EventChannel*,Server*>	m_serverMap;

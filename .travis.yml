@@ -6,8 +6,6 @@ os:
     - linux
 before_install:
 install:
-        - git clone https://github.com/pwrapi/pwrapi-ref
-        - cd pwrapi-ref
         - ./autogen.sh
         - mkdir build
         - cd build
@@ -16,10 +14,11 @@ install:
         - make install
 script:
         - cd ../install
-        - export POWERAPI_CONFIG=`pwd`/share/doc/pwrapi/examples/config/dummySystem.xml
+        - export POWERAPI_CONFIG=`pwd`/share/doc/pwrapi/examples/config/compliance.xml
         - export POWERAPI_ROOT=plat
         - cd bin
         - ./pwrapi -a P -t P
+        - ./compliance
 notifications:
     email:
         recipients:

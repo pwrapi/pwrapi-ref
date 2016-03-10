@@ -30,7 +30,7 @@ class XmlConfig : public Config {
 	std::string findAttrOp( std::string, PWR_AttrName );
 	std::string findAttrHz( std::string, PWR_AttrName );
 
-	std::string findAttrType( std::string, PWR_AttrName ) { return ""; }
+	std::string findAttrType( std::string, PWR_AttrName ) { return "Float"; }
 	std::deque< std::string > findChildren( std::string );
 	std::deque< Config::ObjDev > findObjDevs( std::string, PWR_AttrName );
 	std::deque< Config::Plugin > findPlugins();

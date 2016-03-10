@@ -11,16 +11,15 @@
     <device name="Dummy-node2" plugin="Dummy" initString="node2"/>
 </Devices>
 
-<Locations>
-    <location name="daemon-cab0" type="rpc" config="localhost:32000" />
-</Locations>
-
 <Objects>
 
 <obj name="plat" type="Platform">
 
     <attributes>
         <attr name="ENERGY" op="SUM" hz="10.0">
+            <src type="child" name="cab0" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0">
             <src type="child" name="cab0" />
         </attr>
     </attributes>
@@ -31,10 +30,13 @@
 
 </obj>
 
-<obj name="plat.cab0" type="Cabinet" >
+<obj name="plat.cab0" type="Cabinet">
 
     <attributes>
         <attr name="ENERGY" op="SUM" hz="10.0" >
+            <src type="child" name="board0" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0" >
             <src type="child" name="board0" />
         </attr>
     </attributes>
@@ -43,12 +45,16 @@
         <child name="board0" />
     </children>
 
-</obj >
+</obj>
 
-<obj name="plat.cab0.board0" type="Board" location="plat.cab0.board0-daemon">
+<obj name="plat.cab0.board0" type="Board">
 
     <attributes>
         <attr name="ENERGY" op="SUM" hz="10.0" >
+            <src type="child" name="node0" />
+            <src type="child" name="node1" />
+        </attr>
+        <attr name="POWER" op="SUM" hz="10.0" >
             <src type="child" name="node0" />
             <src type="child" name="node1" />
         </attr>
@@ -59,9 +65,9 @@
         <child name="node1" />
     </children>
 
-</obj >
+</obj>
 
-<obj name="plat.cab0.board0.node0" type="Node" location="plat.cab0.board0.node0-daemon" >
+<obj name="plat.cab0.board0.node0" type="Node">
 
     <devices>
         <dev name="dev1" device="Dummy-node1" openString="node0" /> 
@@ -76,9 +82,9 @@
         </attr>
     </attributes>
 
-</obj >
+</obj>
 
-<obj name="plat.cab0.board0.node1" type="Node" location="plat.cab0.board0.node1-daemon" >
+<obj name="plat.cab0.board0.node1" type="Node">
 
     <devices>
         <dev name="dev1" device="Dummy-node1" openString="node1" /> 
@@ -93,7 +99,7 @@
         </attr>
     </attributes>
 
-</obj >
+</obj>
 
 </Objects>
 </System>

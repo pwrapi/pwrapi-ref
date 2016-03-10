@@ -34,14 +34,14 @@ int section_4_4_test( void )
     PWR_Status stat;
     PWR_AttrAccessError err; 
 
-	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
+    rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "Application", &cntxt );
     printf( "\tPWR_CntxtInit - application context: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: initialization of PowerAPI context failed\n" );
         return rc;
     }
 
-	rc = PWR_CntxtGetEntryPoint( cntxt, &self );
+    rc = PWR_CntxtGetEntryPoint( cntxt, &self );
     printf( "\tPWR_CntxtGetEntryPoint: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: getting self from PowerAPI context failed\n" );
@@ -76,6 +76,7 @@ int section_4_4_test( void )
         printf( "\t\tError: object attributes control failed\n" );
         return rc;
     }
+#endif
 
     rc = PWR_ObjAttrIsValid( self, PWR_ATTR_POWER );
     printf( "\tPWR_ObjAttrIsValid - PWR_ATTR_POWER of self: %s\n", RESULT( rc ) );
@@ -83,7 +84,6 @@ int section_4_4_test( void )
         printf( "\t\tError: object attribute valid check failed\n" );
         return rc;
     }
-#endif
 
     rc = PWR_GrpCreate( cntxt, &grp );
     printf( "\tPWR_GrpCreate: %s\n", RESULT( rc ) );
