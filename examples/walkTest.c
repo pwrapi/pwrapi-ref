@@ -48,12 +48,12 @@ void walk( PWR_Obj node, int level )
     PWR_ObjGetName( node, name, 100 );
 	PWR_ObjGetType( node, &objType );
 
-	char* indent = malloc( level*4);
+	char* indent = malloc( level*4 + 1);
 	int i;
 	for ( i = 0; i < level*4; i++) {
 		indent[i] = ' ';
 	}
-	indent[level*4 -1 ] = 0;
+	indent[level*4 ] = 0;
 
     printf("%sname=`%s` type=%s\n", indent, name,PWR_ObjGetTypeString( objType ) ); 
 

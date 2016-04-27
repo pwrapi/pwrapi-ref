@@ -45,7 +45,7 @@ HwlocConfig::HwlocConfig( std::string file )
 
 	initAttributes( m_root );
 
-	assert(0);
+	//assert(0);
 	unlock();
 }
 
@@ -284,7 +284,7 @@ void HwlocConfig::print_children(hwloc_topology_t topology, hwloc_obj_t obj,
     		//printf("%*s%s\n", 2*depth, "", string);
 			{	
 				std::stringstream tmp;
-				tmp << getName(obj->type ) << obj->logical_index;
+				tmp << getName(obj->type ) << obj->os_index;
 				TreeNode* me = new TreeNode( parent,  
 					convertType( obj->type ), tmp.str() );
 				parent->children.push_back(me);
