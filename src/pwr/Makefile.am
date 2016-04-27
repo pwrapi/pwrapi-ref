@@ -10,6 +10,14 @@ libpwr_la_LDFLAGS = $(LDFLAGS) -version-info 1:0:1
 libpwr_la_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src/tinyxml2 -Wall -fno-strict-aliasing
 libpwr_la_LIBADD = $(top_builddir)/src/tinyxml2/libtinyxml2.la
 
+if HAVE_HWLOC
+include_HEADERS += hwlocConfig.h
+libpwr_la_SOURCES += hwlocConfig.cc
+libpwr_la_CPPFLAGS += $(HWLOC_CPPFLAGS)
+libpwr_la_LDFLAGS += $(HWLOC_LDFLAGS)
+libpwr_la_LIBADD += $(HWLOC_LIBS)
+endif
+
 if HAVE_PYTHON
 include_HEADERS += pyConfig.h
 libpwr_la_SOURCES += pyConfig.cc

@@ -14,6 +14,9 @@
 #if HAVE_PYTHON
 #include "pyConfig.h"
 #endif
+#if HAVE_HWLOC
+#include "hwlocConfig.h"
+#endif
 #include <stdlib.h>
 #include <string>
 #include <assert.h>
@@ -84,6 +87,10 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
 #if HAVE_PYTHON
     } else if ( 0 == configFile.compare(pos,3,".py") ) {
         m_config = new PyConfig( configFile );
+#endif
+#if HAVE_HWLOC
+    } else if ( 0 == configFile.compare(pos,6,".hwloc") ) {
+        m_config = new HwlocConfig( configFile );
 #endif
     } else {
 		assert(0);
