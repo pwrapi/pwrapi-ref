@@ -36,7 +36,9 @@ m4_include([config/pwrapi_powerinsight.m4])
 m4_include([config/pwrapi_powergadget.m4])
 m4_include([config/acx_mpi.m4])
 m4_include([config/pwrapi_mpi.m4])
+m4_include([config/pwrapi_hwloc.m4])
 
+PWRAPI_CHECK_HWLOC([pwrapi_have_hwloc="yes"], [pwrapi_have_hwloc="no"])
 PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
 PWRAPI_CHECK_ULXMLRPCPP([pwrapi_have_xmlrpc="yes"], [pwrapi_have_xmlrpc="no"])
 
