@@ -18,7 +18,7 @@ export LD_LIBRARY_PATH="${ROOT}/build/install/lib:${LD_LIBRARY_PATH}"
 export DYLD_LIBRARY_PATH="${ROOT}/build/install/lib:${DYLD_LIBRARY_PATH}"
 
 export POWERAPI_DEBUG=0
-export POWERAPI_ROOT="plat.cab0.board0"
+export POWERAPI_ROOT="plat.cab0.node0"
 export POWERAPI_CONFIG="${ROOT}/examples/config/dummySystemLocal.xml"
 
 export POWERRT_MACHINE=dummy 
