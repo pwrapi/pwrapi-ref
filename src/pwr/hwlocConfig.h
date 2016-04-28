@@ -12,26 +12,41 @@
 #ifndef _PWR_HWLOCCONFIG_H
 #define _PWR_HWLOCCONFIG_H
 
+#include <map>
 #include <hwloc.h>
 #include <pthread.h>
 #include "pwrtypes.h"
 #include "config.h"
+#include "pluginMeta.h"
+
 #include <vector>
 
 
 namespace PowerAPI {
 
 class HwlocConfig : public Config {
+	struct Attr {
+		std::string op;
+		std::string hz;
+		std::string type;
+		std::string device;
+		std::string openString;
+	};
+
 	struct TreeNode {
-		TreeNode( TreeNode* _parent, PWR_ObjType _type, std::string _name ) : 
-				parent(_parent), type(_type), name(_name)  {}
+		TreeNode( TreeNode* _parent, PWR_ObjType _type,
+				std::string _name, unsigned _global_index ) : 
+				parent(_parent), type(_type), name(_name), 
+				global_index( _global_index )  {}
 		TreeNode* parent;
 		PWR_ObjType type;
 		std::string name;
+		unsigned global_index;
+		std::map<PWR_AttrName,Attr> attrs;
 		std::vector<TreeNode*> children;
 	};
-
   public:
+
 	HwlocConfig( std::string file );
 	~HwlocConfig();
 	
@@ -51,7 +66,8 @@ class HwlocConfig : public Config {
 
   private:
 
-	void initAttributes( TreeNode* );
+	PluginMeta* m_meta;
+	void initAttributes( TreeNode*, PluginMeta& );
 
 	TreeNode* findObj( TreeNode*, std::string );
 	std::string getFullName( TreeNode* node ); 
@@ -65,11 +81,11 @@ class HwlocConfig : public Config {
 		//printf("unlocked %p\n",pthread_self());
 	}
 
-	void print_children(hwloc_topology_t topology, hwloc_obj_t obj,
-		                           int depth, TreeNode* parent );
+	void initHierarchy( hwloc_obj_t obj, TreeNode* parent );
 	void print( TreeNode* );
 	TreeNode*	m_root;
     static pthread_mutex_t	m_mutex;
+	std::deque< Config::Plugin > m_libs;
 };
 
 }

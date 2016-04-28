@@ -15,6 +15,17 @@
 #include <string.h>
 #include "pwrtypes.h"
 
+static inline int canAggregate( PWR_AttrName name )
+{
+	switch( name ) {
+	  case PWR_ATTR_ENERGY:
+		  return 1;
+      default:
+		  break;
+	}
+	return 0;
+}
+
 static inline const char* objTypeToString( PWR_ObjType type )
 {
     switch( type ) {
@@ -25,7 +36,7 @@ static inline const char* objTypeToString( PWR_ObjType type )
     case PWR_OBJ_NODE:        return "Node";
     case PWR_OBJ_SOCKET:      return "Socket";
     case PWR_OBJ_CORE:        return "Core";
-    case PWR_OBJ_POWER_PLANE: return "Power Plane";
+    case PWR_OBJ_POWER_PLANE: return "PowerPlane";
     case PWR_OBJ_MEM:         return "Memory";
     case PWR_OBJ_NIC:         return "Nic";
     case PWR_OBJ_INVALID:     return "Invalid";

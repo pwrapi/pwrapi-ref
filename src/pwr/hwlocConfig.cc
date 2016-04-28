@@ -11,12 +11,15 @@
 
 #include "hwlocConfig.h"
 
+#include <sys/utsname.h>
 #include <assert.h>
 #include <sstream>
+#include <iostream>
+#include <fstream>
+#include <hwloc.h>
 
 #include "debug.h"
 #include "util.h"
-#include <hwloc.h>
 
 using namespace PowerAPI;
 
@@ -39,13 +42,54 @@ HwlocConfig::HwlocConfig( std::string file )
     /* Perform the topology detection. */
     hwloc_topology_load(topology);
 
-	m_root = new TreeNode( NULL, PWR_OBJ_PLATFORM, "plat" );
-    print_children(topology, hwloc_get_root_obj(topology), 0, m_root );
+	m_root = new TreeNode( NULL, PWR_OBJ_PLATFORM, "plat", 0 );
+	assert(m_root);
+    initHierarchy( hwloc_get_root_obj(topology), m_root );
 	print( m_root );
 
-	initAttributes( m_root );
+	std::string line;
+	std::ifstream config;
 
-	//assert(0);
+	config.open( file.c_str() );
+
+	unsigned count = 0;
+	while ( getline(config,line) ) {
+		Config::Plugin tmp;
+
+		// there is an extra level of indirection between the library and
+		// attribute that is not longer needed but the code has not been 
+		// changed
+		std::stringstream name;
+		name << "Plugin" << count++;
+		tmp.name = name.str();
+		tmp.lib = line;
+		m_libs.push_back(tmp);
+	}
+	config.close();
+
+	// the above code is written to allow multiple libraries but, for now
+	// the rest of the code expects 1 plugin library
+	assert( 1 == m_libs.size() );
+   	struct utsname name;
+   	int rc = uname( &name );
+    assert( 0 == rc );
+    std::string os( name.sysname);
+
+	DBGX2(DBG_CONFIG,"lib='%s' name='%s'\n",
+					m_libs.front().lib.c_str(),m_libs.front().name.c_str() ); 
+	
+	std::string ext;
+    if ( 0 == os.compare("Darwin") ) {
+    	ext = ".dylib";
+    } else {
+        ext = ".so";
+    }
+
+	m_meta = new PluginMeta( m_libs.front().lib + ext);
+	assert(m_meta);
+
+	initAttributes( m_root, *m_meta );
+
 	unlock();
 }
 
@@ -55,13 +99,43 @@ HwlocConfig::~HwlocConfig()
 	unlock();
 }
 
-void HwlocConfig::initAttributes( TreeNode* node )
+void HwlocConfig::initAttributes( TreeNode* node, PluginMeta& meta )
 {
 	if ( node->children.size() ) {
 		for ( unsigned i = 0; i < node->children.size(); i++ ) {
-			initAttributes( node->children[i] );
+			initAttributes( node->children[i], meta );
 		}	
 	}	
+	DBGX2(DBG_CONFIG,"%s\n",getFullName(node).c_str());
+	for ( int i = 0; i < PWR_NUM_ATTR_NAMES; i++ ) {
+		if ( m_meta->findAttr( node->type, (PWR_AttrName)i ) ) {
+			DBGX2(DBG_CONFIG,"leaf %s\n",attrNameToString((PWR_AttrName)i));
+			Attr attr;
+			attr.op = "SUM";
+			attr.type = "Float";
+			attr.hz = "1";
+		    attr.device = objTypeToString(node->type);
+			std::stringstream tmp;
+			tmp << node->global_index;
+			attr.openString = tmp.str();
+
+			node->attrs[(PWR_AttrName)i] = attr;
+		} else if ( canAggregate( (PWR_AttrName)i)  ) {
+
+			if ( ! node->children.empty() ) {
+				if ( node->children[0]->attrs.find( (PWR_AttrName)i ) !=
+						node->children[0]->attrs.end() ) 
+				{
+					DBGX2(DBG_CONFIG,"inner %s\n",attrNameToString((PWR_AttrName)i));
+					Attr attr;
+					attr.op = "SUM";
+					attr.type = "Float";
+					attr.hz = "1";
+					node->attrs[(PWR_AttrName)i] = attr;
+				}
+			}
+		}
+	}
 }
 
 bool HwlocConfig::hasServer( const std::string name ) 
@@ -93,28 +167,31 @@ PWR_ObjType HwlocConfig::objType( const std::string name )
 	}
 	unlock();
 
-
 	return type;
 }
 
 std::deque< Config::Plugin > HwlocConfig::findPlugins( )
 {
 	DBGX2(DBG_CONFIG,"\n");
-	std::deque< Config::Plugin > retval;
-	assert(0);
-
-	lock();
-	unlock();
-	return retval;
+	return m_libs;
 }
 
 std::deque< Config::SysDev > HwlocConfig::findSysDevs()
 {
 	DBGX2(DBG_CONFIG,"\n");
 	std::deque< Config::SysDev > retval;
-	assert(0);
 
 	lock();
+	std::vector<PWR_ObjType>& objs = m_meta->getSupportedObjects();
+	for ( unsigned i = 0; i < objs.size(); i++ ) {
+		Config::SysDev tmp;
+		tmp.name = objTypeToString( objs[i] );
+		tmp.plugin = "Plugin0";
+		std::stringstream initString;
+		initString << objs[i];
+		tmp.initString = initString.str();
+		retval.push_back( tmp );
+	}
 	unlock();
 	return retval;
 }
@@ -126,8 +203,16 @@ std::deque< Config::ObjDev >
 	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
                             name.c_str(),attrNameToString(attr));
 
-	assert(0);
 	lock();
+	TreeNode* node = findObj(m_root, name); 
+	if ( node->attrs.find( attr ) != node->attrs.end() ) {
+		if ( ! node->attrs[attr].device.empty() ) { 
+			Config::ObjDev dev;
+			dev.device = node->attrs[attr].device;
+			dev.openString = node->attrs[attr].openString;
+			devs.push_back(dev);
+		}
+	}	
 	unlock();
 	return devs;
 }
@@ -139,8 +224,11 @@ std::deque< std::string >
 	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
                             name.c_str(),attrNameToString(attr));
 
-	assert(0);
 	lock();
+	TreeNode* node = findObj(m_root, name); 
+	for ( unsigned i = 0; i < node->children.size(); i++ ) {
+		children.push_back( getFullName( node->children[i] ) );
+	}
 	unlock();
 	return children;
 }
@@ -152,6 +240,10 @@ std::string HwlocConfig::findAttrType( std::string name, PWR_AttrName attr )
 							name.c_str(),attrNameToString(attr));
 
 	lock();
+	TreeNode* node = findObj(m_root, name); 
+	if ( node->attrs.find( attr ) != node->attrs.end() ) {
+		retval = node->attrs[attr].type;
+	}	
 	unlock();
 
 	return retval;
@@ -163,6 +255,10 @@ std::string HwlocConfig::findAttrOp( std::string name, PWR_AttrName attr )
 	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
 							name.c_str(),attrNameToString(attr));
 	lock();
+	TreeNode* node = findObj(m_root, name); 
+	if ( node->attrs.find( attr ) != node->attrs.end() ) {
+		retval = node->attrs[attr].op;
+	}	
 	unlock();
 
 	return retval;
@@ -173,9 +269,12 @@ std::string HwlocConfig::findAttrHz( std::string name, PWR_AttrName attr )
 	std::string retval;
 	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
 							name.c_str(),attrNameToString(attr));
-	assert(0);
 
 	lock();
+	TreeNode* node = findObj(m_root, name); 
+	if ( node->attrs.find( attr ) != node->attrs.end() ) {
+		retval = node->attrs[attr].hz;
+	}	
 	unlock();
 
 	return retval;
@@ -272,21 +371,18 @@ static std::string getName( hwloc_obj_type_t type ) {
 	}
 }
 
-void HwlocConfig::print_children(hwloc_topology_t topology, hwloc_obj_t obj, 
-                           int depth, TreeNode* parent )
+void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 {
     unsigned i;
 	switch( obj->type ) {
 		case HWLOC_OBJ_NODE:
 		case HWLOC_OBJ_SOCKET:
 		case HWLOC_OBJ_CORE:
-    		//hwloc_obj_snprintf(string, sizeof(string), topology, obj, "#", 0);
-    		//printf("%*s%s\n", 2*depth, "", string);
 			{	
 				std::stringstream tmp;
 				tmp << getName(obj->type ) << obj->os_index;
 				TreeNode* me = new TreeNode( parent,  
-					convertType( obj->type ), tmp.str() );
+					convertType( obj->type ), tmp.str(), obj->logical_index );
 				parent->children.push_back(me);
 				parent = me;
 			}
@@ -295,7 +391,7 @@ void HwlocConfig::print_children(hwloc_topology_t topology, hwloc_obj_t obj,
 			break;
 	}
     for (i = 0; i < obj->arity; i++) {
-        print_children(topology, obj->children[i], depth + 1,  parent );
+        initHierarchy( obj->children[i], parent );
     }
 }
 

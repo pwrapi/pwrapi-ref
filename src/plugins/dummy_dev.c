@@ -178,6 +178,7 @@ static plugin_devops_t devOps = {
 
 static plugin_devops_t* dummy_dev_init( const char *initstr )
 {
+	DBGP("initstr='%s'\n",initstr);
 	plugin_devops_t* ops = malloc(sizeof(*ops));
 	*ops = devOps;
 	ops->private_data = malloc( sizeof( dummyDevInfo_t ) );
@@ -200,3 +201,40 @@ static plugin_dev_t dev = {
 plugin_dev_t* getDev() {
     return &dev;
 }
+
+static int dummy_numObjs( )
+{
+	DBGP("\n");
+	return 1;
+} 
+static int dummy_readObjs(  int i, PWR_ObjType* ptr )
+{
+	DBGP("\n");
+	ptr[0] = PWR_OBJ_CORE;
+}
+
+static int dummy_numAttrs( )
+{
+	DBGP("\n");
+	return 2;
+}
+
+static int dummy_readAttrs( int i, PWR_AttrName* ptr )
+{
+	DBGP("\n");
+	ptr[0] = PWR_ATTR_ENERGY;
+	ptr[1] = PWR_ATTR_POWER;
+	return 0;
+}
+
+static plugin_meta_t meta = {
+	.numObjs = dummy_numObjs,
+	.numAttrs = dummy_numAttrs,
+	.readObjs = dummy_readObjs,
+	.readAttrs = dummy_readAttrs,
+};
+
+plugin_meta_t* getMeta() {
+    return &meta;
+}
+

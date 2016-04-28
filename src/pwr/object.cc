@@ -91,16 +91,16 @@ int Object::attrGetValues( int count, PWR_AttrName names[], void* buf,
 	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
 }
 
-int Object::attrGetValuesDevice( AttrInfo& info, PWR_AttrName name,
+int Object::attrGetValuesDevice( AttrInfo& info, PWR_AttrName attr,
 		            void* buf, PWR_Time* timeStamp )
 {
-	DBGX("\n");
+	DBGX("%s %s\n",name().c_str(),attrNameToString(attr));
 		
 	std::vector<uint64_t> value(info.devices.size());
 	std::vector<PWR_Time> tmpTS(info.devices.size());
 
 	for ( unsigned i = 0 ; i < info.devices.size(); i++ ) {
-		int retval = info.devices[i]->getValue( name, &value[i], 8, &tmpTS[i] );
+		int retval = info.devices[i]->getValue( attr, &value[i], 8, &tmpTS[i] );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
@@ -118,10 +118,11 @@ int Object::attrSetValues( int count, PWR_AttrName names[], void* buf,
 {
 	uint64_t* ptr = (uint64_t*) buf; 
 
-	DBGX("\n");
 	for ( int i = 0; i < count; i++ ) {
 
+	DBGX("%s %s\n",name().c_str(),attrNameToString(names[i]));
 		if ( ! m_attrInfo[ names[i] ]->isValid() ) {
+			DBGX("invalid %s %s\n",name().c_str(),attrNameToString(names[i]));
 			status->add( this, names[i], PWR_RET_INVALID );
 			break;
 		}
@@ -138,13 +139,13 @@ int Object::attrSetValues( int count, PWR_AttrName names[], void* buf,
 	return status->empty() ? PWR_RET_SUCCESS : PWR_RET_STATUS;
 }
 
-int Object::attrSetValuesDevice( AttrInfo& info, PWR_AttrName name,
+int Object::attrSetValuesDevice( AttrInfo& info, PWR_AttrName attr,
 													void* buf )
 {
-	DBGX("\n");
+	DBGX("%s %s\n",name().c_str(),attrNameToString(attr));
 
 	for ( unsigned i = 0 ; i < info.devices.size(); i++ ) {
-		int retval = info.devices[i]->setValue( name, buf, 8 );
+		int retval = info.devices[i]->setValue( attr, buf, 8 );
 		if ( PWR_RET_SUCCESS != retval ) {
 			return retval;
 		}
@@ -155,7 +156,7 @@ int Object::attrSetValuesDevice( AttrInfo& info, PWR_AttrName name,
 int Object::attrGetValue( PWR_AttrName attr, void* buf, PWR_Time* ts ) {
     Status status;
     int retval;
-	DBGX("\n");
+	DBGX("%s %s\n",name().c_str(),attrNameToString(attr));
     retval = Object::attrGetValues( 1, &attr, buf, ts, &status );
     if ( retval != PWR_RET_SUCCESS ) {
         PWR_AttrAccessError error;
@@ -170,7 +171,7 @@ int Object::attrGetValue( PWR_AttrName attr, void* buf, PWR_Time* ts ) {
 int Object::attrSetValue( PWR_AttrName attr, void* buf ) {
     Status status;
     int retval;
-	DBGX("\n");
+	DBGX("%s %s\n",name().c_str(),attrNameToString(attr));
     retval = Object::attrSetValues( 1, &attr, buf, &status );
     if ( retval != PWR_RET_SUCCESS ) {
         PWR_AttrAccessError error;

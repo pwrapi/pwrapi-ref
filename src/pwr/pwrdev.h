@@ -71,10 +71,27 @@ typedef int (*pwr_final_t)( plugin_devops_t* );
 typedef struct {
     pwr_init_t  init;
     pwr_final_t final;
+
 } plugin_dev_t;
+
+
+typedef int (*pwr_dev_num_objs)(void);
+typedef int (*pwr_dev_read_objs)(int,PWR_ObjType*);
+typedef int (*pwr_dev_num_attrs)(PWR_ObjType);
+typedef int (*pwr_dev_read_attrs)(int,PWR_AttrName*);
+
+typedef struct {
+	pwr_dev_num_objs numObjs;
+	pwr_dev_read_objs readObjs;
+	pwr_dev_num_attrs numAttrs;
+	pwr_dev_read_attrs readAttrs;
+} plugin_meta_t;
 
 #define GETDEVFUNC "getDev"
 typedef plugin_dev_t* (*getDevFuncPtr_t)(void); 
+
+#define GETMETAFUNC "getMeta"
+typedef plugin_meta_t* (*getMetaFuncPtr_t)(void);
 
 #ifdef __cplusplus
 }

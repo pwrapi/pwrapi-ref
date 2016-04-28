@@ -26,12 +26,12 @@ class Config {
 	virtual ~Config() {}
 	struct SysDev {
 		std::string name;
-		std::string plugin;
+		std::string plugin; // this points to a Plugin.name
 		std::string initString;
 	};
 
 	struct ObjDev {
-		std::string device;
+		std::string device; // this points to a SysDev.name
 		std::string openString;
 	};
 
