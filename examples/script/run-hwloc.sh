@@ -20,6 +20,4 @@ export POWERAPI_DEBUG=0
 export POWERAPI_ROOT="plat"
 export POWERAPI_CONFIG="${ROOT}/examples/config/dummyNode.hwloc"
 
-export POWERRT_MACHINE=dummy 
-
 $ROOT/build/examples/dummyTest
