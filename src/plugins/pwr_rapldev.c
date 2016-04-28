@@ -164,7 +164,7 @@ static int rapldev_parse_init( const char *initstr, int *core )
 {
     char *token;
 
-    DBGP( "Info: received initialization string %s\n", initstr );
+    DBGP( "Info: received initialization string `%s`\n", initstr );
 
     if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
         fprintf( stderr, "Error: missing core separator in initialization string %s\n", initstr );
@@ -558,3 +558,40 @@ static plugin_dev_t dev = {
 plugin_dev_t* getDev() {
     return &dev;
 }
+
+static int rapldev_numObjs( )
+{
+    DBGP("\n");
+    return 1;
+}
+static int rapldev_readObjs(  int i, PWR_ObjType* ptr )
+{
+    DBGP("\n");
+    ptr[0] = PWR_OBJ_CORE;
+}
+
+static int rapldev_numAttrs( )
+{
+    DBGP("\n");
+    return 2;
+}
+
+static int rapldev_readAttrs( int i, PWR_AttrName* ptr )
+{
+    DBGP("\n");
+    ptr[0] = PWR_ATTR_ENERGY;
+    ptr[1] = PWR_ATTR_POWER;
+    return 0;
+}
+
+static plugin_meta_t meta = {
+    .numObjs = rapldev_numObjs,
+    .numAttrs = rapldev_numAttrs,
+    .readObjs = rapldev_readObjs,
+    .readAttrs = rapldev_readAttrs,
+};
+
+plugin_meta_t* getMeta() {
+    return &meta;
+}
+
