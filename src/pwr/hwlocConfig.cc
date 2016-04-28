@@ -355,7 +355,7 @@ std::string HwlocConfig::getFullName( TreeNode* node )
 }
 static PWR_ObjType convertType( hwloc_obj_type_t type ) {
 	switch ( type ) {
-		case HWLOC_OBJ_NODE: return PWR_OBJ_NODE;
+		case HWLOC_OBJ_MACHINE: return PWR_OBJ_NODE;
 		case HWLOC_OBJ_SOCKET: return PWR_OBJ_SOCKET;
 		case HWLOC_OBJ_CORE: return PWR_OBJ_CORE;
 		default: return PWR_OBJ_INVALID;
@@ -375,7 +375,7 @@ void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 {
     unsigned i;
 	switch( obj->type ) {
-		case HWLOC_OBJ_NODE:
+		case HWLOC_OBJ_MACHINE:
 		case HWLOC_OBJ_SOCKET:
 		case HWLOC_OBJ_CORE:
 			{	
