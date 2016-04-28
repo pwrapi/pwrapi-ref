@@ -1,7 +1,7 @@
 SUBDIRS = pwrdaemon
 DIST_SUBDRIS = pwrdaemon
 
-bin_PROGRAMS = pwrapi pwrgen pwrdmp
+bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
@@ -15,6 +15,10 @@ pwrgen_LDADD = $(top_builddir)/src/tinyxml2/libtinyxml2.la
 pwrdmp_SOURCES = pwrdmp.c
 pwrdmp_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrdmp_LDADD = $(top_builddir)/src/pwr/libpwr.la
+
+pwrls_SOURCES = pwr-ls.c
+pwrls_CFLAGS = -I$(top_srcdir)/src/pwr
+pwrls_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 man_MANS = pwrapi.8 pwrgen.8 pwrdmp.8
 
