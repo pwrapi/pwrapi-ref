@@ -1,4 +1,4 @@
-examples_PROGRAMS = snippet walkTest dummyTest simpleTest
+examples_PROGRAMS = snippet dummyTest simpleTest
 
 # Power API Examples
 snippet_SOURCES = snippet.c
@@ -8,10 +8,6 @@ snippet_LDADD = $(top_builddir)/src/pwr/libpwr.la
 dummyTest_SOURCES = dummyTest.c
 dummyTest_CFLAGS = -I$(top_srcdir)/src/pwr
 dummyTest_LDADD = $(top_builddir)/src/pwr/libpwr.la
-
-walkTest_SOURCES = walkTest.c
-walkTest_CFLAGS = -I$(top_srcdir)/src/pwr
-walkTest_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 simpleTest_SOURCES = simpleTest.cc
 simpleTest_CPPFLAGS = -I$(top_srcdir)/src/pwr
