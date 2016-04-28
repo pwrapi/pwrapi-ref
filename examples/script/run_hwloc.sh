@@ -17,12 +17,12 @@ ROOT=${HOME}/pwrGIT/pwrapi-ref
 export LD_LIBRARY_PATH="${ROOT}/build/install/lib:${LD_LIBRARY_PATH}"
 export DYLD_LIBRARY_PATH="${ROOT}/build/install/lib:${DYLD_LIBRARY_PATH}"
 
-#export POWERAPI_DEBUG=2
+#export POWERAPI_DEBUG=16
 export POWERAPI_DEBUG=0
 export POWERAPI_ROOT="plat"
-export POWERAPI_CONFIG="${ROOT}/examples/config/dummySystemLocal.hwloc"
+export POWERAPI_CONFIG="${ROOT}/examples/config/dummyNode.hwloc"
 
 export POWERRT_MACHINE=dummy 
 
-#$ROOT/build/examples/dummyTest
-$ROOT/build/examples/walkTest
+$ROOT/build/examples/dummyTest
+#$ROOT/build/examples/walkTest

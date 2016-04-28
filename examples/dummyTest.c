@@ -99,7 +99,7 @@ int main( int argc, char* argv[] )
     printf("PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=%f ts=`%s`\n",
 													value,myctime(&time));
 
-    rc = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_NODE, &grp );
+    rc = PWR_CntxtGetGrpByType( cntxt, PWR_OBJ_CORE, &grp );
     assert ( PWR_RET_SUCCESS == rc );
 
     value = 0.1;
