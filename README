@@ -15,12 +15,15 @@ There are currently plugins for several platforms as well as a dummy plugin
 used for development. The dummy plugin is trivial and a good place to look when
 implementing a plugin for a new platform. 
 
-libpwr is configured via an XML file describing the hardware it is interacting 
-with. XML was chosen for expedient development not performance. libpwr has an
+libpwr can be configured via an static XML file describing the hardware or via
+hwloc. XML was chosen for expedient development not performance. libpwr has an
 object that interfaces with the XML file via TinyXML-2. TinyXML-2 is 
 included with this distribution and is already integrated into this
 software package.  The original software can also be found at 
-"https://github.com/leethomason/tinyxml2".
+"https://github.com/leethomason/tinyxml2". Creating a XML configuration is
+error prone so support for automatic hierarchy detection was added to the
+implemetation. This automatic method is called hwloc because it uses hwloc to
+determine the Power object hierarchy. 
 
 The reference also explores accessing the API via a scripting language such as
 Python. The Python binding is done via Swig and is
@@ -32,12 +35,88 @@ execution of example programs rely on environment variables POWERAPI_CONFIG and
 POWERAPI_ROOT. POWERAPI_CONFIG tells the PowerAPI library what system
 configuration file to use. POWERAPI_ROOT tells the PowerAPI library its entry
 point. Consult the run scripts in examples on how to set these variables.
-Debug printouts are part of libpwr and can be enabled by 1) enabling DEBUG in
-pwr/Makefile and setting _DbgFlag in pwr/cntxt.cc. 
+“qkj:
+Build
+-----
 
-This software has been compiled on:
-	Mac OSX 10.9.5 / gcc version 4.6.4 (MacPorts gcc46 4.6.4_3)
-	Linux 2.6.32 / gcc version 4.4.6 (Red Hat 4.4.6-3) 
-    Linux 3.0.101 / gcc version 4.3.4 (SUSE Linux)
+The configuration follows normal autoconf/automake conventions. 
+
+run:
+
+autogen.sh
+configure --prefix="your install directory"
+make install
+
+Your install directory should look like:
+
+volta:~/pwrGIT/pwrapi-ref/build/install> ls
+bin  config  examples  include  lib  lib64  script  share
+volta:~/pwrGIT/pwrapi-ref/build/install>
+
+Run
+---
+
+With the above configuration the only thing that will work is the "dummyTest"
+program. The "dummyTest" program is used to test basic functionality of the
+implementation and as an example of how to program using the Power API. The "dummyTest" 
+example uses xml configuration and the dummy_dev pluggin. The dummy_dev plugin is just
+a stub and does not interact with hardware.
+
+To run "dummyTest".
+
+volta:~/pwrGIT/pwrapi-ref/build/install> source examples/script/xml_profile
+volta:~/pwrGIT/pwrapi-ref/build/install> dummyTest
+I am a `Node`
+child plat.cab0.node0.core0
+child plat.cab0.node0.core1
+PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=200000000.000000 ts=`Fri Apr 29 13:08:11 2016`
+PWR_ObjAttrSetValue(PWR_ATTR_ENERGY) value=25.812000
+PWR_ObjAttrGetValues(PWR_ATTR_ENERGY) value=51.624000 ts=`Fri Apr 29 13:08:11 2016`
+PWR_ObjAttrSetValues(PWR_ATTR_ENERGY) value=100.100000
+PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=200.200000 ts=`Fri Apr 29 13:08:11 2016`
+PWR_GrpAttrSetValue(PWR_ATTR_ENERGY) value=0.100000
+PWR_ObjAttrGetValue(PWR_ATTR_ENERGY) value=0.200000 ts=`Fri Apr 29 13:08:11 2016`
+PWR_StatGetValue(PWR_ATTR_ENERGY) value=101.081396
+PWR_StatGetValue(PWR_ATTR_ENERGY) start=1461956891.332830
+PWR_StatGetValue(PWR_ATTR_ENERGY) stop=1461956892.332830
+stat: value=101.129473 start=1461956892.332965 stop=1461956893.332965
+stat: value=100.870015 start=1461956892.332970 stop=1461956893.332970
+volta:~/pwrGIT/pwrapi-ref/build/install>
+
+
+If you have "hwloc" installed on your system you can configure via:
+
+configure --prefix="your install directory" --with-hwloc="where hwloc is installed" 
+
+This configuration adds the ability to auto detect the Power object hierarchy
+as mentioned about. 
+
+Once built you can run "pwrls". "pwrls" traverses the Power object hierachy and prints the
+objects and supported attributes. Note that dummy_dev pluggin is used.
+
+jleven@volta:~/pwrGIT/pwrapi-ref/build/install> pwrls
+name=`plat` type=Platform: Energy
+    name=`plat.node0` type=Node: Energy
+        name=`plat.node0.socket0` type=Socket: Energy
+            name=`plat.node0.socket0.core0` type=Core: Power Energy
+            name=`plat.node0.socket0.core1` type=Core: Power Energy
+            name=`plat.node0.socket0.core2` type=Core: Power Energy
+            name=`plat.node0.socket0.core3` type=Core: Power Energy
+            name=`plat.node0.socket0.core4` type=Core: Power Energy
+            name=`plat.node0.socket0.core5` type=Core: Power Energy
+            name=`plat.node0.socket0.core6` type=Core: Power Energy
+            name=`plat.node0.socket0.core7` type=Core: Power Energy
+mjleven@volta:~/pwrGIT/pwrapi-ref/build/install>
+
+One thing to note about the above output is that some object have both Power and Energy 
+attributes and some have only Energy. This is because Energy is aggregratable and Power is not.
+
+Debug
+-----
+
+The code has debug built in. To enable configure with --enable-debug. At this point the debug 
+code is compiled into the libraries but will not print. To enable debug you must set the 
+environment variable POWERAPI_DEBUG=31.
+
 
 If you have questions or comments email contact-powerapi@sandia.gov.
