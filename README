@@ -22,7 +22,7 @@ included with this distribution and is already integrated into this
 software package.  The original software can also be found at 
 "https://github.com/leethomason/tinyxml2". Creating a XML configuration is
 error prone so support for automatic hierarchy detection was added to the
-implemetation. This automatic method is called hwloc because it uses hwloc to
+implementation. This automatic method is called hwloc because it uses hwloc to
 determine the Power object hierarchy. 
 
 The reference also explores accessing the API via a scripting language such as
@@ -36,10 +36,11 @@ POWERAPI_ROOT. POWERAPI_CONFIG tells the PowerAPI library what system
 configuration file to use. POWERAPI_ROOT tells the PowerAPI library its entry
 point. Consult the run scripts in examples on how to set these variables.
 “qkj:
+
 Build
 -----
 
-The configuration follows normal autoconf/automake conventions. 
+The configuration of this code base follows normal autoconf/automake conventions. 
 
 run:
 
@@ -59,7 +60,7 @@ Run
 With the above configuration the only thing that will work is the "dummyTest"
 program. The "dummyTest" program is used to test basic functionality of the
 implementation and as an example of how to program using the Power API. The "dummyTest" 
-example uses xml configuration and the dummy_dev pluggin. The dummy_dev plugin is just
+example uses xml configuration and the dummy_dev plugin. The dummy_dev plugin is just
 a stub and does not interact with hardware.
 
 To run "dummyTest".
@@ -91,10 +92,11 @@ configure --prefix="your install directory" --with-hwloc="where hwloc is install
 This configuration adds the ability to auto detect the Power object hierarchy
 as mentioned about. 
 
-Once built you can run "pwrls". "pwrls" traverses the Power object hierachy and prints the
-objects and supported attributes. Note that dummy_dev pluggin is used.
+Once built you can run "pwrls". "pwrls" traverses the Power object hierarchy and prints the
+objects and supported attributes. Note that dummy_dev plugin is used.
 
-jleven@volta:~/pwrGIT/pwrapi-ref/build/install> pwrls
+volta:~/pwrGIT/pwrapi-ref/build/install> source script/hwloc_profile
+volta:~/pwrGIT/pwrapi-ref/build/install> pwrls
 name=`plat` type=Platform: Energy
     name=`plat.node0` type=Node: Energy
         name=`plat.node0.socket0` type=Socket: Energy
@@ -106,17 +108,17 @@ name=`plat` type=Platform: Energy
             name=`plat.node0.socket0.core5` type=Core: Power Energy
             name=`plat.node0.socket0.core6` type=Core: Power Energy
             name=`plat.node0.socket0.core7` type=Core: Power Energy
-mjleven@volta:~/pwrGIT/pwrapi-ref/build/install>
+volta:~/pwrGIT/pwrapi-ref/build/install>
 
-One thing to note about the above output is that some object have both Power and Energy 
-attributes and some have only Energy. This is because Energy is aggregratable and Power is not.
+One thing to note about the above output is that some objects have both Power and Energy 
+attributes and some have only Energy. This is because Energy is aggregatable and Power is not.
 
 Debug
 -----
 
-The code has debug built in. To enable configure with --enable-debug. At this point the debug 
-code is compiled into the libraries but will not print. To enable debug you must set the 
-environment variable POWERAPI_DEBUG=31.
+To debug configure with --enable-debug. At this point the debug 
+code is compiled into the libraries but will not print. To enable printing you must set the 
+environment variable POWERAPI_DEBUG=31. This will turn on all debug.
 
 
 If you have questions or comments email contact-powerapi@sandia.gov.
