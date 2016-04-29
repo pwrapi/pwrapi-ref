@@ -364,7 +364,7 @@ static PWR_ObjType convertType( hwloc_obj_type_t type ) {
 
 static std::string getName( hwloc_obj_type_t type ) {
 	switch ( type ) {
-		case HWLOC_OBJ_NODE: return "node";
+		case HWLOC_OBJ_MACHINE: return "node";
 		case HWLOC_OBJ_SOCKET: return "socket";
 		case HWLOC_OBJ_CORE: return "core";
 		default: return "";
