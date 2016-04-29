@@ -3,6 +3,9 @@ DIST_SUBDRIS = pwrdaemon
 
 bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls
 
+scriptdir = $(prefix)/script
+script_DATA = script/hwloc_profile
+
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
 pwrapi_CFLAGS = -I$(top_srcdir)/src/pwr
@@ -33,12 +36,13 @@ pwrsrv_LDADD = $(XMLRPC_LIBS) $(top_builddir)/src/pwr/libpwr.la
 man_MANS += pwrsrv.8
 endif
 
-configdir = $(docdir)/config
+configdir = $(prefix)/config
 config_DATA = 	config/shepard-platform.xml \
 		config/shepard-node.xml \
 		config/cooper-platform.xml \
 		config/cooper-node.xml \
 		config/teller-platform.xml \
-		config/teller-node.xml
+		config/teller-node.xml \
+		config/dummyNode.hwloc
 
-EXTRA_DIST = $(config_DATA)
+EXTRA_DIST = $(config_DATA) $(script_DATA)

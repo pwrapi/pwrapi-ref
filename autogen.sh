@@ -1,4 +1,4 @@
 #!/bin/sh
 
-rm -f *.in */*.in */*/*.in */*/*/*.in
+#rm -f *.in */*.in */*/*.in */*/*/*.in
 autoreconf --install --symlink --force

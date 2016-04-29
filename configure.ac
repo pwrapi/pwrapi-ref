@@ -51,6 +51,8 @@ PWRAPI_CHECK_MPI([pwrapi_have_mpi="yes"], [pwrapi_have_mpi="no"])
 PWRAPI_CHECK_DEBUG()
 
 AC_CONFIG_FILES([Makefile
+                 tools/script/hwloc_profile
+                 examples/script/xml_profile
                  src/Makefile
                  src/tinyxml2/Makefile
                  src/pwr/Makefile
