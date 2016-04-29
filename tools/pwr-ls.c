@@ -55,7 +55,13 @@ void walk( PWR_Obj node, int level )
 	}
 	indent[level*4 ] = 0;
 
-    printf("%sname=`%s` type=%s\n", indent, name,PWR_ObjGetTypeString( objType ) ); 
+    printf("%sname=`%s` type=%s: ", indent, name,PWR_ObjGetTypeString( objType ) ); 
+	for ( i = 0; i < PWR_NUM_ATTR_NAMES; i++) {
+		if ( PWR_ObjAttrIsValid( node, i ) ) {
+			printf("%s ",PWR_AttrGetTypeString(i));
+		}
+	}
+	printf("\n");
 
     PWR_Grp children;
 	rc = PWR_ObjGetChildren( node, &children );
