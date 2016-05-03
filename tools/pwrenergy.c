@@ -64,7 +64,7 @@ int main( int argc, char* argv[] )
 	while ( samples-- ) {
     	rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
     	assert( PWR_RET_SUCCESS == rc );
-    	printf("obj=%s value=%.0lf joules, %.0lf watts\n",name, value, 
+    	printf("%s: %.0lf joules, %.0lf watts\n",name, value, 
 			prev == 0 ? 0 :	value-prev);
 		prev = value;
 		sleep(1);
