@@ -23,12 +23,12 @@
 
 typedef struct {
     char* name;
-    FILE* fp;
+    char  energy[PATH_MAX];
 } zone_t; 
 
 typedef struct {
     char* name;
-    FILE* fp;
+    char  energy[PATH_MAX];
 
     int numZones;
     zone_t* zones;
@@ -78,6 +78,18 @@ static int powercap_dev_close( pwr_fd_t fd )
     return 0;
 }
 
+static long long readValue( const char* path )
+{
+    long long value;
+    FILE* fp = fopen( path, "r" );
+    assert(fp);
+    DBGP("%s\n",path);
+    int rc = fscanf( fp, "%lld", &value );
+    assert( EOF != rc );
+    fclose(fp);
+    return value;
+}
+
 static int powercap_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
     int rc;
@@ -85,19 +97,19 @@ static int powercap_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
     open_t* info = (open_t*) fd;
 
     DBGP("type=%s\n", attrNameToString(type) );
-
     DBGP("pkg name %s %s\n", info->pkg->name, objTypeToString(info->type));
 
     switch ( info->type ) {
       case PWR_OBJ_MEM:
         
-        rc = fscanf( info->pkg->zones[0].fp, "%lld", &value );
-        assert( rc != EOF );
+        // the relationship between package and dram energy counter is not
+        // clear so don't allow it for now
+        assert( 0 );
+        value = readValue( info->pkg->zones[0].energy );
         break;
 
       case PWR_OBJ_SOCKET:
-        rc = fscanf( info->pkg->fp, "%lld", &value );
-        assert( rc != EOF );
+        value = readValue( info->pkg->energy );
         break;
 
       default:
@@ -109,7 +121,7 @@ static int powercap_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
     if ( ts ) {
 		*ts = getTime();
     }
-    *(double*) ptr = value;
+    *(double*) ptr = (double) value / 1000000.0;
 
     return PWR_RET_SUCCESS;
 }
@@ -130,7 +142,7 @@ static int powercap_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_At
 
     DBGP("type=%s\n",attrNameToString(attrs[0]));
     int rc = powercap_dev_read( fd, attrs[0], buf, 8, &ts[0] );
-    status = rc;
+    status[0] = rc;
 
     return rc;
 }
@@ -202,9 +214,7 @@ static void initZone( int pkg, int num, const char* prefix, zone_t* zone )
     fclose(fp);
     DBGP("zone=`%s` %s\n",prefix,zone->name);
 
-    sprintf(name,"%s/energy_uj", prefix );
-    zone->fp = fopen( name, "r");
-    assert(zone->fp);
+    sprintf(zone->energy,"%s/energy_uj", prefix );
     DBGP("zone=`%s` %s\n",zone->name,name);
 
 }
@@ -232,7 +242,7 @@ static int findNumZones( const char *prefix )
 
 static char* findSuffix( const char* path )
 {
-    char* end = path + strlen(path)-1;
+    char* end = (char*)path + strlen(path)-1;
     while ( end >= path && *(end--) != '/' );
     return end + 1;
 }
@@ -249,9 +259,7 @@ static void initPkg( int num, const char* prefix, pkg_t* pkg )
 
     DBGP("pkg=`%s` %s\n",prefix,pkg->name);
 
-    sprintf(path,"%s/energy_uj", prefix );
-    pkg->fp = fopen( path, "r");
-    assert(pkg->fp);
+    sprintf(pkg->energy,"%s/energy_uj", prefix );
     
     sprintf(path,"%s/%s:",prefix, findSuffix(prefix) );
     pkg->numZones = findNumZones(path);
@@ -333,13 +341,13 @@ plugin_dev_t* getDev() {
 static int powercap_numObjs( )
 {
 	DBGP("\n");
-	return 2;
+	return 1;
 } 
 static int powercap_readObjs(  int i, PWR_ObjType* ptr )
 {
 	DBGP("\n");
 	ptr[0] = PWR_OBJ_SOCKET;
-	ptr[1] = PWR_OBJ_MEM;
+//	ptr[1] = PWR_OBJ_MEM;
 }
 
 static int powercap_numAttrs( )
