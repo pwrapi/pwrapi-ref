@@ -24,6 +24,8 @@ typedef struct {
 
 #define BUFFER_LEN 10
 
+#define JOULES_PER_SEC 9.88
+
 typedef struct {
 	double values[BUFFER_LEN];
 	PWR_Time timeStamps[BUFFER_LEN];
@@ -31,6 +33,7 @@ typedef struct {
 
 typedef struct {
 	buffer_t buffers[PWR_NUM_ATTR_NAMES];
+	double lastAccess;
 } dummyFdInfo_t;
 
 static double getTime() {
@@ -41,12 +44,18 @@ static double getTime() {
     value += tv.tv_usec * 1000;
 	return value;
 }
+
+static double getTimeSec()
+{
+	return getTime() / 1000000000.0;
+}
   
 static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
     dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
     tmp->buffers[PWR_ATTR_POWER].values[0] = 10.1234;
     tmp->buffers[PWR_ATTR_ENERGY].values[0] = 100000000;
+	tmp->lastAccess = getTimeSec();
     DBGP("`%s` ptr=%p\n",openstr,tmp);
     return tmp;
 }
@@ -61,13 +70,19 @@ static int dummy_dev_close( pwr_fd_t fd )
 
 static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
+	double now = getTimeSec();
+	dummyFdInfo_t* info = fd; 
+	info->buffers[type].values[0] += 
+				( now - info->lastAccess) * JOULES_PER_SEC;
 
-    *(double*)ptr = ((dummyFdInfo_t*) fd)->buffers[type].values[0];
+	info->lastAccess = now;
 
-    DBGP("%p type=%s %f\n", fd, attrNameToString(type),*(double*)ptr);
+    *(double*)ptr = info->buffers[type].values[0]; 
+
+    DBGP("type=%s %f\n", attrNameToString(type),*(double*)ptr);
 
     if ( ts ) {
-		*ts = getTime();
+		*ts = now;
     }
 
     return PWR_RET_SUCCESS;
@@ -75,9 +90,11 @@ static int dummy_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned i
 
 static int dummy_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len )
 {
+	dummyFdInfo_t* info = fd; 
+	info->lastAccess = getTimeSec();
     DBGP("type=%s %f\n",attrNameToString(type), *(double*)ptr);
 
-    ((dummyFdInfo_t*) fd)->buffers[type].values[0] = *(double*)ptr;
+    info->buffers[type].values[0] = *(double*)ptr;
     return PWR_RET_SUCCESS;
 }
 
