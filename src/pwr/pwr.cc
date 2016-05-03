@@ -77,7 +77,11 @@ int PWR_CntxtGetGrpByName( PWR_Cntxt ctx, const char* name, PWR_Grp* grp )
 int PWR_CntxtGetObjByName( PWR_Cntxt ctx, const char* name, PWR_Obj* obj )
 {
     *obj = CNTXT(ctx)->getObjByName( name );
-    return PWR_RET_SUCCESS;
+    if ( *obj ) {
+        return PWR_RET_SUCCESS;
+    } else {
+        return PWR_RET_FAILURE;
+    }
 }
 
 /*

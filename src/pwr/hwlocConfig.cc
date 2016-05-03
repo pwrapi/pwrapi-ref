@@ -88,6 +88,8 @@ HwlocConfig::HwlocConfig( std::string file )
 	m_meta = new PluginMeta( m_libs.front().lib + ext);
 	assert(m_meta);
 
+	reorderObjects( m_root );
+	pruneObjects( m_root, *m_meta );
 	initAttributes( m_root, *m_meta );
 
 	unlock();
@@ -101,10 +103,8 @@ HwlocConfig::~HwlocConfig()
 
 void HwlocConfig::initAttributes( TreeNode* node, PluginMeta& meta )
 {
-	if ( node->children.size() ) {
-		for ( unsigned i = 0; i < node->children.size(); i++ ) {
-			initAttributes( node->children[i], meta );
-		}	
+	for ( unsigned i = 0; i < node->children.size(); i++ ) {
+		initAttributes( node->children[i], meta );
 	}	
 	DBGX2(DBG_CONFIG,"%s\n",getFullName(node).c_str());
 	for ( int i = 0; i < PWR_NUM_ATTR_NAMES; i++ ) {
@@ -114,10 +114,10 @@ void HwlocConfig::initAttributes( TreeNode* node, PluginMeta& meta )
 			attr.op = "SUM";
 			attr.type = "Float";
 			attr.hz = "1";
-		    attr.device = objTypeToString(node->type);
-			std::stringstream tmp;
-			tmp << node->global_index;
-			attr.openString = tmp.str();
+
+		    attr.device = meta.getDevName(node->type);
+			attr.openString = meta.getDevOpenStr( node->type, node->global_index );
+            m_devices.insert( attr.device );
 
 			node->attrs[(PWR_AttrName)i] = attr;
 		} else if ( canAggregate( (PWR_AttrName)i)  ) {
@@ -136,6 +136,48 @@ void HwlocConfig::initAttributes( TreeNode* node, PluginMeta& meta )
 			}
 		}
 	}
+}
+
+std::vector<HwlocConfig::TreeNode*> HwlocConfig::reorderObjects( TreeNode* node )
+{
+    std::vector<TreeNode*> ret;
+    if ( node->type == PWR_OBJ_MEM ) {
+        ret = node->children;
+        node->children.clear();
+        return ret;
+    }
+
+    for ( unsigned i = 0; i < node->children.size(); i++ ) {
+        std::vector<TreeNode*> tmp = reorderObjects( node->children[i] );
+        ret.insert( ret.end(), tmp.begin(), tmp.end() );
+        for ( unsigned i = 0; i < tmp.size(); i++ ) {
+            tmp[i]->parent = node;
+        } 
+    } 
+    node->children.insert( node->children.end(), ret.begin(), ret.end() );
+    ret.clear();
+    return ret;
+}
+
+bool HwlocConfig::pruneObjects( TreeNode* node, PluginMeta&  meta )
+{
+	if ( node->children.size() ) {
+        std::vector< TreeNode* >::iterator iter = node->children.begin();
+		for ( ; iter != node->children.end(); ) {
+			bool ret = pruneObjects( *iter, meta );
+            if ( ! ret ) {
+	            DBGX2(DBG_CONFIG,"prune %s\n",getFullName(*iter).c_str());
+                delete *iter;
+                iter = node->children.erase(iter);
+            }else {
+                ++iter;
+            }
+		}	
+    }
+    
+	//DBGX2(DBG_CONFIG,"%s\n",getFullName(node).c_str());
+
+    return meta.isObjectSupported( node->type ) || ! node->children.empty();
 }
 
 bool HwlocConfig::hasServer( const std::string name ) 
@@ -182,14 +224,13 @@ std::deque< Config::SysDev > HwlocConfig::findSysDevs()
 	std::deque< Config::SysDev > retval;
 
 	lock();
-	std::vector<PWR_ObjType>& objs = m_meta->getSupportedObjects();
-	for ( unsigned i = 0; i < objs.size(); i++ ) {
+	std::set<std::string>::iterator iter = m_devices.begin(); 
+
+	for ( ; iter != m_devices.end(); ++iter ) {
 		Config::SysDev tmp;
-		tmp.name = objTypeToString( objs[i] );
 		tmp.plugin = "Plugin0";
-		std::stringstream initString;
-		initString << objs[i];
-		tmp.initString = initString.str();
+		tmp.name = *iter;
+        tmp.initString = m_meta->getDevInitStr(*iter); 
 		retval.push_back( tmp );
 	}
 	unlock();
@@ -203,6 +244,10 @@ std::deque< Config::ObjDev >
 	DBGX2(DBG_CONFIG,"obj=`%s` attr=`%s`\n",
                             name.c_str(),attrNameToString(attr));
 
+#if 0
+	printf("%s obj=`%s` attr=`%s`\n", __func__,
+                            name.c_str(),attrNameToString(attr));
+#endif
 	lock();
 	TreeNode* node = findObj(m_root, name); 
 	if ( node->attrs.find( attr ) != node->attrs.end() ) {
@@ -227,7 +272,10 @@ std::deque< std::string >
 	lock();
 	TreeNode* node = findObj(m_root, name); 
 	for ( unsigned i = 0; i < node->children.size(); i++ ) {
-		children.push_back( getFullName( node->children[i] ) );
+        // check to see if child was pruned
+        if ( node->children[i] ) {
+		    children.push_back( getFullName( node->children[i] ) );
+        }
 	}
 	unlock();
 	return children;
@@ -355,6 +403,7 @@ std::string HwlocConfig::getFullName( TreeNode* node )
 }
 static PWR_ObjType convertType( hwloc_obj_type_t type ) {
 	switch ( type ) {
+		case HWLOC_OBJ_NODE: return PWR_OBJ_MEM;
 		case HWLOC_OBJ_MACHINE: return PWR_OBJ_NODE;
 		case HWLOC_OBJ_SOCKET: return PWR_OBJ_SOCKET;
 		case HWLOC_OBJ_CORE: return PWR_OBJ_CORE;
@@ -365,6 +414,7 @@ static PWR_ObjType convertType( hwloc_obj_type_t type ) {
 static std::string getName( hwloc_obj_type_t type ) {
 	switch ( type ) {
 		case HWLOC_OBJ_MACHINE: return "node";
+		case HWLOC_OBJ_NODE: return "mem";
 		case HWLOC_OBJ_SOCKET: return "socket";
 		case HWLOC_OBJ_CORE: return "core";
 		default: return "";
@@ -373,9 +423,16 @@ static std::string getName( hwloc_obj_type_t type ) {
 
 void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 {
+#if 0
+    printf("%s parent->%s %lu \n",hwloc_obj_type_string(obj->type),
+                ! obj->parent ? "":
+                hwloc_obj_type_string(obj->parent->type),
+                obj->memory.total_memory);
+#endif
     unsigned i;
 	switch( obj->type ) {
 		case HWLOC_OBJ_MACHINE:
+		case HWLOC_OBJ_NODE:
 		case HWLOC_OBJ_SOCKET:
 		case HWLOC_OBJ_CORE:
 			{	

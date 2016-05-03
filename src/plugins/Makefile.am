@@ -4,6 +4,7 @@ lib_LTLIBRARIES =	libpwr_rapldev.la \
 			libpwr_pmcdev.la \
 			libpwr_wudev.la \
 			libpwr_cpudev.la \
+			libpwr_powercapdev.la \
 			libdummy_dev.la
 
 # Power API Plugins
@@ -59,4 +60,6 @@ libdummy_dev_la_SOURCES = pwr_dev.c dummy_dev.c
 libdummy_dev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libdummy_dev_la_LDFLAGS = -version-info 1:0:1
 
-
+libpwr_powercapdev_la_SOURCES = pwr_dev.c pwr_powercap.c
+libpwr_powercapdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_powercapdev_la_LDFLAGS = -version-info 1:0:1

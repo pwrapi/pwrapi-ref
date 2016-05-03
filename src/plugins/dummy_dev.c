@@ -44,7 +44,7 @@ static double getTime() {
   
 static pwr_fd_t dummy_dev_open( plugin_devops_t* ops, const char *openstr )
 {
-    dummyFdInfo_t *tmp = malloc( 2*sizeof( dummyFdInfo_t ) );
+    dummyFdInfo_t *tmp = malloc( sizeof( dummyFdInfo_t ) );
     tmp->buffers[PWR_ATTR_POWER].values[0] = 10.1234;
     tmp->buffers[PWR_ATTR_ENERGY].values[0] = 100000000;
     DBGP("`%s` ptr=%p\n",openstr,tmp);
@@ -227,11 +227,34 @@ static int dummy_readAttrs( int i, PWR_AttrName* ptr )
 	return 0;
 }
 
+static int dummy_getDevName(PWR_ObjType type, size_t len, char* buf )
+{
+    strncpy(buf,"dev0", len );
+    DBGP("type=%d name=`%s`\n",type,buf);
+}
+
+static int dummy_getDevOpenStr(PWR_ObjType type,
+                        int global_index, size_t len, char* buf )
+{
+    snprintf( buf, len, "%d %d", type, global_index);
+    DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
+}
+
+static int dummy_getDevInitStr( const char* name,
+                        size_t len, char* buf )
+{
+    strncpy(buf,"",len);
+    DBGP("dev=`%s` str=`%s`\n",name, buf );
+}
+
 static plugin_meta_t meta = {
 	.numObjs = dummy_numObjs,
 	.numAttrs = dummy_numAttrs,
 	.readObjs = dummy_readObjs,
 	.readAttrs = dummy_readAttrs,
+    .getDevName = dummy_getDevName,
+    .getDevOpenStr = dummy_getDevOpenStr,
+    .getDevInitStr = dummy_getDevInitStr,
 };
 
 plugin_meta_t* getMeta() {

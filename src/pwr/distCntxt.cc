@@ -296,7 +296,7 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
         DBGX("dev=`%s` openString=`%s`\n",dev.device.c_str(),
                                                  dev.openString.c_str());
 
-        if ( m_devMap.find( dev.device.c_str() ) == m_devMap.end() ) {
+        if ( m_devMap.find( dev.device ) == m_devMap.end() ) {
             if ( ! initDevice( dev.device ) ) {
                 assert(0);
             }
@@ -371,12 +371,15 @@ bool DistCntxt::initDevice( std::string& devName )
     for ( ; iter != devices.end(); ++iter ) {
 
         Config::SysDev dev = *iter;
+
         DBGX("device name=`%s` plugin=`%s` initString=`%s`\n",
             dev.name.c_str(), dev.plugin.c_str(), dev.initString.c_str() );
 
         if ( 0 == devName.compare( dev.name ) ) {
+
             m_devMap[ dev.name ].second =
                 m_pluginLibMap[ dev.plugin ]->init( dev.initString.c_str() );
+
             assert( m_devMap[ dev.name ].second );
 
             m_devMap[ dev.name ].first = m_pluginLibMap[ dev.plugin ];

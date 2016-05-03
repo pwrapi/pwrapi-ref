@@ -79,12 +79,19 @@ typedef int (*pwr_dev_num_objs)(void);
 typedef int (*pwr_dev_read_objs)(int,PWR_ObjType*);
 typedef int (*pwr_dev_num_attrs)(PWR_ObjType);
 typedef int (*pwr_dev_read_attrs)(int,PWR_AttrName*);
+typedef int (*pwr_dev_get_dev_name)(PWR_ObjType type, size_t, char* );
+typedef int (*pwr_dev_get_dev_open_str)(PWR_ObjType type,
+                                int global_index, size_t, char* );
+typedef int (*pwr_dev_get_dev_init_str)(const char*, size_t, char* );
 
 typedef struct {
 	pwr_dev_num_objs numObjs;
 	pwr_dev_read_objs readObjs;
 	pwr_dev_num_attrs numAttrs;
 	pwr_dev_read_attrs readAttrs;
+    pwr_dev_get_dev_name getDevName;
+    pwr_dev_get_dev_open_str getDevOpenStr;
+    pwr_dev_get_dev_init_str getDevInitStr;
 } plugin_meta_t;
 
 #define GETDEVFUNC "getDev"
