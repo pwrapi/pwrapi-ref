@@ -85,6 +85,9 @@ stat: value=100.870015 start=1461956892.332970 stop=1461956893.332970
 volta:~/pwrGIT/pwrapi-ref/build/install>
 
 
+Running with Hwloc
+------------------
+
 If you have "hwloc" installed on your system you can configure via:
 
 configure --prefix="your install directory" --with-hwloc="where hwloc is installed" 
@@ -111,7 +114,62 @@ name=`plat` type=Platform: Energy
 volta:~/pwrGIT/pwrapi-ref/build/install>
 
 One thing to note about the above output is that some objects have both Power and Energy 
-attributes and some have only Energy. This is because Energy is aggregatable and Power is not.
+attributes and some have only Energy. This is because Energy can be aggregated from children and Power can not.
+
+
+Running with the Linux Power Capping Framework Plugin
+------------------------------------------------------
+
+Plugin libpwr_powercap.a is a proof of concept plugin that allows a user
+application to read RAPL based energy through the Linux Power Capping Framework.
+
+To use this plugin with hwloc configuration run:
+
+source install/script/hwloc_powercap_profile 
+
+To see what the Power API hierarchy looks like run:
+
+[mjleven@node69 script]$ pwrls
+name=`plat` type=Platform: Energy
+    name=`plat.node0` type=Node: Energy
+        name=`plat.node0.mem0` type=Memory: Energy
+        name=`plat.node0.mem1` type=Memory: Energy
+        name=`plat.node0.socket0` type=Socket: Energy
+        name=`plat.node0.socket1` type=Socket: Energy
+[mjleven@node69 script]$
+
+The above was run on a dual socket Intel(R) Xeon(R) CPU E5-2698 v3 @ 2.30GHz 
+machine.
+
+Now lets read the energy:
+
+[mjleven@node69 script]$ pwrenergy -o plat.node0.socket0 -s 5
+plat.node0.socket0: 22 joules, 0 watts
+plat.node0.socket0: 46 joules, 24 watts
+plat.node0.socket0: 67 joules, 21 watts
+plat.node0.socket0: 79 joules, 12 watts
+plat.node0.socket0: 92 joules, 12 watts
+[mjleven@node69 script]$
+
+[mjleven@node69 script]$ pwrenergy -o plat.node0.mem0 -s 5
+plat.node0.mem0: 15 joules, 0 watts
+plat.node0.mem0: 29 joules, 15 watts
+plat.node0.mem0: 44 joules, 15 watts
+plat.node0.mem0: 59 joules, 15 watts
+plat.node0.mem0: 73 joules, 15 watts
+[mjleven@node69 script]$
+
+[mjleven@node69 script]$ pwrenergy -o plat.node0 -s 4
+plat.node0: 49 joules, 0 watts
+plat.node0: 99 joules, 49 watts
+plat.node0: 148 joules, 49 watts
+plat.node0: 198 joules, 50 watts
+[mjleven@node69 script]$
+
+Note that the powercap plugin does not check for counter wrap around.
+Note that you need a linux kernel that support the "Power Capping Framework".
+Note that this plugin has minimal testing on one machine.
+
 
 Debug
 -----
