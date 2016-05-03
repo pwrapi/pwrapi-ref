@@ -1,7 +1,7 @@
 SUBDIRS = pwrdaemon
 DIST_SUBDRIS = pwrdaemon
 
-bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls foo 
+bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy 
 
 scriptdir = $(prefix)/script
 script_DATA = script/hwloc_profile\
@@ -24,9 +24,9 @@ pwrls_SOURCES = pwr-ls.c
 pwrls_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrls_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
-foo_SOURCES = test.c
-foo_CFLAGS = -I$(top_srcdir)/src/pwr
-foo_LDADD = $(top_builddir)/src/pwr/libpwr.la
+pwrenergy_SOURCES = pwrenergy.c
+pwrenergy_CFLAGS = -I$(top_srcdir)/src/pwr
+pwrenergy_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
 man_MANS = pwrapi.8 pwrgen.8 pwrdmp.8
 

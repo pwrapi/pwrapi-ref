@@ -17,18 +17,41 @@
 
 #include <pwr.h> 
 
+static void usage( const char* exename )
+{
+	fprintf(stderr,"%s: -o objectName [-n numberSamples] \n",exename);
+}
+
 int main( int argc, char* argv[] )
 {
     PWR_Obj     obj;
     PWR_Cntxt   cntxt;
 	int rc;
+	int option;
+	char* name = NULL;
+	int samples = 1;
 
-    assert( argc == 2 );
+	while( (option=getopt( argc, argv, "o:s:" )) != -1 ) {
+    	switch( option ) {
+	      case 'o':
+			name = optarg;
+			break;
+	      case 's':
+			samples = atoi(optarg);
+			break;
+		  default:
+			usage( argv[0] );
+			exit(-1);
+		}
+	}
+
+	if ( ! name ) {
+		usage( argv[0] );
+		exit(-1);
+	}
 
     rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
     assert( PWR_RET_SUCCESS == rc );
-
-    char* name = argv[1];
 
     rc = PWR_CntxtGetObjByName( cntxt, name, &obj );
     assert( PWR_RET_SUCCESS == rc );
@@ -36,9 +59,16 @@ int main( int argc, char* argv[] )
     PWR_AttrName attr = PWR_ATTR_ENERGY;
     double value;
     PWR_Time time;
-    rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
-    assert( PWR_RET_SUCCESS == rc );
-    printf("obj=%s attr=%s value=%lf\n",name,PWR_AttrGetTypeString(attr), value);
+
+	double prev = 0;
+	while ( samples-- ) {
+    	rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
+    	assert( PWR_RET_SUCCESS == rc );
+    	printf("obj=%s value=%.0lf joules %.0lf\n",name, value, 
+			prev == 0 ? 0 :	value-prev);
+		prev = value;
+		sleep(1);
+	}
 
 	PWR_CntxtDestroy( cntxt );
 
