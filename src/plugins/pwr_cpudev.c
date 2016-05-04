@@ -329,7 +329,7 @@ static int pwr_cpudev_readObjs(  int i, PWR_ObjType* ptr )
 static int pwr_cpudev_numAttrs( )
 {
     DBGP("\n");
-    return 3;
+    return 2;
 }
 
 static int pwr_cpudev_readAttrs( int i, PWR_AttrName* ptr )
