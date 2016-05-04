@@ -59,7 +59,7 @@ static pwr_fd_t powercap_dev_open( plugin_devops_t* ops, const char *openstr )
     DBGP("openstr=`%s`\n",openstr);
     open_t* fd = malloc( sizeof( open_t ) );
 
-	powercapDevInfo_t *info = (powercapDevInfo_t*) ops->private_data;
+    powercapDevInfo_t *info = (powercapDevInfo_t*) ops->private_data;
 
     int   global_index;
     sscanf( openstr, "%d %d", &fd->type, &global_index ); 
