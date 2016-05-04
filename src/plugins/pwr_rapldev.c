@@ -11,6 +11,9 @@
 
 #define USE_SYSTIME
 
+#define MAX_PATH        4096
+
+#include <assert.h>
 #include "pwr_rapldev.h"
 #include "pwr_dev.h"
 
@@ -95,6 +98,7 @@
 #define MSR_BIT(X,Y) ((X&(1LL<<Y))?1:0)
 
 typedef enum {
+    INTEL_LAYER_INVALID = -1,
     INTEL_LAYER_PKG = 0,
     INTEL_LAYER_PP0,
     INTEL_LAYER_PP1,
@@ -134,11 +138,18 @@ typedef struct {
     power_t power;
     limit_t limit;
 } pwr_rapldev_t;
-#define PWR_RAPLDEV(X) ((pwr_rapldev_t *)(X))
+
+#define MAX_CPU         512	
+#define MAX_NUM_PKGS    8 
+typedef struct {
+    int numPkgs;
+    pwr_rapldev_t* pkgs[MAX_NUM_PKGS];    
+} private_data_t;
 
 typedef struct {
     pwr_rapldev_t *dev;
-    layer_t layer;
+    int numLayers;
+    layer_t layers[4];
 } pwr_raplfd_t;
 #define PWR_RAPLFD(X) ((pwr_raplfd_t *)(X))
 
@@ -160,44 +171,20 @@ static plugin_devops_t devops = {
     .private_data = 0x0
 };
 
-static int rapldev_parse_init( const char *initstr, int *core )
+static layer_t rapldev_parse_open( const char *name )
 {
-    char *token;
-
-    DBGP( "Info: received initialization string `%s`\n", initstr );
-
-    if( (token = strtok( (char *)initstr, ":" )) == 0x0 ) {
-        fprintf( stderr, "Error: missing core separator in initialization string %s\n", initstr );
-        return -1;
-    }
-    *core = atoi(token);
-
-    DBGP( "Info: extracted initialization string (CORE=%d)\n", *core );
-
-    return 0;
-}
-
-static int rapldev_parse_open( const char *openstr, layer_t *layer )
-{
-    char *token;
-
-    DBGP( "Info: received open string `%s`\n", openstr );
-    if( (token = strtok( openstr, ":" )) == 0x0 ) {
-        fprintf( stderr, "Error: missing layer separator in open string `%s`\n", openstr );
-        return -1;
-    }
-    if( !strcmp( token, "pkg" ) ) *layer = INTEL_LAYER_PKG;
-    else if( !strcmp( token, "pp0" ) ) *layer = INTEL_LAYER_PP0;
-    else if( !strcmp( token, "pp1" ) ) *layer = INTEL_LAYER_PP1;
-    else if( !strcmp( token, "dram" ) ) *layer = INTEL_LAYER_DRAM;
+    layer_t layer = INTEL_LAYER_INVALID;
+    if( !strcmp( name, "pkg" ) ) layer = INTEL_LAYER_PKG;
+    else if( !strcmp( name, "pp0" ) ) layer = INTEL_LAYER_PP0;
+    else if( !strcmp( name, "pp1" ) ) layer = INTEL_LAYER_PP1;
+    else if( !strcmp( name, "dram" ) ) layer = INTEL_LAYER_DRAM;
     else {
-        fprintf( stderr, "Error: unknown layer specification in open string %s\n", openstr );
-        return -1;
+        fprintf( stderr, "Error: unknown layer specification %s\n", name );
     }
  
-    DBGP( "Info: extracted open string (layer=%d)\n", *layer );
+    DBGP( "Info: extracted open string (layer=%d)\n", layer );
 
-    return 0;
+    return layer;
 }
 
 static int rapldev_identify( int *cpu_model )
@@ -339,97 +326,131 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
 }
 
 
+static pwr_rapldev_t *_pwr_rapldev_init( int core );
 plugin_devops_t *pwr_rapldev_init( const char *initstr )
 {
-    char file[80] = "";
-    int core = 0;
-    long long msr;
+    int i;
+
     plugin_devops_t *dev = malloc( sizeof(plugin_devops_t) );
-    *dev = devops;
+    private_data_t* priv = dev->private_data = malloc( sizeof(private_data_t) );
 
-    dev->private_data = malloc( sizeof(pwr_rapldev_t) );
-    bzero( dev->private_data, sizeof(pwr_rapldev_t) );
+    priv->numPkgs = 0;
 
-    DBGP( "Info: PWR RAPL device open\n" );
+    char buf[MAX_PATH];
+    for ( i = 0; i <  MAX_CPU; i++ ) {
 
-    if( rapldev_parse_init( initstr, &core ) < 0 ) {
-        fprintf( stderr, "Error: PWR RAPL device initialization string %s invalid\n", initstr );
-        return 0x0;
+	sprintf(buf,"/sys/devices/system/cpu/cpu%d/topology/physical_package_id",i);
+	FILE* fp = fopen( buf, "r");
+	if ( ! fp ) {
+	    break;
+        }
+	int pkgNum;
+	fscanf( fp, "%d", &pkgNum );
+	DBGP("cpu %d is on package num %d\n", i, pkgNum );
+
+	if ( pkgNum > priv->numPkgs - 1) {
+	    assert( priv->numPkgs < MAX_NUM_PKGS);
+	    priv->pkgs[priv->numPkgs] = _pwr_rapldev_init( priv->numPkgs );	
+	    ++priv->numPkgs;
+	}
     }
+ 
+    DBGP("num packages %d\n", priv->numPkgs );
+    assert( priv->numPkgs > 0 );
 
-    if( rapldev_identify( &(PWR_RAPLDEV(dev->private_data)->cpu_model) ) < 0 ) {
+    *dev = devops;
+    dev->private_data = priv;
+    return dev;
+}
+
+static void _pwr_rapldev_fini( pwr_rapldev_t* dev )
+{
+    close( dev->fd );
+}
+
+static pwr_rapldev_t *_pwr_rapldev_init( int core )
+{
+    char file[80] = "";
+    long long msr;
+
+    pwr_rapldev_t* dev = malloc( sizeof(pwr_rapldev_t) );
+    bzero( dev, sizeof(pwr_rapldev_t) );
+
+    DBGP( "Info: PWR RAPL package init\n" );
+
+    if( rapldev_identify( &dev->cpu_model ) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device model identification failed\n" );
         return 0x0;
     }
 
     sprintf( file, "/dev/cpu/%d/msr", core );
-    if( (PWR_RAPLDEV(dev->private_data)->fd=open( file, O_RDONLY )) < 0 ) {
+    if( (dev->fd=open( file, O_RDONLY )) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device open failed\n" );
         return 0x0;
     }
 
-    if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_RAPL_POWER_UNIT, &msr ) < 0 ) {
+    if( rapldev_read( dev->fd, MSR_RAPL_POWER_UNIT, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device read failed\n" );
         return 0x0;
     }
-    PWR_RAPLDEV(dev->private_data)->units.power = 
+    dev->units.power = 
         pow( 0.5, (double)(MSR(msr, POWER_UNITS_SHIFT, POWER_UNITS_MASK)) );
-    PWR_RAPLDEV(dev->private_data)->units.energy = 
+    dev->units.energy = 
         pow( 0.5, (double)(MSR(msr, ENERGY_UNITS_SHIFT, ENERGY_UNITS_MASK)) );
-    PWR_RAPLDEV(dev->private_data)->units.time =
+    dev->units.time =
         pow( 0.5, (double)(MSR(msr, TIME_UNITS_SHIFT, TIME_UNITS_MASK)) );
 
-    DBGP( "Info: units.power    - %g\n", PWR_RAPLDEV(dev->private_data)->units.power );
-    DBGP( "Info: units.energy   - %g\n", PWR_RAPLDEV(dev->private_data)->units.energy );
-    DBGP( "Info: units.time     - %g\n", PWR_RAPLDEV(dev->private_data)->units.time );
+    DBGP( "Info: units.power    - %g\n", dev->units.power );
+    DBGP( "Info: units.energy   - %g\n", dev->units.energy );
+    DBGP( "Info: units.time     - %g\n", dev->units.time );
 
-    if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_POWER_INFO, &msr ) < 0 ) {
+    if( rapldev_read( dev->fd, MSR_POWER_INFO, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device read failed\n" );
         return 0x0;
     }
-    PWR_RAPLDEV(dev->private_data)->power.thermal =
-        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, THERMAL_POWER_SHIFT, THERMAL_POWER_MASK));
-    PWR_RAPLDEV(dev->private_data)->power.minimum =
-        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, MINIMUM_POWER_SHIFT, MINIMUM_POWER_MASK));
-    PWR_RAPLDEV(dev->private_data)->power.maximum =
-        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, MAXIMUM_POWER_SHIFT, MAXIMUM_POWER_MASK));
-    PWR_RAPLDEV(dev->private_data)->power.window =
-        PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW_POWER_SHIFT, WINDOW_POWER_MASK));
+    dev->power.thermal =
+        dev->units.power * (double)(MSR(msr, THERMAL_POWER_SHIFT, THERMAL_POWER_MASK));
+    dev->power.minimum =
+        dev->units.power * (double)(MSR(msr, MINIMUM_POWER_SHIFT, MINIMUM_POWER_MASK));
+    dev->power.maximum =
+        dev->units.power * (double)(MSR(msr, MAXIMUM_POWER_SHIFT, MAXIMUM_POWER_MASK));
+    dev->power.window =
+        dev->units.time * (double)(MSR(msr, WINDOW_POWER_SHIFT, WINDOW_POWER_MASK));
 
-    DBGP( "Info: power.thermal  - %g\n", PWR_RAPLDEV(dev->private_data)->power.thermal );
-    DBGP( "Info: power.minimum  - %g\n", PWR_RAPLDEV(dev->private_data)->power.minimum );
-    DBGP( "Info: power.maximum  - %g\n", PWR_RAPLDEV(dev->private_data)->power.maximum );
-    DBGP( "Info: power.window   - %g\n", PWR_RAPLDEV(dev->private_data)->power.window );
+    DBGP( "Info: power.thermal  - %g\n", dev->power.thermal );
+    DBGP( "Info: power.minimum  - %g\n", dev->power.minimum );
+    DBGP( "Info: power.maximum  - %g\n", dev->power.maximum );
+    DBGP( "Info: power.window   - %g\n", dev->power.window );
 
-    if( rapldev_read( PWR_RAPLDEV(dev->private_data)->fd, MSR_POWER_LIMIT, &msr ) < 0 ) {
+    if( rapldev_read( dev->fd, MSR_POWER_LIMIT, &msr ) < 0 ) {
         fprintf( stderr, "Error: PWR RAPL device read failed\n" );
         return 0x0;
     }
-    PWR_RAPLDEV(dev->private_data)->limit.power1 =
-        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, POWER1_LIMIT_SHIFT, POWER1_LIMIT_MASK));
-    PWR_RAPLDEV(dev->private_data)->limit.window1 =
-        PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW1_LIMIT_SHIFT, WINDOW1_LIMIT_MASK));
-    PWR_RAPLDEV(dev->private_data)->limit.enabled1 =
+    dev->limit.power1 =
+        dev->units.power * (double)(MSR(msr, POWER1_LIMIT_SHIFT, POWER1_LIMIT_MASK));
+    dev->limit.window1 =
+        dev->units.time * (double)(MSR(msr, WINDOW1_LIMIT_SHIFT, WINDOW1_LIMIT_MASK));
+    dev->limit.enabled1 =
         (unsigned short)(MSR_BIT(msr, ENABLED1_LIMIT_BIT));
-    PWR_RAPLDEV(dev->private_data)->limit.clamped1 =
+    dev->limit.clamped1 =
         (unsigned short)(MSR_BIT(msr, CLAMPED1_LIMIT_BIT));
-    PWR_RAPLDEV(dev->private_data)->limit.power2 =
-        PWR_RAPLDEV(dev->private_data)->units.power * (double)(MSR(msr, POWER2_LIMIT_SHIFT, POWER2_LIMIT_MASK));
-    PWR_RAPLDEV(dev->private_data)->limit.window2 =
-        PWR_RAPLDEV(dev->private_data)->units.time * (double)(MSR(msr, WINDOW2_LIMIT_SHIFT, WINDOW2_LIMIT_MASK));
-    PWR_RAPLDEV(dev->private_data)->limit.enabled2 =
+    dev->limit.power2 =
+        dev->units.power * (double)(MSR(msr, POWER2_LIMIT_SHIFT, POWER2_LIMIT_MASK));
+    dev->limit.window2 =
+        dev->units.time * (double)(MSR(msr, WINDOW2_LIMIT_SHIFT, WINDOW2_LIMIT_MASK));
+    dev->limit.enabled2 =
         (unsigned short)(MSR_BIT(msr, ENABLED2_LIMIT_BIT));
-    PWR_RAPLDEV(dev->private_data)->limit.clamped2 =
+    dev->limit.clamped2 =
         (unsigned short)(MSR_BIT(msr, CLAMPED2_LIMIT_BIT));
  
-    DBGP( "Info: limit.power1   - %g\n", PWR_RAPLDEV(dev->private_data)->limit.power1 );
-    DBGP( "Info: limit.window1  - %g\n", PWR_RAPLDEV(dev->private_data)->limit.window1 );
-    DBGP( "Info: limit.enabled1 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.enabled1 );
-    DBGP( "Info: limit.clamped1 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.clamped1 );
-    DBGP( "Info: limit.power2   - %g\n", PWR_RAPLDEV(dev->private_data)->limit.power1 );
-    DBGP( "Info: limit.window2  - %g\n", PWR_RAPLDEV(dev->private_data)->limit.window1 );
-    DBGP( "Info: limit.enabled2 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.enabled2 );
-    DBGP( "Info: limit.clamped2 - %u\n", PWR_RAPLDEV(dev->private_data)->limit.clamped2 );
+    DBGP( "Info: limit.power1   - %g\n", dev->limit.power1 );
+    DBGP( "Info: limit.window1  - %g\n", dev->limit.window1 );
+    DBGP( "Info: limit.enabled1 - %u\n", dev->limit.enabled1 );
+    DBGP( "Info: limit.clamped1 - %u\n", dev->limit.clamped1 );
+    DBGP( "Info: limit.power2   - %g\n", dev->limit.power1 );
+    DBGP( "Info: limit.window2  - %g\n", dev->limit.window1 );
+    DBGP( "Info: limit.enabled2 - %u\n", dev->limit.enabled2 );
+    DBGP( "Info: limit.clamped2 - %u\n", dev->limit.clamped2 );
 
     return dev;
 }
@@ -438,7 +459,12 @@ int pwr_rapldev_final( plugin_devops_t *dev )
 {
     DBGP( "Info: PWR RAPL device close\n" );
 
-    close( PWR_RAPLDEV(dev->private_data)->fd );
+    private_data_t* priv = dev->private_data;  
+    int i;
+    for ( i = 0; i < priv->numPkgs; i++) {
+        _pwr_rapldev_fini( priv->pkgs[i]);
+	free( priv->pkgs[i] );	
+    } 
     free( dev->private_data );
     free( dev );
 
@@ -447,13 +473,32 @@ int pwr_rapldev_final( plugin_devops_t *dev )
 
 pwr_fd_t pwr_rapldev_open( plugin_devops_t *dev, const char *openstr )
 {
-    pwr_fd_t *fd = malloc( sizeof(pwr_raplfd_t) );
-    PWR_RAPLFD(fd)->dev = PWR_RAPLDEV(dev->private_data);
+    private_data_t *info = (private_data_t*) dev->private_data;
+    pwr_raplfd_t *fd = malloc( sizeof(pwr_raplfd_t) );
 
-    if( rapldev_parse_open( openstr, (layer_t *)(&(PWR_RAPLFD(fd)->layer)) ) < 0 ) {
-        fprintf( stderr, "Error: PWR RAPL device open string %s invalid\n", openstr );
-        return 0x0;
+    int   rc;
+    int   global_index;
+    PWR_ObjType type;
+
+    sscanf( openstr, "%d %d", &type, &global_index );
+    DBGP("type=%d global_index=%d\n",type,global_index);
+
+    switch ( type ) {
+      case PWR_OBJ_SOCKET:
+        fd->layers[0] = rapldev_parse_open( "pp0" );
+        fd->layers[1] = rapldev_parse_open( "pp1" );
+        fd->numLayers = 2;
+        break;
+
+      case PWR_OBJ_MEM:
+        fd->layers[0] = rapldev_parse_open( "dram" );
+        fd->numLayers = 1;
+        break;
     }
+
+    assert( global_index < info->numPkgs );
+
+    fd->dev = info->pkgs[global_index ];
 
     return fd;
 }
@@ -468,6 +513,7 @@ int pwr_rapldev_close( pwr_fd_t fd )
 
 int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len, PWR_Time *timestamp )
 {
+    int i;
     double energy = 0.0;
     double time = 0.0;
     int policy = 0;
@@ -482,13 +528,17 @@ int pwr_rapldev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
         return -1;
     }
 
-    if( rapldev_gather( (PWR_RAPLFD(fd)->dev)->fd,
+    for ( i = 0; i < PWR_RAPLFD(fd)->numLayers; i++ ) {
+	double value = 0.0;
+        if( rapldev_gather( (PWR_RAPLFD(fd)->dev)->fd,
                         (PWR_RAPLFD(fd)->dev)->cpu_model,
-                        PWR_RAPLFD(fd)->layer,
+                        PWR_RAPLFD(fd)->layers[i],
                         (PWR_RAPLFD(fd)->dev)->units,
-                        &energy, &time, &policy ) < 0 ) {
-        fprintf( stderr, "Error: PWR RAPL device gather failed\n" );
-        return -1;
+                        &value, &time, &policy ) < 0 ) {
+            fprintf( stderr, "Error: PWR RAPL device gather failed\n" );
+            return -1;
+        }
+	energy += value;
     }
 
     switch( attr ) {
