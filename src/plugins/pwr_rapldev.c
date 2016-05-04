@@ -181,9 +181,9 @@ static int rapldev_parse_open( const char *openstr, layer_t *layer )
 {
     char *token;
 
-    DBGP( "Info: received open string %s\n", openstr );
-    if( (token = strtok( NULL, ":" )) == 0x0 ) {
-        fprintf( stderr, "Error: missing layer separator in open string %s\n", openstr );
+    DBGP( "Info: received open string `%s`\n", openstr );
+    if( (token = strtok( openstr, ":" )) == 0x0 ) {
+        fprintf( stderr, "Error: missing layer separator in open string `%s`\n", openstr );
         return -1;
     }
     if( !strcmp( token, "pkg" ) ) *layer = INTEL_LAYER_PKG;
@@ -337,6 +337,7 @@ static int rapldev_gather( int fd, int cpu_model, layer_t layer, units_t units,
 
     return 0;
 }
+
 
 plugin_devops_t *pwr_rapldev_init( const char *initstr )
 {
@@ -562,26 +563,49 @@ plugin_dev_t* getDev() {
 static int rapldev_numObjs( )
 {
     DBGP("\n");
-    return 1;
+    return 2;
 }
 static int rapldev_readObjs(  int i, PWR_ObjType* ptr )
 {
     DBGP("\n");
-    ptr[0] = PWR_OBJ_CORE;
-	return 0;
+    ptr[0] = PWR_OBJ_SOCKET;
+    ptr[1] = PWR_OBJ_MEM;
+    return 0;
 }
 
 static int rapldev_numAttrs( )
 {
     DBGP("\n");
-    return 2;
+    return 1;
 }
 
 static int rapldev_readAttrs( int i, PWR_AttrName* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_ATTR_ENERGY;
-    ptr[1] = PWR_ATTR_POWER;
+    return 0;
+}
+
+static int rapledev_getDevName(PWR_ObjType type, size_t len, char* buf )
+{
+    strncpy(buf,"dev0", len );
+    DBGP("type=%d name=`%s`\n",type,buf);
+    return 0;
+}
+
+static int rapledev_getDevOpenStr(PWR_ObjType type,
+                        int global_index, size_t len, char* buf )
+{
+    snprintf( buf, len, "%d %d", type, global_index);
+    DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
+    return 0;
+}
+
+static int rapledev_getDevInitStr( const char* name,
+                        size_t len, char* buf )
+{
+    snprintf(buf,len,"0");
+    DBGP("dev=`%s` str=`%s`\n",name, buf );
     return 0;
 }
 
@@ -590,6 +614,9 @@ static plugin_meta_t meta = {
     .numAttrs = rapldev_numAttrs,
     .readObjs = rapldev_readObjs,
     .readAttrs = rapldev_readAttrs,
+    .getDevName = rapledev_getDevName,
+    .getDevOpenStr = rapledev_getDevOpenStr,
+    .getDevInitStr = rapledev_getDevInitStr,
 };
 
 plugin_meta_t* getMeta() {
