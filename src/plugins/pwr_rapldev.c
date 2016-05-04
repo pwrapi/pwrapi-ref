@@ -568,6 +568,7 @@ static int rapldev_readObjs(  int i, PWR_ObjType* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_OBJ_CORE;
+	return 0;
 }
 
 static int rapldev_numAttrs( )
