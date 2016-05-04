@@ -307,3 +307,64 @@ static plugin_dev_t dev = {
 plugin_dev_t* getDev() {
     return &dev;
 }
+static int pwr_cpudev_numObjs( )
+{
+    DBGP("\n");
+    return 1;
+}
+static int pwr_cpudev_readObjs(  int i, PWR_ObjType* ptr )
+{
+    DBGP("\n");
+    ptr[0] = PWR_OBJ_CORE;
+}
+
+static int pwr_cpudev_numAttrs( )
+{
+    DBGP("\n");
+    return 5;
+}
+
+static int pwr_cpudev_readAttrs( int i, PWR_AttrName* ptr )
+{
+    DBGP("\n");
+    ptr[0] = PWR_ATTR_PSTATE;
+    ptr[1] = PWR_ATTR_CSTATE;
+    ptr[2] = PWR_ATTR_SSTATE;
+    ptr[3] = PWR_ATTR_FREQ;
+    ptr[4] = PWR_ATTR_TEMP;
+    return 0;
+}
+
+static int pwr_cpudev_getDevName(PWR_ObjType type, size_t len, char* buf )
+{
+    strncpy(buf,"dev0", len );
+    DBGP("type=%d name=`%s`\n",type,buf);
+}
+
+static int pwr_cpudev_getDevOpenStr(PWR_ObjType type,
+                        int global_index, size_t len, char* buf )
+{
+    snprintf( buf, len, "%d", global_index);
+    DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
+}
+
+static int pwr_cpudev_getDevInitStr( const char* name,
+                        size_t len, char* buf )
+{
+    strncpy(buf,"",len);
+    DBGP("dev=`%s` str=`%s`\n",name, buf );
+}
+
+static plugin_meta_t meta = {
+    .numObjs = pwr_cpudev_numObjs,
+    .numAttrs = pwr_cpudev_numAttrs,
+    .readObjs = pwr_cpudev_readObjs,
+    .readAttrs = pwr_cpudev_readAttrs,
+    .getDevName = pwr_cpudev_getDevName,
+    .getDevOpenStr = pwr_cpudev_getDevOpenStr,
+    .getDevInitStr = pwr_cpudev_getDevInitStr,
+};
+
+plugin_meta_t* getMeta() {
+    return &meta;
+}
