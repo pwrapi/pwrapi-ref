@@ -247,7 +247,7 @@ static int dummy_readAttrs( int i, PWR_AttrName* ptr )
 
 static int dummy_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
-    strncpy(buf,"dev0", len );
+    strncpy(buf,"dummy_dev0", len );
     DBGP("type=%d name=`%s`\n",type,buf);
 	return 0;
 }
@@ -268,6 +268,12 @@ static int dummy_getDevInitStr( const char* name,
 	return 0;
 }
 
+static int dummy_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"Dummy",len);
+	return 0;
+}
+
 static plugin_meta_t meta = {
 	.numObjs = dummy_numObjs,
 	.numAttrs = dummy_numAttrs,
@@ -276,6 +282,7 @@ static plugin_meta_t meta = {
     .getDevName = dummy_getDevName,
     .getDevOpenStr = dummy_getDevOpenStr,
     .getDevInitStr = dummy_getDevInitStr,
+    .getPluginName = dummy_getPluginName,
 };
 
 plugin_meta_t* getMeta() {
