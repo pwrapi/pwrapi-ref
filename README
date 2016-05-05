@@ -167,14 +167,14 @@ plat.node0: 198 joules, 50 watts
 [mjleven@node69 script]$
 
 Note that the powercap plugin does not check for counter wrap around.
-Note that you need a linux kernel that support the "Power Capping Framework".
+Note that you need a linux kernel that supports the "Power Capping Framework".
 Note that this plugin has minimal testing on one machine.
 
 Running with the RAPL Plugin
 ----------------------------
 
 Plugin libpwr_rapldev reads energy data via /dev/cpu/*/msr. You must have
-elevated privilege to use the plugin.
+elevated privilege to use this plugin.
  
 [root@gato2 script]# source hwloc_rapl_profile
 [root@gato2 script]# pwrls
