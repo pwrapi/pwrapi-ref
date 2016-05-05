@@ -93,7 +93,7 @@ If you have "hwloc" installed on your system you can configure via:
 configure --prefix="your install directory" --with-hwloc="where hwloc is installed" 
 
 This configuration adds the ability to auto detect the Power object hierarchy
-as mentioned about. 
+as mentioned above. 
 
 Once built you can run "pwrls". "pwrls" traverses the Power object hierarchy and prints the
 objects and supported attributes. Note that dummy_dev plugin is used.
