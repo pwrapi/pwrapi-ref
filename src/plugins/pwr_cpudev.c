@@ -346,7 +346,7 @@ static int pwr_cpudev_readAttrs( int i, PWR_AttrName* ptr )
 
 static int pwr_cpudev_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
-    strncpy(buf,"dev0", len );
+    strncpy(buf,"cpu_dev0", len );
     DBGP("type=%d name=`%s`\n",type,buf);
 	return 0;
 }
@@ -367,6 +367,12 @@ static int pwr_cpudev_getDevInitStr( const char* name,
 	return 0;
 }
 
+static int pwr_cpudev_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"CPU",len);
+	return 0;
+}
+
 static plugin_meta_t meta = {
     .numObjs = pwr_cpudev_numObjs,
     .numAttrs = pwr_cpudev_numAttrs,
@@ -375,6 +381,7 @@ static plugin_meta_t meta = {
     .getDevName = pwr_cpudev_getDevName,
     .getDevOpenStr = pwr_cpudev_getDevOpenStr,
     .getDevInitStr = pwr_cpudev_getDevInitStr,
+    .getPluginName = pwr_cpudev_getPluginName,
 };
 
 plugin_meta_t* getMeta() {

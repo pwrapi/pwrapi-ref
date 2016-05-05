@@ -374,7 +374,7 @@ static int powercap_readAttrs( int i, PWR_AttrName* ptr )
 
 static int powercap_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
-    strncpy(buf,"dev0", len );
+    strncpy(buf,"powercap_dev0", len );
 	DBGP("type=%d name=`%s`\n",type,buf);
 	return 0;
 }
@@ -395,6 +395,12 @@ static int powercap_getDevInitStr( const char* name,
 	return 0;
 }
 
+static int powercap_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"PowerCap",len);
+	return 0;
+}
+
 static plugin_meta_t meta = {
 	.numObjs = powercap_numObjs,
 	.numAttrs = powercap_numAttrs,
@@ -403,6 +409,7 @@ static plugin_meta_t meta = {
     .getDevName = powercap_getDevName,
     .getDevOpenStr = powercap_getDevOpenStr,
     .getDevInitStr = powercap_getDevInitStr,
+    .getPluginName = powercap_getPluginName,
 };
 
 plugin_meta_t* getMeta() {

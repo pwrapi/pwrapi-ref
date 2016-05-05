@@ -638,7 +638,7 @@ static int rapldev_readAttrs( int i, PWR_AttrName* ptr )
 
 static int rapledev_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
-    strncpy(buf,"dev0", len );
+    strncpy(buf,"rapl_dev0", len );
     DBGP("type=%d name=`%s`\n",type,buf);
     return 0;
 }
@@ -654,8 +654,14 @@ static int rapledev_getDevOpenStr(PWR_ObjType type,
 static int rapledev_getDevInitStr( const char* name,
                         size_t len, char* buf )
 {
-    snprintf(buf,len,"0");
+    snprintf(buf,len,"");
     DBGP("dev=`%s` str=`%s`\n",name, buf );
+    return 0;
+}
+
+static int rapledev_getPluginName( size_t len, char* buf )
+{
+    snprintf(buf,len,"RAPL");
     return 0;
 }
 
@@ -667,6 +673,7 @@ static plugin_meta_t meta = {
     .getDevName = rapledev_getDevName,
     .getDevOpenStr = rapledev_getDevOpenStr,
     .getDevInitStr = rapledev_getDevInitStr,
+    .getPluginName = rapledev_getPluginName,
 };
 
 plugin_meta_t* getMeta() {
