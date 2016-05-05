@@ -100,6 +100,8 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
     m_config->print( std::cout );
 #endif
 
+    initPlugins( *m_config );
+
     env = getenv2( name, "POWERAPI_ROOT" );
     if( env  ) {
     	DBGX("root=`%s`\n", env );
@@ -337,9 +339,10 @@ void DistCntxt::initPlugins( Config& cfg )
 
 	std::string os( name.sysname);
 
-
+// Fix me
     std::deque< Config::Plugin > plugins = m_config->findPlugins();
     std::deque< Config::Plugin >::iterator iter = plugins.begin();
+	DBGX("%lu\n",plugins.size());
 
     for ( ; iter != plugins.end(); ++ iter ) {
 
@@ -363,7 +366,6 @@ void DistCntxt::initPlugins( Config& cfg )
 bool DistCntxt::initDevice( std::string& devName )
 {
     DBGX("device name=`%s`\n", devName.c_str() );
-    initPlugins( *m_config );
 
     std::deque< Config::SysDev > devices = (*m_config).findSysDevs();
     std::deque< Config::SysDev >::iterator iter = devices.begin();

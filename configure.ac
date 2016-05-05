@@ -55,6 +55,7 @@ AC_CONFIG_FILES([Makefile
                  tools/script/hwloc_powercap_profile
                  tools/script/hwloc_cpu_profile
                  tools/script/hwloc_rapl_profile
+                 tools/script/hwloc_multi_profile
                  examples/script/xml_profile
                  src/Makefile
                  src/tinyxml2/Makefile

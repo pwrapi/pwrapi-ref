@@ -66,10 +66,11 @@ class HwlocConfig : public Config {
 
   private:
 
-	PluginMeta* m_meta;
-	void initAttributes( TreeNode*, PluginMeta& );
+	std::deque< PluginMeta* > m_meta;
+	void initAttributes( TreeNode*, std::deque<PluginMeta*>& );
     std::vector<TreeNode*> reorderObjects( TreeNode* );
-    bool pruneObjects( TreeNode*, PluginMeta& );
+    bool pruneObjects( TreeNode*, std::deque<PluginMeta*>& );
+    bool isSupported( TreeNode*, std::deque<PluginMeta*>& );
 
 	TreeNode* findObj( TreeNode*, std::string );
 	std::string getFullName( TreeNode* node ); 
@@ -88,7 +89,7 @@ class HwlocConfig : public Config {
 	TreeNode*	m_root;
     static pthread_mutex_t	m_mutex;
 	std::deque< Config::Plugin > m_libs;
-    std::set< std::string > m_devices;
+    std::map< std::string, PluginMeta* > m_devices;
 };
 
 }

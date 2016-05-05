@@ -81,4 +81,6 @@ void walk( PWR_Obj node, int level )
     PWR_ObjGetName( parent, name, 100 );
     printf("%sparent=`%s`\n", indent, name ); 
 #endif
+
+    return 0;
 }

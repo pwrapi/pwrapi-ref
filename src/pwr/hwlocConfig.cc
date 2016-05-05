@@ -52,32 +52,11 @@ HwlocConfig::HwlocConfig( std::string file )
 
 	config.open( file.c_str() );
 
-	unsigned count = 0;
-	while ( getline(config,line) ) {
-		Config::Plugin tmp;
-
-		// there is an extra level of indirection between the library and
-		// attribute that is not longer needed but the code has not been 
-		// changed
-		std::stringstream name;
-		name << "Plugin" << count++;
-		tmp.name = name.str();
-		tmp.lib = line;
-		m_libs.push_back(tmp);
-	}
-	config.close();
-
-	// the above code is written to allow multiple libraries but, for now
-	// the rest of the code expects 1 plugin library
-	assert( 1 == m_libs.size() );
    	struct utsname name;
    	int rc = uname( &name );
     assert( 0 == rc );
     std::string os( name.sysname);
 
-	DBGX2(DBG_CONFIG,"lib='%s' name='%s'\n",
-					m_libs.front().lib.c_str(),m_libs.front().name.c_str() ); 
-	
 	std::string ext;
     if ( 0 == os.compare("Darwin") ) {
     	ext = ".dylib";
@@ -85,12 +64,27 @@ HwlocConfig::HwlocConfig( std::string file )
         ext = ".so";
     }
 
-	m_meta = new PluginMeta( m_libs.front().lib + ext);
-	assert(m_meta);
+	while ( getline(config,line) ) {
+		Config::Plugin tmp;
+
+
+		tmp.lib = line;
+		PluginMeta* meta = new PluginMeta( tmp.lib + ext );
+		assert(meta);
+
+		tmp.name = meta->getPluginName();
+
+		m_meta.push_back(meta);
+		m_libs.push_back(tmp);
+		DBGX2(DBG_CONFIG,"lib='%s' name='%s'\n",
+				tmp.lib.c_str(),tmp.name.c_str());
+	}
+	config.close();
 
 	reorderObjects( m_root );
-	pruneObjects( m_root, *m_meta );
-	initAttributes( m_root, *m_meta );
+
+	pruneObjects( m_root, m_meta );
+	initAttributes( m_root, m_meta );
 
 	unlock();
 }
@@ -101,37 +95,40 @@ HwlocConfig::~HwlocConfig()
 	unlock();
 }
 
-void HwlocConfig::initAttributes( TreeNode* node, PluginMeta& meta )
+void HwlocConfig::initAttributes( TreeNode* node, std::deque<PluginMeta*>& meta )
 {
 	for ( unsigned i = 0; i < node->children.size(); i++ ) {
 		initAttributes( node->children[i], meta );
 	}	
 	DBGX2(DBG_CONFIG,"%s\n",getFullName(node).c_str());
 	for ( int i = 0; i < PWR_NUM_ATTR_NAMES; i++ ) {
-		if ( m_meta->findAttr( node->type, (PWR_AttrName)i ) ) {
-			DBGX2(DBG_CONFIG,"leaf %s\n",attrNameToString((PWR_AttrName)i));
-			Attr attr;
-			attr.op = "SUM";
-			attr.type = "Float";
-			attr.hz = "1";
+		std::deque<PluginMeta*>::iterator iter =  meta.begin();
+		for ( ; iter != meta.end(); ++iter ) {
+			if ( (*iter)->findAttr( node->type, (PWR_AttrName) i ) ) {
+				DBGX2(DBG_CONFIG,"leaf %s\n",attrNameToString((PWR_AttrName)i));
+				Attr attr;
+				attr.op = "SUM";
+				attr.type = "Float";
+				attr.hz = "1";
 
-		    attr.device = meta.getDevName(node->type);
-			attr.openString = meta.getDevOpenStr( node->type, node->global_index );
-            m_devices.insert( attr.device );
+		    	attr.device = (*iter)->getDevName(node->type);
+				attr.openString = (*iter)->getDevOpenStr( node->type, node->global_index );
+            	m_devices[ attr.device ] = *iter; 
 
-			node->attrs[(PWR_AttrName)i] = attr;
-		} else if ( canAggregate( (PWR_AttrName)i)  ) {
+				node->attrs[(PWR_AttrName)i] = attr;
+			} else if ( canAggregate( (PWR_AttrName)i)  ) {
 
-			if ( ! node->children.empty() ) {
-				if ( node->children[0]->attrs.find( (PWR_AttrName)i ) !=
+				if ( ! node->children.empty() ) {
+					if ( node->children[0]->attrs.find( (PWR_AttrName)i ) !=
 						node->children[0]->attrs.end() ) 
-				{
-					DBGX2(DBG_CONFIG,"inner %s\n",attrNameToString((PWR_AttrName)i));
-					Attr attr;
-					attr.op = "SUM";
-					attr.type = "Float";
-					attr.hz = "1";
-					node->attrs[(PWR_AttrName)i] = attr;
+					{
+						DBGX2(DBG_CONFIG,"inner %s\n",attrNameToString((PWR_AttrName)i));
+						Attr attr;
+						attr.op = "SUM";
+						attr.type = "Float";
+						attr.hz = "1";
+						node->attrs[(PWR_AttrName)i] = attr;
+					}
 				}
 			}
 		}
@@ -159,7 +156,8 @@ std::vector<HwlocConfig::TreeNode*> HwlocConfig::reorderObjects( TreeNode* node 
     return ret;
 }
 
-bool HwlocConfig::pruneObjects( TreeNode* node, PluginMeta&  meta )
+
+bool HwlocConfig::pruneObjects( TreeNode* node, std::deque<PluginMeta*>& meta )
 {
 	if ( node->children.size() ) {
         std::vector< TreeNode* >::iterator iter = node->children.begin();
@@ -177,7 +175,30 @@ bool HwlocConfig::pruneObjects( TreeNode* node, PluginMeta&  meta )
     
 	//DBGX2(DBG_CONFIG,"%s\n",getFullName(node).c_str());
 
-    return meta.isObjectSupported( node->type ) || ! node->children.empty();
+    return isSupported( node, meta ); 
+}
+
+bool HwlocConfig::isSupported( TreeNode* node, std::deque<PluginMeta*>& meta )
+{
+
+	bool ret = false;
+	// make sure to plugins don't support the same thin
+	for ( int attr = 0; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
+		int num = 0; 
+		std::deque<PluginMeta*>::iterator iter = meta.begin();
+		for ( ; iter != meta.end(); ++iter ) {
+	    	if ( (*iter)->isObjectSupported( node->type, (PWR_AttrName)attr ) ) 
+			{
+	        	DBGX2(DBG_CONFIG,"supported %s\n",getFullName(node).c_str());
+				++num;
+				ret = true;
+			}
+		}
+		assert( num < 2 );
+	}
+
+
+	return ( ret || ! node->children.empty() );
 }
 
 bool HwlocConfig::hasServer( const std::string name ) 
@@ -224,13 +245,13 @@ std::deque< Config::SysDev > HwlocConfig::findSysDevs()
 	std::deque< Config::SysDev > retval;
 
 	lock();
-	std::set<std::string>::iterator iter = m_devices.begin(); 
+	std::map<std::string,PluginMeta*>::iterator iter = m_devices.begin(); 
 
 	for ( ; iter != m_devices.end(); ++iter ) {
 		Config::SysDev tmp;
-		tmp.plugin = "Plugin0";
-		tmp.name = *iter;
-        tmp.initString = m_meta->getDevInitStr(*iter); 
+		tmp.name = iter->first;
+		tmp.plugin = iter->second->getPluginName();
+        tmp.initString = iter->second->getDevInitStr(iter->first); 
 		retval.push_back( tmp );
 	}
 	unlock();

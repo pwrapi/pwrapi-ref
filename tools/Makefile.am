@@ -7,6 +7,7 @@ scriptdir = $(prefix)/script
 script_DATA = script/hwloc_profile\
          script/hwloc_cpu_profile\
          script/hwloc_rapl_profile\
+         script/hwloc_multi_profile\
          script/hwloc_powercap_profile
 
 # Power API Tools
@@ -57,6 +58,7 @@ config_DATA = 	config/shepard-platform.xml \
 		config/powercap.hwloc \
 		config/cpu.hwloc \
 		config/rapl.hwloc \
+		config/multi.hwloc \
 		config/dummyNode.hwloc
 
 EXTRA_DIST = $(config_DATA) $(script_DATA)
