@@ -15,7 +15,7 @@ There are currently plugins for several platforms as well as a dummy plugin
 used for development. The dummy plugin is trivial and a good place to look when
 implementing a plugin for a new platform. 
 
-libpwr can be configured via an static XML file describing the hardware or via
+libpwr can be configured via a static XML file describing the hardware or via
 hwloc. XML was chosen for expedient development not performance. libpwr has an
 object that interfaces with the XML file via TinyXML-2. TinyXML-2 is 
 included with this distribution and is already integrated into this
@@ -35,7 +35,6 @@ execution of example programs rely on environment variables POWERAPI_CONFIG and
 POWERAPI_ROOT. POWERAPI_CONFIG tells the PowerAPI library what system
 configuration file to use. POWERAPI_ROOT tells the PowerAPI library its entry
 point. Consult the run scripts in examples on how to set these variables.
-“qkj:
 
 Build
 -----
