@@ -285,7 +285,7 @@ static int dummy_getDevInitStr( const char* devName,
                         size_t len, char* buf )
 {
     strncpy(buf,"",len);
-    DBGP("dev=`%s` str=`%s`\n",name, buf );
+    DBGP("dev=`%s` str=`%s`\n",devName, buf );
 	return 0;
 }
 
