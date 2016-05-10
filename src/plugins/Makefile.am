@@ -32,6 +32,14 @@ libpwr_pidev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(POWERINSIGHT_CFLAGS)
 libpwr_pidev_la_LDFLAGS = -version-info 1:0:1 $(POWERINSIGHT_LDFLAGS) $(POWERINSIGHT_LIBS)
 endif
 
+if HAVE_MIC
+lib_LTLIBRARIES += libpwr_micdev.la
+
+libpwr_micdev_la_SOURCES = pwr_dev.c pwr_micdev.c
+libpwr_micdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(MIC_INCLUDE)
+libpwr_micdev_la_LDFLAGS = -version-info 1:0:1 $(MIC_LDFLAGS) $(MIC_LIBS)
+endif
+
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
 libpwr_rapldev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_rapldev_la_LDFLAGS = -version-info 1:0:1
