@@ -93,7 +93,9 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
         m_config = new HwlocConfig( configFile );
 #endif
     } else {
-		assert(0);
+		fprintf(stderr,"ERROR: config file name format error `%s`\n",
+									configFile.c_str());
+		exit(-1);
 	}
 
 #if 0
