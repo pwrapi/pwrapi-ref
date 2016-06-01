@@ -42,6 +42,7 @@ int         PWR_ObjGetName( PWR_Obj, char* dest, size_t len );
 int         PWR_ObjGetParent( PWR_Obj, PWR_Obj* parent );
 int         PWR_ObjGetChildren( PWR_Obj, PWR_Grp* );
 
+
 /*
  * Subset of API for groups
  */
@@ -96,6 +97,11 @@ int         PWR_MetaValueAtIndex( PWR_Obj, PWR_AttrName, unsigned int index, voi
  * Subset of API for statistics
  */
 
+int			PWR_ObjGetStat( PWR_Obj, PWR_AttrName, PWR_AttrStat, PWR_TimePeriod*, double* );
+int			PWR_GrpGetStats( PWR_Grp, PWR_AttrName, PWR_AttrStat, PWR_TimePeriod*, double [],
+	   				PWR_TimePeriod []);
+
+
 int         PWR_ObjCreateStat( PWR_Obj, PWR_AttrName, PWR_AttrStat, PWR_Stat* );
 int         PWR_GrpCreateStat( PWR_Grp, PWR_AttrName, PWR_AttrStat, PWR_Stat* );
 
@@ -107,6 +113,9 @@ int         PWR_StatGetValue( PWR_Stat, double* val, PWR_TimePeriod* );
 int         PWR_StatGetValues( PWR_Stat, double vals[], PWR_TimePeriod[] );
 
 int         PWR_StatGetReduce( PWR_Stat, PWR_AttrStat, int* index, double* val, PWR_TimePeriod* );
+
+int         PWR_GrpGetReduce( PWR_Grp, PWR_AttrName, PWR_AttrStat, PWR_AttrStat, PWR_TimePeriod, 
+								int* index, double* val, PWR_TimePeriod* );
 
 int         PWR_StatDestroy( PWR_Stat );
 

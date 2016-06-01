@@ -99,6 +99,7 @@ typedef enum {
 typedef struct {
     PWR_Obj      obj;
     PWR_AttrName name;
+	int			 index;
     int          error;
 } PWR_AttrAccessError;
 
