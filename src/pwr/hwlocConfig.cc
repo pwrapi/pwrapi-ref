@@ -45,7 +45,7 @@ HwlocConfig::HwlocConfig( std::string file )
 	m_root = new TreeNode( NULL, PWR_OBJ_PLATFORM, "plat", 0 );
 	assert(m_root);
     initHierarchy( hwloc_get_root_obj(topology), m_root );
-	print( m_root );
+	printTree( m_root );
 
 	std::string line;
 	std::ifstream config;
@@ -379,7 +379,7 @@ HwlocConfig::TreeNode* HwlocConfig::findObj( TreeNode* node, std::string name )
 	}
 	return NULL;	
 }
-void HwlocConfig::print( TreeNode* node )
+void HwlocConfig::printTree( TreeNode* node )
 {
 	DBGX2(DBG_CONFIG,"%s %s\n",
 					getFullName(node).c_str(), objTypeToString(node->type) ); 
@@ -388,7 +388,7 @@ void HwlocConfig::print( TreeNode* node )
 	} 
 
 	for ( unsigned i = 0; i < node->children.size(); i++ ) {
-		print( node->children[i] );
+		printTree( node->children[i] );
 	}
 }
 

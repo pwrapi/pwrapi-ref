@@ -84,7 +84,7 @@ class HwlocConfig : public Config {
 	}
 
 	void initHierarchy( hwloc_obj_t obj, TreeNode* parent );
-	void print( TreeNode* );
+	void printTree( TreeNode* );
 	TreeNode*	m_root;
     static pthread_mutex_t	m_mutex;
 	std::deque< Config::Plugin > m_libs;
