@@ -59,7 +59,7 @@ static pwr_fd_t powercap_dev_open( plugin_devops_t* ops, const char *openstr )
     DBGP("openstr=`%s`\n",openstr);
     open_t* fd = malloc( sizeof( open_t ) );
 
-	powercapDevInfo_t *info = (powercapDevInfo_t*) ops->private_data;
+    powercapDevInfo_t *info = (powercapDevInfo_t*) ops->private_data;
 
     int   global_index;
     sscanf( openstr, "%d %d", &fd->type, &global_index ); 
@@ -356,6 +356,7 @@ static int powercap_readObjs(  int i, PWR_ObjType* ptr )
 	DBGP("\n");
 	ptr[0] = PWR_OBJ_SOCKET;
 	ptr[1] = PWR_OBJ_MEM;
+	return 0;
 }
 
 static int powercap_numAttrs( )
@@ -373,8 +374,9 @@ static int powercap_readAttrs( int i, PWR_AttrName* ptr )
 
 static int powercap_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
-    strncpy(buf,"dev0", len );
+    strncpy(buf,"powercap_dev0", len );
 	DBGP("type=%d name=`%s`\n",type,buf);
+	return 0;
 }
 
 static int powercap_getDevOpenStr(PWR_ObjType type, 
@@ -382,6 +384,7 @@ static int powercap_getDevOpenStr(PWR_ObjType type,
 {
     snprintf( buf, len, "%d %d", type, global_index);
 	DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
+	return 0;
 }
 
 static int powercap_getDevInitStr( const char* name, 
@@ -389,6 +392,13 @@ static int powercap_getDevInitStr( const char* name,
 {
     strncpy(buf,"",len);
 	DBGP("dev=`%s` str=`%s`\n",name, buf );
+	return 0;
+}
+
+static int powercap_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"PowerCap",len);
+	return 0;
 }
 
 static plugin_meta_t meta = {
@@ -399,6 +409,7 @@ static plugin_meta_t meta = {
     .getDevName = powercap_getDevName,
     .getDevOpenStr = powercap_getDevOpenStr,
     .getDevInitStr = powercap_getDevInitStr,
+    .getPluginName = powercap_getPluginName,
 };
 
 plugin_meta_t* getMeta() {

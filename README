@@ -15,7 +15,7 @@ There are currently plugins for several platforms as well as a dummy plugin
 used for development. The dummy plugin is trivial and a good place to look when
 implementing a plugin for a new platform. 
 
-libpwr can be configured via an static XML file describing the hardware or via
+libpwr can be configured via a static XML file describing the hardware or via
 hwloc. XML was chosen for expedient development not performance. libpwr has an
 object that interfaces with the XML file via TinyXML-2. TinyXML-2 is 
 included with this distribution and is already integrated into this
@@ -35,7 +35,6 @@ execution of example programs rely on environment variables POWERAPI_CONFIG and
 POWERAPI_ROOT. POWERAPI_CONFIG tells the PowerAPI library what system
 configuration file to use. POWERAPI_ROOT tells the PowerAPI library its entry
 point. Consult the run scripts in examples on how to set these variables.
-“qkj:
 
 Build
 -----
@@ -93,7 +92,7 @@ If you have "hwloc" installed on your system you can configure via:
 configure --prefix="your install directory" --with-hwloc="where hwloc is installed" 
 
 This configuration adds the ability to auto detect the Power object hierarchy
-as mentioned about. 
+as mentioned above. 
 
 Once built you can run "pwrls". "pwrls" traverses the Power object hierarchy and prints the
 objects and supported attributes. Note that dummy_dev plugin is used.
@@ -121,7 +120,7 @@ Running with the Linux Power Capping Framework Plugin
 ------------------------------------------------------
 
 Plugin libpwr_powercap.a is a proof of concept plugin that allows a user
-application to read RAPL based energy through the Linux Power Capping Framework.
+application to read energy data through the Linux Power Capping Framework.
 
 To use this plugin with hwloc configuration run:
 
@@ -167,9 +166,47 @@ plat.node0: 198 joules, 50 watts
 [mjleven@node69 script]$
 
 Note that the powercap plugin does not check for counter wrap around.
-Note that you need a linux kernel that support the "Power Capping Framework".
+Note that you need a linux kernel that supports the "Power Capping Framework".
 Note that this plugin has minimal testing on one machine.
 
+Running with the RAPL Plugin
+----------------------------
+
+Plugin libpwr_rapldev reads energy data via /dev/cpu/*/msr. You must have
+elevated privilege to use this plugin.
+ 
+[root@gato2 script]# source hwloc_rapl_profile
+[root@gato2 script]# pwrls
+name=`plat` type=Platform: Energy
+    name=`plat.node0` type=Node: Energy
+        name=`plat.node0.mem0` type=Memory: Energy
+        name=`plat.node0.mem1` type=Memory: Energy
+        name=`plat.node0.socket0` type=Socket: Energy
+        name=`plat.node0.socket1` type=Socket: Energy
+[root@gato2 script]# pwrenergy -o plat.node0
+plat.node0: 314996 joules, 0 watts
+[root@gato2 script]# pwrenergy -o plat.node0 -s 5
+plat.node0: 315257 joules, 0 watts
+plat.node0: 315296 joules, 39 watts
+plat.node0: 315334 joules, 38 watts
+plat.node0: 315372 joules, 38 watts
+plat.node0: 315410 joules, 38 watts
+[root@gato2 script]# pwrenergy -o plat.node0.mem0 -s 5
+plat.node0.mem0: 42660 joules, 0 watts
+plat.node0.mem0: 42668 joules, 8 watts
+plat.node0.mem0: 42677 joules, 8 watts
+plat.node0.mem0: 42685 joules, 8 watts
+plat.node0.mem0: 42693 joules, 8 watts
+[root@gato2 script]# pwrenergy -o plat.node0.socket0 -s 5
+plat.node0.socket0: 107759 joules, 0 watts
+plat.node0.socket0: 107772 joules, 13 watts
+plat.node0.socket0: 107785 joules, 13 watts
+plat.node0.socket0: 107797 joules, 13 watts
+plat.node0.socket0: 107810 joules, 13 watts
+[root@gato2 script]#
+
+Note that the energy value for the socket object is derived from adding 
+PP0 and PP1. The energy value for the memory object is based on RAPL DRAM. 
 
 Debug
 -----

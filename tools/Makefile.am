@@ -1,10 +1,13 @@
 SUBDIRS = pwrdaemon
 DIST_SUBDRIS = pwrdaemon
 
-bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy 
+bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy pwrget
 
 scriptdir = $(prefix)/script
 script_DATA = script/hwloc_profile\
+         script/hwloc_cpu_profile\
+         script/hwloc_rapl_profile\
+         script/hwloc_multi_profile\
          script/hwloc_powercap_profile
 
 # Power API Tools
@@ -28,6 +31,10 @@ pwrenergy_SOURCES = pwrenergy.c
 pwrenergy_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrenergy_LDADD = $(top_builddir)/src/pwr/libpwr.la
 
+pwrget_SOURCES = pwrget.c
+pwrget_CFLAGS = -I$(top_srcdir)/src/pwr
+pwrget_LDADD = $(top_builddir)/src/pwr/libpwr.la
+
 man_MANS = pwrapi.8 pwrgen.8 pwrdmp.8
 
 if HAVE_XMLRPC
@@ -49,6 +56,9 @@ config_DATA = 	config/shepard-platform.xml \
 		config/teller-platform.xml \
 		config/teller-node.xml \
 		config/powercap.hwloc \
+		config/cpu.hwloc \
+		config/rapl.hwloc \
+		config/multi.hwloc \
 		config/dummyNode.hwloc
 
 EXTRA_DIST = $(config_DATA) $(script_DATA)

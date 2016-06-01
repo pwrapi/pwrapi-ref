@@ -9,6 +9,7 @@
  * distribution.
 */
 
+#include <assert.h>
 #include "pwr_cpudev.h"
 #include "pwr_dev.h"
 
@@ -57,6 +58,7 @@ static int cpudev_read( int cpu, const char *name, double *val )
     int fd;
 
     sprintf( path, "/sys/devices/system/cpu/cpu%i/%s", cpu, name );
+	DBGP("%s\n",path);
     fd = open( path, O_RDONLY );
     if( fd < 0 ) {
         fprintf( stderr, "Error: unable to open CPU file at %s\n", path );
@@ -100,25 +102,29 @@ static int cpudev_write( int cpu, const char *name, double val )
 
 static int cpudev_avail_freq( int cpu, int freq[], int *count )
 {
-    int fd;
     char freqpath[100] = "";
     char val[20] = "";
     int offset = 0;
+	int c;
 
     sprintf( freqpath, "/sys/devices/system/cpu/cpu%i/cpufreq/scaling_available_frequencies", cpu );
-    fd = open( freqpath, O_RDONLY );
 
-    while( read( fd, val+offset, 1 ) != EOF ) {
-        if( val[offset] == ' ' ) {
+    DBGP( "%s\n", freqpath );
+
+	FILE* fp = fopen( freqpath, "r" );
+	assert(fp);
+
+	while ( EOF != ( c = fgetc( fp ) ) ) {
+		if ( isdigit( c ) ) { 
+			val[offset++] = c;
+		} else if ( c == ' ' ) {
+			assert( offset != 0 );
             freq[*count] = atoi(val);
-            (*count)++;
-            bzero( val, strlen(val) );
-            offset = 0;
-        } else
-            offset++;
-    }
-        
-    close( fd );
+			DBGP("add freq %u\n",freq[(*count)++]);
+			offset = 0;	
+		}
+	} 
+	fclose(fp);
 
     return 0;
 }
@@ -136,6 +142,7 @@ plugin_devops_t *pwr_cpudev_init( const char *initstr )
     PWR_CPUDEV(dev->private_data)->num_cpus = sysconf(_SC_NPROCESSORS_CONF);
     cpudev_avail_freq(0, PWR_CPUDEV(dev->private_data)->avail_freqlist, &(PWR_CPUDEV(dev->private_data)->num_freq));
 
+    DBGP( "\n" );
     return dev;
 }
 
@@ -316,29 +323,32 @@ static int pwr_cpudev_readObjs(  int i, PWR_ObjType* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_OBJ_CORE;
+	return 0;
 }
 
 static int pwr_cpudev_numAttrs( )
 {
     DBGP("\n");
-    return 5;
+    return 2;
 }
 
 static int pwr_cpudev_readAttrs( int i, PWR_AttrName* ptr )
 {
     DBGP("\n");
-    ptr[0] = PWR_ATTR_PSTATE;
-    ptr[1] = PWR_ATTR_CSTATE;
-    ptr[2] = PWR_ATTR_SSTATE;
-    ptr[3] = PWR_ATTR_FREQ;
-    ptr[4] = PWR_ATTR_TEMP;
+    ptr[0] = PWR_ATTR_SSTATE;
+    ptr[1] = PWR_ATTR_FREQ;
+// these are not supported
+//    ptr[] = PWR_ATTR_PSTATE;
+//    ptr[] = PWR_ATTR_CSTATE;
+//    ptr[] = PWR_ATTR_TEMP;
     return 0;
 }
 
 static int pwr_cpudev_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
-    strncpy(buf,"dev0", len );
+    strncpy(buf,"cpu_dev0", len );
     DBGP("type=%d name=`%s`\n",type,buf);
+	return 0;
 }
 
 static int pwr_cpudev_getDevOpenStr(PWR_ObjType type,
@@ -346,6 +356,7 @@ static int pwr_cpudev_getDevOpenStr(PWR_ObjType type,
 {
     snprintf( buf, len, "%d", global_index);
     DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
+	return 0;
 }
 
 static int pwr_cpudev_getDevInitStr( const char* name,
@@ -353,6 +364,13 @@ static int pwr_cpudev_getDevInitStr( const char* name,
 {
     strncpy(buf,"",len);
     DBGP("dev=`%s` str=`%s`\n",name, buf );
+	return 0;
+}
+
+static int pwr_cpudev_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"CPU",len);
+	return 0;
 }
 
 static plugin_meta_t meta = {
@@ -363,6 +381,7 @@ static plugin_meta_t meta = {
     .getDevName = pwr_cpudev_getDevName,
     .getDevOpenStr = pwr_cpudev_getDevOpenStr,
     .getDevInitStr = pwr_cpudev_getDevInitStr,
+    .getPluginName = pwr_cpudev_getPluginName,
 };
 
 plugin_meta_t* getMeta() {

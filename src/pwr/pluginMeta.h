@@ -41,11 +41,12 @@ class PluginMeta {
    		m_meta->readObjs( m_objVec.size(), &m_objVec[0] );
     	for ( unsigned i = 0; i < m_objVec.size(); i++ ) {
 			std::vector< PWR_AttrName > attrs( m_meta->numAttrs(m_objVec[i]) );
-        	//printf("%s\n", objTypeToString( objs[i] ) );
+        	//printf("%s\n", objTypeToString( m_objVec[i] ) );
 			
         	m_meta->readAttrs( attrs.size(), &attrs[0]);
         	for ( unsigned j = 0; j < attrs.size(); j++ ) {
-            	//printf("\t%s\n",attrNameToString(attrs[j]));
+            	//printf("add %s %s\n", objTypeToString( m_objVec[i] ), 
+				//			attrNameToString(attrs[j]));
 				m_objMap[ m_objVec[i] ].insert( attrs[j] ); 
         	}
 		}
@@ -63,6 +64,12 @@ class PluginMeta {
 		}
 		return false;
 	}
+
+    std::string getPluginName( ) {
+        std::string ret(100,' '); 
+        m_meta->getPluginName( 100, &ret[0] ); 
+        return ret; 
+    }
 	
     std::string getDevInitStr( std::string devName ) {
         std::string ret(100,' '); 
@@ -82,8 +89,9 @@ class PluginMeta {
         return ret; 
     }
 
-    bool isObjectSupported( PWR_ObjType obj ) {
-        return m_objMap.find(obj) != m_objMap.end();
+    bool isObjectSupported( PWR_ObjType obj, PWR_AttrName attr ) {
+        return m_objMap.find(obj) != m_objMap.end() &&
+				m_objMap[obj].find(attr) != m_objMap[obj].end();
     }
     
 

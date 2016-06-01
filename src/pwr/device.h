@@ -41,7 +41,7 @@ class Device {
 	Device( plugin_devops_t* ops, const std::string config )
       :  m_ops( ops )
     {
-        DBGX("\n");
+        DBGX("config=`%s`\n",config.c_str());
         m_fd = m_ops->open( ops, config.c_str() );
 		assert( m_fd );
     }

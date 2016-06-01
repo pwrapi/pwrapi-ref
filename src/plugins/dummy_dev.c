@@ -193,6 +193,7 @@ static plugin_devops_t devOps = {
 	.get_samples = dummy_dev_get_samples,
 };
 
+
 static plugin_devops_t* dummy_dev_init( const char *initstr )
 {
 	DBGP("initstr='%s'\n",initstr);
@@ -219,23 +220,39 @@ plugin_dev_t* getDev() {
     return &dev;
 }
 
+//
+// Start of plugin meta data
+//
+
+// Any thing can co here as long as it does not clash with other plugins
+static int dummy_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"Dummy",len);
+	return 0;
+}
+
+// What objects does this plugin support?
+static int dummy_readObjs(  int i, PWR_ObjType* ptr )
+{
+	DBGP("\n");
+	ptr[0] = PWR_OBJ_CORE;
+	return 0;
+}
+
+// How may object types does this plugin support?
+// this is the size of the array referenced by dummy_readObjs() 
 static int dummy_numObjs( )
 {
 	DBGP("\n");
 	return 1;
 } 
-static int dummy_readObjs(  int i, PWR_ObjType* ptr )
-{
-	DBGP("\n");
-	ptr[0] = PWR_OBJ_CORE;
-}
 
-static int dummy_numAttrs( )
-{
-	DBGP("\n");
-	return 2;
-}
-
+// What attributes does an object support?
+// Note that currently this function does not specify Object type
+// so all objects must support all attributues
+// Yes, this is limiting. 
+// This interface could be revised to remove this restriction by adding
+// PWR_ObjType as a parameter.
 static int dummy_readAttrs( int i, PWR_AttrName* ptr )
 {
 	DBGP("\n");
@@ -244,24 +261,42 @@ static int dummy_readAttrs( int i, PWR_AttrName* ptr )
 	return 0;
 }
 
-static int dummy_getDevName(PWR_ObjType type, size_t len, char* buf )
+// How many attributes does an object support?
+// this is the size of the array referenced by dummy_readAttr()
+static int dummy_numAttrs( PWR_ObjType type )
 {
-    strncpy(buf,"dev0", len );
-    DBGP("type=%d name=`%s`\n",type,buf);
+	DBGP("\n");
+	return 2;
 }
 
+// a plugin device can be initialized multiple times, once for each
+// object type, however this is not necessry, you can have one device
+// to handle all object types
+static int dummy_getDevName(PWR_ObjType type, size_t len, char* buf )
+{
+    strncpy(buf,"dummy_dev0", len );
+    DBGP("type=%d name=`%s`\n",type,buf);
+	return 0;
+}
+
+// Create the device initialized string for the specified dev. The name
+// was returned the the framework by dummy_getDevName() 
+static int dummy_getDevInitStr( const char* devName,
+                        size_t len, char* buf )
+{
+    strncpy(buf,"",len);
+    DBGP("dev=`%s` str=`%s`\n",devName, buf );
+	return 0;
+}
+
+// a device can be opened multiple times, get the info to pass to the 
+// open call for this object type 
 static int dummy_getDevOpenStr(PWR_ObjType type,
                         int global_index, size_t len, char* buf )
 {
     snprintf( buf, len, "%d %d", type, global_index);
     DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
-}
-
-static int dummy_getDevInitStr( const char* name,
-                        size_t len, char* buf )
-{
-    strncpy(buf,"",len);
-    DBGP("dev=`%s` str=`%s`\n",name, buf );
+	return 0;
 }
 
 static plugin_meta_t meta = {
@@ -272,6 +307,7 @@ static plugin_meta_t meta = {
     .getDevName = dummy_getDevName,
     .getDevOpenStr = dummy_getDevOpenStr,
     .getDevInitStr = dummy_getDevInitStr,
+    .getPluginName = dummy_getPluginName,
 };
 
 plugin_meta_t* getMeta() {
