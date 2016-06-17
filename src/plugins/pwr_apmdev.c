@@ -25,6 +25,9 @@
 #define APM_CPU_MODEL_A10_5800K          16
 #define APM_CPU_MODEL_A10_7850K          48
 
+#define APM_CPU_MODEL_6272_RUN_AVG_RANGE 9
+#define APM_CPU_MODEL_A10_RUN_AVG_RANGE  2
+
 /* D18F0x0[15:0] */
 #define MSR_APM_CORE_REG                 0x0
 #define MSR_APM_CORE_OFFSET              0x18
@@ -215,6 +218,24 @@ static int apmdev_read( unsigned long node, unsigned long reg, unsigned long off
     return 0;
 }
 
+static int apmdev_write( unsigned long node, unsigned long reg, unsigned long offset, unsigned long msr )
+{
+    uint64_t value;
+    char cmd[255] = "", buf[255] = "";
+    FILE *pipe = 0x0;
+
+    sprintf( cmd, "setpci -f -s 0:%lx.%lx 0x%lx.l=0x%lx 2>&1", node+MSR_APM_CORE_OFFSET, reg, offset, msr );
+    DBGP( "Info: %s\n", cmd );
+
+    if( (pipe = popen( cmd, "r" )) && fgets( buf, 255, pipe ) ) {
+        DBGP( "Warning: call to setpci failed (%s)\n", buf );
+        return -1;
+    }
+    pclose( pipe );
+ 
+    return 0;
+}
+
 static int apmdev_gather( node_t node, double *power )
 {
     unsigned long msr;
@@ -315,6 +336,34 @@ plugin_devops_t *pwr_apmdev_init( const char *initstr )
         }
         PWR_APMDEV(dev->private_data)->node[i].run_avg_range =
             (unsigned long)(MSR(msr, MSR_APM_RUN_AVG_RANGE_MASK, 0));
+        /* NOTE: Special check to ensure that run_avg_range is set correctly */
+        switch( PWR_APMDEV(dev->private_data)->cpu_model ) {
+            case APM_CPU_MODEL_6272:
+                if( PWR_APMDEV(dev->private_data)->node[i].run_avg_range != APM_CPU_MODEL_6272_RUN_AVG_RANGE ) {
+                    if( apmdev_write( PWR_APMDEV(dev->private_data)->node[i].number, MSR_APM_RUN_AVG_RANGE_REG,
+                                      MSR_APM_RUN_AVG_RANGE_OFFSET, APM_CPU_MODEL_6272_RUN_AVG_RANGE ) < 0 ) {
+                        fprintf( stderr, "Error: PWR APM device read failed\n" );
+                        return 0x0;
+                    }
+                    DBGP( "Warning: node[%d].run_avg_range changed from %g to %g\n", i, 
+                          PWR_APMDEV(dev->private_data)->node[i].run_avg_range, APM_CPU_MODEL_6272_RUN_AVG_RANGE );
+                    PWR_APMDEV(dev->private_data)->node[i].run_avg_range = APM_CPU_MODEL_6272_RUN_AVG_RANGE;
+                }
+                break;
+            case APM_CPU_MODEL_A10_5800K:
+            case APM_CPU_MODEL_A10_7850K:
+                if( PWR_APMDEV(dev->private_data)->node[i].run_avg_range != APM_CPU_MODEL_A10_RUN_AVG_RANGE ) {
+                    if( apmdev_write( PWR_APMDEV(dev->private_data)->node[i].number, MSR_APM_RUN_AVG_RANGE_REG,
+                                      MSR_APM_RUN_AVG_RANGE_OFFSET, APM_CPU_MODEL_A10_RUN_AVG_RANGE ) < 0 ) {
+                        fprintf( stderr, "Error: PWR APM device read failed\n" );
+                        return 0x0;
+                    }
+                    DBGP( "Warning: node[%d].run_avg_range changed from %g to %g\n", i, 
+                          PWR_APMDEV(dev->private_data)->node[i].run_avg_range, APM_CPU_MODEL_A10_RUN_AVG_RANGE );
+                    PWR_APMDEV(dev->private_data)->node[i].run_avg_range = APM_CPU_MODEL_A10_RUN_AVG_RANGE;
+                }
+                break;
+        }
         PWR_APMDEV(dev->private_data)->node[i].avg_divide_by =
             pow( 2.0, PWR_APMDEV(dev->private_data)->node[i].run_avg_range + 1 );
         DBGP( "Info: node[%d].run_avg_range     - %g\n", i, PWR_APMDEV(dev->private_data)->node[i].run_avg_range );
