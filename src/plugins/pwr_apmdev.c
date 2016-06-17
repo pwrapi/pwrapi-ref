@@ -303,15 +303,20 @@ plugin_devops_t *pwr_apmdev_init( const char *initstr )
                 fprintf( stderr, "Error: PWR APM device read failed\n" );
                 return 0x0;
             }
+            /* NOTE: Removed check for internal bits as we want internal multinode 
             if( (unsigned long)(MSR_BIT(msr, MSR_APM_MULTINODE_BIT)) ) {
                 if( (unsigned long)(MSR_BIT(msr, MSR_APM_INTERNAL_BIT1)) == 0 &&
                     (unsigned long)(MSR_BIT(msr, MSR_APM_INTERNAL_BIT2)) == 0 ) {
                     PWR_APMDEV(dev->private_data)->node[PWR_APMDEV(dev->private_data)->node_count++].number = i;
-                }
+                } 
+                PWR_APMDEV(dev->private_data)->node[PWR_APMDEV(dev->private_data)->node_count++].number = i;
                 DBGP( "Info: Ignored multinode for node %u\n", i );
             } else {
+            */
                 PWR_APMDEV(dev->private_data)->node[PWR_APMDEV(dev->private_data)->node_count++].number = i;
-            }
+            /* 
+            } 
+            */
         } else {
             DBGP( "Info: Vendor ID not supported for node %u\n", i );
         }
