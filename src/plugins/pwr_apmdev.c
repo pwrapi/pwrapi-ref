@@ -345,7 +345,7 @@ plugin_devops_t *pwr_apmdev_init( const char *initstr )
                         fprintf( stderr, "Error: PWR APM device read failed\n" );
                         return 0x0;
                     }
-                    DBGP( "Warning: node[%d].run_avg_range changed from %g to %g\n", i, 
+                    DBGP( "Warning: node[%d].run_avg_range changed from %g to %u\n", i, 
                           PWR_APMDEV(dev->private_data)->node[i].run_avg_range, APM_CPU_MODEL_6272_RUN_AVG_RANGE );
                     PWR_APMDEV(dev->private_data)->node[i].run_avg_range = APM_CPU_MODEL_6272_RUN_AVG_RANGE;
                 }
@@ -358,7 +358,7 @@ plugin_devops_t *pwr_apmdev_init( const char *initstr )
                         fprintf( stderr, "Error: PWR APM device read failed\n" );
                         return 0x0;
                     }
-                    DBGP( "Warning: node[%d].run_avg_range changed from %g to %g\n", i, 
+                    DBGP( "Warning: node[%d].run_avg_range changed from %g to %u\n", i, 
                           PWR_APMDEV(dev->private_data)->node[i].run_avg_range, APM_CPU_MODEL_A10_RUN_AVG_RANGE );
                     PWR_APMDEV(dev->private_data)->node[i].run_avg_range = APM_CPU_MODEL_A10_RUN_AVG_RANGE;
                 }
