@@ -3,11 +3,11 @@
 <System>
 
 <Plugins>
-    <plugin name="OPT" lib="libpwr_optdev"/>
+    <plugin name="APM" lib="libpwr_apmdev"/>
 </Plugins>
 
 <Devices>
-    <device name="OPT-node" plugin="OPT" initString="0:0"/>
+    <device name="APM-node" plugin="APM" initString="0:0"/>
 </Devices>
 
 <Objects>
@@ -43,12 +43,12 @@
 <obj name="plat.node.socket" type="Socket" >
 
     <devices>
-        <dev name="optdev" device="OPT-node" openString="1" /> 
+        <dev name="apmdev" device="APM-node" openString="1" /> 
     </devices>
 
     <attributes>
         <attr name="POWER" op="SUM">
-            <src type="device" name="optdev" />
+            <src type="device" name="apmdev" />
         </attr>
     </attributes>
 
