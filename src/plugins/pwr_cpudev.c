@@ -112,7 +112,10 @@ static int cpudev_avail_freq( int cpu, int freq[], int *count )
     DBGP( "%s\n", freqpath );
 
 	FILE* fp = fopen( freqpath, "r" );
-	assert(fp);
+	if ( ! fp ) {
+		fprintf(stderr,"Error: plugin 'cpudev' can't open `%s`\n",freqpath);
+		assert(0);
+	}
 
 	while ( EOF != ( c = fgetc( fp ) ) ) {
 		if ( isdigit( c ) ) { 
