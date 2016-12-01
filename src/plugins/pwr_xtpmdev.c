@@ -106,7 +106,7 @@ plugin_devops_t *pwr_xtpmdev_init( const char *initstr )
     dev->private_data = malloc( sizeof(pwr_xtpmdev_t) );
     bzero( dev->private_data, sizeof(pwr_xtpmdev_t) );
 
-    DBGP( "Info: initializing PWR XTPM device\n" );
+    DBGP( "Info: initializing PWR XTPM device initstr=`%s`\n", initstr );
 
     return dev;
 }
@@ -125,7 +125,7 @@ pwr_fd_t pwr_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
     pwr_fd_t *fd = malloc( sizeof(pwr_xtpmfd_t) );
     bzero( fd, sizeof(pwr_xtpmfd_t) );
 
-    DBGP( "Info: opening PWR XTPM device\n" );
+    DBGP( "Info: opening PWR XTPM device openstr=`%s`\n", openstr );
 
     PWR_XTPMFD(fd)->dev = PWR_XTPMDEV(dev->private_data);
 
@@ -267,4 +267,99 @@ static plugin_dev_t dev = {
 
 plugin_dev_t* getDev() {
     return &dev;
+}
+
+//
+// Start of plugin meta data
+//
+
+// Any thing can co here as long as it does not clash with other plugins
+static int pwr_xtpm_getPluginName( size_t len, char* buf )
+{
+    strncpy(buf,"XTPM",len);
+    return 0;
+}
+
+// What objects does this plugin support?
+static int pwr_xtpm_readObjs(  int i, PWR_ObjType* ptr )
+{
+    DBGP("\n");
+    ptr[0] = PWR_OBJ_NODE;
+    return 0;
+}
+
+// How may object types does this plugin support?
+// this is the size of the array referenced by pwr_xtpm_readObjs()
+static int pwr_xtpm_numObjs( )
+{
+    DBGP("\n");
+    return 1;
+}
+
+// What attributes does an object support?
+// Note that currently this function does not specify Object type
+// so all objects must support all attributues
+// Yes, this is limiting.
+// This interface could be revised to remove this restriction by adding
+// PWR_ObjType as a parameter.
+static int pwr_xtpm_readAttrs( int i, PWR_AttrName* ptr )
+{
+    DBGP("\n");
+    ptr[0] = PWR_ATTR_ENERGY;
+    ptr[1] = PWR_ATTR_POWER;
+    ptr[2] = PWR_ATTR_POWER_LIMIT_MAX;
+    return 0;
+}
+
+// How many attributes does an object support?
+// this is the size of the array referenced by pwr_xtpm_readAttr()
+static int pwr_xtpm_numAttrs( PWR_ObjType type )
+{
+    DBGP("\n");
+    return 3;
+}
+
+// a plugin device can be initialized multiple times, once for each
+// object type, however this is not necessry, you can have one device
+// to handle all object types
+static int pwr_xtpm_getDevName(PWR_ObjType type, size_t len, char* buf )
+{
+    strncpy(buf,"pwr_xtpm_dev0", len );
+    DBGP("type=%d name=`%s`\n",type,buf);
+    return 0;
+}
+
+// Create the device initialized string for the specified dev. The name
+// was returned the the framework by pwr_xtpm_getDevName()
+static int pwr_xtpm_getDevInitStr( const char* devName,
+                        size_t len, char* buf )
+{
+    strncpy(buf,"",len);
+    DBGP("dev=`%s` str=`%s`\n",devName, buf );
+    return 0;
+}
+
+// a device can be opened multiple times, get the info to pass to the
+// open call for this object type
+static int pwr_xtpm_getDevOpenStr(PWR_ObjType type,
+                        int global_index, size_t len, char* buf )
+{
+    snprintf( buf, len, "%d %d", type, global_index);
+    DBGP("type=%d global_index=%d str=`%s`\n",type,global_index,buf);
+    return 0;
+}
+
+static plugin_meta_t meta = {
+    .numObjs = pwr_xtpm_numObjs,
+    .numAttrs = pwr_xtpm_numAttrs,
+    .readObjs = pwr_xtpm_readObjs,
+    .readAttrs = pwr_xtpm_readAttrs,
+    .getDevName = pwr_xtpm_getDevName,
+    .getDevOpenStr = pwr_xtpm_getDevOpenStr,
+    .getDevInitStr = pwr_xtpm_getDevInitStr,
+    .getPluginName = pwr_xtpm_getPluginName,
+};
+
+plugin_meta_t* getMeta() {
+    return &meta;
 }
