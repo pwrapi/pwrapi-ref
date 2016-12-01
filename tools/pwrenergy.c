@@ -19,7 +19,7 @@
 
 static void usage( const char* exename )
 {
-	fprintf(stderr,"%s: -o objectName [-n numberSamples] \n",exename);
+	fprintf(stderr,"%s: -o objectName [-s numberSamples] \n",exename);
 }
 
 int main( int argc, char* argv[] )
