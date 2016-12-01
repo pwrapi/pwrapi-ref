@@ -46,9 +46,9 @@ int PWR_CntxtInit( PWR_CntxtType type, PWR_Role role,
             return PWR_RET_FAILURE;
         }
         return PWR_RET_SUCCESS;
+    } else {
+        return PWR_RET_FAILURE;
     }
-    else
-       	return PWR_RET_FAILURE;
 }
 
 int PWR_CntxtDestroy( PWR_Cntxt ctx )
