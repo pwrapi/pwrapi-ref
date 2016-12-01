@@ -65,6 +65,16 @@ static inline PWR_ObjType objStringToType( const char* type )
         return PWR_OBJ_INVALID;
     }
 }
+static inline PWR_AttrName attrStringToType( const char* type ) 
+{
+    if ( ! strcmp(type,"Power") ) {
+        return PWR_ATTR_POWER;
+    } if ( ! strcmp(type,"Energy") ) {
+        return PWR_ATTR_ENERGY;
+    } else {
+        return PWR_ATTR_INVALID;
+    }
+}
 
 static inline const char* attrNameToString( PWR_AttrName name )
 {
