@@ -73,7 +73,7 @@ DistCntxt::DistCntxt( PWR_CntxtType type, PWR_Role role, const char* name ) :
         configFile = env;
     } else {
         printf("error: environment variable `POWERAPI_CONFIG` must be set\n");
-        exit(-1);
+        throw -1;
     }
 	
     DBGX("configFile=`%s`\n",configFile.c_str());
