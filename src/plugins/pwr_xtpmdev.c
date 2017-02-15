@@ -131,7 +131,11 @@ pwr_fd_t pwr_xtpmdev_open( plugin_devops_t *dev, const char *openstr )
 
     if( xtpmdev_read( "generation", &(PWR_XTPMFD(fd)->generation) ) < 0 ) {
         fprintf( stderr, "Error: unable to open generation counter\n" );
+#if 1
+        PWR_XTPMFD(fd)->dev = NULL;	
+#else
         return 0x0;
+#endif
     }
 
     return fd;
@@ -153,6 +157,11 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
     struct timeval tv;
 
     DBGP( "Info: reading from PWR XTPM device\n" );
+
+    if ( NULL == PWR_XTPMFD(fd)->dev ) {
+		*((double*)value) = 0;
+		return 0;
+	}	
 
     if( len != sizeof(double) ) {
         fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
@@ -202,6 +211,10 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
 int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
 {
     DBGP( "Info: writing to PWR XTPM device\n" );
+
+    if ( NULL == PWR_XTPMFD(fd)->dev ) {
+		return 0;
+	}
 
     if( len != sizeof(double) ) {
         fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
