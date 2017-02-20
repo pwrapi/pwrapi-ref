@@ -251,7 +251,7 @@ int         PWR_GrpAttrGetValue( PWR_Grp, PWR_AttrName name, double* OutValue, P
 int         PWR_GrpAttrSetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Status );
 int         PWR_GrpAttrGetValues( PWR_Grp, int count, PWR_AttrName names[], void* buf, PWR_Time ts[], PWR_Status );
 
-int PWR_StatusCreate(PWR_Status*); int PWR_StatusDestroy( PWR_Status );
+int PWR_StatusCreate(PWR_Cntxt, PWR_Status*); int PWR_StatusDestroy( PWR_Status );
 int PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
 int PWR_StatusClear( PWR_Status );
 
