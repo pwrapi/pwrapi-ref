@@ -117,7 +117,7 @@ int PWR_ObjGetChildren( PWR_Obj obj, PWR_Grp* grp )
 
 int PWR_ObjAttrIsValid( PWR_Obj obj, PWR_AttrName type )
 {
-   return OBJECT(obj)->attrIsValid( type );
+   return OBJECT(obj)->attrIsValid( type ) ? PWR_RET_SUCCESS : PWR_RET_FAILURE;
 }
 
 int PWR_ObjAttrGetValue( PWR_Obj obj, PWR_AttrName type, void* ptr, PWR_Time* ts )
@@ -276,7 +276,7 @@ int PWR_GrpAttrGetValues( PWR_Grp grp, int num, PWR_AttrName attr[],
 }
 
 
-int PWR_StatusCreate( PWR_Status* status )
+int PWR_StatusCreate( PWR_Cntxt, PWR_Status* status )
 {
 	*status = new Status;
     return PWR_RET_SUCCESS;

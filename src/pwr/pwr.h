@@ -69,7 +69,7 @@ int         PWR_CntxtGetGrpByName( PWR_Cntxt, const char* name, PWR_Grp* );
 int         PWR_ObjAttrGetValue( PWR_Obj, PWR_AttrName name, void* val, PWR_Time* );
 int         PWR_ObjAttrSetValue( PWR_Obj, PWR_AttrName name, const void* val );
 
-int         PWR_StatusCreate( PWR_Status* );
+int         PWR_StatusCreate( PWR_Cntxt, PWR_Status* );
 int         PWR_StatusDestroy( PWR_Status );
 int         PWR_StatusPopError( PWR_Status, PWR_AttrAccessError* );
 int         PWR_StatusClear( PWR_Status );
