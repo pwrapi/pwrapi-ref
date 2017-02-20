@@ -76,7 +76,7 @@ int main( int argc, char* argv[] )
 
     PWR_AttrName name = PWR_ATTR_ENERGY;
      
-	rc =  PWR_StatusCreate( &status );
+	rc =  PWR_StatusCreate( cntxt, &status );
 	assert( PWR_RET_SUCCESS == rc );
 
     rc = PWR_ObjAttrGetValues( self, 1, &name, &value, &ts, status );  
