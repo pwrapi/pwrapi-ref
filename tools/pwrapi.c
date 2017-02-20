@@ -180,7 +180,7 @@ int main( int argc, char* argv[] )
     vals = malloc( numobjs * numattrs * sizeof(double) );
 
     PWR_Status stats;
-	PWR_StatusCreate( &stats );
+	PWR_StatusCreate( cntxt, &stats );
     for( i = 0; i < samples; i++ ) {
         gettimeofday( &t0, 0x0 );
 
