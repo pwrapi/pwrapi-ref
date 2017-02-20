@@ -15,7 +15,11 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <pwr.h> 
+#if USE_CRAY_POWER_API
+#include <cray-powerapi/api.h>
+#else
+#include <pwr.h>
+#endif
 
 static void usage( const char* exename )
 {
@@ -64,7 +68,10 @@ int main( int argc, char* argv[] )
 	while ( samples-- ) {
 		sleep(1);
     	rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
-    	assert( PWR_RET_SUCCESS == rc );
+		if ( PWR_RET_SUCCESS != rc ) {
+			printf("FATAL: could not read energy for object %s, rc=%d\n",name,rc);
+			exit( -1);
+		}
     	printf("%s: %.0lf joules, %.0lf watts\n",name, value, 
 			prev == 0 ? 0 :	value-prev);
 		prev = value;
