@@ -143,7 +143,7 @@ int section_4_4_test( void )
         return rc;
     }
 
-	rc = PWR_StatusCreate( &stat );
+	rc = PWR_StatusCreate( cntxt, &stat );
     printf( "\tPWR_StatusCreate: %s\n", RESULT( rc ) );
     if( rc != PWR_RET_NOT_IMPLEMENTED && rc < PWR_RET_SUCCESS ) {
         printf( "\t\tError: creating status failed\n" );
