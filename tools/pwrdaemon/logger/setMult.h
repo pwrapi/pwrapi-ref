@@ -10,7 +10,7 @@ namespace PWR_Logger {
 
 class SetMult : public Work {
   public:
-	SetMult( PWR_Cntxt ctx, std::string objName, std::string attrs ) {
+	SetMult( PWR_Cntxt ctx, std::string objName, std::string attrs ): m_ctx(ctx) {
 
 		if ( ! objName.compare(0,5,"TYPE:") ) {
 			std::string type = objName.substr(5);
@@ -50,6 +50,7 @@ class SetMult : public Work {
     int work( FILE* );
 
   private:
+	PWR_Cntxt   m_ctx;
 	PWR_Grp 	m_grp;
 	std::vector<PWR_AttrName> m_attrs;
     std::vector<double> values;
@@ -60,7 +61,7 @@ int SetMult::work( FILE* fp )
 	int rc;
 
 	PWR_Status status;
-	rc = PWR_StatusCreate( &status );
+	rc = PWR_StatusCreate( m_ctx, &status );
 	assert( rc == PWR_RET_SUCCESS );
 	fprintf(fp,"call set\n");
 	fflush(fp);

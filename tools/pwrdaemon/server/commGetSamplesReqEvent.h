@@ -42,7 +42,8 @@ class SrvrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
     	m_respEvent.id = id;
 		m_respEvent.data.resize( count );
 		m_respEvent.count = count;
-		PWR_StatusCreate(&m_status);
+		
+		PWR_StatusCreate(m_info->m_ctx,&m_status);
     	m_req = PWR_ReqCreateCallback( m_info->m_ctx, m_status, 
 											(Callback)getSamplesFini, this );
     	assert( m_req );

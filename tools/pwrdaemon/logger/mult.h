@@ -11,7 +11,7 @@ namespace PWR_Logger {
 
 class Mult : public Work {
   public:
-	Mult( PWR_Cntxt ctx, std::string objName, std::string attrs ) {
+	Mult( PWR_Cntxt ctx, std::string objName, std::string attrs ) : m_ctx(ctx) {
 
 		if ( ! objName.compare(0,5,"TYPE:") ) {
 			std::string type = objName.substr(5);
@@ -46,6 +46,7 @@ class Mult : public Work {
     int work( FILE* );
 
   private:
+	PWR_Cntxt   m_ctx;
 	PWR_Grp 	m_grp;
 	std::vector<PWR_AttrName> m_attrs;
 };
@@ -57,7 +58,7 @@ int Mult::work( FILE* fp )
 	size_t numObjs = PWR_GrpGetNumObjs( m_grp );
 
 	PWR_Status status;
-	PWR_StatusCreate( &status );
+	PWR_StatusCreate( m_ctx, &status );
     while( 1 ) {
         std::vector<double> value(m_attrs.size() * numObjs );
         std::vector<PWR_Time> ts(m_attrs.size() * numObjs );

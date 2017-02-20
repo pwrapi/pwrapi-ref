@@ -10,7 +10,7 @@ namespace PWR_Logger {
 class PowerGrp : public Work {
   public:
 
-	PowerGrp( PWR_Cntxt ctx, std::string type ) : m_grpName(type) {
+	PowerGrp( PWR_Cntxt ctx, std::string type ) : m_ctx(ctx), m_grpName(type) {
 		
 		PWR_ObjType objType = objStringToType( type.c_str() );	
 		
@@ -21,6 +21,7 @@ class PowerGrp : public Work {
     int work( FILE* );
 
   private:
+	PWR_Cntxt   m_ctx;
 	PWR_Grp 	m_grp;
 	std::string m_grpName;
 };
@@ -38,7 +39,7 @@ int PowerGrp::work( FILE* fp )
     std::vector<PWR_Time> ts(size);
 
 	PWR_Status status;	
-	int rc = PWR_StatusCreate( &status );
+	int rc = PWR_StatusCreate( m_ctx, &status );
 	assert( PWR_RET_SUCCESS == rc );
 
 	int count = 0;

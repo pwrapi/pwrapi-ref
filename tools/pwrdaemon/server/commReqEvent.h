@@ -53,7 +53,7 @@ class SrvrCommReqEvent: public  CommReqEvent {
 		// quiet valgrind
 		m_respEvent.commID = 0;
 
-		int rc = PWR_StatusCreate(&m_status);
+		int rc = PWR_StatusCreate(m_info->m_ctx,&m_status);
 		assert( rc == PWR_RET_SUCCESS );
     	m_req = PWR_ReqCreateCallback( m_info->m_ctx, m_status,
 										requestFini, this );

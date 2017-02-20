@@ -40,7 +40,7 @@ class SrvrCommLogReqEvent: public  CommLogReqEvent {
 
         m_respEvent.commID = 0;
 
-        PWR_StatusCreate(&m_status);
+        PWR_StatusCreate(m_info->m_ctx,&m_status);
         m_req = PWR_ReqCreateCallback( m_info->m_ctx, m_status,
                                             (Callback)logReqFini, this );
         assert( m_req );
