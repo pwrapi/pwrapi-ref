@@ -34,6 +34,7 @@ extern "C" {
 
 
 static plugin_devops_t* redfish_dev_init( const char *initstr );
+int parse(char *string, char **entity, char **host, char **port, char **node);
 static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr );
 static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts );
 static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len );
