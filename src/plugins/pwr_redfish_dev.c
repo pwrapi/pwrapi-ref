@@ -43,7 +43,7 @@
 
 #include "pwr_dev.h"
 #include "util.h"
-#include "redfish_dev.h"
+#include "pwr_redfish_dev.h"
 #include <pwr/util.h>
 
 #define ERR_NO -1

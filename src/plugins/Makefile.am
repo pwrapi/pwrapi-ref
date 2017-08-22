@@ -73,7 +73,7 @@ libpwr_powercapdev_la_SOURCES = pwr_dev.c pwr_powercap.c
 libpwr_powercapdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_powercapdev_la_LDFLAGS = -version-info 1:0:1
 
-libpwr_redfishdev_la_SOURCES = pwr_dev.c redfish_dev.c
+libpwr_redfishdev_la_SOURCES = pwr_dev.c pwr_redfish_dev.c
 libpwr_redfishdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_redfishdev_la_LDFLAGS = -version-info 1:0:1
 
