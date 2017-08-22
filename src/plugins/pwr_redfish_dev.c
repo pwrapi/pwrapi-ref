@@ -79,7 +79,6 @@ static plugin_devops_t devOps = {
         .log_start = redfish_dev_log_start,
         .log_stop = redfish_dev_log_stop,
         .get_samples = redfish_dev_get_samples,
-
 };
 
 typedef struct {
@@ -87,7 +86,6 @@ typedef struct {
     unsigned short local;
     char* agent_addr;
     unsigned short agent_port;
-
 } redfish_context;
 #define REDFISH_CNTX(X) ((redfish_context *)(X))
 
@@ -121,7 +119,6 @@ static plugin_devops_t* redfish_dev_init( const char *initstr )
 
 int parse(char *string, char **entity, char **host, char **port, char **node) 
 {
-
     char *token;
     unsigned long int token_len; 
     
@@ -203,7 +200,6 @@ int redfish_connect(pwr_redfish_dev_t *p)
 
 static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
 {
-    
     pwr_redfish_fd_t *fd = malloc(sizeof(pwr_redfish_fd_t));    
     bzero( fd, sizeof(pwr_redfish_fd_t) );    
         
@@ -293,7 +289,6 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
         void* values, PWR_Time ts[], int status[] )
 {
-
     unsigned int i;
 
     for( i = 0; i < arraysize; i++ )
@@ -356,7 +351,6 @@ static int redfish_dev_log_stop(pwr_fd_t fd, PWR_AttrName name)
 {
     DBGP("\n");
     return PWR_RET_FAILURE;
-
 }
 
 static int redfish_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
@@ -364,7 +358,6 @@ static int redfish_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
 
 {
     DBGP("period=%f samples=%d\n",period,*nSamples);
-
     return PWR_RET_FAILURE;
 }
 
