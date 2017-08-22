@@ -21,7 +21,6 @@
 * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 #ifndef REDFISH_DEV_H
 #define REDFISH_DEV_H
 
@@ -30,8 +29,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
 
 static plugin_devops_t* redfish_dev_init( const char *initstr );
 int parse(char *string, char **entity, char **host, char **port, char **node);
