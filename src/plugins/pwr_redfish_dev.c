@@ -186,12 +186,12 @@ int redfish_connect(pwr_redfish_dev_t *p)
     }
 
     if ( setsockopt( sockfd, SOL_TCP, TCP_NODELAY, (char *) &enable, sizeof(int)) < 0 ) {
-    close(sockfd);
-    return ERR;
+        close(sockfd);
+        return ERR;
     }
     if ( setsockopt( sockfd, SOL_SOCKET, SO_KEEPALIVE, &keep_alive, sizeof(int) ) < 0 ) {
-    close(sockfd);
-    return ERR;
+        close(sockfd);
+        return ERR;
     }
     p->socket_fd = sockfd;
     free(res);
@@ -250,8 +250,9 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
         return PWR_RET_FAILURE;
     }
     bcopy(&d, (double *)ptr, sizeof(double));
-
-    *ts = getTime();
+    
+    gettimeofday(&tv,0x0);
+    *ts = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
     return PWR_RET_SUCCESS;
 }
@@ -268,7 +269,6 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
     char *dev_name = PWR_REDFISH_FD(fd)->dev_name;
     int file_fd = PWR_REDFISH_FD(fd)->file_fd;
     char *command = (char *) ptr;
-    now = getTimeSec();
     a = (char *) attrNameToString(type);
     DBGP("Info: Writing %s to attribute %s on entity=%s, node=%s, device=%s\n", command, a, entity, node, dev_name);
     sprintf(string,"set:%s:%s:%s:%s:%s;", entity, node, dev_name, a,command);
@@ -313,12 +313,14 @@ static int redfish_dev_close( pwr_fd_t fd )
     int file_fd = PWR_REDFISH_FD(fd)->file_fd;
     DBGP("Info: Closing socket connection\n");
     close(file_fd);
+    free(fd);
     return 0;
 }
 static int redfish_dev_final( plugin_devops_t *ops )
 {
     DBGP("\n");
     free(ops->private_data);
+    free(ops);
     return 0;
 }
 
