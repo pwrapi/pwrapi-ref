@@ -67,7 +67,6 @@ typedef struct {
 } pwr_redfish_fd_t;
 #define PWR_REDFISH_FD(X) ((pwr_redfish_fd_t *)(X))
 
-
 static plugin_devops_t devOps = {
     .open   = redfish_dev_open,
     .close  = redfish_dev_close,
@@ -83,7 +82,6 @@ static plugin_devops_t devOps = {
 
 };
 
-
 typedef struct {
     int fd, cfd;
     unsigned short local;
@@ -92,8 +90,6 @@ typedef struct {
 
 } redfish_context;
 #define REDFISH_CNTX(X) ((redfish_context *)(X))
-
-
 
 static plugin_devops_t* redfish_dev_init( const char *initstr )
 {
@@ -108,8 +104,10 @@ static plugin_devops_t* redfish_dev_init( const char *initstr )
     if( parse((char *)initstr, &entity, &host, &port, &node) != 0) {
         fprintf( stderr, "Error: Invalid hardware initialization string\n" );
         return (plugin_devops_t *)0x0;
-     }    
+     }
+    
      DBGP("Info: extracted initialization string. entity=%s, host=%s,port=%s,node=%s\n",entity,host,port,node);
+     
      pwr_redfish_dev_t *p = malloc( sizeof(pwr_redfish_dev_t ) );
      bzero( p, sizeof(pwr_redfish_dev_t) );
      p->entity = entity;
@@ -119,21 +117,23 @@ static plugin_devops_t* redfish_dev_init( const char *initstr )
      dev->private_data = p; 
     
     return dev;
-
 }
 
-
-int parse(char *string, char **entity, char **host, char **port, char **node) {
+int parse(char *string, char **entity, char **host, char **port, char **node) 
+{
 
     char *token;
     unsigned long int token_len; 
+    
     if ( (token = strtok(string,":")) == 0x0) {
         return ERR;
     }
+
     token_len = strlen(token);
     *entity = malloc(token_len+1);
     bzero(*entity, token_len+1);
     strncpy(*entity, token, token_len);
+    
     if ( (token = strtok(0x0,":")) == 0x0) {
         return ERR;
     }
@@ -142,23 +142,27 @@ int parse(char *string, char **entity, char **host, char **port, char **node) {
     *host = malloc(token_len+1);
     bzero(*host,token_len+1);
     strncpy(*host, token, token_len); 
+    
     if ( (token = strtok(0x0,":")) == 0x0) {
         return ERR;
     }    
+    
     token_len = strlen(token);
     *port = malloc(token_len+1);
     bzero(*port, token_len+1);
     strncpy(*port, token, token_len);
+    
     if ( (token = strtok(0x0,":")) == 0x0) {
         return ERR;
     }    
+    
     token_len = strlen(token);
     *node = malloc(token_len+1);
     bzero(*node, token_len+1);
     strncpy(*node, token, token_len);
+    
     return SUCCESS;
 }
-
 
 int redfish_connect(pwr_redfish_dev_t *p) 
 {
@@ -176,15 +180,12 @@ int redfish_connect(pwr_redfish_dev_t *p)
     if( (k = getaddrinfo(p->host, p->port, 0x0, &res)) != 0) {
         return ERR;
     }
-
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         return ERR;
     }
-
     if (connect(sockfd, res->ai_addr,res->ai_addrlen) < 0) {
         return ERR;
     }
-
     if ( setsockopt( sockfd, SOL_TCP, TCP_NODELAY, (char *) &enable, sizeof(int)) < 0 ) {
         close(sockfd);
         return ERR;
@@ -193,11 +194,12 @@ int redfish_connect(pwr_redfish_dev_t *p)
         close(sockfd);
         return ERR;
     }
+
     p->socket_fd = sockfd;
     free(res);
+
     return sockfd;
 }
-
 
 static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
 {
@@ -216,6 +218,7 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
         fprintf( stderr, "Error: Connecting to redfish agent failed.\n" );
         return (plugin_devops_t *)0x0;
     }
+
     return fd;
 }
 
@@ -236,19 +239,22 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
     
     DBGP("Info: Reading the attribute %s from entity=%s, node=%s, device=%s\n", a, entity, node, dev_name);
     sprintf(string,"get:%s:%s:%s:%s;", entity, node, dev_name, a);
+
     if ((send(file_fd, string, strlen(string), 0)) < 0) {
         perror("redfish agent send:");
         return PWR_RET_FAILURE;
     }
-
     if ((recv(file_fd, buf, 20, 0)) < 0) {
         perror("redfish agent recv :");
         return PWR_RET_FAILURE;
     }
+
     d = strtod(buf,0x0);
+
     if ( d < 0 ) {
         return PWR_RET_FAILURE;
     }
+
     bcopy(&d, (double *)ptr, sizeof(double));
     
     gettimeofday(&tv,0x0);
@@ -256,7 +262,6 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 
     return PWR_RET_SUCCESS;
 }
-
 
 static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len )
 {
@@ -272,11 +277,11 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
     a = (char *) attrNameToString(type);
     DBGP("Info: Writing %s to attribute %s on entity=%s, node=%s, device=%s\n", command, a, entity, node, dev_name);
     sprintf(string,"set:%s:%s:%s:%s:%s;", entity, node, dev_name, a,command);
+
     if ((send(file_fd, string, strlen(string), 0)) < 0) {
         perror("redfish agent send:");
         return PWR_RET_FAILURE;
     }
-
     if ((recv(file_fd, buf, 10, 0)) < 0) {
         perror("redfish agent recv :");
         return PWR_RET_FAILURE;
@@ -297,30 +302,33 @@ static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_Att
     return PWR_RET_SUCCESS;
 }
 
-
 static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
         void* values, int status[] )
 {
     unsigned int i;
     for( i = 0; i < arraysize; i++ )
         status[i] = redfish_dev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
-    return PWR_RET_SUCCESS;
 
+    return PWR_RET_SUCCESS;
 }
 
 static int redfish_dev_close( pwr_fd_t fd )
 {
     int file_fd = PWR_REDFISH_FD(fd)->file_fd;
     DBGP("Info: Closing socket connection\n");
+
     close(file_fd);
     free(fd);
+
     return 0;
 }
+
 static int redfish_dev_final( plugin_devops_t *ops )
 {
     DBGP("\n");
     free(ops->private_data);
     free(ops);
+
     return 0;
 }
 
@@ -328,10 +336,12 @@ static int redfish_dev_time(pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
     DBGP( "Info: reading time from Redfish device\n" );
+
     return redfish_dev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );;
 }
 
-static int redfish_dev_clear(pwr_fd_t fd) {
+static int redfish_dev_clear(pwr_fd_t fd) 
+{
     DBGP("\n");
     return PWR_RET_FAILURE;
 }
@@ -340,7 +350,6 @@ static int redfish_dev_log_start(pwr_fd_t fd, PWR_AttrName name)
 {
     DBGP("\n");
     return PWR_RET_FAILURE;
-
 }
 
 static int redfish_dev_log_stop(pwr_fd_t fd, PWR_AttrName name)
@@ -355,6 +364,7 @@ static int redfish_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
 
 {
     DBGP("period=%f samples=%d\n",period,*nSamples);
+
     return PWR_RET_FAILURE;
 }
 
@@ -363,16 +373,19 @@ static plugin_dev_t dev = {
     .final  = redfish_dev_final,
 };
 
-plugin_dev_t* getDev() {
+plugin_dev_t* getDev() 
+{
     return &dev;
 }
 
-static double getTime() {
+static double getTime() 
+{
     struct timeval tv;
     gettimeofday(&tv,0x0);
     double value; 
     value = tv.tv_sec * 1000000000;
     value += tv.tv_usec * 1000;
+
     return value;
 }
 
