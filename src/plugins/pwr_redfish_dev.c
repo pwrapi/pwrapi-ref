@@ -186,12 +186,12 @@ int redfish_connect(pwr_redfish_dev_t *p)
     }
 
     if ( setsockopt( sockfd, SOL_TCP, TCP_NODELAY, (char *) &enable, sizeof(int)) < 0 ) {
-	close(sockfd);
-	return ERR;
+    close(sockfd);
+    return ERR;
     }
     if ( setsockopt( sockfd, SOL_SOCKET, SO_KEEPALIVE, &keep_alive, sizeof(int) ) < 0 ) {
-	close(sockfd);
-	return ERR;
+    close(sockfd);
+    return ERR;
     }
     p->socket_fd = sockfd;
     free(res);
