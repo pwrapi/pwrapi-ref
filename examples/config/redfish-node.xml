@@ -1,0 +1,389 @@
+<?xml version="1.0" ?>
+<System>
+	<Plugins>
+		<plugin lib="libpwr_redfishdev" name="redfish_plugin"/>
+	</Plugins>
+	<Devices>
+		<device initString="hpeilo:localhost:8080:node1" name="ilo-node1" plugin="redfish_plugin"/>
+		<device initString="hpeilo:localhost:8080:node2" name="ilo-node2" plugin="redfish_plugin"/>
+		<device initString="hpeilo:localhost:8080:node3" name="ilo-node3" plugin="redfish_plugin"/>
+	</Devices>
+	<Objects>
+		<obj name="plat" type="Platform">
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="cab0" type="child"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="cab0" type="child"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="cab0" type="child"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="cab0" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="cab0"/>
+			</children>
+		</obj>
+		<obj name="plat.cab0" type="Cabinet">
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="chassis1" type="child"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="chassis1" type="child"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="chassis1" type="child"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="chassis1" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="chassis1"/>
+			</children>
+		</obj>
+		<obj name="plat.cab0.chassis1" type="Chassis">
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="node1" type="child"/>
+					<src name="node2" type="child"/>
+					<src name="node3" type="child"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="node1" type="child"/>
+					<src name="node2" type="child"/>
+					<src name="node3" type="child"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="node1" type="child"/>
+					<src name="node2" type="child"/>
+					<src name="node3" type="child"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="node1" type="child"/>
+					<src name="node2" type="child"/>
+					<src name="node3" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="node1"/>
+				<child name="node2"/>
+				<child name="node3"/>
+			</children>
+		</obj>
+		<obj name="plat.cab0.chassis1.node1" type="Node">
+			<devices>
+				<dev device="ilo-node1" name="powerdev1" openString="chassis#1"/>
+			</devices>
+				
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="powerdev1" type="device"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="cpu1"/>
+				<child name="cpu2"/>
+				<child name="dimm1"/>
+				<child name="dimm6"/>
+			</children>
+		</obj>
+		<obj name="plat.cab0.chassis1.node2" type="Node">
+			<devices>
+				<dev device="ilo-node2" name="powerdev2" openString="chassis#1"/>
+			</devices>
+				
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="powerdev2" type="device"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="cpu1"/>
+				<child name="cpu2"/>
+				<child name="dimm1"/>
+				<child name="dimm6"/>
+			</children>
+		</obj>
+		<obj name="plat.cab0.chassis1.node3" type="Node">
+			<devices>
+				<dev device="ilo-node3" name="powerdev3" openString="chassis#1"/>
+			</devices>
+				
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="powerdev3" type="device"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="cpu1" type="child"/>
+					<src name="cpu2" type="child"/>
+					<src name="dimm1" type="child"/>
+					<src name="dimm6" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="cpu1"/>
+				<child name="cpu2"/>
+				<child name="dimm1"/>
+				<child name="dimm6"/>
+			</children>
+		</obj>
+		<obj name="plat.cab0.chassis1.node1.cpu1" type="Core">
+			<devices>
+				<dev device="ilo-node1" name="dev1" openString="system#1.cpu#1"/>
+				<dev device="ilo-node1" name="devtemp1" openString="chassis#1.cpu#1"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp1" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev1" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev1" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node1.cpu2" type="Core">
+			<devices>
+				<dev device="ilo-node1" name="dev1" openString="system#1.cpu#2"/>
+				<dev device="ilo-node1" name="devtemp1" openString="chassis#1.cpu#2"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp1" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev1" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev1" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node1.dimm1" type="Core">
+			<devices>
+				<dev device="ilo-node1" name="dev1" openString="system#1.cpu#1.memory#1"/>
+				<dev device="ilo-node1" name="devtemp1" openString="chassis#1.cpu#1.memory#1"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp1" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev1" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev1" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node1.dimm6" type="Core">
+			<devices>
+				<dev device="ilo-node1" name="dev1" openString="system#1.cpu#1.memory#6"/>
+				<dev device="ilo-node1" name="devtemp1" openString="chassis#1.cpu#1.memory#6"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp1" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev1" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev1" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node2.cpu1" type="Core">
+			<devices>
+				<dev device="ilo-node2" name="dev2" openString="system#1.cpu#1"/>
+				<dev device="ilo-node2" name="devtemp2" openString="chassis#1.cpu#1"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp2" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev2" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="dev2" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node2.cpu2" type="Core">
+			<devices>
+				<dev device="ilo-node2" name="dev2" openString="system#1.cpu#2"/>
+				<dev device="ilo-node2" name="devtemp2" openString="chassis#1.cpu#2"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp2" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev2" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev2" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node2.dimm1" type="Core">
+			<devices>
+				<dev device="ilo-node2" name="dev2" openString="system#1.cpu#1.memory#1"/>
+				<dev device="ilo-node2" name="devtemp2" openString="chassis#1.cpu#1.memory#1"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp2" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev2" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev2" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node2.dimm6" type="Core">
+			<devices>
+				<dev device="ilo-node2" name="dev2" openString="system#1.cpu#1.memory#6"/>
+				<dev device="ilo-node2" name="devtemp2" openString="chassis#1.cpu#1.memory#6"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp2" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev2" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev2" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node3.cpu1" type="Core">
+			<devices>
+				<dev device="ilo-node3" name="dev3" openString="system#1.cpu#1"/>
+				<dev device="ilo-node3" name="devtemp3" openString="chassis#1.cpu#1"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp3" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev3" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="AVG">
+					<src name="dev3" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node3.cpu2" type="Core">
+			<devices>
+				<dev device="ilo-node3" name="dev3" openString="system#1.cpu#2"/>
+				<dev device="ilo-node3" name="devtemp3" openString="chassis#1.cpu#2"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp3" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev3" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev3" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node3.dimm1" type="Core">
+			<devices>
+				<dev device="ilo-node3" name="dev3" openString="system#1.cpu#1.memory#1"/>
+				<dev device="ilo-node3" name="devtemp3" openString="chassis#1.cpu#1.memory#1"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp3" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev3" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev3" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.cab0.chassis1.node3.dimm6" type="Core">
+			<devices>
+				<dev device="ilo-node3" name="dev3" openString="system#1.cpu#1.memory#6"/>
+				<dev device="ilo-node3" name="devtemp3" openString="chassis#1.cpu#1.memory#6"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="devtemp3" type="device"/>
+				</attr>
+				<attr name="FREQ_MAX" op="AVG">
+					<src name="dev3" type="device"/>
+				</attr>
+				<attr name="VOLTAGE" op="SUM">
+					<src name="dev3" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+	</Objects>
+</System>

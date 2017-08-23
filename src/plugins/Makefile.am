@@ -5,7 +5,8 @@ lib_LTLIBRARIES =	libpwr_rapldev.la \
 			libpwr_wudev.la \
 			libpwr_cpudev.la \
 			libpwr_powercapdev.la \
-			libdummy_dev.la
+			libdummy_dev.la \
+			libpwr_redfishdev.la
 
 # Power API Plugins
 if HAVE_POWERGADGET
@@ -71,3 +72,8 @@ libdummy_dev_la_LDFLAGS = -version-info 1:0:1
 libpwr_powercapdev_la_SOURCES = pwr_dev.c pwr_powercap.c
 libpwr_powercapdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_powercapdev_la_LDFLAGS = -version-info 1:0:1
+
+libpwr_redfishdev_la_SOURCES = pwr_dev.c pwr_redfish_dev.c
+libpwr_redfishdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_redfishdev_la_LDFLAGS = -version-info 1:0:1
+
