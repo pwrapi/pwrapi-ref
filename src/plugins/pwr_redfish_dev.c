@@ -187,10 +187,6 @@ int redfish_connect(pwr_redfish_dev_t *p)
         close(sockfd);
         return ERR;
     }
-    if ( setsockopt( sockfd, SOL_SOCKET, SO_KEEPALIVE, &keep_alive, sizeof(int) ) < 0 ) {
-        close(sockfd);
-        return ERR;
-    }
 
     p->socket_fd = sockfd;
     free(res);
@@ -222,15 +218,16 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 {
     int ret = 0, len =0, size = 0;
     char string[MAX_SIZE];
-    char buf[MAX_SIZE], *a;
-    double d, now;
+    char buf[128], *a;
+    double d;
     struct timeval tv;
     
     char *entity = PWR_REDFISH_FD(fd)->dev->entity;
     char *node = PWR_REDFISH_FD(fd)->dev->node;
     char *dev_name = PWR_REDFISH_FD(fd)->dev_name;
     int file_fd = PWR_REDFISH_FD(fd)->file_fd;
-    
+   
+    bzero(buf, 128);  
     a = (char *) attrNameToString(type);
     
     DBGP("Info: Reading the attribute %s from entity=%s, node=%s, device=%s\n", a, entity, node, dev_name);
@@ -240,7 +237,7 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
         perror("redfish agent send:");
         return PWR_RET_FAILURE;
     }
-    if ((recv(file_fd, buf, 20, 0)) < 0) {
+    if ((recv(file_fd, buf, 128, 0)) < 0) {
         perror("redfish agent recv :");
         return PWR_RET_FAILURE;
     }
@@ -264,12 +261,14 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
     char *a;
     double now;
     char string[MAX_SIZE];
-    char buf[MAX_SIZE];
+    char buf[128];
+    double d;
     char *entity = PWR_REDFISH_FD(fd)->dev->entity;
     char *node = PWR_REDFISH_FD(fd)->dev->node;
     char *dev_name = PWR_REDFISH_FD(fd)->dev_name;
     int file_fd = PWR_REDFISH_FD(fd)->file_fd;
     char *command = (char *) ptr;
+    bzero(buf, 128);  
     a = (char *) attrNameToString(type);
     DBGP("Info: Writing %s to attribute %s on entity=%s, node=%s, device=%s\n", command, a, entity, node, dev_name);
     sprintf(string,"set:%s:%s:%s:%s:%s;", entity, node, dev_name, a,command);
@@ -278,8 +277,14 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
         perror("redfish agent send:");
         return PWR_RET_FAILURE;
     }
-    if ((recv(file_fd, buf, 10, 0)) < 0) {
+    if ((recv(file_fd, buf, 128, 0)) < 0) {
         perror("redfish agent recv :");
+        return PWR_RET_FAILURE;
+    }
+
+    d = strtod(buf,0x0);
+
+    if ( d < 0 ) {
         return PWR_RET_FAILURE;
     }
 
