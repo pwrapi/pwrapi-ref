@@ -29,7 +29,8 @@ examples_config_DATA =	config/cpu-node.xml \
 			config/opt-node.xml \
 			config/wu-node.xml \
 			config/xtpm-node.xml \
-			config/xtpm-platform.xml
+			config/xtpm-platform.xml \
+			config/redfish-node.xml
 examples_script_DATA =	script/run_dummy_client.sh \
 			script/run_dummy_python.sh \
 			script/run_dummy.sh \
