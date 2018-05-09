@@ -63,3 +63,10 @@ libdummy_dev_la_LDFLAGS = -version-info 1:0:1
 libpwr_redfishdev_la_SOURCES = pwr_dev.c pwr_redfish_dev.c
 libpwr_redfishdev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_redfishdev_la_LDFLAGS = -version-info 1:0:1
+
+if HAVE_XMLRPC_C
+lib_LTLIBRARIES += libpwr_hpe_power_manager_dev.la
+libpwr_hpe_power_manager_dev_la_SOURCES = pwr_dev.c pwr_hpe_power_manager_dev.c hpe_power_manager_utilities.c
+libpwr_hpe_power_manager_dev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(XMLRPC_C_CPPFLAGS) 
+libpwr_hpe_power_manager_dev_la_LDFLAGS = -version-info 1:0:1 $(XMLRPC_C_LDFLAGS) $(XMLRPC_C_LIBS)
+endif
