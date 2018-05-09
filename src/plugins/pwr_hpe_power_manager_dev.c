@@ -47,7 +47,6 @@ void parseOpenStr(char * str, pwr_hpe_fd_t **data){
         char *token = strtok(str,":");
         if(token){
         	strcpy((*data)->type,token);
-//       	 	printf("Type: %s\n",(*data)->type);
        	}
 	token = strtok(NULL,":");
         if(token){
@@ -62,13 +61,10 @@ void parseOpenStr(char * str, pwr_hpe_fd_t **data){
 		if(strcmp((*data)->type,"chassis") == 0)
                         strcpy((*data)->chassis_name,token);
 
-
-//                printf("node: %s, rack_name: %s\n",(*data)->node,(*data)->rack_name);
         }
 	token = strtok(NULL,":");
         if(token){
                 strcpy((*data)->sensor_name,token);
-//                printf("sensor_name: %s\n",(*data)->sensor_name);
         }
         return;
 }
@@ -79,12 +75,10 @@ void parse(char *str, pwr_hpe_dev_t **data ){
 	char *token = strtok(str,":");
         if(token){
         	strcpy((*data)->host,token);
-//		printf("host: %s\n",(*data)->host);
 	}
         token = strtok(NULL,":");
         if(token){
 		strcpy((*data)->port,token);
-//        	printf("port: %s\n",(*data)->port);
 	}
         return;
 }
@@ -131,7 +125,6 @@ static int hpe_dev_read( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned in
 
 	int return_value = 0;
 	pwr_hpe_fd_t *fd = (pwr_hpe_fd_t*)fd1;
-//	printf("Reading:\nHost: %s \nPort: %s \nNode: %s \nURL: %s\n",fd->dev->host, fd->dev->port, fd->node,fd->dev->url);
 	
 	if(strcmp(fd->type,"node") == 0){
 		if(type == PWR_ATTR_TEMP)
@@ -182,9 +175,7 @@ static int hpe_dev_write( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned i
 {
         char *command = (char *) ptr;
         int limit = atoi(command);
-//	printf("\nwrite\n");
 	pwr_hpe_fd_t *fd = (pwr_hpe_fd_t*)fd1;
-//	printf("Limit: %d\n",limit);
 	if(type == PWR_ATTR_POWER_LIMIT_MAX){
 		if(power_limit(fd,limit) == 1)
  			return PWR_RET_SUCCESS;
@@ -213,23 +204,6 @@ static int hpe_dev_clear( pwr_fd_t fd )
     return 0;
 }
 
-/*static int hpe_dev_log_start( pwr_fd_t fd, PWR_AttrName name )
-{
-	return PWR_RET_SUCCESS;
-}
-
-static int hpe_dev_log_stop( pwr_fd_t fd, PWR_AttrName name )
-{
-	return PWR_RET_SUCCESS;
-}
-
-static int hpe_dev_get_samples( pwr_fd_t fd, PWR_AttrName name, 
-			PWR_Time* ts, double period, unsigned int* nSamples, void* buf )
-
-{
-	return PWR_RET_SUCCESS;
-}*/
-
 static plugin_devops_t devOps = {
     .open   = hpe_dev_open, 
     .close  = hpe_dev_close,
@@ -239,16 +213,12 @@ static plugin_devops_t devOps = {
     .writev = hpe_dev_writev,
     .time   = hpe_dev_time,
     .clear  = hpe_dev_clear,
-//	.log_start = hpe_dev_log_start,
-//	.log_stop = hpe_dev_log_stop,
-//	.get_samples = hpe_dev_get_samples,
 };
 
 
 static plugin_devops_t* hpe_dev_init( const char *initstr )
 {
 	DBGP("initstr='%s'\n",initstr);
-//	printf("Init str: %s\n",initstr);
 	char initial[50];
 	strcpy(initial,initstr); 
 	plugin_devops_t* ops = malloc(sizeof(*ops));
@@ -256,7 +226,6 @@ static plugin_devops_t* hpe_dev_init( const char *initstr )
 	pwr_hpe_dev_t *p = (pwr_hpe_dev_t *) malloc(sizeof(pwr_hpe_dev_t));
 	parse(initial,&p);
 	sprintf(p->url,"http://%s:%s/RPC2",p->host,p->port);
-//	printf("%s %s ",p->host, p->port);
 	ops->private_data = p;
 
     return ops;
@@ -280,14 +249,14 @@ plugin_dev_t* getDev() {
     return &dev;
 }
 
-//
-// Start of plugin meta data
-//
+/*
+* Start of plugin meta data
+*/
 
 // Any thing can co here as long as it does not clash with other plugins
 static int hpe_getPluginName( size_t len, char* buf )
 {
-    strncpy(buf,"HPE",len);
+    strncpy(buf,"hpe_power_manager",len);
 	return 0;
 }
 

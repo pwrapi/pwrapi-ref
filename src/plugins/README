@@ -27,17 +27,17 @@ Currently supported:
   libpwr_pmcdev                  IBM Power8 Power Management (INCOMPLETE)
   libpwr_hpe_power_manager_dev   HPE power manager 
 
-Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC  HPE_pwr_mgr
-----------  -----  --  ----  --  ----  ---  ---  ---  -----------
-  power     G      G         G   G     G    G              G
-  energy    G          G     G   G                         G
+Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC  RAFPA  hpe_pwr_mgr
+----------  -----  --  ----  --  ----  ---  ---  ---  -----  -----------
+  power     G      G         G   G     G     G          G         G
+  energy    G          G     G   G                                G
   voltage   G      G         G 
   current   G      G         G 
   min_power                      G/S   G/S                
-  max_power                      G/S   G/S                G/S
+  max_power                      G/S   G/S              G        G/S
   freq                                 G/S
-  temp                                 G                   G
-  pstate                               G/S
+  temp                                 G                G         G
+  pstate                               G/S             G/S
   cstate                               G/S
   sstate                               G/S
 
