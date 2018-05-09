@@ -25,6 +25,7 @@ Currently supported:
   libpwr_cpudev	                 System level CPU adjustments
   libpwr_apmdev                  AMD Average Power Management
   libpwr_pmcdev                  IBM Power8 Power Management (INCOMPLETE)
+  libpwr_redfishdev		 RAFPA
   libpwr_hpe_power_manager_dev   HPE power manager 
 
 Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC  RAFPA  hpe_pwr_mgr
