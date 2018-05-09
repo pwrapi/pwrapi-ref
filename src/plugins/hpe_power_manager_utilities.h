@@ -1,3 +1,26 @@
+/*
+* Copyright 2018 Hewlett Packard Enterprise Development LP
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+* 1. Redistributions of source code must retain the above copyright notice,
+* this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or other
+* materials provided with the distribution.
+* 3. Neither the name of the copyright holder nor the names of its contributors may
+* be used to endorse or promote products derived from this software without specific
+* prior written permission.
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+* SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,WHETHER IN
+* CONTRACT,STRICT LIABILITY,OR TORT(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+* WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 #include <sys/timeb.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -29,10 +52,10 @@ typedef struct {
     char url[100];
         char host[20];
         char port[10];
-} pwr_sgi_dev_t;
+} pwr_hpe_dev_t;
 
 typedef struct {
-        pwr_sgi_dev_t *dev;
+        pwr_hpe_dev_t *dev;
         char sensor_name[50];
         char methodName[50];
         char node[20];
@@ -42,15 +65,15 @@ typedef struct {
         char nodeset[50];
         xmlrpc_env env;
 
-} pwr_sgi_fd_t;
+} pwr_hpe_fd_t;
 
 int error_return_value(int error_value, char* name);
-int rack_or_pdu_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type);
-int chassis_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type);
-int power_limit(pwr_sgi_fd_t *fd, int limit);
-int thermal_report(void *ptr,pwr_sgi_fd_t *fd);
-int node_sensor_report(void *ptr, int attribute, pwr_sgi_fd_t *fd);
-int nodeset_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd);
-int node_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd);
-int node_power_get_limit(void *ptr,  pwr_sgi_fd_t *fd);
+int rack_or_pdu_report(void *ptr,pwr_hpe_fd_t *fd, PWR_AttrName type);
+int chassis_report(void *ptr,pwr_hpe_fd_t *fd, PWR_AttrName type);
+int power_limit(pwr_hpe_fd_t *fd, int limit);
+int thermal_report(void *ptr,pwr_hpe_fd_t *fd);
+int node_sensor_report(void *ptr, int attribute, pwr_hpe_fd_t *fd);
+int nodeset_power_report(void *ptr, int attribute, pwr_hpe_fd_t *fd);
+int node_power_report(void *ptr, int attribute, pwr_hpe_fd_t *fd);
+int node_power_get_limit(void *ptr,  pwr_hpe_fd_t *fd);
 

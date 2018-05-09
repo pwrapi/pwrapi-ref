@@ -1,13 +1,26 @@
-/* 
- * Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
- * DE-AC04-94AL85000, there is a non-exclusive license for use of this work 
- * by or on behalf of the U.S. Government. Export of this program may require
- * a license from the United States Government.
- *
- * This file is part of the Power API Prototype software package. For license
- * information, see the LICENSE file in the top level directory of the
- * distribution.
+/*
+* Copyright 2018 Hewlett Packard Enterprise Development LP
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+* 1. Redistributions of source code must retain the above copyright notice,
+* this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or other
+* materials provided with the distribution.
+* 3. Neither the name of the copyright holder nor the names of its contributors may
+* be used to endorse or promote products derived from this software without specific
+* prior written permission.
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+* SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,WHETHER IN
+* CONTRACT,STRICT LIABILITY,OR TORT(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+* WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 #include <sys/timeb.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -30,7 +43,7 @@ static double getTime() {
 	return value;
 }
 
-void parseOpenStr(char * str, pwr_sgi_fd_t **data){
+void parseOpenStr(char * str, pwr_hpe_fd_t **data){
         char *token = strtok(str,":");
         if(token){
         	strcpy((*data)->type,token);
@@ -61,7 +74,7 @@ void parseOpenStr(char * str, pwr_sgi_fd_t **data){
 }
 
 
-void parse(char *str, pwr_sgi_dev_t **data ){
+void parse(char *str, pwr_hpe_dev_t **data ){
   
 	char *token = strtok(str,":");
         if(token){
@@ -83,9 +96,9 @@ static double getTimeSec()
 }
 
 
-static pwr_fd_t sgi_dev_open( plugin_devops_t* ops, const char *openstr )
+static pwr_fd_t hpe_dev_open( plugin_devops_t* ops, const char *openstr )
 {
-	pwr_sgi_fd_t *fd = (pwr_sgi_fd_t *)malloc(sizeof(pwr_sgi_fd_t));   
+	pwr_hpe_fd_t *fd = (pwr_hpe_fd_t *)malloc(sizeof(pwr_hpe_fd_t));   
 	fd->dev = ops->private_data;
 	char openstring[50];
 	strcpy(openstring,openstr);	
@@ -99,10 +112,10 @@ static pwr_fd_t sgi_dev_open( plugin_devops_t* ops, const char *openstr )
 	return fd;
 }
 
-static int sgi_dev_close( pwr_fd_t fd1 )
+static int hpe_dev_close( pwr_fd_t fd1 )
 
 {
-	pwr_sgi_fd_t *fd = (pwr_sgi_fd_t*)fd1;
+	pwr_hpe_fd_t *fd = (pwr_hpe_fd_t*)fd1;
 	xmlrpc_env_clean(&(fd->env));
 
 
@@ -113,11 +126,11 @@ static int sgi_dev_close( pwr_fd_t fd1 )
     return 0;
 }
 
-static int sgi_dev_read( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
+static int hpe_dev_read( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
 
 	int return_value = 0;
-	pwr_sgi_fd_t *fd = (pwr_sgi_fd_t*)fd1;
+	pwr_hpe_fd_t *fd = (pwr_hpe_fd_t*)fd1;
 //	printf("Reading:\nHost: %s \nPort: %s \nNode: %s \nURL: %s\n",fd->dev->host, fd->dev->port, fd->node,fd->dev->url);
 	
 	if(strcmp(fd->type,"node") == 0){
@@ -165,12 +178,12 @@ static int sgi_dev_read( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned in
 		return PWR_RET_FAILURE;
 }
 
-static int sgi_dev_write( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned int len )
+static int hpe_dev_write( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned int len )
 {
         char *command = (char *) ptr;
         int limit = atoi(command);
 //	printf("\nwrite\n");
-	pwr_sgi_fd_t *fd = (pwr_sgi_fd_t*)fd1;
+	pwr_hpe_fd_t *fd = (pwr_hpe_fd_t*)fd1;
 //	printf("Limit: %d\n",limit);
 	if(type == PWR_ATTR_POWER_LIMIT_MAX){
 		if(power_limit(fd,limit) == 1)
@@ -179,38 +192,38 @@ static int sgi_dev_write( pwr_fd_t fd1, PWR_AttrName type, void* ptr, unsigned i
 	return PWR_RET_FAILURE;
 }
 
-static int sgi_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
+static int hpe_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
                         PWR_Time ts[], int status[] )
 {
     return PWR_RET_SUCCESS;
 }
 
-static int sgi_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
+static int hpe_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf, int status[] )
 {
     return PWR_RET_SUCCESS;
 }
 
-static int sgi_dev_time( pwr_fd_t fd, PWR_Time *timestamp )
+static int hpe_dev_time( pwr_fd_t fd, PWR_Time *timestamp )
 {
     return 0;
 }
 
-static int sgi_dev_clear( pwr_fd_t fd )
+static int hpe_dev_clear( pwr_fd_t fd )
 {
     return 0;
 }
 
-/*static int sgi_dev_log_start( pwr_fd_t fd, PWR_AttrName name )
+/*static int hpe_dev_log_start( pwr_fd_t fd, PWR_AttrName name )
 {
 	return PWR_RET_SUCCESS;
 }
 
-static int sgi_dev_log_stop( pwr_fd_t fd, PWR_AttrName name )
+static int hpe_dev_log_stop( pwr_fd_t fd, PWR_AttrName name )
 {
 	return PWR_RET_SUCCESS;
 }
 
-static int sgi_dev_get_samples( pwr_fd_t fd, PWR_AttrName name, 
+static int hpe_dev_get_samples( pwr_fd_t fd, PWR_AttrName name, 
 			PWR_Time* ts, double period, unsigned int* nSamples, void* buf )
 
 {
@@ -218,21 +231,21 @@ static int sgi_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
 }*/
 
 static plugin_devops_t devOps = {
-    .open   = sgi_dev_open, 
-    .close  = sgi_dev_close,
-    .read   = sgi_dev_read,
-    .write  = sgi_dev_write,
-    .readv  = sgi_dev_readv,
-    .writev = sgi_dev_writev,
-    .time   = sgi_dev_time,
-    .clear  = sgi_dev_clear,
-//	.log_start = sgi_dev_log_start,
-//	.log_stop = sgi_dev_log_stop,
-//	.get_samples = sgi_dev_get_samples,
+    .open   = hpe_dev_open, 
+    .close  = hpe_dev_close,
+    .read   = hpe_dev_read,
+    .write  = hpe_dev_write,
+    .readv  = hpe_dev_readv,
+    .writev = hpe_dev_writev,
+    .time   = hpe_dev_time,
+    .clear  = hpe_dev_clear,
+//	.log_start = hpe_dev_log_start,
+//	.log_stop = hpe_dev_log_stop,
+//	.get_samples = hpe_dev_get_samples,
 };
 
 
-static plugin_devops_t* sgi_dev_init( const char *initstr )
+static plugin_devops_t* hpe_dev_init( const char *initstr )
 {
 	DBGP("initstr='%s'\n",initstr);
 //	printf("Init str: %s\n",initstr);
@@ -240,7 +253,7 @@ static plugin_devops_t* sgi_dev_init( const char *initstr )
 	strcpy(initial,initstr); 
 	plugin_devops_t* ops = malloc(sizeof(*ops));
 	*ops = devOps;
-	pwr_sgi_dev_t *p = (pwr_sgi_dev_t *) malloc(sizeof(pwr_sgi_dev_t));
+	pwr_hpe_dev_t *p = (pwr_hpe_dev_t *) malloc(sizeof(pwr_hpe_dev_t));
 	parse(initial,&p);
 	sprintf(p->url,"http://%s:%s/RPC2",p->host,p->port);
 //	printf("%s %s ",p->host, p->port);
@@ -249,7 +262,7 @@ static plugin_devops_t* sgi_dev_init( const char *initstr )
     return ops;
 }
 
-static int sgi_dev_final( plugin_devops_t *ops )
+static int hpe_dev_final( plugin_devops_t *ops )
 {
     xmlrpc_client_cleanup();
     DBGP("\n");
@@ -259,8 +272,8 @@ static int sgi_dev_final( plugin_devops_t *ops )
 }
 
 static plugin_dev_t dev = {
-    .init   = sgi_dev_init, 
-    .final  = sgi_dev_final,
+    .init   = hpe_dev_init, 
+    .final  = hpe_dev_final,
 };
 
 plugin_dev_t* getDev() {
@@ -272,9 +285,9 @@ plugin_dev_t* getDev() {
 //
 
 // Any thing can co here as long as it does not clash with other plugins
-static int sgi_getPluginName( size_t len, char* buf )
+static int hpe_getPluginName( size_t len, char* buf )
 {
-    strncpy(buf,"SGI",len);
+    strncpy(buf,"HPE",len);
 	return 0;
 }
 

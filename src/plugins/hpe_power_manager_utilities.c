@@ -1,3 +1,25 @@
+/*
+* Copyright 2018 Hewlett Packard Enterprise Development LP
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+* 1. Redistributions of source code must retain the above copyright notice,
+* this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or other
+* materials provided with the distribution.
+* 3. Neither the name of the copyright holder nor the names of its contributors may
+* be used to endorse or promote products derived from this software without specific
+* prior written permission.
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+* SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+* TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,WHETHER IN
+* CONTRACT,STRICT LIABILITY,OR TORT(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+* WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <sys/timeb.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -71,8 +93,11 @@ int error_return_value(int error_value, char* name){
 	return 0;
 }
 
-/* Function to fetch energy/power values from pdu/rack. If system has pdu, power and energy metrics will be fetched from pdu. Otherwise, result will be the addition of values from all the individual nodes.  */
-int rack_or_pdu_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
+/* Function to fetch energy/power values from pdu/rack. If system has pdu, power 
+* and energy metrics will be fetched from pdu. Otherwise, result will be the addition
+* of values from all the individual nodes. 
+*/
+int rack_or_pdu_report(void *ptr,pwr_hpe_fd_t *fd, PWR_AttrName type){
 	xmlrpc_env env = fd->env;
         xmlrpc_value * resultP;
       	if(type == PWR_ATTR_ENERGY){
@@ -103,7 +128,10 @@ int rack_or_pdu_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
                	DBGP("xmlrpc fault occured. Fault code %d, Fault string: %s",env.fault_code, env.fault_string);
 		return 0;		// xml_rpc error handling
         }
-    /*xml_rpc query returns an array. If the query is executed successfully, size of array returned is 2 (value, timestamp). If unsuccessful, size of array returned is 1 (negative integer).*/	
+    /* xml_rpc query returns an array. If the query is executed successfully, size of 
+     * array returned is 2 (value, timestamp). If unsuccessful, size of array returned 
+     * is 1 (negative integer).
+     */	
         int size = xmlrpc_array_size(&env,resultP);
         if(size<=1 || resultP == NULL){
                 if(size==1){
@@ -122,13 +150,17 @@ int rack_or_pdu_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
         double double_value;
         xmlrpc_array_read_item(&env,resultP,0,&value);
         xmlrpc_read_double(&env, value, &double_value);
-        *(double*)ptr = double_value;
+	if(type == PWR_ATTR_ENERGY){
+        	*(double*)ptr = double_value*3600;
+	}
+	else
+       		*(double*)ptr = double_value;
 	if(resultP)
                 xmlrpc_DECREF(resultP);
         return 1;
 }
 
-int chassis_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
+int chassis_report(void *ptr,pwr_hpe_fd_t *fd, PWR_AttrName type){
 	xmlrpc_env env = fd->env;
         xmlrpc_value * resultP;
       	if(type == PWR_ATTR_ENERGY){
@@ -149,7 +181,10 @@ int chassis_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
                	DBGP("xmlrpc fault occured. Fault code %d, Fault string: %s",env.fault_code, env.fault_string);
 		return 0;		// xml_rpc error handling
         }
-    /*xml_rpc query returns an array. If the query is executed successfully, size of array returned is 2 (value, timestamp). If unsuccessful, size of array returned is 1 (negative integer).*/	
+    /* xml_rpc query returns an array. If the query is executed successfully, size of
+     * array returned is 2 (value, timestamp). If unsuccessful, size of array returned 
+     * is 1 (negative integer).
+     */	
         int size = xmlrpc_array_size(&env,resultP);
         if(size<=1 || resultP == NULL){
                 if(size==1){
@@ -158,7 +193,6 @@ int chassis_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
 			int return_value = 0;
                         xmlrpc_array_read_item(&env,resultP,0,&value);
                         xmlrpc_read_int(&env, value, &error_value);  	// error value will be stored in error_value variable.
-//        		DBGP("TYPE: %s\n", xmlrpc_type_name(xmlrpc_value_type(value)) );
                         return_value = error_return_value(error_value,fd->rack_name);
 			return return_value;
                 }
@@ -168,14 +202,19 @@ int chassis_report(void *ptr,pwr_sgi_fd_t *fd, PWR_AttrName type){
         double double_value;
         xmlrpc_array_read_item(&env,resultP,0,&value);
         xmlrpc_read_double(&env, value, &double_value);
-        *(double*)ptr = double_value;
+	if(type == PWR_ATTR_ENERGY){
+        	*(double*)ptr = double_value*3600;
+	}
+        else {
+		*(double*)ptr = double_value;
+	}
 	if(resultP)
                 xmlrpc_DECREF(resultP);
         return 1;
 }
 
 /* Function to set the power limit of nodes or nodeset. Successful query does not return anything. */
-int power_limit(pwr_sgi_fd_t *fd, int limit){
+int power_limit(pwr_hpe_fd_t *fd, int limit){
         xmlrpc_env env = fd->env;
         xmlrpc_value * resultP;
 	char type_name[50];
@@ -201,7 +240,6 @@ int power_limit(pwr_sgi_fd_t *fd, int limit){
                 int return_value = 0;
                 xmlrpc_array_read_item(&env,resultP,0,&value);
                 xmlrpc_read_int(&env, value, &error_value);     // error value will be stored in error_value variable.
-//              DBGP("TYPE: %s\n", xmlrpc_type_name(xmlrpc_value_type(value)) );
 		return_value = error_return_value(error_value,fd->rack_name);
                 return return_value;
          }
@@ -213,7 +251,7 @@ int power_limit(pwr_sgi_fd_t *fd, int limit){
 }
 
 /* Function to fetch thermal sensor values from nodes/nodesets. */
-int thermal_report(void *ptr,pwr_sgi_fd_t *fd){
+int thermal_report(void *ptr,pwr_hpe_fd_t *fd){
         xmlrpc_env env = fd->env;
         xmlrpc_value * resultP;
         char type_name[50];
@@ -234,7 +272,9 @@ int thermal_report(void *ptr,pwr_sgi_fd_t *fd){
                	DBGP("xmlrpc fault occured. Fault code %d, Fault string: %s",env.fault_code, env.fault_string);
                 return 0;	//xmlrpc error handling
         }
-/*For node, if query execution is successful, returned value is string. And if unsuccessful, returned value is and array of size one containing negative integer. */
+/* For node, if query execution is successful, returned value is string. And if 
+ * unsuccessful, returned value is and array of size one containing negative integer. 
+ */
         if(strcmp(fd->type,"node") == 0){
 		if(strcmp(xmlrpc_type_name(xmlrpc_value_type(resultP)),"ARRAY") == 0 ){
 			xmlrpc_value * value;
@@ -257,12 +297,14 @@ int thermal_report(void *ptr,pwr_sgi_fd_t *fd){
 			return_value = 0;
 		}
 	}  
-/*For nodeset, if query execution is successful, returned value is an array of size one containing value as double. And if unsuccessful, returned value is and array of size one containing negative integer. */
+/* For nodeset, if query execution is successful, returned value is an array of size
+ * one containing value as double. And if unsuccessful, returned value is and array
+ * of size one containing negative integer. 
+ */
  
 	else{
 		double double_value;
 	        int size = xmlrpc_array_size(&env,resultP);
-//	        DBGP("TYPE: %s\n", xmlrpc_type_name(xmlrpc_value_type(resultP)) );
 	        if(size <1){
 	            	DBGP("Unknown Error.\n");
 	                return 0;
@@ -285,8 +327,12 @@ int thermal_report(void *ptr,pwr_sgi_fd_t *fd){
         return return_value;
 }
 
-/*Function to fetch thermal the value of the individual sensor like CPU, DIMM, etc. If query execution is successful, array of size 7 is returned. Temperature value is at index 3 and data type is string. If query execution is unsuccessful, size of array returned is 1 and it contains a negative intger.*/
-int node_sensor_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
+/* Function to fetch thermal the value of the individual sensor like CPU, DIMM, etc.
+ * If query execution is successful, array of size 7 is returned. Temperature value is 
+ * at index 3 and data type is string. If query execution is unsuccessful, size of array 
+ * returned is 1 and it contains a negative intger.
+ */
+int node_sensor_report(void *ptr, int attribute, pwr_hpe_fd_t *fd){
     	xmlrpc_env env = fd->env;
     	xmlrpc_value * resultP;
     	strcpy(fd->methodName, NODE_SENSOR_REPORT);
@@ -328,8 +374,12 @@ int node_sensor_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
     	return 1;
 }
 
-/* Function to fetch energy/power values of the nodeset. If query execution is successful, an array of size 2 is returned. Index 0 has power and index 1 has energy value. Integer variable attribute tells which index to read. Unsuccessful query execution will return an array of size 1, containing negative integer. */
-int nodeset_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
+/* Function to fetch energy/power values of the nodeset. If query execution is 
+ * successful, an array of size 2 is returned. Index 0 has power and index 1 has
+ * energy value. Integer variable attribute tells which index to read. Unsuccessful
+ * query execution will return an array of size 1, containing negative integer. 
+ */
+int nodeset_power_report(void *ptr, int attribute, pwr_hpe_fd_t *fd){
     	xmlrpc_env env = fd->env;
     	xmlrpc_value * resultP;
     	strcpy(fd->methodName, NODESET_POWER_REPORT);
@@ -363,7 +413,12 @@ int nodeset_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
 
 	xmlrpc_array_read_item(&env,resultP,attribute,&value);
         xmlrpc_read_double(&env, value, &double_value);
-	*(double*)ptr = double_value;
+	
+	if(attribute==1){
+		*(double*)ptr = double_value*3600;
+	}
+	else
+		*(double*)ptr = double_value;
 
     	if(resultP)
 		xmlrpc_DECREF(resultP);
@@ -372,9 +427,13 @@ int nodeset_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
 
 } 
 
-/* Function to fetch energy/power values of the node. If query execution is successful, an array of size 6 is returned. Index 2 has power and index 0 has energy value. Integer variable attribute tells which index to read. Unsuccessful query execution will return an array of size 1, containing negative integer. */
+/* Function to fetch energy/power values of the node. If query execution is successful,
+ * an array of size 6 is returned. Index 2 has power and index 0 has energy value. 
+ * Integer variable attribute tells which index to read. Unsuccessful query execution 
+ * will return an array of size 1, containing negative integer. 
+ */
 
-int node_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
+int node_power_report(void *ptr, int attribute, pwr_hpe_fd_t *fd){
     	xmlrpc_env env = fd->env;
     	xmlrpc_value * resultP;
     	strcpy(fd->methodName, NODE_POWER_REPORT);
@@ -414,7 +473,7 @@ int node_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
 	}
 	else{
 		xmlrpc_read_double(&env, value, &double_value);
-		*(double*)ptr = double_value;
+		*(double*)ptr = double_value*3600;
 	}
 
     	if(resultP)
@@ -424,7 +483,7 @@ int node_power_report(void *ptr, int attribute, pwr_sgi_fd_t *fd){
 
 } 
 
-int node_power_get_limit(void *ptr,  pwr_sgi_fd_t *fd){
+int node_power_get_limit(void *ptr,  pwr_hpe_fd_t *fd){
     	xmlrpc_env env = fd->env;
     	xmlrpc_value * resultP;
     	strcpy(fd->methodName, NODE_POWER_GET_LIMIT);
