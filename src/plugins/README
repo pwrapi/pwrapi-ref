@@ -11,32 +11,34 @@ and should be used as a point of reference.
 
 Obviously, there will be system and device dependencies for
 building some of the plugins (i.e. PowerInsight and PowerGadget)
-where you will need to download a separte library for linking
+where you will need to download a separate library for linking
 against.  However, the majority of the plugins should be at least
 compilable on most linux based systems.
 
 Currently supported:
-  libpwr_piapidev	PIAPI
-  libpwr_pidev   	Penguin PowerInsight
-  libpwr_rapldev	Intel Running Average Power Limit (RAPL)
-  libpwr_pgdev	  Intel Power Gadget API
-  libpwr_wudev		WattsUp
-  libpwr_xtpmdev	Cray XC30 Power Manager
-  libpwr_cpudev	  System level CPU adjustments
-  libpwr_apmdev   AMD Average Power Management
-  libpwr_pmcdev   IBM Power8 Power Management (INCOMPLETE)
+  libpwr_piapidev	         PIAPI
+  libpwr_pidev   	         Penguin PowerInsight
+  libpwr_rapldev	         Intel Running Average Power Limit (RAPL)
+  libpwr_pgdev	                 Intel Power Gadget API
+  libpwr_wudev		         WattsUp
+  libpwr_xtpmdev	         Cray XC30 Power Manager
+  libpwr_cpudev	                 System level CPU adjustments
+  libpwr_apmdev                  AMD Average Power Management
+  libpwr_pmcdev                  IBM Power8 Power Management (INCOMPLETE)
+  libpwr_redfishdev		 RAFPA
+  libpwr_hpe_power_manager_dev   HPE power manager 
 
-Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC
-----------  -----  --  ----  --  ----  ---  ---  ---
-  power     G      G         G   G	   G    G
-  energy    G          G     G   G
-  voltage   G      G         G
-  current   G      G         G
-  min_power                      G/S   G/S
-  max_power                      G/S   G/S
+Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC  RAFPA  hpe_pwr_mgr
+----------  -----  --  ----  --  ----  ---  ---  ---  -----  -----------
+  power     G      G         G   G     G     G          G         G
+  energy    G          G     G   G                                G
+  voltage   G      G         G 
+  current   G      G         G 
+  min_power                      G/S   G/S                
+  max_power                      G/S   G/S              G        G/S
   freq                                 G/S
-  temp                                 G
-  pstate                               G/S
+  temp                                 G                G         G
+  pstate                               G/S             G/S
   cstate                               G/S
   sstate                               G/S
 

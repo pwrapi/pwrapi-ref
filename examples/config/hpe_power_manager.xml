@@ -1,0 +1,160 @@
+<?xml version="1.0" ?>
+<System>
+	<Plugins>
+		<plugin lib="libpwr_hpe_power_manager_dev" name="HPE"/>
+	</Plugins>
+	<Devices>
+		<device initString="admin:8888" name="dev" plugin="HPE"/>
+	</Devices>
+	<Objects>
+		<obj name="plat" type="Platform">
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="rack1" type="child"/>
+				</attr>
+				<attr name="MAX_POWER" op="SUM">
+					<src name="rack1" type="child"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="rack1" type="child"/>
+				</attr>
+				<attr name="ENERGY" op="SUM">
+					<src name="rack1" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="rack1"/>
+			</children>
+		</obj>
+		<obj name="allleader" type="Node">
+			<devices>
+				<dev device="dev" name="allleader_device" openString="nodeset:allleader"/>
+			</devices>
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="allleader_device" type="device"/>
+				</attr>
+				<attr name="MAX_POWER" op="SUM">
+					<src name="allleader_device" type="device"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="allleader_device" type="device"/>
+				</attr>
+				<attr name="ENERGY" op="SUM">
+					<src name="allleader_device" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.rack1" type="Cabinet">
+			<devices>
+				<dev device="dev" name="rack1_device" openString="rack:rack1"/>
+			</devices>
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="rack1_device" type="device"/>
+				</attr>
+				<attr name="ENERGY" op="SUM">
+					<src name="rack1_device" type="device"/>
+				</attr>
+				<attr name="MAX_POWER" op="SUM">
+					<src name="r1i0c" type="child"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="r1i0c" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="r1i0c"/>
+			</children>
+		</obj>
+		<obj name="plat.rack1.r1i0c" type="Chassis">
+			<devices>
+				<dev device="dev" name="r1i0c_device" openString="chassis:r1i0c"/>
+			</devices>
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="r1i0c_device" type="device"/>
+				</attr>
+				<attr name="ENERGY" op="SUM">
+					<src name="r1i0c_device" type="device"/>
+				</attr>
+				<attr name="MAX_POWER" op="SUM">
+					<src name="r1i0n12" type="child"/>
+					<src name="r1i0n6" type="child"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="r1i0n12" type="child"/>
+					<src name="r1i0n6" type="child"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="r1i0n12"/>
+				<child name="r1i0n6"/>
+			</children>
+		</obj>
+		<obj name="plat.rack1.r1i0c.r1i0n12" type="Node">
+			<devices>
+				<dev device="dev" name="r1i0n12_device" openString="node:r1i0n12"/>
+			</devices>
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="r1i0n12_device" type="device"/>
+				</attr>
+				<attr name="ENERGY" op="SUM">
+					<src name="r1i0n12_device" type="device"/>
+				</attr>
+				<attr name="MAX_POWER" op="SUM">
+					<src name="r1i0n12_device" type="device"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="r1i0n12_device" type="device"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="CPU1 Temp"/>
+			</children>
+		</obj>
+		<obj name="plat.rack1.r1i0c.r1i0n12.CPU1 Temp" type="Core">
+			<devices>
+				<dev device="dev" name="r1i0n12_device" openString="sensor:r1i0n12:CPU1 Temp"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="r1i0n12_device" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+		<obj name="plat.rack1.r1i0c.r1i0n6" type="Node">
+			<devices>
+				<dev device="dev" name="r1i0n6_device" openString="node:r1i0n6"/>
+			</devices>
+			<attributes>
+				<attr name="POWER" op="SUM">
+					<src name="r1i0n6_device" type="device"/>
+				</attr>
+				<attr name="ENERGY" op="SUM">
+					<src name="r1i0n6_device" type="device"/>
+				</attr>
+				<attr name="MAX_POWER" op="SUM">
+					<src name="r1i0n6_device" type="device"/>
+				</attr>
+				<attr name="TEMP" op="AVG">
+					<src name="r1i0n6_device" type="device"/>
+				</attr>
+			</attributes>
+			<children>
+				<child name="CPU1 Temp"/>
+			</children>
+		</obj>
+		<obj name="plat.rack1.r1i0c.r1i0n6.CPU1 Temp" type="Core">
+			<devices>
+				<dev device="dev" name="r1i0n6_device" openString="sensor:r1i0n6:CPU1 Temp"/>
+			</devices>
+			<attributes>
+				<attr name="TEMP" op="AVG">
+					<src name="r1i0n6_device" type="device"/>
+				</attr>
+			</attributes>
+		</obj>
+	</Objects>
+</System>
