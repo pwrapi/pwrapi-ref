@@ -46,7 +46,7 @@ lib_LTLIBRARIES += libpwr_msrdev.la
 
 libpwr_msrdev_la_SOURCES = pwr_dev.c pwr_msrdev.c
 libpwr_msrdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(MSR_CFLAGS)
-libpwr_msrdev_la_LDFLAGS = -version-info 1:0:1
+libpwr_msrdev_la_LDFLAGS = -version-info 1:0:1 $(MIC_LDFLAGS) $(MIC_LIBS)
 endif
 
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
