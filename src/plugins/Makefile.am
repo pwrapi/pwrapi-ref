@@ -5,8 +5,7 @@ lib_LTLIBRARIES =	libpwr_rapldev.la \
 			libpwr_wudev.la \
 			libpwr_cpudev.la \
 			libpwr_powercapdev.la \
-			libdummy_dev.la \
-			libpwr_msrdev.la
+			libdummy_dev.la
 
 # Power API Plugins
 if HAVE_POWERGADGET
