@@ -38,6 +38,7 @@ m4_include([config/acx_mpi.m4])
 m4_include([config/pwrapi_mpi.m4])
 m4_include([config/pwrapi_hwloc.m4])
 m4_include([config/pwrapi_mic.m4])
+m4_include([config/pwrapi_msr.m4])
 
 PWRAPI_CHECK_HWLOC([pwrapi_have_hwloc="yes"], [pwrapi_have_hwloc="no"])
 PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
@@ -51,6 +52,8 @@ PWRAPI_CHECK_MPI([pwrapi_have_mpi="yes"], [pwrapi_have_mpi="no"])
 
 PWRAPI_CHECK_MIC([pwrapi_have_mic="yes"], [pwrapi_have_mic="no"])
 
+PWRAPI_CHECK_MSR([pwrapi_have_msr="yes"], [pwrapi_have_msr="no"])
+
 PWRAPI_CHECK_DEBUG()
 
 AC_CONFIG_FILES([Makefile
@@ -59,6 +62,7 @@ AC_CONFIG_FILES([Makefile
                  tools/script/hwloc_cpu_profile
                  tools/script/hwloc_rapl_profile
                  tools/script/hwloc_multi_profile
+                 tools/script/hwloc_msr_profile
                  examples/script/xml_profile
                  src/Makefile
                  src/tinyxml2/Makefile
