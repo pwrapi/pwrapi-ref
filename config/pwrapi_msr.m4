@@ -31,7 +31,7 @@ AC_DEFUN([PWRAPI_CHECK_MSR], [
 	AC_LANG_SAVE
 	AC_LANG_CPLUSPLUS
 
-	AC_CHECK_HEADERS([msr.h], [], [pwrapi_check_msr_happy="no"])
+
 	AC_LINK_IFELSE([AC_LANG_PROGRAM([], [
 			int a;
 		])], [pwrapi_check_msr_lib_happy="yes"],
