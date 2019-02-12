@@ -40,8 +40,9 @@ int main( int argc, char* argv[] )
 	int option;
 	char* name = NULL;
 	char* attrName = NULL;
+	unsigned long sleepTime = 0;
 
-	while( (option=getopt( argc, argv, "o:a:" )) != -1 ) {
+	while( (option=getopt( argc, argv, "o:a:f:" )) != -1 ) {
     	switch( option ) {
 	      case 'o':
 			name = optarg;
@@ -50,6 +51,11 @@ int main( int argc, char* argv[] )
 	      case 'a':
 			attrName = optarg;
 			break;
+
+	      case 'f':
+			sleepTime = (1.0/(double)atoi(optarg) * 1000000.0);
+			break;
+
 		  default:
 			usage( argv[0] );
 			exit(-1);
@@ -74,12 +80,23 @@ int main( int argc, char* argv[] )
     double value;
     PWR_Time time;
 
+
+while ( 1 ) {
+
   	rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
     if( PWR_RET_SUCCESS != rc ) {
    		fprintf(stderr,"Get Failed: %s: %s\n",name, attrName);
 		return -1;
 	}
    	printf("%s: %s %.3f\n",name, attrName, value);
+
+	if ( sleepTime ) {
+		usleep( sleepTime );
+	} else {
+		break;
+	}
+}
+
 
 	PWR_CntxtDestroy( cntxt );
 
