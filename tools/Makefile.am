@@ -1,7 +1,7 @@
 SUBDIRS = pwrdaemon
 DIST_SUBDRIS = pwrdaemon
 
-bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy pwrget pwrset
+bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy pwrget pwrset nodePower
 
 scriptdir = $(prefix)/script
 script_DATA = script/hwloc_profile\
@@ -39,6 +39,10 @@ pwrget_LDADD = $(top_builddir)/src/pwr/libpwr.la
 pwrset_SOURCES = pwrset.c
 pwrset_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrset_LDADD = $(top_builddir)/src/pwr/libpwr.la
+
+nodePower_SOURCES = nodePower.c
+nodePower_CFLAGS = 
+nodePower_LDADD = 
 
 man_MANS = pwrapi.8 pwrgen.8 pwrdmp.8
 
