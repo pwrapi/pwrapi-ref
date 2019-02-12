@@ -79,7 +79,7 @@ int main( int argc, char* argv[] )
    		fprintf(stderr,"Get Failed: %s: %s\n",name, attrName);
 		return -1;
 	}
-   	printf("%s: %s %.0lf\n",name, attrName, value);
+   	printf("%s: %s %.3f\n",name, attrName, value);
 
 	PWR_CntxtDestroy( cntxt );
 
