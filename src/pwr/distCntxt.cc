@@ -236,6 +236,7 @@ AttrInfo* DistCntxt::initAttr( Object* obj, PWR_AttrName attrName )
     std::string op = m_config->findAttrOp( obj->name(),attrName );
     std::string type = m_config->findAttrType( obj->name(),attrName );
     AttrInfo::OpFuncPtr opFunc = NULL;
+
     if ( ! op.compare("SUM") ) {
         opFunc = sumOp;
 		if ( ! type.compare("Float") ) {
@@ -322,14 +323,18 @@ void DistCntxt::traverse( std::string objName, PWR_AttrName attrName,
 		local.push_back( m_deviceMap[ ops ] [dev.openString ] ); 
 	}	
 
-	std::deque< std::string > children = 
+	if ( canAggregate( attrName )  ) {
+
+		std::deque< std::string > children = 
 			m_config->findAttrChildren( objName, attrName); 
 
-	std::deque< std::string >::iterator j = children.begin();
+		std::deque< std::string >::iterator j = children.begin();
 
-	DBGX("found %lu children\n",children.size());
-	for ( ; j != children.end(); ++j ) {
-		traverse( *j, attrName, local, remote );
+		DBGX("found %lu children\n",children.size());
+		for ( ; j != children.end(); ++j ) {
+			traverse( *j, attrName, local, remote );
+		}
+
 	}
 }
 
