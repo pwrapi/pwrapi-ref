@@ -40,6 +40,14 @@ libpwr_micdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(MIC_INCLUDE)
 libpwr_micdev_la_LDFLAGS = -version-info 1:0:1 $(MIC_LDFLAGS) $(MIC_LIBS)
 endif
 
+if HAVE_TX2MON
+lib_LTLIBRARIES += libpwr_astra.la
+
+libpwr_astra_la_SOURCES = pwr_dev.c pwr_astra.c
+libpwr_astra_la_CFLAGS = -I$(top_srcdir)/src/pwr $(TX2MON_CPPFLAGS)
+libpwr_astra_la_LDFLAGS = -version-info 1:0:1 $(TX2MON_LDFLAGS) $(TX2MON_LIBS)
+endif
+
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
 libpwr_rapldev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_rapldev_la_LDFLAGS = -version-info 1:0:1
