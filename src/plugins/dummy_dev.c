@@ -253,7 +253,7 @@ static int dummy_numObjs( )
 // Yes, this is limiting. 
 // This interface could be revised to remove this restriction by adding
 // PWR_ObjType as a parameter.
-static int dummy_readAttrs( int i, PWR_AttrName* ptr )
+static int dummy_readAttrs( PWR_ObjType type, int i, PWR_AttrName* ptr )
 {
 	DBGP("\n");
 	ptr[0] = PWR_ATTR_ENERGY;
