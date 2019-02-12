@@ -87,7 +87,7 @@ void walk( PWR_Obj node, int level )
 
     printf("%sname=`%s` type=%s: ", indent, name,PWR_ObjGetTypeString( objType ) ); 
 	for ( i = 0; i < PWR_NUM_ATTR_NAMES; i++) {
-		if ( PWR_ObjAttrIsValid( node, (PWR_AttrName)i ) ) {
+		if ( PWR_RET_SUCCESS == PWR_ObjAttrIsValid( node, (PWR_AttrName)i ) ) {
 #if USE_CRAY_POWER_API
 			char buf[100];
 			CRAYPWR_AttrGetName( (PWR_AttrName) i, buf,100);
