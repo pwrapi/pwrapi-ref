@@ -43,7 +43,7 @@ class PluginMeta {
 			std::vector< PWR_AttrName > attrs( m_meta->numAttrs(m_objVec[i]) );
         	//printf("%s\n", objTypeToString( m_objVec[i] ) );
 			
-        	m_meta->readAttrs( attrs.size(), &attrs[0]);
+        	m_meta->readAttrs( m_objVec[i], attrs.size(), &attrs[0]);
         	for ( unsigned j = 0; j < attrs.size(); j++ ) {
             	//printf("add %s %s\n", objTypeToString( m_objVec[i] ), 
 				//			attrNameToString(attrs[j]));
