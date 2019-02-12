@@ -45,7 +45,7 @@ class RtrCommGetSamplesReqEvent: public  CommGetSamplesReqEvent {
         info->resp->id = id;
         id = (EventId) info;
 
-    	DBGX("commID=%"PRIx64" eventId=%"PRIx64" new eventId=%p\n",
+    	DBGX("commID=%" PRIx64 " eventId=%"PRIx64" new eventId=%p\n",
                                 commID, id, info );
 
         for ( unsigned int i=0; i <  commList.size(); i++ ) {
