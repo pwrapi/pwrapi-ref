@@ -43,10 +43,12 @@ void dump_type_objects( PWR_Obj self, PWR_ObjType type )
 
 			char name[100];
 			PWR_ObjGetName( obj, name, 100 );
-            printf( "%s %s", name, PWR_ObjGetTypeString( type ) );
+            printf( "%s %s,", name, PWR_ObjGetTypeString( objType ) );
 
             for( j = 0; j < PWR_NUM_ATTR_NAMES; j++ ) {
-                printf( " %s", PWR_AttrGetTypeString( j ) );
+				if ( PWR_RET_SUCCESS == PWR_ObjAttrIsValid( obj, (PWR_AttrName) j ) ) {
+                	printf( " %s", PWR_AttrGetTypeString( j ) );
+				}
             }
             printf( "\n" );
         }
