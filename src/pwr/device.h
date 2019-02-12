@@ -53,15 +53,23 @@ class Device {
 	virtual int getValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<PWR_Time>& ts, std::vector<int>& status ){
         DBGX("\n");
-        return m_ops->readv( m_fd, names.size(), &names[0], ptr,
+		if ( m_ops->readv ) {  
+        	return m_ops->readv( m_fd, names.size(), &names[0], ptr,
                             &ts[0], &status[0] );
+		} else {
+            return PWR_RET_FAILURE;
+		}
     }
 
     virtual int setValues( const std::vector<PWR_AttrName>& names, void* ptr,
                     std::vector<int>& status ){
         DBGX("\n");
-        return m_ops->writev( m_fd, names.size(), &names[0], ptr,
+		if ( m_ops->writev ) {  
+        	return m_ops->writev( m_fd, names.size(), &names[0], ptr,
                                                             &status[0] );
+		} else {
+            return PWR_RET_FAILURE;
+		}
     }
 
     virtual int getValue( PWR_AttrName name, void* ptr, size_t len,
