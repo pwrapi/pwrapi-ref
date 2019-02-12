@@ -343,7 +343,7 @@ std::string HwlocConfig::findAttrHz( std::string name, PWR_AttrName attr )
 	TreeNode* node = findObj(m_root, name); 
 	if ( node->attrs.find( attr ) != node->attrs.end() ) {
 		retval = node->attrs[attr].hz;
-	}	
+	}
 	unlock();
 
 	return retval;
@@ -458,7 +458,7 @@ void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 		case HWLOC_OBJ_CORE:
 			{	
 				std::stringstream tmp;
-				tmp << getName(obj->type ) << obj->os_index;
+				tmp << getName(obj->type ) << obj->logical_index;
 				TreeNode* me = new TreeNode( parent,  
 					convertType( obj->type ), tmp.str(), obj->logical_index );
 				parent->children.push_back(me);
