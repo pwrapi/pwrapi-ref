@@ -38,21 +38,20 @@ int main()
 			error( -1, errno, "popen( \"%s\" ) ", cmd ); 
 		}
 
+		int value = 0;
 		if ( NULL == fgets( buf, 512, fp ) ) {
-			error( -1, errno, "error reading command result" ); 
+			fprintf( stderr, "warn: error reading command result\n" ); 
+		} else { 
+			char tmp[100];
+			if ( 3 != sscanf(buf,"%s %s %d\n",tmp, tmp, &value) ) {
+				error( -1, errno, "error parsing command result" ); 
+			}
 		}
 		pclose(fp);
-		
-		int value;
-		char tmp[100];
-		if ( 3 != sscanf(buf,"%s %s %d\n",tmp, tmp, &value) ) {
-			error( -1, errno, "error parsing command result" ); 
-		}
 
 		rewind( x );
 		if ( 0 > fprintf( x, "%d\n", value ) ) {
 			error( -1, errno, "error updating %s", FILE_NAME ); 
 		}
-
 	}
 }
