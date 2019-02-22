@@ -66,9 +66,9 @@ class PluginMeta {
 	}
 
     std::string getPluginName( ) {
-        std::string ret(100,' '); 
-        m_meta->getPluginName( 100, &ret[0] ); 
-        return ret; 
+		char buf[100];
+        m_meta->getPluginName( 100, buf ); 
+        return buf; 
     }
 	
     std::string getDevInitStr( std::string devName ) {
