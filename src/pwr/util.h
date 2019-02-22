@@ -39,6 +39,10 @@ static inline const char* objTypeToString( PWR_ObjType type )
     case PWR_OBJ_POWER_PLANE: return "PowerPlane";
     case PWR_OBJ_MEM:         return "Memory";
     case PWR_OBJ_NIC:         return "Nic";
+    case PWR_OBJ_TX2_CORE:         return "TX2_Core";
+    case PWR_OBJ_TX2_SRAM:         return "TX2_SRAM";
+    case PWR_OBJ_TX2_MEM:         return "TX2_MEM";
+    case PWR_OBJ_TX2_SOC:         return "TX2_SOC";
     case PWR_OBJ_INVALID:     return "Invalid";
     default: return "????";
     }
@@ -61,6 +65,14 @@ static inline PWR_ObjType objStringToType( const char* type )
         return PWR_OBJ_SOCKET;
     } else if ( ! strcmp(type,"Core") ) {
         return PWR_OBJ_CORE;
+    } else if ( ! strcmp(type,"TX2_Core") ) {
+        return PWR_OBJ_TX2_CORE;
+    } else if ( ! strcmp(type,"TX2_SRAM") ) {
+        return PWR_OBJ_TX2_SRAM;
+    } else if ( ! strcmp(type,"TX2_Mem") ) {
+        return PWR_OBJ_TX2_MEM;
+    } else if ( ! strcmp(type,"TX2_SOC") ) {
+        return PWR_OBJ_TX2_SOC;
     } else {
         return PWR_OBJ_INVALID;
     }
