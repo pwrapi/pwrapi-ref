@@ -14,6 +14,7 @@
 #include <assert.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #include <pwr.h> 
 
@@ -120,6 +121,8 @@ PWR_AttrName getAttr( const char * name )
 		return PWR_ATTR_VOLTAGE;
 	} else if ( ! strcmp( name, "POWER" ) ) {
 		return PWR_ATTR_POWER;
+	} else if ( ! strcmp( name, "POWER_LIMIT_MAX" ) ) {
+		return PWR_ATTR_POWER_LIMIT_MAX;
 	} else if ( ! strcmp( name, "FREQ" ) ) {
 		return PWR_ATTR_FREQ;
 	} else if ( ! strcmp( name, "ENERGY" ) ) {
