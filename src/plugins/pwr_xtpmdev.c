@@ -315,7 +315,7 @@ static int pwr_xtpm_numObjs( )
 // Yes, this is limiting.
 // This interface could be revised to remove this restriction by adding
 // PWR_ObjType as a parameter.
-static int pwr_xtpm_readAttrs( int i, PWR_AttrName* ptr )
+static int pwr_xtpm_readAttrs( PWR_ObjType type, int i, PWR_AttrName* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_ATTR_ENERGY;

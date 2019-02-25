@@ -623,13 +623,13 @@ static int rapldev_readObjs(  int i, PWR_ObjType* ptr )
     return 0;
 }
 
-static int rapldev_numAttrs( )
+static int rapldev_numAttrs( PWR_ObjType type )
 {
     DBGP("\n");
     return 1;
 }
 
-static int rapldev_readAttrs( int i, PWR_AttrName* ptr )
+static int rapldev_readAttrs( PWR_ObjType type, int i, PWR_AttrName* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_ATTR_ENERGY;
