@@ -104,6 +104,7 @@ HwlocConfig::~HwlocConfig()
 
 void HwlocConfig::configureTX2( TreeNode* node ) {
 	if ( node->type == PWR_OBJ_SOCKET ) {
+
 		addChild( node, PWR_OBJ_TX2_CORE );
 		addChild( node, PWR_OBJ_TX2_SRAM );
 		addChild( node, PWR_OBJ_TX2_MEM );
@@ -455,13 +456,14 @@ static PWR_ObjType convertType( hwloc_obj_type_t type ) {
 HwlocConfig::TreeNode* HwlocConfig::addChild( TreeNode* parent, PWR_ObjType objType, int global_index  ) {
 	std::stringstream tmp;
 	if ( global_index > -1 ) {
-		int index = parent->numChildType[objType]++; 
-		tmp << objTypeToString(objType) << index;
+		tmp << objTypeToString(objType) << parent->numChildType[objType]++;
 	} else {
 		global_index = 0;
 		tmp << objTypeToString(objType);
+		global_index = parent->global_index;
 	}
 	std::string tmp2 = tmp.str();
+
 	for ( size_t i = 0; i < tmp2.size(); i++ ) {
 		tmp2[i] = tolower(tmp2[i]);
 	}
