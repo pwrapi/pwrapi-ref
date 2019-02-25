@@ -613,7 +613,7 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *
 
 	pwr_tx2monDevInfo_t* dev = fd->devInfo;
 
-	DBGP("socId=%d attr=%s numSoc=%d soc=%d core=%d\n", id, attrNameToString(name), getNumNodes( dev ), getCpusPerNode( dev ),id);
+	DBGP("socId=%d attr=%s numSoc=%d soc=%d\n", id, attrNameToString(name), getNumNodes( dev ), getCpusPerNode( dev ));
 
 	assert( sizeof(double) == len );
 	assert( id < getNumNodes( dev ) );
