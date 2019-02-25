@@ -93,21 +93,21 @@ static inline const char* attrNameToString( PWR_AttrName name )
     switch( name ){
     case PWR_ATTR_PSTATE:          return "P-State";
     case PWR_ATTR_CSTATE:          return "C-State";
-    case PWR_ATTR_CSTATE_LIMIT:    return "C-State Limit";
+    case PWR_ATTR_CSTATE_LIMIT:    return "C-State_Limit";
     case PWR_ATTR_SSTATE:          return "S-State";
     case PWR_ATTR_CURRENT:         return "Current";
     case PWR_ATTR_VOLTAGE:         return "Voltage";
     case PWR_ATTR_POWER:           return "Power";
-    case PWR_ATTR_POWER_LIMIT_MIN: return "Power Limit Min";
-    case PWR_ATTR_POWER_LIMIT_MAX: return "Power Limit Max";
+    case PWR_ATTR_POWER_LIMIT_MIN: return "Power_Limit_Min";
+    case PWR_ATTR_POWER_LIMIT_MAX: return "Power_Limit_Max";
     case PWR_ATTR_FREQ:            return "Freq";
-    case PWR_ATTR_FREQ_LIMIT_MIN:  return "Freq Limit Min";
-    case PWR_ATTR_FREQ_LIMIT_MAX:  return "Freq Limit Max";
+    case PWR_ATTR_FREQ_LIMIT_MIN:  return "Freq_Limit_Min";
+    case PWR_ATTR_FREQ_LIMIT_MAX:  return "Freq_Limit_Max";
     case PWR_ATTR_ENERGY:          return "Energy";
     case PWR_ATTR_TEMP:            return "Temp";
-    case PWR_ATTR_OS_ID:           return "OS ID";
-    case PWR_ATTR_THROTTLED_TIME:  return "Throttled Time";
-    case PWR_ATTR_THROTTLED_COUNT: return "Throttled Count";
+    case PWR_ATTR_OS_ID:           return "OS_ID";
+    case PWR_ATTR_THROTTLED_TIME:  return "Throttled_Time";
+    case PWR_ATTR_THROTTLED_COUNT: return "Throttled_Count";
     case PWR_ATTR_INVALID:         return "Invalid";
     default: return "????";
     }
