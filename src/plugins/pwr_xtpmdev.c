@@ -172,19 +172,19 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
         case PWR_ATTR_ENERGY:
             if( xtpmdev_read( "energy", (double *)value) < 0 ) {
                 fprintf( stderr, "Error: unable to read energy counter\n" );
-                return -1;
+				return PWR_RET_FAILURE;
             }
             break;
         case PWR_ATTR_POWER:
             if( xtpmdev_read( "power", (double *)value) < 0 ) {
                 fprintf( stderr, "Error: unable to read power counter\n" );
-                return -1;
+				return PWR_RET_FAILURE;
             }
             break;
         case PWR_ATTR_POWER_LIMIT_MAX:
             if( xtpmdev_read( "power_cap", (double *)value) < 0 ) {
                 fprintf( stderr, "Error: unable to read power_cap counter\n" );
-                return -1;
+				return PWR_RET_FAILURE;
             }
             break;
         default:
@@ -196,7 +196,7 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
 
     if( xtpmdev_read( "generation", &generation) < 0 ) {
         fprintf( stderr, "Error: unable to open generation counter\n" );
-        return 0x0;
+		return  PWR_RET_FAILURE;
     }
     if( PWR_XTPMFD(fd)->generation != generation ) {
         fprintf( stderr, "Warning: generation counter rolled over" );
@@ -205,7 +205,7 @@ int pwr_xtpmdev_read( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int 
 
     DBGP( "Info: reading of type %u at time %llu with value %lf\n",
         attr, *(unsigned long long *)timestamp, *(double *)value );
-    return 0;
+    return PWR_RET_SUCCESS;
 }
 
 int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int len )
@@ -213,19 +213,19 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
     DBGP( "Info: writing to PWR XTPM device\n" );
 
     if ( NULL == PWR_XTPMFD(fd)->dev ) {
-		return 0;
+		return PWR_RET_FAILURE;
 	}
 
     if( len != sizeof(double) ) {
         fprintf( stderr, "Error: value field size of %u incorrect, should be %ld\n", len, sizeof(double) );
-        return -1;
+		return PWR_RET_FAILURE;
     }
 
     switch( attr ) {
         case PWR_ATTR_POWER_LIMIT_MAX:
             if( xtpmdev_write( "power_cap", *((double *)value) ) < 0 ) {
                 fprintf( stderr, "Error: unable to write power_cap counter\n" );
-                return -1;
+				return PWR_RET_FAILURE;
             }
             break;
         default:
@@ -234,7 +234,7 @@ int pwr_xtpmdev_write( pwr_fd_t fd, PWR_AttrName attr, void *value, unsigned int
     }
 
     DBGP( "Info: reading of type %u with value %lf\n", attr, *(double *)value );
-    return 0;
+    return PWR_RET_SUCCESS;
 }
 
 int pwr_xtpmdev_readv( pwr_fd_t fd, unsigned int arraysize,
