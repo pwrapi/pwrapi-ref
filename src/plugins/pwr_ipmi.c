@@ -78,6 +78,9 @@ static int pwr_ipmi_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	  default:
 		break;
 	}
+    if ( ts ) {
+        *ts = getTime();
+    }
 	return ret;
 }
 
