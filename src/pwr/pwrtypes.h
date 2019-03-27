@@ -62,6 +62,7 @@ typedef enum {
     PWR_OBJ_TX2_SRAM,
     PWR_OBJ_TX2_MEM,
     PWR_OBJ_TX2_SOC,
+    PWR_OBJ_GPU,
 
     PWR_NUM_OBJ_TYPES,
     /* */

@@ -43,6 +43,7 @@ static inline const char* objTypeToString( PWR_ObjType type )
     case PWR_OBJ_TX2_SRAM:         return "TX2_SRAM";
     case PWR_OBJ_TX2_MEM:         return "TX2_MEM";
     case PWR_OBJ_TX2_SOC:         return "TX2_SOC";
+    case PWR_OBJ_GPU:         return "GPU";
     case PWR_OBJ_INVALID:     return "Invalid";
     default: return "????";
     }
@@ -73,6 +74,8 @@ static inline PWR_ObjType objStringToType( const char* type )
         return PWR_OBJ_TX2_MEM;
     } else if ( ! strcmp(type,"TX2_SOC") ) {
         return PWR_OBJ_TX2_SOC;
+    } else if ( ! strcmp(type,"GPU") ) {
+        return PWR_OBJ_GPU;
     } else {
         return PWR_OBJ_INVALID;
     }
