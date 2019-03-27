@@ -6,6 +6,8 @@ lib_LTLIBRARIES =	libpwr_rapldev.la \
 			libpwr_cpudev.la \
 			libpwr_powercapdev.la \
 			libpwr_ipmi.la \
+			libpwr_lm_sensor.la \
+			libpwr_occ_sensor.la \
 			libdummy_dev.la
 
 # Power API Plugins
@@ -76,6 +78,14 @@ libpwr_cpudev_la_LDFLAGS = -version-info 1:0:1
 libpwr_ipmi_la_SOURCES = pwr_dev.c pwr_ipmi.c
 libpwr_ipmi_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_ipmi_la_LDFLAGS = -version-info 1:0:1
+
+libpwr_lm_sensor_la_SOURCES = pwr_dev.c pwr_lm_sensor.c lm_sensor.c
+libpwr_lm_sensor_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_lm_sensor_la_LDFLAGS = -version-info 1:0:1
+
+libpwr_occ_sensor_la_SOURCES = pwr_dev.c pwr_occ_sensor.c occ_sensor.c
+libpwr_occ_sensor_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_occ_sensor_la_LDFLAGS = -version-info 1:0:1
 
 libdummy_dev_la_SOURCES = pwr_dev.c dummy_dev.c
 libdummy_dev_la_CFLAGS = -I$(top_srcdir)/src/pwr
