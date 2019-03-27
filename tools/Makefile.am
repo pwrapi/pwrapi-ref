@@ -3,6 +3,8 @@ DIST_SUBDRIS = pwrdaemon
 
 bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy pwrget pwrset nodePower
 
+lib_LTLIBRARIES = libpwr_runtime.la
+
 scriptdir = $(prefix)/script
 script_DATA = script/hwloc_profile\
          script/hwloc_cpu_profile\
@@ -10,7 +12,8 @@ script_DATA = script/hwloc_profile\
          script/hwloc_multi_profile\
          script/hwloc_powercap_profile\
          script/hwloc_astra_profile\
-         script/hwloc_xt40_profile
+         script/hwloc_xt40_profile\
+         script/hwloc_coral_profile
 
 # Power API Tools
 pwrapi_SOURCES = pwrapi.c
@@ -45,6 +48,11 @@ nodePower_SOURCES = nodePower.c
 nodePower_CFLAGS = 
 nodePower_LDADD = 
 
+libpwr_runtime_la_SOURCES = pwr_runtime.c
+libpwr_runtime_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_runtime_la_LDFLAGS = -version-info 1:0:1
+libpwr_runtime_la_LIBADD = $(top_builddir)/src/pwr/libpwr.la
+
 man_MANS = pwrapi.8 pwrgen.8 pwrdmp.8
 
 if HAVE_XMLRPC
@@ -67,6 +75,7 @@ config_DATA = 	config/shepard-platform.xml \
 		config/teller-node.xml \
 		config/powercap.hwloc \
 		config/astra.hwloc \
+		config/coral.hwloc \
 		config/xt40.hwloc \
 		config/cpu.hwloc \
 		config/rapl.hwloc \
