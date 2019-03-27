@@ -64,6 +64,7 @@ AC_CONFIG_FILES([Makefile
                  tools/script/hwloc_multi_profile
                  tools/script/hwloc_astra_profile
                  tools/script/hwloc_xt40_profile
+                 tools/script/hwloc_coral_profile
                  examples/script/xml_profile
                  src/Makefile
                  src/tinyxml2/Makefile
