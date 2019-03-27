@@ -90,6 +90,13 @@ HwlocConfig::HwlocConfig( std::string file )
 		}
 	}
 
+	for ( iter = m_libs.begin() ; iter != m_libs.end(); ++iter ) {
+		if ( 0 == (*iter).name.compare("lm_sensor") || 0 == (*iter).name.compare("occ_sensor") ) {
+			configureCoral( m_root );
+			break;
+		}
+	}
+
 	pruneObjects( m_root, m_meta );
 	initAttributes( m_root, m_meta );
 
@@ -100,6 +107,19 @@ HwlocConfig::~HwlocConfig()
 {
 	lock();
 	unlock();
+}
+
+void HwlocConfig::configureCoral( TreeNode* node ) {
+	if ( node->type == PWR_OBJ_NODE ) {
+
+		addChild( node, PWR_OBJ_MEM,0);
+		addChild( node, PWR_OBJ_MEM,1);
+		addChild( node, PWR_OBJ_GPU,0);
+		addChild( node, PWR_OBJ_GPU,1);
+	}
+	for ( size_t i = 0; i < node->children.size(); i++) {
+		configureCoral( node->children[i] );
+	}
 }
 
 void HwlocConfig::configureTX2( TreeNode* node ) {

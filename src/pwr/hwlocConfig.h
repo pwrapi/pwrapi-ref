@@ -89,6 +89,7 @@ class HwlocConfig : public Config {
 	}
 
 	void configureTX2( TreeNode* );
+	void configureCoral( TreeNode* );
 	void initHierarchy( hwloc_obj_t obj, TreeNode* parent );
 	void printTree( TreeNode* );
 	TreeNode*	m_root;
