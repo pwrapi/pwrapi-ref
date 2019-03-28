@@ -1,5 +1,6 @@
 
 
+#include <ctype.h>
 #include <string.h>
 #include <pwr.h>
 #include <stdlib.h>
@@ -12,6 +13,8 @@
 #include <sys/time.h>
 #include <pthread.h>
 #include <inttypes.h>
+#include "util.h"
+#include <sys/stat.h>
 
 static void _pwr_runtime_init() __attribute__((constructor));
 static void _pwr_runtime_fini() __attribute__((destructor));
@@ -25,6 +28,8 @@ typedef struct {
 } SampleInfo; 
 
 static struct Info {
+	int jobid;
+	int nodeid;
 	FILE* logFile;
 	char* energyObjName;
 	double startTime;
@@ -37,7 +42,7 @@ static struct Info {
 	pthread_t thread;
 	SampleInfo* sampleInfo;
 	useconds_t sleep_us;
-} _rtInfo = { verbose : 0, threadRun: 0, sampleInfo : NULL, energyObjName : "plat.node0" };
+} _rtInfo = { verbose : 0, threadRun: 0, sampleInfo : NULL, energyObjName : "plat.node0", localRank : -1 };
 
 
 static inline double getTime_us() {
@@ -58,34 +63,90 @@ static char* getUnits( PWR_AttrName );
 
 void _pwr_runtime_init(){
 
-	_rtInfo.localRank = atoi(getenv("OMPI_COMM_WORLD_NODE_RANK"));
-
-	if ( 0 != _rtInfo.localRank ) {
-		return;
-	}
-	int jobid = atoi(getenv("LSB_JOBID"));
-
 	char* tmp = getenv( "PWR_RUNTIME_VERBOSE" );
+
 	if ( tmp && atoi(tmp) > 0 ) {
 		_rtInfo.verbose = atoi(tmp);
 	}
 
-	if ( _rtInfo.verbose ) {
-		printf("%s() pid=%d jobid=%d\n",__func__,jobid,getpid());
+	tmp = getenv("OMPI_COMM_WORLD_NODE_RANK");
+	
+	if ( ! tmp ) {
+		tmp = getenv("SLURM_LOCALID");
+	}
+	if ( ! tmp ) {
+		fprintf(stderr,"could not determine node rank\n");
+		exit(-1);
+	}
+	
+	_rtInfo.localRank = atoi( tmp );
+
+	if ( 0 != _rtInfo.localRank ) {
+		return;
 	}
 
-	struct passwd *pw = getpwuid( getuid() );
+	tmp = getenv("LSB_JOBID");
+
+	if ( ! tmp ) {
+		tmp = getenv("SLURM_JOB_ID");
+	}
+	if ( ! tmp ) {
+		fprintf(stderr,"could not determine job id\n");
+		exit(-1);
+	}
+
+	_rtInfo.jobid = atoi(tmp);
+
+	if ( _rtInfo.verbose ) {
+		printf("%s() pid=%d jobid=%d\n",__func__,_rtInfo.jobid,getpid());
+	}
+
+	tmp = getenv("SLURM_NODEID");
+
+	if ( ! tmp ) {
+		fprintf(stderr,"could not determine job id\n");
+		exit(-1);
+	}
+
+	_rtInfo.nodeid = atoi( tmp );
+
+	char* dataDir = getenv( "PWR_RUNTIME_DIR");
+
+	if ( ! dataDir ) {
+		struct passwd *pw = getpwuid( getuid() );
+		dataDir = pw->pw_dir;
+	}
+
 	char filename[PATH_MAX];
+	sprintf( filename, "%s/pwr_runtime-%d", dataDir, _rtInfo.jobid );
+
+	if ( 0 == _rtInfo.nodeid ) {
+		struct stat statbuf;
+		if ( 0 != stat( filename, &statbuf ) ) {
+			int ret = mkdir( filename, 0700 );	
+			if ( -1 == ret ) {
+				fprintf(stderr,"could not make log directory %s\n",filename);
+				exit(-1);
+			}
+		}
+	} else {
+		struct stat statbuf;
+		
+		int cnt = 100; 
+		while ( cnt-- && 0 != stat( filename, &statbuf )  ) {
+			usleep(1000);
+		}
+	}
 	char hostname[100];	
 	if ( 0 > gethostname(hostname,100) ) {
 		fprintf(stderr, "failed to gethostname\n");
 		return;	
 	}
-	sprintf( filename, "%s/pwr_runtime.jobid-%d.pid-%d.%s", pw->pw_dir,jobid,getpid(), hostname );
+	sprintf( filename, "%s/pwr_runtime-%d/pid-%d_%s", dataDir, _rtInfo.jobid, getpid(), hostname );
 	_rtInfo.logFile = fopen( filename, "w+");
 	if ( ! _rtInfo.logFile ) { 
 		fprintf(stderr, "failed to open %s\n",filename);
-		return;
+		exit(-1);
 	}
 	
 	time_t t = time(NULL);
@@ -94,26 +155,36 @@ void _pwr_runtime_init(){
 	strftime(s, sizeof(s), "%c", tm);
 	fprintf(_rtInfo.logFile,"# %s\n",s);
 
-	fprintf(_rtInfo.logFile,"# LSB_JOBID: %d\n",jobid );
+	fprintf(_rtInfo.logFile,"# JOBID: %d\n", _rtInfo.jobid );
+	fprintf(_rtInfo.logFile,"# host: %s\n", hostname );
 
 	_rtInfo.startTime = getTime_us();
-	fprintf(_rtInfo.logFile,"# start time: %.6lf seconds since Epoch\n",_rtInfo.startTime /1000000.0);
+	fprintf(_rtInfo.logFile,"# Start Time: %.6lf seconds\n",_rtInfo.startTime /1000000.0);
 
 	int rc;
 	rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &_rtInfo.cntxt );
-    	assert( PWR_RET_SUCCESS == rc );
+	if ( PWR_RET_SUCCESS != rc ) {
+		fprintf(stderr,"PWR_CntxtInit() failed");
+		exit(-1);
+	}
 
 	tmp = getenv( "PWR_RUNTIME_TOTAL_ENERGY_OBJ");
 	if ( tmp ) {
 		_rtInfo.energyObjName= tmp;	
 	}
 	rc = PWR_CntxtGetObjByName( _rtInfo.cntxt, _rtInfo.energyObjName, &_rtInfo.node );
-	assert( PWR_RET_SUCCESS == rc );
+	if ( PWR_RET_SUCCESS != rc ) {
+		fprintf(stderr,"PWR_CntxtGetObjByName() failed");
+		exit(-1);
+	}
 
 	PWR_Time time;
 	rc = PWR_ObjAttrGetValue( _rtInfo.node, PWR_ATTR_ENERGY, (void*) &_rtInfo.nodeEnergy, &time );
-	assert( PWR_RET_SUCCESS == rc );
-
+	if ( PWR_RET_SUCCESS != rc ) {
+		fprintf(stderr,"PWR_ObjAttrGetValue() failed");
+		exit(-1);
+	}
+	
 	char* hz = getenv("PWR_RUNTIME_SAMPLE_HZ");
 	char* sampleObjs = getenv("PWR_RUNTIME_SAMPLE_OBJECTS");
 
@@ -126,6 +197,9 @@ void _pwr_runtime_init(){
 							_rtInfo.sampleInfo->units[i]);
 		}
 		_rtInfo.threadRun = 1;
+		if ( ! hz )  {
+			hz = "10";
+		}
 		_rtInfo.sleep_us = (1.0/(double)atoi(hz) * 1000000.0);
 		pthread_create( &_rtInfo.thread, NULL, thread, _rtInfo.sampleInfo );
 	}
@@ -141,9 +215,9 @@ void _pwr_runtime_fini(){
 		_rtInfo.threadRun = 0;
 		pthread_join( _rtInfo.thread, NULL );
 	}
-	int jobid = atoi(getenv("LSB_JOBID"));
+
 	if ( _rtInfo.verbose ) {
-		printf("%s() pid=%d jobid=%d\n",__func__,jobid,getpid());
+		printf("%s() pid=%d jobid=%d\n",__func__,_rtInfo.jobid,getpid());
 	}
 
 	PWR_Time time;
@@ -154,9 +228,9 @@ void _pwr_runtime_fini(){
 
 	double totalTime = (getTime_us() - _rtInfo.startTime)/1000000.0;
 	double totalEnergy = energy-_rtInfo.nodeEnergy;
-	fprintf(_rtInfo.logFile,"# total time: %.6lf secconds\n",totalTime );
-	fprintf(_rtInfo.logFile,"# Energy: %s %.0lf joules\n", _rtInfo.energyObjName, totalEnergy );
-	fprintf(_rtInfo.logFile,"# Average Power: %s %.0lf watts\n", _rtInfo.energyObjName, totalEnergy/totalTime);
+	fprintf(_rtInfo.logFile,"# Total Time: %.6lf secconds\n",totalTime );
+	fprintf(_rtInfo.logFile,"# Energy `%s`: %.0lf joules\n", _rtInfo.energyObjName, totalEnergy );
+	fprintf(_rtInfo.logFile,"# Average Power `%s`: %.0lf watts\n", _rtInfo.energyObjName, totalEnergy/totalTime);
 
 	fclose(_rtInfo.logFile );
 
@@ -195,6 +269,10 @@ static SampleInfo* initSampleObjs( char* str ) {
 			++info->numObjs;
 		}
 	}
+	if ( _rtInfo.verbose ) {
+		fprintf(stdout,"found possible %d objects to sample\n",info->numObjs);
+	}
+
 	if ( 0 == info->numObjs ) {
 		free(info);
 		return NULL;
