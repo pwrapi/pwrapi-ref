@@ -60,6 +60,7 @@ static char* findFirst( char** str, char c );
 static PWR_AttrName getAttr( const char * );
 static char* toUpper( char* str );
 static char* getUnits( PWR_AttrName );
+static char* getLSBnodeid();
 
 void _pwr_runtime_init(){
 
@@ -104,7 +105,11 @@ void _pwr_runtime_init(){
 	tmp = getenv("SLURM_NODEID");
 
 	if ( ! tmp ) {
-		fprintf(stderr,"could not determine job id\n");
+		tmp = getLSBnodeid();
+	}
+
+	if ( ! tmp ) {
+		fprintf(stderr,"could not determine node id\n");
 		exit(-1);
 	}
 
@@ -334,6 +339,23 @@ static char* findFirst( char** str, char c ) {
 	}
 	return delim;
 } 
+
+static char* getLSBnodeid()
+{
+	char* tmp = getenv( "LSB_MCPU_HOSTS" );
+	int i;
+	char hostname[100];	
+	if ( 0 > gethostname(hostname,100) ) {
+		fprintf(stderr, "failed to gethostname\n");
+		exit(-1);	
+	}
+	for ( i = 0; tmp[i] && tmp[i] != ' '; i++ ) { }  
+	if ( 0 == strncmp( hostname, tmp, i ) ) {
+		return "0";
+	} else {
+		return "-1";
+	}
+}
 
 static char* toUpper( char* str )
 {
