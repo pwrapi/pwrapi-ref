@@ -99,7 +99,7 @@ void _pwr_runtime_init(){
 	_rtInfo.jobid = atoi(tmp);
 
 	if ( _rtInfo.verbose ) {
-		printf("%s() pid=%d jobid=%d\n",__func__,_rtInfo.jobid,getpid());
+		printf("%s() jobid=%d pid=%d\n",__func__,_rtInfo.jobid,getpid());
 	}
 
 	tmp = getenv("SLURM_NODEID");
