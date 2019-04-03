@@ -200,7 +200,7 @@ void _pwr_runtime_init(){
 		if ( ! hz )  {
 			hz = "10";
 		}
-		_rtInfo.sleep_us = (1.0/(double)atoi(hz) * 1000000.0);
+		_rtInfo.sleep_us = (1.0/atof(hz) * 1000000.0);
 		pthread_create( &_rtInfo.thread, NULL, thread, _rtInfo.sampleInfo );
 	}
 }
