@@ -12,6 +12,9 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <stdio.h>
+#include <pthread.h>
+#include <error.h>
+#include <errno.h>
 
 #include "pwr_dev.h"
 #include "util.h"
@@ -21,31 +24,45 @@ static void fatal( const char* msg ) {
 	exit(1);
 }
 
+
+typedef struct {
+	pthread_t	thread;
+	int			done;
+	int			watts;
+	uint64_t	joules;
+	uint64_t	sleep_us;
+	uint64_t	lastRead_us;
+} pwr_ipmiDevInfo_t;
+
 typedef struct pwr_ipmiFdInfo {
 	PWR_ObjType objType;
 	int id;
+	pwr_ipmiDevInfo_t* devInfo;
 } pwr_ipmiFdInfo_t;
 
-static int getNodePower( double* value );
+static int readNodePower( );
 
-static double getTime() {
+inline uint64_t getTime_us() {
 	struct timeval tv;
 	gettimeofday(&tv,NULL);
 	double value; 
-	value = tv.tv_sec * 1000000000;
-	value += tv.tv_usec * 1000;
+	value = tv.tv_sec * 1000000;
+	value += tv.tv_usec;
 	return value;
 }
-
-static double getTimeSec()
+inline uint64_t getTime_ns() {
+	return getTime_us() * 1000;
+}
+inline double getTimeSec()
 {
-	return getTime() / 1000000000.0;
+	return getTime_us() / 1000000.0;
 }
   
 static pwr_fd_t pwr_ipmi_dev_open( plugin_devops_t* ops, const char *openstr )
 {
 	DBGP("openstr=`%s`\n",openstr);
 	pwr_ipmiFdInfo_t *tmp = malloc( sizeof( pwr_ipmiFdInfo_t ) );
+	tmp->devInfo = ops->private_data;
 	
 	sscanf(openstr, "%d %d", &tmp->objType, &tmp->id );
 	DBGP("open obj=%s id=%d\n", objTypeToString(tmp->objType), tmp->id);
@@ -65,21 +82,21 @@ static int pwr_ipmi_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	int ret = PWR_RET_FAILURE; 
 	pwr_ipmiFdInfo_t* info = fd;
 	switch( type ) {
-	  case PWR_ATTR_POWER:
-		
-		{
-			double tmp;
-			if ( getNodePower( &tmp ) ) {
-				ret = PWR_RET_SUCCESS;
-				*(double*) ptr = tmp; 
-			}
-		}
+	  case PWR_ATTR_ENERGY:
+		ret = PWR_RET_SUCCESS;
+		*(double*) ptr = (double) (info->devInfo->joules); 
 		break;
+
+	  case PWR_ATTR_POWER:
+		ret = PWR_RET_SUCCESS;
+		*(double*) ptr = (double) (info->devInfo->watts); 
+		break;
+
 	  default:
 		break;
 	}
     if ( ts ) {
-        *ts = getTime();
+        *ts = getTime_ns();
     }
 	return ret;
 }
@@ -103,18 +120,50 @@ static plugin_devops_t devOps = {
 	.get_samples = NULL,
 };
 
+static void* thread( void* info ) {
+    DBGP("\n");
+    pwr_ipmiDevInfo_t* devInfo = info;
+    while( ! devInfo->done ) {
+		uint64_t start = getTime_us();
+		devInfo->watts = readNodePower();
+		uint64_t stop = getTime_us();
+
+		double tmp  = (double)(stop - devInfo->lastRead_us) / 1000000.0;
+
+        devInfo->joules += tmp * devInfo->watts;
+		devInfo->lastRead_us = stop;
+
+		uint64_t latency = stop - start;
+		if (  latency < devInfo->sleep_us ) {
+        	usleep(  devInfo->sleep_us - latency );
+		}
+    }
+}
+
 static plugin_devops_t* pwr_ipmi_dev_init( const char *initstr )
 {
 	DBGP("\n");
 	plugin_devops_t* ops = malloc(sizeof(*ops));
 	*ops = devOps;
+	pwr_ipmiDevInfo_t* devInfo = ops->private_data = malloc(sizeof(pwr_ipmiDevInfo_t));
+	devInfo->joules = 0;
+	devInfo->done = 0;
+	devInfo->watts = readNodePower();
+	devInfo->lastRead_us = getTime_us();
+	devInfo->sleep_us = 500000;
+	pthread_create( &devInfo->thread, NULL, thread, devInfo );
 	return ops;
 }
 
 static int pwr_ipmi_dev_final( plugin_devops_t *ops )
 {
+	pwr_ipmiDevInfo_t* devInfo = ops->private_data;
 	DBGP("\n");
+	devInfo->done = 1;
+	pthread_join( devInfo->thread, NULL );
+	free( ops->private_data );
 	free( ops );
+
 	return 0;
 }
 
@@ -164,10 +213,12 @@ static void initMeta()
 	}
 	_metaInfo.num_objects = 0;
 
-	if ( getNodePower( NULL ) ) {
-		addAttr( &_metaInfo.metaObj[PWR_OBJ_NODE], PWR_ATTR_POWER );
-		++_metaInfo.num_objects;
-	}
+	// how should we check if this plugin is working?
+	// executing ipmitool is the only way to be sure but it take ~0.7 seconds
+	// so for now we won't check
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_NODE], PWR_ATTR_POWER );
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_NODE], PWR_ATTR_ENERGY );
+	++_metaInfo.num_objects;
 }
 
 // What objects does this plugin support?
@@ -269,20 +320,35 @@ plugin_meta_t* getMeta() {
 	return &meta;
 }
 
-static int getNodePower( double* value ) {
-	#define FILE_NAME "/tmp/NodePower"
+static int readNodePower( ) {
 	int ret = 0;
-	FILE* fp = fopen( FILE_NAME, "r" );
-	if ( fp ) {
-				
-		float tmp;
-		if ( 1 == fscanf( fp, "%f", &tmp ) ) {
-			ret = 1;
-			if ( value ) {
-			*value = tmp; 
-			}
+	int retry = 5;
+
+	unsetenv( "LD_PRELOAD" );
+
+	DBGP("\n");
+    char* cmd = "ipmitool sensor reading NodeDCpower";
+    char buf[512];
+
+	while ( retry-- ) {
+
+        FILE* fp = popen( cmd, "r" );
+		assert(fp);
+
+		ret = -1;	
+        if ( NULL == fgets( buf, 512, fp ) ) {
+            fprintf( stderr, "warn: error reading command result\n" );
+        } else {
+            char tmp[100];
+            if ( 3 != sscanf(buf,"%s %s %d\n",tmp, tmp, &ret) ) {
+                error( -1, errno, "error parsing command result" );
+            }
+        }
+        pclose(fp);
+		if ( ret > 0 ) {
+			break;
 		}
-		fclose(fp);
 	}
+
 	return ret;
 }
