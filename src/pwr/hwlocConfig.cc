@@ -101,6 +101,7 @@ HwlocConfig::HwlocConfig( std::string file )
 	initAttributes( m_root, m_meta );
 
 	unlock();
+	hwloc_topology_destroy(topology);
 }
 
 HwlocConfig::~HwlocConfig()
