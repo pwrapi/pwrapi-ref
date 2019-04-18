@@ -98,9 +98,6 @@ void _pwr_runtime_init(){
 
 	_rtInfo.jobid = atoi(tmp);
 
-	if ( _rtInfo.verbose ) {
-		printf("%s() jobid=%d pid=%d\n",__func__,_rtInfo.jobid,getpid());
-	}
 
 	tmp = getenv("SLURM_NODEID");
 
@@ -114,6 +111,10 @@ void _pwr_runtime_init(){
 	}
 
 	_rtInfo.nodeid = atoi( tmp );
+
+	if ( _rtInfo.verbose ) {
+		printf("%s() jobid=%d nodeid=%d pid=%d\n",__func__,_rtInfo.jobid, _rtInfo.nodeid, getpid());
+	}
 
 	char* dataDir = getenv( "PWR_RUNTIME_DIR");
 
@@ -137,9 +138,13 @@ void _pwr_runtime_init(){
 	} else {
 		struct stat statbuf;
 		
-		int cnt = 100; 
+		int cnt = 60*5; 
 		while ( cnt-- && 0 != stat( filename, &statbuf )  ) {
-			usleep(1000);
+			sleep(1);
+		}
+		if ( stat( filename, &statbuf )  ) {
+			fprintf(stderr, "node %d couldn't stat %s\n",_rtInfo.nodeid, filename );
+			exit(-1);
 		}
 	}
 	char hostname[100];	
@@ -150,7 +155,7 @@ void _pwr_runtime_init(){
 	sprintf( filename, "%s/pwr_runtime-%d/pid-%d_%s", dataDir, _rtInfo.jobid, getpid(), hostname );
 	_rtInfo.logFile = fopen( filename, "w+");
 	if ( ! _rtInfo.logFile ) { 
-		fprintf(stderr, "failed to open %s\n",filename);
+		fprintf(stderr, "node %d failed to open %s\n",_rtInfo.nodeid, filename );
 		exit(-1);
 	}
 	
