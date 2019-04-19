@@ -17,6 +17,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#define ONE_RANK_PER_NODE 1
+
 static void _pwr_runtime_init() __attribute__((constructor));
 static void _pwr_runtime_fini() __attribute__((destructor));
 
@@ -98,9 +100,11 @@ void _pwr_runtime_init(){
 	}
 	
 
+#if ONE_RANK_PER_NODE 
 	if ( 0 != _rtInfo.localRank ) {
 		return;
 	}
+#endif
 
 	tmp = getenv("LSB_JOBID");
 
@@ -142,6 +146,7 @@ void _pwr_runtime_init(){
 	char filename[PATH_MAX];
 	sprintf( filename, "%s/pwr_runtime-%d", dataDir, _rtInfo.jobid );
 
+#if ONE_RANK_PER_NODE 
 	if ( 0 == _rtInfo.nodeid ) {
 		struct stat statbuf;
 		if ( 0 != stat( filename, &statbuf ) ) {
@@ -152,6 +157,9 @@ void _pwr_runtime_init(){
 			}
 		}
 	} else {
+#else 
+	if (  -1 ==  mkdir( filename, 0700 ) ) {
+#endif
 		struct stat statbuf;
 		
 		int cnt = 60*5; 
@@ -233,9 +241,12 @@ void _pwr_runtime_init(){
 
 void _pwr_runtime_fini(){
 
+
+#if ONE_RANK_PER_NODE 
 	if ( 0 != _rtInfo.localRank ) {
 		return;
 	}
+#endif
 #if 0
 	char* tmp = getenv("PWR_RUNTIME_ID");
 
