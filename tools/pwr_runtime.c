@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define ONE_RANK_PER_NODE 1
+#define ONE_RANK_PER_NODE 0 
 
 static void _pwr_runtime_init() __attribute__((constructor));
 static void _pwr_runtime_fini() __attribute__((destructor));
@@ -74,6 +74,7 @@ void _pwr_runtime_init(){
 		_rtInfo.verbose = atoi(tmp);
 	}
 
+#if ONE_RANK_PER_NODE 
 	tmp = getenv("PWR_RUNTIME_ID");
 
 	if ( tmp ) {
@@ -98,9 +99,7 @@ void _pwr_runtime_init(){
 		}
 		_rtInfo.localRank = atoi( tmp );
 	}
-	
 
-#if ONE_RANK_PER_NODE 
 	if ( 0 != _rtInfo.localRank ) {
 		return;
 	}
