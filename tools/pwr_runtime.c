@@ -15,6 +15,7 @@
 #include <inttypes.h>
 #include "util.h"
 #include <sys/stat.h>
+#include <fcntl.h>
 
 static void _pwr_runtime_init() __attribute__((constructor));
 static void _pwr_runtime_fini() __attribute__((destructor));
@@ -28,6 +29,7 @@ typedef struct {
 } SampleInfo; 
 
 static struct Info {
+	int fd;
 	int jobid;
 	int nodeid;
 	FILE* logFile;
@@ -70,17 +72,31 @@ void _pwr_runtime_init(){
 		_rtInfo.verbose = atoi(tmp);
 	}
 
-	tmp = getenv("OMPI_COMM_WORLD_NODE_RANK");
+	tmp = getenv("PWR_RUNTIME_ID");
+
+	if ( tmp ) {
+		char filename[PATH_MAX];
+		sprintf( filename, "/tmp/pwr_runtime-%d", atoi(tmp) );
+		_rtInfo.localRank = creat( filename, O_CREAT );
+		if ( _rtInfo.localRank >=0 ) { 
+			_rtInfo.localRank = 0;
+			if ( _rtInfo.verbose ) {
+				printf("I won id = %d %d\n",atoi(tmp), _rtInfo.localRank );
+			}
+		}
+	} else {
+		tmp = getenv("OMPI_COMM_WORLD_NODE_RANK");
 	
-	if ( ! tmp ) {
-		tmp = getenv("SLURM_LOCALID");
-	}
-	if ( ! tmp ) {
-		fprintf(stderr,"could not determine node rank\n");
-		exit(-1);
+		if ( ! tmp ) {
+			tmp = getenv("SLURM_LOCALID");
+		}
+		if ( ! tmp ) {
+			fprintf(stderr,"could not determine node rank\n");
+			exit(-1);
+		}
+		_rtInfo.localRank = atoi( tmp );
 	}
 	
-	_rtInfo.localRank = atoi( tmp );
 
 	if ( 0 != _rtInfo.localRank ) {
 		return;
@@ -220,6 +236,16 @@ void _pwr_runtime_fini(){
 	if ( 0 != _rtInfo.localRank ) {
 		return;
 	}
+#if 0
+	char* tmp = getenv("PWR_RUNTIME_ID");
+
+	if ( tmp ) {
+		char filename[PATH_MAX];
+		sprintf( filename, "/tmp/pwr_runtime-%d", atoi(tmp) );
+		
+		unlink( filename );
+	}
+#endif
 
 	if ( _rtInfo.threadRun ) {
 		_rtInfo.threadRun = 0;
