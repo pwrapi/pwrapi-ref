@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define ONE_RANK_PER_NODE 0 
+#define ONE_RANK_PER_NODE 1 
 
 static void _pwr_runtime_init() __attribute__((constructor));
 static void _pwr_runtime_fini() __attribute__((destructor));
