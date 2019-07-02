@@ -1,6 +1,8 @@
 AUTOMAKE_OPTIONS = foreign subdir-objects
 VERSION_INFO = 1:1:1
 
+man_MANS = doc/PowerAPI.7
+
 ACLOCAL_AMFLAGS = -I config 
 
 DIST_SUBDIRS = src \
