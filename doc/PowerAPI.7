@@ -1,0 +1,79 @@
+.TH PowerAPI 7 "2019-02-19" "" ""
+.SH NAME
+PowerAPI Library - overview of the PowerAPI Library
+.SH DESCRIPTION
+The PowerAPI library provides a portable interface to read measurement points (e.g. socket power, core frequency, etc.) and set control points (e.g. core frequency, etc.). 
+
+The PowerAPI spec can be found at:
+
+.in +4n
+.B
+https://powerapi/sandia/gov
+.in
+
+The following program shows the basic flow of how the PowerAPI is used to read data. This example reads the power of a socket.  
+
+
+.in +4n
+.nf
+#include <stdio.h>
+#include <assert.h>
+#include <pwr.h>
+
+int main( int argc, char* argv[] )
+{
+    PWR_Obj     obj;
+    PWR_Cntxt   cntxt;
+    int rc;
+
+    char* objName = "plat.node0.socket1";
+    PWR_AttrName attr = PWR_ATTR_POWER;
+
+    rc = PWR_CntxtInit( PWR_CNTXT_DEFAULT, PWR_ROLE_APP, "App", &cntxt );
+    assert( PWR_RET_SUCCESS == rc );
+
+    rc = PWR_CntxtGetObjByName( cntxt, objName, &obj );
+    assert( PWR_RET_SUCCESS == rc );
+
+    double value;
+    PWR_Time time;
+
+    rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
+    assert( PWR_RET_SUCCESS == rc );
+
+    printf("%s Power=%.3f watts\n",objName, value);
+
+    PWR_CntxtDestroy( cntxt );
+
+    return 0;
+}
+.fi
+.in
+
+This code can be compiled with:
+
+.in +4n
+.B 
+gcc example.c -I$POWERAPI_INC -L$POWERAPI_LIB -lpwr -o example
+.in
+
+The PowerAPI Library includes a utility "pwrls" that lists the hierarchy of PowerAPI objects avialble on the system. The output shows the object name, type and it's attributes. An example output follows: 
+
+.in +4n
+.nf
+$ pwrls
+name=`plat` type=Platform: Energy
+    name=`plat.node0` type=Node: Power Energy
+        name=`plat.node0.socket0` type=Socket: Voltage Power Freq Energy Temp
+            name=`plat.node0.socket0.core0` type=Core: Freq Temp
+            name=`plat.node0.socket0.core1` type=Core: Freq Temp
+            name=`plat.node0.socket0.core2` type=Core: Freq Temp
+            name=`plat.node0.socket0.core3` type=Core: Freq Temp
+        name=`plat.node0.socket1` type=Socket: Voltage Power Freq Energy Temp
+            name=`plat.node0.socket0.core0` type=Core: Freq Temp
+            name=`plat.node0.socket0.core1` type=Core: Freq Temp
+            name=`plat.node0.socket0.core2` type=Core: Freq Temp
+            name=`plat.node0.socket0.core3` type=Core: Freq Temp
+$
+.fi
+.in
