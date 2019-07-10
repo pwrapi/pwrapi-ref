@@ -417,13 +417,13 @@ static int micdev_readObjs(  int i, PWR_ObjType* ptr )
     return 0;
 }
 
-static int micdev_numAttrs( )
+static int micdev_numAttrs( PWR_ObjType type )
 {
     DBGP("\n");
     return 1;
 }
 
-static int micdev_readAttrs( int i, PWR_AttrName* ptr )
+static int micdev_readAttrs( PWR_ObjType type, int i, PWR_AttrName* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_ATTR_POWER;

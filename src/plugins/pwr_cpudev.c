@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/time.h>
+#include <ctype.h>
 
 typedef struct {
     int num_cpus;
@@ -329,13 +330,13 @@ static int pwr_cpudev_readObjs(  int i, PWR_ObjType* ptr )
 	return 0;
 }
 
-static int pwr_cpudev_numAttrs( )
+static int pwr_cpudev_numAttrs( PWR_ObjType type )
 {
     DBGP("\n");
     return 2;
 }
 
-static int pwr_cpudev_readAttrs( int i, PWR_AttrName* ptr )
+static int pwr_cpudev_readAttrs( PWR_ObjType type, int i, PWR_AttrName* ptr )
 {
     DBGP("\n");
     ptr[0] = PWR_ATTR_SSTATE;

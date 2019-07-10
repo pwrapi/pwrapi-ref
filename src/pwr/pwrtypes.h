@@ -57,6 +57,12 @@ typedef enum {
     PWR_OBJ_POWER_PLANE,
     PWR_OBJ_MEM,
     PWR_OBJ_NIC,
+
+    PWR_OBJ_TX2_CORE,
+    PWR_OBJ_TX2_SRAM,
+    PWR_OBJ_TX2_MEM,
+    PWR_OBJ_TX2_SOC,
+
     PWR_NUM_OBJ_TYPES,
     /* */
     PWR_OBJ_INVALID = -1, 

@@ -78,7 +78,7 @@ typedef struct {
 typedef int (*pwr_dev_num_objs)(void);
 typedef int (*pwr_dev_read_objs)(int,PWR_ObjType*);
 typedef int (*pwr_dev_num_attrs)(PWR_ObjType);
-typedef int (*pwr_dev_read_attrs)(int,PWR_AttrName*);
+typedef int (*pwr_dev_read_attrs)(PWR_ObjType,int,PWR_AttrName*);
 typedef int (*pwr_dev_get_dev_name)(PWR_ObjType type, size_t, char* );
 typedef int (*pwr_dev_get_dev_open_str)(PWR_ObjType type,
                                 int global_index, size_t, char* );

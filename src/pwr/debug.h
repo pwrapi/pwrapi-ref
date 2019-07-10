@@ -44,7 +44,7 @@ extern unsigned int _DbgFlags;
 {\
     if ( flag & _DbgFlags ) {\
         char* realname = abi::__cxa_demangle(typeid(*this).name(),0,0,NULL);\
-        fprintf( stderr, "%d:%s::%s():%d: "fmt, getid(), realname ? realname : "?????????", \
+        fprintf( stderr, "%d:%s::%s():%d: " fmt, getid(), realname ? realname : "?????????", \
                         __func__, __LINE__, ## __VA_ARGS__ );\
         fflush(stderr);\
         if ( realname ) free(realname);\
@@ -59,7 +59,7 @@ extern unsigned int _DbgFlags;
 
 #define DBG3( flag, prefix, fmt, ... ) \
     if ( flag & _DbgFlags ) {\
-    	fprintf( stderr, "%d:%s:%s():%d: "fmt, getid(), prefix, __func__, __LINE__, ##__VA_ARGS__);\
+    	fprintf( stderr, "%d:%s:%s():%d: " fmt, getid(), prefix, __func__, __LINE__, ##__VA_ARGS__);\
 	}
 
 #else

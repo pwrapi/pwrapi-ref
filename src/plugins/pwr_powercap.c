@@ -359,13 +359,13 @@ static int powercap_readObjs(  int i, PWR_ObjType* ptr )
 	return 0;
 }
 
-static int powercap_numAttrs( )
+static int powercap_numAttrs( PWR_ObjType type )
 {
 	DBGP("\n");
 	return 1;
 }
 
-static int powercap_readAttrs( int i, PWR_AttrName* ptr )
+static int powercap_readAttrs( PWR_ObjType type, int i, PWR_AttrName* ptr )
 {
 	DBGP("\n");
 	ptr[0] = PWR_ATTR_ENERGY;

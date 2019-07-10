@@ -60,8 +60,9 @@ Grp* Object::children()
 
 bool Object::attrIsValid( PWR_AttrName attr )
 {
-	DBGX("\n");
-	return m_attrInfo[attr]->isValid();
+	bool ret = m_attrInfo[attr]->isValid();
+	DBGX("%s\n",ret?"valid":"invalid");
+	return ret;
 }
 
 int Object::attrGetValues( int count, PWR_AttrName names[], void* buf,

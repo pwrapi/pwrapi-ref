@@ -67,7 +67,6 @@ HwlocConfig::HwlocConfig( std::string file )
 	while ( getline(config,line) ) {
 		Config::Plugin tmp;
 
-
 		tmp.lib = line;
 		PluginMeta* meta = new PluginMeta( tmp.lib + ext );
 		assert(meta);
@@ -83,6 +82,14 @@ HwlocConfig::HwlocConfig( std::string file )
 
 	reorderObjects( m_root );
 
+	std::deque< Config::Plugin >::iterator iter = m_libs.begin();
+	for ( ; iter != m_libs.end(); ++iter ) {
+		if ( 0 == (*iter).name.compare("tx2mon") ) {
+			configureTX2( m_root );
+			break;
+		}
+	}
+
 	pruneObjects( m_root, m_meta );
 	initAttributes( m_root, m_meta );
 
@@ -93,6 +100,19 @@ HwlocConfig::~HwlocConfig()
 {
 	lock();
 	unlock();
+}
+
+void HwlocConfig::configureTX2( TreeNode* node ) {
+	if ( node->type == PWR_OBJ_SOCKET ) {
+
+		addChild( node, PWR_OBJ_TX2_CORE );
+		addChild( node, PWR_OBJ_TX2_SRAM );
+		addChild( node, PWR_OBJ_TX2_MEM );
+		addChild( node, PWR_OBJ_TX2_SOC );
+	}
+	for ( size_t i = 0; i < node->children.size(); i++) {
+		configureTX2( node->children[i] );
+	}
 }
 
 void HwlocConfig::initAttributes( TreeNode* node, std::deque<PluginMeta*>& meta )
@@ -182,14 +202,15 @@ bool HwlocConfig::isSupported( TreeNode* node, std::deque<PluginMeta*>& meta )
 {
 
 	bool ret = false;
-	// make sure to plugins don't support the same thin
+	// make sure the plugins don't support the same thing
 	for ( int attr = 0; attr < PWR_NUM_ATTR_NAMES; attr++ ) { 
 		int num = 0; 
 		std::deque<PluginMeta*>::iterator iter = meta.begin();
 		for ( ; iter != meta.end(); ++iter ) {
 	    	if ( (*iter)->isObjectSupported( node->type, (PWR_AttrName)attr ) ) 
 			{
-	        	DBGX2(DBG_CONFIG,"supported %s\n",getFullName(node).c_str());
+	        	DBGX2(DBG_CONFIG,"%s supports opject %s attr %s\n",(*iter)->getPluginName().c_str(), 
+						getFullName(node).c_str(), attrNameToString((PWR_AttrName)attr) );
 				++num;
 				ret = true;
 			}
@@ -343,7 +364,7 @@ std::string HwlocConfig::findAttrHz( std::string name, PWR_AttrName attr )
 	TreeNode* node = findObj(m_root, name); 
 	if ( node->attrs.find( attr ) != node->attrs.end() ) {
 		retval = node->attrs[attr].hz;
-	}	
+	}
 	unlock();
 
 	return retval;
@@ -432,15 +453,25 @@ static PWR_ObjType convertType( hwloc_obj_type_t type ) {
 	}
 }
 
-static std::string getName( hwloc_obj_type_t type ) {
-	switch ( type ) {
-		case HWLOC_OBJ_MACHINE: return "node";
-		case HWLOC_OBJ_NODE: return "mem";
-		case HWLOC_OBJ_SOCKET: return "socket";
-		case HWLOC_OBJ_CORE: return "core";
-		default: return "";
+HwlocConfig::TreeNode* HwlocConfig::addChild( TreeNode* parent, PWR_ObjType objType, int global_index  ) {
+	std::stringstream tmp;
+	if ( global_index > -1 ) {
+		tmp << objTypeToString(objType) << parent->numChildType[objType]++;
+	} else {
+		global_index = 0;
+		tmp << objTypeToString(objType);
+		global_index = parent->global_index;
 	}
+	std::string tmp2 = tmp.str();
+
+	for ( size_t i = 0; i < tmp2.size(); i++ ) {
+		tmp2[i] = tolower(tmp2[i]);
+	}
+	TreeNode* me = new TreeNode( parent, objType, tmp2, global_index );
+	parent->children.push_back(me);
+	return me;
 }
+
 
 void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 {
@@ -456,14 +487,7 @@ void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 		case HWLOC_OBJ_NODE:
 		case HWLOC_OBJ_SOCKET:
 		case HWLOC_OBJ_CORE:
-			{	
-				std::stringstream tmp;
-				tmp << getName(obj->type ) << obj->os_index;
-				TreeNode* me = new TreeNode( parent,  
-					convertType( obj->type ), tmp.str(), obj->logical_index );
-				parent->children.push_back(me);
-				parent = me;
-			}
+			parent = addChild( parent, convertType( obj->type ), obj->logical_index );
 			break;		
 		default:
 			break;

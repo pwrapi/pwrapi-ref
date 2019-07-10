@@ -5,6 +5,7 @@ lib_LTLIBRARIES =	libpwr_rapldev.la \
 			libpwr_wudev.la \
 			libpwr_cpudev.la \
 			libpwr_powercapdev.la \
+			libpwr_ipmi.la \
 			libdummy_dev.la
 
 # Power API Plugins
@@ -48,6 +49,14 @@ libpwr_msrdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(MSR_CFLAGS)
 libpwr_msrdev_la_LDFLAGS = -version-info 1:0:1 $(MSR_LDFLAGS) $(MSR_LIBS)
 endif
 
+if HAVE_TX2MON
+lib_LTLIBRARIES += libpwr_tx2mon.la
+
+libpwr_tx2mon_la_SOURCES = pwr_dev.c pwr_tx2mon.c
+libpwr_tx2mon_la_CFLAGS = -I$(top_srcdir)/src/pwr $(TX2MON_CPPFLAGS)
+libpwr_tx2mon_la_LDFLAGS = -version-info 1:0:1 $(TX2MON_LDFLAGS) $(TX2MON_LIBS)
+endif
+
 libpwr_rapldev_la_SOURCES = pwr_dev.c pwr_rapldev.c
 libpwr_rapldev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_rapldev_la_LDFLAGS = -version-info 1:0:1
@@ -71,6 +80,10 @@ libpwr_wudev_la_LDFLAGS = -version-info 1:0:1
 libpwr_cpudev_la_SOURCES = pwr_dev.c pwr_cpudev.c
 libpwr_cpudev_la_CFLAGS = -I$(top_srcdir)/src/pwr
 libpwr_cpudev_la_LDFLAGS = -version-info 1:0:1
+
+libpwr_ipmi_la_SOURCES = pwr_dev.c pwr_ipmi.c
+libpwr_ipmi_la_CFLAGS = -I$(top_srcdir)/src/pwr
+libpwr_ipmi_la_LDFLAGS = -version-info 1:0:1
 
 libdummy_dev_la_SOURCES = pwr_dev.c dummy_dev.c
 libdummy_dev_la_CFLAGS = -I$(top_srcdir)/src/pwr

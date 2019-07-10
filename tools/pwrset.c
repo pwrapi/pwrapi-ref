@@ -20,7 +20,7 @@
 
 static void usage( const char* exename )
 {
-	fprintf(stderr,"%s: -o objectName -a attrName\n",exename);
+	fprintf(stderr,"%s: -o objectName -a attrName -v value\n",exename);
 }
 
 static PWR_AttrName getAttr( const char * );
@@ -41,9 +41,9 @@ int main( int argc, char* argv[] )
 	int option;
 	char* name = NULL;
 	char* attrName = NULL;
-	unsigned long sleepTime = 0;
+	char* valueStr = NULL;
 
-	while( (option=getopt( argc, argv, "o:a:f:" )) != -1 ) {
+	while( (option=getopt( argc, argv, "o:a:v:" )) != -1 ) {
     	switch( option ) {
 	      case 'o':
 			name = optarg;
@@ -53,8 +53,8 @@ int main( int argc, char* argv[] )
 			attrName = optarg;
 			break;
 
-	      case 'f':
-			sleepTime = (1.0/(double)atoi(optarg) * 1000000.0);
+	      case 'v':
+			valueStr = optarg;
 			break;
 
 		  default:
@@ -63,7 +63,7 @@ int main( int argc, char* argv[] )
 		}
 	}
 
-	if ( ! name || ! attrName ) {
+	if ( ! name || ! attrName || ! valueStr ) {
 		usage( argv[0] );
 		exit(-1);
 	}
@@ -78,26 +78,15 @@ int main( int argc, char* argv[] )
     rc = PWR_CntxtGetObjByName( cntxt, name, &obj );
     assert( PWR_RET_SUCCESS == rc );
 
-    double value;
+    double value = atoi(valueStr);
     PWR_Time time;
 
-
-while ( 1 ) {
-
-  	rc = PWR_ObjAttrGetValue( obj, attr, &value, &time );
+  	rc = PWR_ObjAttrSetValue( obj, attr, &value );
     if( PWR_RET_SUCCESS != rc ) {
    		fprintf(stderr,"Get Failed: %s: %s\n",name, attrName);
 		return -1;
 	}
    	printf("%s: %s %.3f\n",name, attrName, value);
-
-	if ( sleepTime ) {
-		usleep( sleepTime );
-	} else {
-		break;
-	}
-}
-
 
 	PWR_CntxtDestroy( cntxt );
 
@@ -121,8 +110,6 @@ PWR_AttrName getAttr( const char * name )
 		return PWR_ATTR_VOLTAGE;
 	} else if ( ! strcmp( name, "POWER" ) ) {
 		return PWR_ATTR_POWER;
-	} else if ( ! strcmp( name, "POWER_LIMIT_MAX" ) ) {
-		return PWR_ATTR_POWER_LIMIT_MAX;
 	} else if ( ! strcmp( name, "FREQ" ) ) {
 		return PWR_ATTR_FREQ;
 	} else if ( ! strcmp( name, "ENERGY" ) ) {

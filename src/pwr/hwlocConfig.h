@@ -44,7 +44,9 @@ class HwlocConfig : public Config {
 		unsigned global_index;
 		std::map<PWR_AttrName,Attr> attrs;
 		std::vector<TreeNode*> children;
+		std::map<PWR_ObjType,int> numChildType;
 	};
+
   public:
 
 	HwlocConfig( std::string file );
@@ -66,6 +68,8 @@ class HwlocConfig : public Config {
 
   private:
 
+	TreeNode* addChild( TreeNode* parent, PWR_ObjType objType, int index = -1 );
+
 	std::deque< PluginMeta* > m_meta;
 	void initAttributes( TreeNode*, std::deque<PluginMeta*>& );
     std::vector<TreeNode*> reorderObjects( TreeNode* );
@@ -84,6 +88,7 @@ class HwlocConfig : public Config {
 		//printf("unlocked %p\n",pthread_self());
 	}
 
+	void configureTX2( TreeNode* );
 	void initHierarchy( hwloc_obj_t obj, TreeNode* parent );
 	void printTree( TreeNode* );
 	TreeNode*	m_root;
