@@ -96,6 +96,7 @@ class HwlocConfig : public Config {
     static pthread_mutex_t	m_mutex;
 	std::deque< Config::Plugin > m_libs;
     std::map< std::string, PluginMeta* > m_devices;
+	bool m_tx2;
 };
 
 }

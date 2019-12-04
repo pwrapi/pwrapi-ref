@@ -25,7 +25,7 @@ using namespace PowerAPI;
 
 pthread_mutex_t HwlocConfig::m_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-HwlocConfig::HwlocConfig( std::string file ) 
+HwlocConfig::HwlocConfig( std::string file ) : m_tx2(false)
 {
 	DBGX2(DBG_CONFIG,"config file `%s`\n",file.c_str());
 
@@ -85,6 +85,7 @@ HwlocConfig::HwlocConfig( std::string file )
 	std::deque< Config::Plugin >::iterator iter = m_libs.begin();
 	for ( ; iter != m_libs.end(); ++iter ) {
 		if ( 0 == (*iter).name.compare("tx2mon") ) {
+			m_tx2 = true;
 			configureTX2( m_root );
 			break;
 		}
@@ -126,10 +127,10 @@ void HwlocConfig::configureCoral( TreeNode* node ) {
 void HwlocConfig::configureTX2( TreeNode* node ) {
 	if ( node->type == PWR_OBJ_SOCKET ) {
 
-		addChild( node, PWR_OBJ_TX2_CORE );
-		addChild( node, PWR_OBJ_TX2_SRAM );
-		addChild( node, PWR_OBJ_TX2_MEM );
-		addChild( node, PWR_OBJ_TX2_SOC );
+		addChild( node, PWR_OBJ_TX2_CORE,0);
+		addChild( node, PWR_OBJ_TX2_SRAM,0);
+		addChild( node, PWR_OBJ_TX2_MEM,0);
+		addChild( node, PWR_OBJ_TX2_SOC,0);
 	}
 	for ( size_t i = 0; i < node->children.size(); i++) {
 		configureTX2( node->children[i] );
@@ -316,8 +317,12 @@ std::deque< Config::ObjDev >
 	if ( node->attrs.find( attr ) != node->attrs.end() ) {
 		if ( ! node->attrs[attr].device.empty() ) { 
 			Config::ObjDev dev;
-			dev.device = node->attrs[attr].device;
-			dev.openString = node->attrs[attr].openString;
+			if ( m_tx2 ) {
+				dev.device = node->attrs[attr].device;
+			} else {
+				dev.openString = node->attrs[attr].openString;
+			}
+			dev.openString = name;
 			devs.push_back(dev);
 		}
 	}	
@@ -485,6 +490,7 @@ HwlocConfig::TreeNode* HwlocConfig::addChild( TreeNode* parent, PWR_ObjType objT
 	}
 	std::string tmp2 = tmp.str();
 
+	DBGX2(DBG_CONFIG,"global_index=%d %s %s\n",global_index, objTypeToString(objType), tmp2.c_str() );
 	for ( size_t i = 0; i < tmp2.size(); i++ ) {
 		tmp2[i] = tolower(tmp2[i]);
 	}
@@ -496,12 +502,8 @@ HwlocConfig::TreeNode* HwlocConfig::addChild( TreeNode* parent, PWR_ObjType objT
 
 void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
 {
-#if 0
-    printf("%s parent->%s %lu \n",hwloc_obj_type_string(obj->type),
-                ! obj->parent ? "":
-                hwloc_obj_type_string(obj->parent->type),
-                obj->memory.total_memory);
-#endif
+    DBGX2(DBG_CONFIG,"%s parent->%s\n",hwloc_obj_type_string(obj->type), obj->parent ? hwloc_obj_type_string(obj->parent->type) : "" );
+
     unsigned i;
 	switch( obj->type ) {
 		case HWLOC_OBJ_MACHINE:
