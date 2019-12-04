@@ -31,7 +31,7 @@ class SrvrCommReqEvent: public  CommReqEvent {
 
     	PWR_Obj obj = m_info->m_commMap[commID].objects[0];
 
-		DBGX("commID=%"PRIx64" grpIndex=%"PRIu64"\n",commID, grpIndex);
+		DBGX("commID=%" PRIx64 " grpIndex=%" PRIu64 "\n",commID, grpIndex);
 		char name[100];
 		PWR_ObjGetName(obj,name,100);
 

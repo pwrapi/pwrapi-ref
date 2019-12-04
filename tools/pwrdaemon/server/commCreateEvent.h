@@ -21,7 +21,7 @@ class SrvrCommCreateEvent: public  CommCreateEvent {
 	bool process( EventGenerator* gen, EventChannel* ) {
 		Server& info = *static_cast<Server*>(gen);
 
-       	DBGX("commID=%"PRIx64"\n", commID);
+       	DBGX("commID=%" PRIx64 "\n", commID);
 
     	CommInfo& cInfo = info.m_commMap[commID];
     	cInfo.objects.resize( members.size() );
