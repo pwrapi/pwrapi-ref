@@ -10,8 +10,8 @@
 */
 #define _GNU_SOURCE
 
-
-
+#include <linux/limits.h>
+#include <errno.h>
 #include <sys/time.h>
 #include <pthread.h>
 #include <sys/types.h>
@@ -21,6 +21,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include <mc_oper_region.h>
 
@@ -53,21 +54,23 @@ struct pwr_tx2monFdInfo;
 
 typedef struct {
 	struct tx2mon tx2mon;
+#if ENERGY 
 	pthread_t thread;
 	useconds_t sleep_us;
 	int done;
 	struct pwr_tx2monFdInfo** energyObjs;
 	double lastSample;
-
-	FILE** scaling_setspeed_fd;
-
+#endif
 } pwr_tx2monDevInfo_t;
 
 typedef struct pwr_tx2monFdInfo {
 	PWR_ObjType objType;
-	int id;
+	int index;
+	int socket;
 	pwr_tx2monDevInfo_t* devInfo;
+#if ENERGY
 	double energy;
+#endif
 } pwr_tx2monFdInfo_t;
 
 static double getTime() {
@@ -79,8 +82,8 @@ static double getTime() {
 	return value;
 }
 
-static int readDev( pwr_tx2monFdInfo_t*, PWR_ObjType, int id, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time );
-static int writeDev( pwr_tx2monFdInfo_t*, PWR_ObjType, int id, PWR_AttrName name, void *value, unsigned int len );
+static int readDev( pwr_tx2monFdInfo_t*, PWR_ObjType, int socket, int index, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time );
+static int writeDev( pwr_tx2monFdInfo_t*, PWR_ObjType, int socket, int index, PWR_AttrName name, void *value, unsigned int len );
 
 static void fatal( const char* msg ) {
 	fprintf(stderr, "Fatal: %s\n",msg );
@@ -103,21 +106,85 @@ static double getTimeSec()
 	return getTime() / 1000000000.0;
 }
   
+
+static char* splitString( char* str, char c ) {
+	int index = strlen(str) - 1;
+	char* str2 = NULL;
+	while ( index > 0  && str[index] != c ) {
+		--index;
+	}
+	if ( index > -1 ) {
+		str[index] = 0;
+		str2 = str + 1 + index;
+	}
+	return str2;
+}
+
+PWR_ObjType getObjType( char * name ) {
+	if ( 0 == strcmp(name,"core") ) {
+		return PWR_OBJ_CORE;
+	} else if ( 0 == strcmp(name,"tx2_core") ) {
+		return PWR_OBJ_TX2_CORE;
+	} else if ( 0 == strcmp(name,"tx2_sram") ) {
+		return PWR_OBJ_TX2_SRAM;
+	} else if ( 0 == strcmp(name,"tx2_mem") ) {
+		return PWR_OBJ_TX2_MEM;
+	} else if ( 0 == strcmp(name,"tx2_soc") ) {
+		return PWR_OBJ_TX2_SOC;
+	} else {
+		fprintf(stderr, "%s() unknown type %s\n",__func__,name);
+		assert(0);
+	}
+}
+
+static void findNameIndex( const char* str, char* name, int* index ) {
+	int pos = strlen(str) -1;
+	while ( pos > -1 && isdigit( str[pos] ) ) { --pos; } 
+	assert( pos > -1 );
+	++pos;
+	*index = atoi(str+pos);
+	memcpy(name,str,pos);
+	name[pos] = 0;
+}
+
 static pwr_fd_t pwr_tx2mon_dev_open( plugin_devops_t* ops, const char *openstr )
 {
 	DBGP("openstr=`%s`\n",openstr);
+	char devName[100];
+	assert( strlen(openstr) + 1 < 100 );
+	strcpy( devName, openstr);
 	pwr_tx2monFdInfo_t *tmp = malloc( sizeof( pwr_tx2monFdInfo_t ) );
 	tmp->devInfo = ops->private_data;
+#if ENERGY
 	tmp->energy = 0;
+#endif
 
-	
-	sscanf(openstr, "%d %d", &tmp->objType, &tmp->id );
-	DBGP("open obj=%s id=%d\n", objTypeToString(tmp->objType), tmp->id);
+	char* obj = splitString( devName, '.' );
+	char objName[100]; 
+	int index;
+	findNameIndex( obj, objName, &index );
 
+	if ( 0 == strcmp( objName, "socket" ) ) {
+		tmp->socket=index; 
+		tmp->index=-1;
+		tmp->objType = PWR_OBJ_SOCKET;
+	} else {
+		tmp->index=index;
+		tmp->objType = getObjType(objName);
+
+		char* obj2 = splitString( devName, '.' );
+		findNameIndex( obj2, objName, &tmp->socket );
+		assert( 0 == strcmp( objName, "socket" ) );
+	}
+
+	DBGP("socket+%d index=%d type=%s\n", tmp->socket, tmp->index, objTypeToString(tmp->objType) );	
+
+#if ENERGY 
 	if ( tmp->objType == PWR_OBJ_SOCKET ) {
 		DBGP("calculate energy\n");
 		tmp->devInfo->energyObjs[tmp->id] = tmp;
 	}
+#endif
 
 	return tmp;
 }
@@ -125,10 +192,12 @@ static pwr_fd_t pwr_tx2mon_dev_open( plugin_devops_t* ops, const char *openstr )
 static int pwr_tx2mon_dev_close( pwr_fd_t fd )
 {
 	pwr_tx2monFdInfo_t* info = fd; 
+#if ENERGY 
 	if ( info->objType == PWR_OBJ_SOCKET ) {
 		DBGP("calculate energy\n");
 		info->devInfo->energyObjs[info->id] = NULL;
 	}
+#endif
     free( fd );
     return 0;
 }
@@ -136,13 +205,13 @@ static int pwr_tx2mon_dev_close( pwr_fd_t fd )
 static int pwr_tx2mon_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len, PWR_Time* ts )
 {
 	pwr_tx2monFdInfo_t* info = fd;
-	return readDev( fd, info->objType, info->id, type, ptr, len, ts );
+	return readDev( fd, info->objType, info->socket, info->index, type, ptr, len, ts );
 }
 
 static int pwr_tx2mon_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len )
 {
 	pwr_tx2monFdInfo_t* info = fd;
-	return writeDev( fd, info->objType, info->id, type, ptr, len );
+	return writeDev( fd, info->objType, info->socket, info->index, type, ptr, len );
 }
 
 static plugin_devops_t devOps = {
@@ -162,7 +231,6 @@ static plugin_devops_t devOps = {
 static pwr_tx2monDevInfo_t* tx2monInit( const char* devName);
 static void tx2monFini( pwr_tx2monDevInfo_t* devInfo );
 
-#define SYSFS_CPU "/sys/devices/system/cpu"
 
 static plugin_devops_t* pwr_tx2mon_dev_init( const char *initstr )
 {
@@ -172,48 +240,6 @@ static plugin_devops_t* pwr_tx2mon_dev_init( const char *initstr )
 		return NULL;
 	}
 	
-	devInfo->scaling_setspeed_fd = NULL;
-
-#if 0
-	devInfo->scaling_setspeed_fd = malloc( sizeof( FILE* ) * devInfo->nnodes * devInfo->cpus_per_soc );
-	int i;
-	for ( i = 0; i < devInfo->cpus_per_soc*devInfo->nnodes; i++ ) {
-		char filename[PATH_MAX];
-		sprintf( filename, "%s/cpu%d/cpufreq/scaling_governor",SYSFS_CPU,i);
-		DBGP("%s\n",filename);
-		FILE* fp = fopen( filename, "w+" ); 
-		if ( NULL == fp ) {	
-			char errorBuf[1024];
-			fprintf(stderr,"fopen( \"%s\", \"w\" ) failed: %s \n",filename, strerror_r(errno,errorBuf,1024) );
-			return NULL;
-		}
-		char buf[ 1024];
-		char* str = "userspace";
-		
-		fprintf( fp, "%s", str );
-		rewind(fp);
-		fscanf( fp, "%s", buf );
-		
-		if ( 0 != strcmp( str, buf ) ) {
-			fprintf(stderr," could not set \"%s\" to \"%s\"\n", filename, str );
-			return NULL;
-		}
-		fclose(fp);
-
-		sprintf( filename, "%s/cpu%d/cpufreq/scaling_setspeed",SYSFS_CPU,i);
-		DBGP("%s\n",filename);
-		fp = fopen( filename, "w+" ); 
-		if ( NULL == fp ) {	
-			char errorBuf[1024];
-			fprintf(stderr,"fopen( \"%s\", \"w\" ) failed: %s \n",filename, strerror_r(errno,errorBuf,1024) );
-			return NULL;
-		}
-
-		fscanf( fp, "%s", buf );
-		devInfo->scaling_setspeed_fd[i] = fp; 
-	}
-#endif
-
 	plugin_devops_t* ops = malloc(sizeof(*ops));
 	*ops = devOps;
 
@@ -226,8 +252,10 @@ static int pwr_tx2mon_dev_final( plugin_devops_t *ops )
 {
 	pwr_tx2monDevInfo_t* devInfo = ops->private_data;
 	DBGP("\n");
+#if ENERGY
 	devInfo->done = 1;
 	pthread_join( devInfo->thread, NULL ); 
+#endif
 	tx2monFini( devInfo ); 
 	free( ops );
 	return 0;
@@ -285,19 +313,24 @@ static void initMeta()
 	++_metaInfo.num_objects;
 
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_CORE], PWR_ATTR_POWER );
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_CORE], PWR_ATTR_VOLTAGE );
 	++_metaInfo.num_objects;
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_SRAM], PWR_ATTR_POWER );
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_SRAM], PWR_ATTR_VOLTAGE );
 	++_metaInfo.num_objects;
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_MEM], PWR_ATTR_POWER );
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_MEM], PWR_ATTR_VOLTAGE );
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_MEM], PWR_ATTR_FREQ );
 	++_metaInfo.num_objects;
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_SOC], PWR_ATTR_POWER );
+	addAttr( &_metaInfo.metaObj[PWR_OBJ_TX2_SOC], PWR_ATTR_VOLTAGE );
 	++_metaInfo.num_objects;
 
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_TEMP );
-	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_POWER );
-	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_VOLTAGE );
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_FREQ );
+#if ENERGY 
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_ENERGY );
+#endif
 	++_metaInfo.num_objects;
 }
 
@@ -359,7 +392,7 @@ static int pwr_tx2mon_numAttrs( PWR_ObjType type )
 static int pwr_tx2mon_getDevName(PWR_ObjType type, size_t len, char* buf )
 {
 	strncpy(buf,"pwr_tx2mon_dev0", len );
-	DBGP("type=%d name=`%s`\n",type,buf);
+	DBGP("type=%s name=`%s`\n",objTypeToString(type),buf);
 	return 0;
 }
 
@@ -380,7 +413,7 @@ static int pwr_tx2mon_getDevOpenStr(PWR_ObjType type,
                         int global_index, size_t len, char* buf )
 {
  	snprintf( buf, len, "%d %d", type, global_index);
-	DBGP("type=%d index=%d str=`%s`\n",type,global_index,buf);
+	DBGP("type=%s index=%d str=`%s`\n",objTypeToString(type),global_index,buf);
 	return 0;
 }
 
@@ -413,6 +446,7 @@ static int inline getCpusPerNode( pwr_tx2monDevInfo_t* dev ) {
 	return dev->tx2mon.node[0].cores;
 }
 
+#if ENERGY
 static void energy( pwr_tx2monDevInfo_t* devInfo ) {
 	struct timeval ts;
 	gettimeofday( &ts, NULL );
@@ -442,6 +476,7 @@ static void* thread( void* info ) {
 }
 
 static int initSampleThread( pwr_tx2monDevInfo_t* devInfo );
+#endif
 
 static void init_socinfo(struct tx2mon* tx2mon )
 {
@@ -484,12 +519,16 @@ static pwr_tx2monDevInfo_t* tx2monInit( const char* devName)
 	int fd;
 	int node_id;
 	pwr_tx2monDevInfo_t* devInfo = malloc( sizeof( pwr_tx2monDevInfo_t ) );
+#if ENERGY
 	devInfo->lastSample = 0;
+#endif
 
 	init_socinfo( &devInfo->tx2mon );
 
+#if ENERGY 
 	devInfo->energyObjs = malloc( sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
 	bzero( devInfo->energyObjs, sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
+#endif
 
     fd = open(PATH_T99MON_NODE0, O_RDONLY);
     if (fd < 0)
@@ -505,13 +544,16 @@ static pwr_tx2monDevInfo_t* tx2monInit( const char* devName)
         devInfo->tx2mon.node[1].fd = fd;
     }
 
+#if ENERGY
 	if( initSampleThread( devInfo ) ) {
 		free( devInfo );
 		return NULL;
 	}
+#endif
 	return devInfo; 
 }
 
+#if ENERGY
 static int initSampleThread( pwr_tx2monDevInfo_t* devInfo ) 
 {
 	devInfo->done = 0;
@@ -555,6 +597,7 @@ static int initSampleThread( pwr_tx2monDevInfo_t* devInfo )
 	}
 	return 0;
 }
+#endif
 
 static void tx2monFini( pwr_tx2monDevInfo_t* devInfo ) {
 	int i;
@@ -578,13 +621,10 @@ static int read_node(struct node_data *d)
     return 1;
 }
 
-static int readCore( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
+static int readCore( pwr_tx2monFdInfo_t* fd, int soc, int core, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
 
 	pwr_tx2monDevInfo_t* dev = fd->devInfo;
-
-	int soc = getNode( dev, id );
-	int core= getCore( dev, id );
-	DBGP("coreId=%d attr=%s numSoc=%d numCores=%d soc=%d core=%d\n", id, attrNameToString(name), 
+	DBGP("attr=%s numSoc=%d numCores=%d soc=%d core=%d\n", attrNameToString(name), 
 										getNumNodes( dev ), getCpusPerNode( dev ),soc,core);
 
 	assert( sizeof(double) == len );
@@ -610,25 +650,44 @@ static int readCore( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *va
     return PWR_RET_SUCCESS;
 }
 
-static int readSocket( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
-
+static int readTX2( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
 	pwr_tx2monDevInfo_t* dev = fd->devInfo;
 
-	DBGP("socId=%d attr=%s numSoc=%d soc=%d\n", id, attrNameToString(name), getNumNodes( dev ), getCpusPerNode( dev ));
+	DBGP("socket=%d attr=%s numSoc=%d soc=%d\n", socket, attrNameToString(name), getNumNodes( dev ), getCpusPerNode( dev ));
 
 	assert( sizeof(double) == len );
-	assert( id < getNumNodes( dev ) );
+	assert( socket < getNumNodes( dev ) );
 
-	read_node(&dev->tx2mon.node[id]);
-	struct mc_oper_region* pCtrl = &dev->tx2mon.node[id].buf;
+	read_node(&dev->tx2mon.node[socket]);
+	struct mc_oper_region* pCtrl = &dev->tx2mon.node[socket].buf;
 
 	switch( name ) {
 	case PWR_ATTR_FREQ:
-		*(double*) value = pCtrl->freq_socs; 
+		switch ( fd->objType ) {
+		case PWR_OBJ_TX2_MEM:
+			*(double*) value += pCtrl->freq_mem_net;
+			break;
+		default:
+			assert(0);
+		}
 		break;
-	case PWR_ATTR_TEMP:
-		*(double*) value = to_c(pCtrl->tmon_soc_avg);
+	case PWR_ATTR_VOLTAGE:
+		switch ( fd->objType ) {
+		case PWR_OBJ_TX2_CORE:
+			*(double*) value = to_w(pCtrl->v_core);
+			break;
+		case PWR_OBJ_TX2_SRAM:
+			*(double*) value += to_w(pCtrl->v_sram);
+			break;
+		case PWR_OBJ_TX2_MEM:
+			*(double*) value += to_w(pCtrl->v_mem);
+			break;
+		case PWR_OBJ_TX2_SOC:
+			*(double*) value += to_w(pCtrl->v_soc);
+			break;
+		}
 		break;
+
 	case PWR_ATTR_POWER:
 		switch ( fd->objType ) {
 		case PWR_OBJ_TX2_CORE:
@@ -643,21 +702,46 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *
 		case PWR_OBJ_TX2_SOC:
 			*(double*) value += to_w(pCtrl->pwr_soc);
 			break;
-		default:
-			*(double*) value = to_w(pCtrl->pwr_core);
-			*(double*) value += to_w(pCtrl->pwr_sram);
-			*(double*) value += to_w(pCtrl->pwr_mem);
-			*(double*) value += to_w(pCtrl->pwr_soc);
-			*(double*) value += 12;
-			break;
 		}
 		break;
-	case PWR_ATTR_VOLTAGE:
-		*(double*) value = to_v(pCtrl->v_soc);
+	default:
+		assert(0);
+	}
+    return PWR_RET_SUCCESS;
+}
+
+static int readSocket( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
+
+	pwr_tx2monDevInfo_t* dev = fd->devInfo;
+
+	DBGP("socId=%d attr=%s numSoc=%d soc=%d\n", socket, attrNameToString(name), getNumNodes( dev ), getCpusPerNode( dev ));
+
+	assert( sizeof(double) == len );
+	assert( socket < getNumNodes( dev ) );
+
+	read_node(&dev->tx2mon.node[socket]);
+	struct mc_oper_region* pCtrl = &dev->tx2mon.node[socket].buf;
+
+	switch( name ) {
+	case PWR_ATTR_FREQ:
+		*(double*) value = pCtrl->freq_socs; 
 		break;
+	case PWR_ATTR_TEMP:
+		*(double*) value = to_c(pCtrl->tmon_soc_avg);
+		break;
+#if ENERGY
 	case PWR_ATTR_ENERGY:
 		*(double*) value = fd->energy;
 		break;
+	// this is for plugin use
+	case PWR_ATTR_POWER:
+		*(double*) value = to_w(pCtrl->pwr_core);
+		*(double*) value += to_w(pCtrl->pwr_sram);
+		*(double*) value += to_w(pCtrl->pwr_mem);
+		*(double*) value += to_w(pCtrl->pwr_soc);
+		*(double*) value += 12;
+        break;
+#endif
 	default:
 		assert(0);
 	}
@@ -667,34 +751,55 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *
     return PWR_RET_SUCCESS;
 }
 
-static int readDev( pwr_tx2monFdInfo_t* fd, PWR_ObjType objType, int id, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
+static int readDev( pwr_tx2monFdInfo_t* fd, PWR_ObjType objType, int socket, int index, PWR_AttrName name, void *value, unsigned int len, PWR_Time *time ) {
 
-	DBGP("obj=%s id=%d attr=%s\n", objTypeToString(objType), id, attrNameToString(name));
+	DBGP("obj=%s socket=%d index=%d attr=%s\n", objTypeToString(objType), socket, index, attrNameToString(name));
 
 	switch ( objType ) {
 	case PWR_OBJ_SOCKET:
+		return readSocket( fd, socket, name, value, len, time );
 	case PWR_OBJ_TX2_CORE:
 	case PWR_OBJ_TX2_SRAM:
 	case PWR_OBJ_TX2_MEM:
 	case PWR_OBJ_TX2_SOC:
-		return readSocket( fd, id, name, value, len, time );
+		return readTX2( fd, socket, name, value, len, time );
 	case PWR_OBJ_CORE:
-		return readCore( fd, id, name, value, len, time );
+		return readCore( fd, socket, index, name, value, len, time );
 	default:
 		assert(0);
 	}
 }
 
-static int setCoreFreq( pwr_tx2monDevInfo_t* devInfo, int core, double freq ) {
-	DBGP("core=%d value=%f\n", core, freq );
-	fprintf( devInfo->scaling_setspeed_fd[core], "%d", (int) freq ); 
+static int setCoreFreq( pwr_tx2monDevInfo_t* devInfo, int socket, int core, double freq ) {
+	DBGP("socket=%d core=%d value=%f\n", socket, core, freq );
+	
+#define SYSFS_CPU "/sys/devices/system/cpu"
+
+	char filename[PATH_MAX];
+	char cmd[100];
+	int cpu = core; 
+
+	if ( socket == 1 ) {
+		cpu += 56;
+	}
+	
+	sprintf( filename, "%s/cpu%d/cpufreq/scaling_setspeed",SYSFS_CPU,cpu);
+
+	sprintf( cmd, "echo %d > %s", (int) freq * 1000, filename );
+	DBGP("%s\n",cmd);
+
+	int ret = system( cmd );
+
+	if ( ret != 0 ) {
+		fprintf(stderr,"ERROR: could not write %f to %s\n",freq,filename);
+		exit(-1);
+	}
+	assert(ret == 0);
 }
 
-static int writeCore( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *value, unsigned int len ) {
+static int writeCore( pwr_tx2monFdInfo_t* fd, int soc, int core, PWR_AttrName name, void *value, unsigned int len ) {
 	pwr_tx2monDevInfo_t* dev = fd->devInfo;
-    int soc = getNode( dev, id );
-    int core= getCore( dev, id );
-	DBGP("coreId=%d attr=%s numSoc=%d numCores=%d soc=%d core=%d\n", id, attrNameToString(name),
+	DBGP("attr=%s numSoc=%d numCores=%d soc=%d core=%d\n", attrNameToString(name),
 						getNumNodes( dev ), getCpusPerNode( dev ),soc,core);
 
 	assert( sizeof(double) == len );
@@ -706,7 +811,7 @@ static int writeCore( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void *v
 
 	switch( name ) {
 	case PWR_ATTR_FREQ:
-		return setCoreFreq( dev, id, *(double*) value );
+		return setCoreFreq( dev, soc, core, *(double*) value );
 		break;
 	default:
 		assert(0);
@@ -737,14 +842,14 @@ static int writeSocket( pwr_tx2monFdInfo_t* fd, int id, PWR_AttrName name, void 
 	return PWR_RET_SUCCESS;
 }
 
-static int writeDev( pwr_tx2monFdInfo_t* fd, PWR_ObjType objType, int id, PWR_AttrName name, void *value, unsigned int len ){
-	DBGP("obj=%s id=%d attr=%s\n", objTypeToString(objType), id, attrNameToString(name));
+static int writeDev( pwr_tx2monFdInfo_t* fd, PWR_ObjType objType, int socket, int index, PWR_AttrName name, void *value, unsigned int len ){
+	DBGP("obj=%s socket=%d index=%d attr=%s\n", objTypeToString(objType), socket, index, attrNameToString(name));
 
 	switch ( objType ) {
 	case PWR_OBJ_SOCKET:
-		return writeSocket( fd, id, name, value, len );
+		return writeSocket( fd, socket, name, value, len );
 	case PWR_OBJ_CORE:
-		return writeCore( fd, id, name, value, len );
+		return writeCore( fd, socket, index, name, value, len );
 	default:
 		assert(0);
 	}
