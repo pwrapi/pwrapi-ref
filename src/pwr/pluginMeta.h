@@ -27,6 +27,10 @@ class PluginMeta {
 	PluginMeta( std::string libName ) {
 
     	void* m_lib = dlopen( libName.c_str(), RTLD_LAZY);
+		if ( NULL == m_lib ) {
+			printf("%s() could not open %s\n",__func__,libName.c_str());
+			exit(-1);
+		}
 		assert(m_lib);
 
     	getMetaFuncPtr_t func =   (getMetaFuncPtr_t)dlsym(m_lib, GETMETAFUNC );
