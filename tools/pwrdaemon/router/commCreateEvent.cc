@@ -21,7 +21,7 @@ using namespace PWR_Router;
 bool RtrCommCreateEvent::process( EventGenerator* _rtr, EventChannel* ec ) {
 	Router& rtr = *static_cast<Router*>(_rtr);
 	Router::Client* client = rtr.getClient( ec );
-	DBGX("id=%"PRIx64"\n",commID);
+	DBGX("id=%" PRIx64 "\n",commID);
 
 	client->addComm( commID, this );
 
