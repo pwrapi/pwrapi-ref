@@ -47,7 +47,7 @@ int DeviceStat::start( ) {
 
 int DeviceStat::startObj( ) {
 	int retval = m_obj->attrStartLog( m_attrName );
-	DBGX("%s time=%"PRIu64" sec\n",objTypeToString(m_obj->type()),m_startTime);
+	DBGX("%s time=%" PRIu64 " sec\n",objTypeToString(m_obj->type()),m_startTime);
 	return retval;
 }
 
@@ -64,7 +64,7 @@ int DeviceStat::startGrp( ) {
 	return PWR_RET_SUCCESS;
 }
 int DeviceStat::stopObj( ) {
-	DBGX("%s time=%"PRIu64" sec\n",objTypeToString(m_obj->type()),m_startTime);
+	DBGX("%s time=%" PRIu64 " sec\n",objTypeToString(m_obj->type()),m_startTime);
 	int retval = m_obj->attrStopLog( m_attrName );
 	return retval;
 }
@@ -85,7 +85,7 @@ int DeviceStat::stopGrp( ) {
 int DeviceStat::stop( ) {
 	m_isLogging = false;
 	m_stopTime = getTime();
-	DBGX("time=%"PRIu64" sec\n",m_stopTime);
+	DBGX("time=%" PRIu64 " sec\n",m_stopTime);
 	if ( m_obj ) {
 		return stopObj();
 	} else {
@@ -135,7 +135,7 @@ int DeviceStat::objGetValue( Object* obj, double* value,
 
 	statTimes->start = timeStamp;
 	statTimes->stop = timeStamp + nSamples * m_period * 1000000000 ;
-	DBGX("actual: start=%lf stop=%lf count=%"PRIu32"\n", 
+	DBGX("actual: start=%lf stop=%lf count=%" PRIu32 "\n", 
 			(double) timeStamp/1000000000, 
 			(double) statTimes->stop/1000000000, nSamples);	
 
@@ -146,7 +146,7 @@ int DeviceStat::objGetValue( Object* obj, double* value,
         statTimes->instant = statTimes->start + pos * m_period * 1000000000; 
     }
 
-	DBGX("actual: start=%lf stop=%lf instant=%lf count=%"PRIu32"\n", 
+	DBGX("actual: start=%lf stop=%lf instant=%lf count=%" PRIu32 "\n", 
 			(double) timeStamp/1000000000, 
 			(double) statTimes->stop/1000000000, 
             (double) statTimes->instant/1000000000,nSamples);	
