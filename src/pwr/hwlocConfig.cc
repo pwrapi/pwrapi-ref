@@ -507,7 +507,10 @@ void HwlocConfig::initHierarchy( hwloc_obj_t obj, TreeNode* parent )
     unsigned i;
 	switch( obj->type ) {
 		case HWLOC_OBJ_MACHINE:
+#if 0 
+		// this was causing a problem for hwloc1.x.x on Stria
 		case HWLOC_OBJ_NODE:
+#endif
 		case HWLOC_OBJ_SOCKET:
 		case HWLOC_OBJ_CORE:
 			parent = addChild( parent, convertType( obj->type ), obj->logical_index );
