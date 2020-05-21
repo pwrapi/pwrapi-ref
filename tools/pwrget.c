@@ -15,6 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <inttypes.h>
 
 #include <pwr.h> 
 
@@ -89,7 +90,7 @@ while ( 1 ) {
    		fprintf(stderr,"Get Failed: %s: %s\n",name, attrName);
 		return -1;
 	}
-   	printf("%s: %s %.3f\n",name, attrName, value);
+	printf("%s: %s %.3f, time %" PRIu64 " ns.\n",name, attrName, value, time);
 
 	if ( sleepTime ) {
 		usleep( sleepTime );

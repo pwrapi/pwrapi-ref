@@ -636,7 +636,7 @@ static int readCore( pwr_tx2monFdInfo_t* fd, int soc, int core, PWR_AttrName nam
 
 	switch( name ) {
 	case PWR_ATTR_FREQ:
-		*(double*) value = pCtrl->freq_cpu[core];
+		*(double*) value = pCtrl->freq_cpu[core] * 1000000;
 		break;
 	case PWR_ATTR_TEMP:
 		*(double*) value = to_c( pCtrl->tmon_cpu[core] );
@@ -665,7 +665,7 @@ static int readTX2( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, void 
 	case PWR_ATTR_FREQ:
 		switch ( fd->objType ) {
 		case PWR_OBJ_TX2_MEM:
-			*(double*) value += pCtrl->freq_mem_net;
+			*(double*) value += pCtrl->freq_mem_net * 1000000;
 			break;
 		default:
 			assert(0);
@@ -707,6 +707,9 @@ static int readTX2( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, void 
 	default:
 		assert(0);
 	}
+    if ( time ) {
+		*time = getTime();
+    }
     return PWR_RET_SUCCESS;
 }
 
