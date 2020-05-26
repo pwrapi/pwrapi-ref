@@ -719,7 +719,7 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, vo
 
 	switch( name ) {
 	case PWR_ATTR_FREQ:
-		*(double*) value = pCtrl->freq_socs; 
+		*(double*) value = pCtrl->freq_socs * 1000000; 
 		break;
 	case PWR_ATTR_TEMP:
 		*(double*) value = to_c(pCtrl->tmon_soc_avg);
