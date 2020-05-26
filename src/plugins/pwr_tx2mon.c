@@ -28,7 +28,6 @@
 #include "pwr_dev.h"
 #include "util.h"
 
-
 #define PATH_T99MON_DEV     "/sys/bus/platform/devices/tx2mon"
 #define PATH_T99MON_NODE0   PATH_T99MON_DEV "/node0_raw"
 #define PATH_T99MON_NODE1   PATH_T99MON_DEV "/node1_raw"
@@ -54,13 +53,11 @@ struct pwr_tx2monFdInfo;
 
 typedef struct {
 	struct tx2mon tx2mon;
-#if ENERGY 
 	pthread_t thread;
 	useconds_t sleep_us;
 	int done;
 	struct pwr_tx2monFdInfo** energyObjs;
 	double lastSample;
-#endif
 } pwr_tx2monDevInfo_t;
 
 typedef struct pwr_tx2monFdInfo {
@@ -68,9 +65,7 @@ typedef struct pwr_tx2monFdInfo {
 	int index;
 	int socket;
 	pwr_tx2monDevInfo_t* devInfo;
-#if ENERGY
 	double energy;
-#endif
 } pwr_tx2monFdInfo_t;
 
 static double getTime() {
@@ -153,11 +148,9 @@ static pwr_fd_t pwr_tx2mon_dev_open( plugin_devops_t* ops, const char *openstr )
 	char devName[100];
 	assert( strlen(openstr) + 1 < 100 );
 	strcpy( devName, openstr);
-	pwr_tx2monFdInfo_t *tmp = malloc( sizeof( pwr_tx2monFdInfo_t ) );
-	tmp->devInfo = ops->private_data;
-#if ENERGY
-	tmp->energy = 0;
-#endif
+	pwr_tx2monFdInfo_t *fdInfo = malloc( sizeof( pwr_tx2monFdInfo_t ) );
+	fdInfo->devInfo = ops->private_data;
+	fdInfo->energy = 0;
 
 	char* obj = splitString( devName, '.' );
 	char objName[100]; 
@@ -165,39 +158,35 @@ static pwr_fd_t pwr_tx2mon_dev_open( plugin_devops_t* ops, const char *openstr )
 	findNameIndex( obj, objName, &index );
 
 	if ( 0 == strcmp( objName, "socket" ) ) {
-		tmp->socket=index; 
-		tmp->index=-1;
-		tmp->objType = PWR_OBJ_SOCKET;
+		fdInfo->socket=index; 
+		fdInfo->index=-1;
+		fdInfo->objType = PWR_OBJ_SOCKET;
 	} else {
-		tmp->index=index;
-		tmp->objType = getObjType(objName);
+		fdInfo->index=index;
+		fdInfo->objType = getObjType(objName);
 
 		char* obj2 = splitString( devName, '.' );
-		findNameIndex( obj2, objName, &tmp->socket );
+		findNameIndex( obj2, objName, &fdInfo->socket );
 		assert( 0 == strcmp( objName, "socket" ) );
 	}
 
-	DBGP("socket+%d index=%d type=%s\n", tmp->socket, tmp->index, objTypeToString(tmp->objType) );	
+	DBGP("socket=%d index=%d type=%s\n", fdInfo->socket, fdInfo->index, objTypeToString(fdInfo->objType) );	
 
-#if ENERGY 
-	if ( tmp->objType == PWR_OBJ_SOCKET ) {
+	if ( fdInfo->objType == PWR_OBJ_SOCKET ) {
 		DBGP("calculate energy\n");
-		tmp->devInfo->energyObjs[tmp->id] = tmp;
+		fdInfo->devInfo->energyObjs[fdInfo->socket] = fdInfo;
 	}
-#endif
 
-	return tmp;
+	return fdInfo;
 }
 
 static int pwr_tx2mon_dev_close( pwr_fd_t fd )
 {
 	pwr_tx2monFdInfo_t* info = fd; 
-#if ENERGY 
 	if ( info->objType == PWR_OBJ_SOCKET ) {
 		DBGP("calculate energy\n");
-		info->devInfo->energyObjs[info->id] = NULL;
+		info->devInfo->energyObjs[info->socket] = NULL;
 	}
-#endif
     free( fd );
     return 0;
 }
@@ -231,10 +220,18 @@ static plugin_devops_t devOps = {
 static pwr_tx2monDevInfo_t* tx2monInit( const char* devName);
 static void tx2monFini( pwr_tx2monDevInfo_t* devInfo );
 
+static int initSampleThread( pwr_tx2monDevInfo_t* devInfo );
+static int finiSampleThread( pwr_tx2monDevInfo_t* devInfo );
 
 static plugin_devops_t* pwr_tx2mon_dev_init( const char *initstr )
 {
 	pwr_tx2monDevInfo_t* devInfo = tx2monInit( initstr );
+	DBGP("\n");
+
+	if( initSampleThread( devInfo ) ) {
+		free( devInfo );
+		return NULL;
+	}
 
 	if ( NULL == devInfo ) {
 		return NULL;
@@ -252,10 +249,7 @@ static int pwr_tx2mon_dev_final( plugin_devops_t *ops )
 {
 	pwr_tx2monDevInfo_t* devInfo = ops->private_data;
 	DBGP("\n");
-#if ENERGY
-	devInfo->done = 1;
-	pthread_join( devInfo->thread, NULL ); 
-#endif
+	finiSampleThread( devInfo );
 	tx2monFini( devInfo ); 
 	free( ops );
 	return 0;
@@ -328,9 +322,11 @@ static void initMeta()
 
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_TEMP );
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_FREQ );
-#if ENERGY 
-	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_ENERGY );
-#endif
+
+	char* envPtr = getenv( "PWR_TX2MON_POLL_US" );
+	if ( ! ( envPtr &&  0 == atoi( envPtr ) ) ) {
+		addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_ENERGY );
+	}
 	++_metaInfo.num_objects;
 }
 
@@ -446,7 +442,6 @@ static int inline getCpusPerNode( pwr_tx2monDevInfo_t* dev ) {
 	return dev->tx2mon.node[0].cores;
 }
 
-#if ENERGY
 static void energy( pwr_tx2monDevInfo_t* devInfo ) {
 	struct timeval ts;
 	gettimeofday( &ts, NULL );
@@ -474,9 +469,6 @@ static void* thread( void* info ) {
 		energy( devInfo );
 	}
 }
-
-static int initSampleThread( pwr_tx2monDevInfo_t* devInfo );
-#endif
 
 static void init_socinfo(struct tx2mon* tx2mon )
 {
@@ -519,16 +511,8 @@ static pwr_tx2monDevInfo_t* tx2monInit( const char* devName)
 	int fd;
 	int node_id;
 	pwr_tx2monDevInfo_t* devInfo = malloc( sizeof( pwr_tx2monDevInfo_t ) );
-#if ENERGY
-	devInfo->lastSample = 0;
-#endif
 
 	init_socinfo( &devInfo->tx2mon );
-
-#if ENERGY 
-	devInfo->energyObjs = malloc( sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
-	bzero( devInfo->energyObjs, sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
-#endif
 
     fd = open(PATH_T99MON_NODE0, O_RDONLY);
     if (fd < 0)
@@ -544,27 +528,27 @@ static pwr_tx2monDevInfo_t* tx2monInit( const char* devName)
         devInfo->tx2mon.node[1].fd = fd;
     }
 
-#if ENERGY
-	if( initSampleThread( devInfo ) ) {
-		free( devInfo );
-		return NULL;
-	}
-#endif
 	return devInfo; 
 }
 
-#if ENERGY
 static int initSampleThread( pwr_tx2monDevInfo_t* devInfo ) 
 {
 	devInfo->done = 0;
+	devInfo->lastSample = 0;
+	devInfo->energyObjs = malloc( sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
+	bzero( devInfo->energyObjs, sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
 	
 	devInfo->sleep_us  = 10000;
+
 	char *envPtr;
-	if ( envPtr = getenv( "PWR_SOCMON_POLL_US" ) ) {
+	if ( envPtr = getenv( "PWR_TX2MON_POLL_US" ) ) {
 		devInfo->sleep_us = atoi( envPtr );
 	}
-	envPtr = getenv( "PWR_SOCMON_THREAD_AFFINITY");
 
+	if ( devInfo->sleep_us == 0 ) {
+		return 0;
+	}
+	envPtr = getenv( "PWR_TX2MON_THREAD_AFFINITY");
 	pthread_create( &devInfo->thread, NULL, thread, devInfo );
 
 	if ( envPtr ) {
@@ -597,7 +581,15 @@ static int initSampleThread( pwr_tx2monDevInfo_t* devInfo )
 	}
 	return 0;
 }
-#endif
+
+static int finiSampleThread( pwr_tx2monDevInfo_t* devInfo ) 
+{
+	if ( devInfo->sleep_us ) {
+		devInfo->done = 1;
+		pthread_join( devInfo->thread, NULL ); 
+	}
+	free( devInfo->energyObjs );
+}
 
 static void tx2monFini( pwr_tx2monDevInfo_t* devInfo ) {
 	int i;
@@ -729,10 +721,10 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, vo
 	case PWR_ATTR_TEMP:
 		*(double*) value = to_c(pCtrl->tmon_soc_avg);
 		break;
-#if ENERGY
 	case PWR_ATTR_ENERGY:
 		*(double*) value = fd->energy;
 		break;
+
 	// this is for plugin use
 	case PWR_ATTR_POWER:
 		*(double*) value = to_w(pCtrl->pwr_core);
@@ -741,7 +733,6 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, vo
 		*(double*) value += to_w(pCtrl->pwr_soc);
 		*(double*) value += 12;
         break;
-#endif
 	default:
 		assert(0);
 	}
