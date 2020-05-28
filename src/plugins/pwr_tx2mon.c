@@ -538,7 +538,7 @@ static int initSampleThread( pwr_tx2monDevInfo_t* devInfo )
 	devInfo->energyObjs = malloc( sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
 	bzero( devInfo->energyObjs, sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
 	
-	devInfo->sleep_us  = 10000;
+	devInfo->sleep_us  = 1000000;
 
 	char *envPtr;
 	if ( envPtr = getenv( "PWR_TX2MON_POLL_US" ) ) {
@@ -548,6 +548,7 @@ static int initSampleThread( pwr_tx2monDevInfo_t* devInfo )
 	if ( devInfo->sleep_us == 0 ) {
 		return 0;
 	}
+
 	envPtr = getenv( "PWR_TX2MON_THREAD_AFFINITY");
 	pthread_create( &devInfo->thread, NULL, thread, devInfo );
 
