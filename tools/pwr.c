@@ -71,8 +71,8 @@ struct LispObject {
 			union {
 				struct {
 					PWR_Obj pwrObj;
-					char name[1];
 					int order;
+					char name[1];
 				} poi;
 				struct Counter {
 					const struct CounterInfo *ci;
@@ -547,29 +547,18 @@ internPWRObj(PWR_Obj pwrObj)
 	 */
 	{
 		size_t n;
-		void *p;
 		int rc;
 
 		result = NULL;
 		n = 30;
 		for (;;) {
-			p = xrealloc(result, sizeof(LispObject) + n);
-			if (!p) {
-				free(result);
-				exit(EXIT_FAILURE);
-			}
-			result = p;
+			result = xrealloc(result, sizeof(LispObject) + n);
 			rc = PWR_ObjGetName(pwrObj, result->u.a.u.poi.name, n);
 			if (rc == PWR_RET_SUCCESS) {
 				n = strlen(result->u.a.u.poi.name);
-				p =
+				result =
 				    xrealloc(result,
 					     sizeof(LispObject) + n + 1);
-				do {
-					if (!p)
-						break;
-					result = p;
-				} while (0);
 				break;
 			}
 			if (rc != PWR_RET_WARN_TRUNC) {
