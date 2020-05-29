@@ -1,7 +1,7 @@
 SUBDIRS = pwrdaemon
 DIST_SUBDRIS = pwrdaemon
 
-bin_PROGRAMS = pwrapi pwrgen pwrdmp pwrls pwrenergy pwrget pwrset nodePower
+bin_PROGRAMS = pwr pwrapi pwrgen pwrdmp pwrls pwrenergy pwrget pwrset nodePower
 
 lib_LTLIBRARIES = libpwr_runtime.la
 
@@ -16,6 +16,10 @@ script_DATA = script/hwloc_profile\
          script/hwloc_coral_profile
 
 # Power API Tools
+pwr_SOURCES = pwr.c
+pwr_CFLAGS = -I$(top_srcdir)/src/pwr
+pwr_LDADD = $(top_builddir)/src/pwr/libpwr.la -lpthread
+
 pwrapi_SOURCES = pwrapi.c
 pwrapi_CFLAGS = -I$(top_srcdir)/src/pwr
 pwrapi_LDADD = $(top_builddir)/src/pwr/libpwr.la
