@@ -317,12 +317,12 @@ std::deque< Config::ObjDev >
 	if ( node->attrs.find( attr ) != node->attrs.end() ) {
 		if ( ! node->attrs[attr].device.empty() ) { 
 			Config::ObjDev dev;
-			if ( m_tx2 ) {
-				dev.device = node->attrs[attr].device;
-			} else {
+
+			dev.device = node->attrs[attr].device;
+			if ( m_tx2 )
+				dev.openString = name;
+			else
 				dev.openString = node->attrs[attr].openString;
-			}
-			dev.openString = name;
 			devs.push_back(dev);
 		}
 	}	
