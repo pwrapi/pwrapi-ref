@@ -726,6 +726,7 @@ static int readSocket( pwr_tx2monFdInfo_t* fd, int socket, PWR_AttrName name, vo
 		*(double*) value = to_c(pCtrl->tmon_soc_avg);
 		break;
 	case PWR_ATTR_ENERGY:
+		energy( dev );
 		*(double*) value = fd->energy;
 		break;
 
