@@ -69,11 +69,13 @@ typedef struct pwr_tx2monFdInfo {
 } pwr_tx2monFdInfo_t;
 
 static double getTime() {
-	struct timeval tv;
-	gettimeofday(&tv,NULL);
 	double value; 
-	value = tv.tv_sec * 1000000000;
-	value += tv.tv_usec * 1000;
+	struct timespec tp;
+	clock_gettime( CLOCK_REALTIME, &tp );
+
+	value = tp.tv_sec * 1000000000; 
+	value += tp.tv_nsec * 1000;
+
 	return value;
 }
 
@@ -322,10 +324,13 @@ static void initMeta()
 
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_TEMP );
 	addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_FREQ );
+	++_metaInfo.num_objects;
 
 	char* envPtr = getenv( "PWR_TX2MON_POLL_US" );
-	if ( ! ( envPtr &&  0 == atoi( envPtr ) ) ) {
-		addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_ENERGY );
+	if ( envPtr ) {
+		if (  atoi( envPtr )  ) {
+			addAttr( &_metaInfo.metaObj[PWR_OBJ_SOCKET], PWR_ATTR_ENERGY );
+		}
 	}
 	++_metaInfo.num_objects;
 }
@@ -538,7 +543,7 @@ static int initSampleThread( pwr_tx2monDevInfo_t* devInfo )
 	devInfo->energyObjs = malloc( sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
 	bzero( devInfo->energyObjs, sizeof( pwr_tx2monFdInfo_t* ) * devInfo->tx2mon.nodes );
 	
-	devInfo->sleep_us  = 1000000;
+	devInfo->sleep_us  = 0;
 
 	char *envPtr;
 	if ( envPtr = getenv( "PWR_TX2MON_POLL_US" ) ) {
