@@ -25,7 +25,7 @@ class RtrRouterEvent: public  RouterEvent {
 
     bool process( EventGenerator* _rtr, EventChannel* ec ) {
         Router& rtr = *static_cast<Router*>(_rtr);
-		DBGX("dest=%"PRIx64"\n",dest);
+		DBGX("dest=%" PRIx64 "\n",dest);
 		rtr.sendEvent( dest, this );
 
         return true;

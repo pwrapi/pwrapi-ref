@@ -46,7 +46,7 @@ class RtrCommLogReqEvent: public  CommLogReqEvent {
         info->resp->id = id;
         id = (EventId) info;
 
-        DBGX("commID=%"PRIu64" eventId=%" PRIx64 " new eventId=%p\n",
+        DBGX("commID=%" PRIu64 " eventId=%" PRIx64 " new eventId=%p\n",
                                 commID, id, info );
 
         for ( unsigned int i=0; i <  commList.size(); i++ ) {

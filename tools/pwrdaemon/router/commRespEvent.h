@@ -33,7 +33,7 @@ class RtrCommRespEvent: public  CommRespEvent {
 
 	bool process( EventGenerator* _rtr, EventChannel* ) {
 
-		DBGX("id=%p status=%"PRIi32" grpIndex=%" PRIu64 "\n",
+		DBGX("id=%p status=%" PRIi32 " grpIndex=%" PRIu64 "\n",
 								(void*)id, status, grpIndex );
 
         CommReqInfo* info = (CommReqInfo*) id;
@@ -44,7 +44,7 @@ class RtrCommRespEvent: public  CommRespEvent {
 
             CommRespEvent* resp = static_cast<CommRespEvent*>(info->resp);
 			if ( Get == info->ev->op ) {
-				DBGX("index %"PRIu64" is ready, num attrs %zu\n",
+				DBGX("index %" PRIu64 " is ready, num attrs %zu\n",
 										grpIndex, info->valueOp.size() );
 				resp->timeStamp[grpIndex].resize( info->valueOp.size() );
 				resp->value[grpIndex].resize( info->valueOp.size() );

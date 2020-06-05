@@ -35,7 +35,7 @@ class RtrCommReqEvent: public  CommReqEvent {
 
     	CommReqInfo* info = new CommReqInfo;
 
-    	DBGX("commID=%"PRIx64" eventId=%"PRIx64" new eventId=%p\n", 
+    	DBGX("commID=%" PRIx64 " eventId=%" PRIx64 " new eventId=%p\n", 
 													commID, id, info );
 
     	info->src = ec;
