@@ -56,7 +56,7 @@ int DistRequest::wait( )
 // can we use "this"
 void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 {
-	DBGX("count %"PRIu32"\n",ev->count);
+	DBGX("count %" PRIu32 "\n",ev->count);
 
 #if 0
     // FIX ME 
@@ -67,7 +67,7 @@ void DistRequest::getSamples( DistCommReq* req, CommGetSamplesRespEvent* ev  )
 	for ( unsigned i = 0; i< ev->count; i++ ) {
 		((uint64_t*)value[0])[i] = ev->data[i];
 	}
-	DBGX("start time %"PRIu64", samples %"PRIu32"n",*timeStamp[0], ev->count);
+	DBGX("start time %" PRIu64 ", samples %" PRIu32 "n",*timeStamp[0], ev->count);
 	*timeStamp[0] = ev->startTime;
 	m_commReqs.erase( req ); 
 }
