@@ -572,7 +572,7 @@ static int read_node(struct node_data *d)
     rv = read(d->fd, op, sizeof(*op));
     if (rv < sizeof(*op))
         return rv;
-    if ((op->cmd_status & STATUS_READY) == 0)
+	if ( CMD_STATUS_READY(op->cmd_status) == 0)
         return 0;
     return 1;
 }
