@@ -41,7 +41,20 @@ m4_include([config/pwrapi_mic.m4])
 m4_include([config/pwrapi_tx2mon.m4])
 
 PWRAPI_CHECK_HWLOC([pwrapi_have_hwloc="yes"], [pwrapi_have_hwloc="no"])
-PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
+
+PWRAPI_CHECK_PYTHON([pwrapi_check_python_happy="yes"], [pwrapi_check_python_happy="no"], [])
+AS_IF(
+  [test "x$pwrapi_check_python_happy" = "xyes"],
+  [
+    PWRAPI_CHECK_SWIG([pwrapi_have_swig="yes"], [pwrapi_have_swig="no"])
+    AS_IF(
+      [test "x$pwrapi_have_swig" = "xyes"],
+      AC_CONFIG_FILES([src/bindings/python/Makefile])
+    )
+  ],
+  AM_CONDITIONAL(HAVE_SWIG, false)
+)
+
 PWRAPI_CHECK_ULXMLRPCPP([pwrapi_have_xmlrpc="yes"], [pwrapi_have_xmlrpc="no"])
 
 PWRAPI_CHECK_PIAPI([pwrapi_have_piapi="yes"], [pwrapi_have_piapi="no"])
@@ -69,7 +82,6 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/tinyxml2/Makefile
                  src/pwr/Makefile
-                 src/bindings/python/Makefile
                  src/plugins/Makefile
                  tools/Makefile
                  tools/pwrdaemon/Makefile
