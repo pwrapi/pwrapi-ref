@@ -9,6 +9,7 @@ script_DATA = script/hwloc_profile\
          script/hwloc_rapl_profile\
          script/hwloc_multi_profile\
          script/hwloc_powercap_profile\
+         script/hwloc_msr_profile\
          script/hwloc_astra_profile\
          script/hwloc_xt40_profile
 
@@ -71,6 +72,7 @@ config_DATA = 	config/shepard-platform.xml \
 		config/cpu.hwloc \
 		config/rapl.hwloc \
 		config/multi.hwloc \
-		config/dummyNode.hwloc
+		config/dummyNode.hwloc \
+    config/msr.hwloc
 
 EXTRA_DIST = $(config_DATA) $(script_DATA)

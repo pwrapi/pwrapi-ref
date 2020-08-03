@@ -25,15 +25,16 @@ Currently supported:
   libpwr_cpudev	  System level CPU adjustments
   libpwr_apmdev   AMD Average Power Management
   libpwr_pmcdev   IBM Power8 Power Management (INCOMPLETE)
+  libpwr_msrdev   LIBMSR
 
-Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC
-----------  -----  --  ----  --  ----  ---  ---  ---
-  power     G      G         G   G	   G    G
-  energy    G          G     G   G
+Attributes  PIAPI  PI  RAPL  WU  XTPM  CPU  APM  PMC  MSR
+----------  -----  --  ----  --  ----  ---  ---  ---  ---
+  power     G      G         G   G	   G    G         
+  energy    G          G     G   G                    G
   voltage   G      G         G
   current   G      G         G
   min_power                      G/S   G/S
-  max_power                      G/S   G/S
+  max_power                      G/S   G/S            G/S
   freq                                 G/S
   temp                                 G
   pstate                               G/S

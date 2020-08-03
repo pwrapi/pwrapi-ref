@@ -41,6 +41,14 @@ libpwr_micdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(MIC_INCLUDE)
 libpwr_micdev_la_LDFLAGS = -version-info 1:0:1 $(MIC_LDFLAGS) $(MIC_LIBS)
 endif
 
+if HAVE_MSR
+lib_LTLIBRARIES += libpwr_msrdev.la
+
+libpwr_msrdev_la_SOURCES = pwr_dev.c pwr_msrdev.c
+libpwr_msrdev_la_CFLAGS = -I$(top_srcdir)/src/pwr $(MSR_CFLAGS)
+libpwr_msrdev_la_LDFLAGS = -version-info 1:0:1 $(MSR_LDFLAGS) $(MSR_LIBS)
+endif
+
 if HAVE_TX2MON
 lib_LTLIBRARIES += libpwr_tx2mon.la
 
